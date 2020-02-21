@@ -9,9 +9,9 @@
     <meta name="generator" content="Jekyll v3.8.6">
     <title>Labores - Iniciar sesión</title>
 
-    <link href="./css/bootstrap.min.css" rel="stylesheet">
-    <link href="./css/Global.css" rel="stylesheet">
-    <link href="./css/Login.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/Global.css')}}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/Login.css')}}" rel="stylesheet">
 
     <link rel="apple-touch-icon" href="https://getbootstrap.com/docs/4.4/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
     <link rel="icon" href="https://getbootstrap.com/docs/4.4/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
@@ -43,7 +43,7 @@
       <body>
         <form class="form-signin">
       <div class="text-center mb-4">
-        <img class="mb-4" src="./images/Labores.png" alt="" width="380" height="350">
+        <img class="mb-4" src="{{ url_for('static', filename='images/Labores.png')}}" alt="" width="380" height="350">
         <!--<h  1 class="h3 mb-3 font-weight-normal">INGRESO</h1>-->
         <!--<p>*** Texto que aporte ***</p>-->
       </div>

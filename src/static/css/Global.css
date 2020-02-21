@@ -1,0 +1,20 @@
+html,
+body {
+    height: 100%;
+}
+
+body {
+    /*background-color: lightskyblue;
+    background-color: lightsteelblue;
+    background-color: paleturquoise;
+    background-color: lightblue;
+    background-color: powderblue;
+    background-color: lightcyan;
+    background-color: lavender;*/
+    background-color: #fcfef1;
+}
+
+cuerpo {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
