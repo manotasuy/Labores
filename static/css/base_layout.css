@@ -1,3 +1,24 @@
+html,
+body {
+    height: 100%;
+}
+
+body {
+    /*background-color: lightskyblue;
+    background-color: lightsteelblue;
+    background-color: paleturquoise;
+    background-color: lightblue;
+    background-color: powderblue;
+    background-color: lightcyan;
+    background-color: #fcfef1;*/
+    background-color: lavender;
+}
+
+cuerpo {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
 .jumbotron {
   padding-top: 3rem;
   padding-bottom: 3rem;

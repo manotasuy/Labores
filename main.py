@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def hola_mundo():
-    return render_template("Login.html")
+    return render_template("Inicio.html")
 
 
 # @app.route("/suma/<int:num1>/<int:num2>")

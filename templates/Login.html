@@ -2,7 +2,6 @@
 <!DOCTYPE html>
 <html lang="en"><head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
@@ -10,7 +9,7 @@
     <title>Labores - Iniciar sesión</title>
 
     <link href="{{ url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/Global.css')}}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/base_layout.css')}}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/Login.css')}}" rel="stylesheet">
 
     <link rel="apple-touch-icon" href="https://getbootstrap.com/docs/4.4/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
@@ -21,7 +20,6 @@
     <link rel="icon" href="https://getbootstrap.com/docs/4.4/assets/img/favicons/favicon.ico">
     <meta name="msapplication-config" content="/docs/4.4/assets/img/favicons/browserconfig.xml">
     <meta name="theme-color" content="#563d7c">
-
 
     <style>
         .bd-placeholder-img {
@@ -44,8 +42,6 @@
         <form class="form-signin">
       <div class="text-center mb-4">
         <img class="mb-4" src="{{ url_for('static', filename='images/Labores.png')}}" alt="" width="380" height="350">
-        <!--<h  1 class="h3 mb-3 font-weight-normal">INGRESO</h1>-->
-        <!--<p>*** Texto que aporte ***</p>-->
       </div>
 
       <div class="form-label-group">
@@ -66,6 +62,4 @@
       <button class="btn btn-lg btn-primary btn-block" type="submit">Ingresar</button>
       <p class="mt-5 mb-3 text-muted text-center">© Los b_ITless 2020</p>
     </form>
-
-
 </body></html>

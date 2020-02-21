@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -7,13 +7,8 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v3.8.6">
-    <title>Base Layout</title>
-
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.4/examples/album/">
-
-    <link href="./css/bootstrap.min.css" rel="stylesheet">
-    <link href="./css/base_layout.css" rel="stylesheet">
-
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/base_layout.css')}}" rel="stylesheet">
     <link rel="apple-touch-icon" href="https://getbootstrap.com/docs/4.4/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
     <link rel="icon" href="https://getbootstrap.com/docs/4.4/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
     <link rel="icon" href="https://getbootstrap.com/docs/4.4/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
@@ -22,6 +17,10 @@
     <link rel="icon" href="https://getbootstrap.com/docs/4.4/assets/img/favicons/favicon.ico">
     <meta name="msapplication-config" content="https://getbootstrap.com/docs/4.4/assets/img/favicons/browserconfig.xml">
     <meta name="theme-color" content="#563d7c">
+
+    {% block titulo %}{% endblock %}
+
+    {% block referencias %}{% endblock %}
 
     <style>
         .bd-placeholder-img {
@@ -39,6 +38,8 @@
             }
         }
     </style>
+
+    {% block estilo %}{% endblock %}
 
 </head>
 <body>
@@ -96,13 +97,8 @@
     </header>-->
     <cuerpo>
 
-        <!--{% block contenido %}
-        {% endblock %}-->
-        <div>
-            <h1>
-                Hello!
-            </h1>
-        </div>
+        {% block contenido %}
+        {% endblock %}
 
     </cuerpo>
     <footer class="text-muted">
@@ -113,9 +109,12 @@
             <p>© Los b_ITless 2020</p>
         </div>
     </footer>
-    <script src="./scripts/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="./scripts/jquery.slim.min.js"><\/script>')</script>
-    <script src="./scripts/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script>
+
+    <script src="{{ url_for('static', filename='scripts/jquery-3.4.1.slim.min.js')}}" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="{{ url_for('static', filename='scripts/jquery.slim.min.js')}}"><\/script>')</script>
+    <script src="{{ url_for('static', filename='scripts/bootstrap.bundle.min.js')}}" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script>   
+
+    {% block scripts %}{% endblock %}
 
 </body>
 </html>
