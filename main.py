@@ -1,11 +1,11 @@
-from flask import Flask
-from flask import render_template
+from flask import Flask, request, render_template, url_for, redirect
 
 app = Flask(__name__)
 
 
 @app.route("/")
-def hola_mundo():
+@app.route("/Inicio")
+def despliegue():
     return render_template("Inicio.html")
 
 
