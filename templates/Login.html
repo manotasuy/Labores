@@ -40,9 +40,11 @@
 </head>
       <body>
         <form class="form-signin">
-      <div class="text-center mb-4">
-        <img class="mb-4" src="{{ url_for('static', filename='images/Labores.png')}}" alt="" width="380" height="350">
-      </div>
+            <div class="text-center mb-4">
+                <a class="my-0 mr-md-auto" href="/Inicio" aria-label="Home">
+                    <img class="mb-4" src="{{ url_for('static', filename='images/Labores.png')}}" alt="" width="380" height="350">
+                </a>
+            </div>
 
       <div class="form-label-group">
         <input type="text" id="inputUser" class="form-control" placeholder="User" required="" autofocus="">

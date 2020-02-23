@@ -33,7 +33,11 @@ cuerpo {
     padding-top: 3rem;
     padding-bottom: 3rem;
     margin-bottom: 0;
-    background-color: #fff;
+    /*background-color: #fff;*/
+    background-color: aliceblue;
+    border-style: solid;
+    border-width: 0.5px;
+    border-color: gray;
 }
 
 .jumbotron p:last-child {

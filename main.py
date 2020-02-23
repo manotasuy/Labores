@@ -1,12 +1,30 @@
+import json
 from flask import Flask, request, render_template, url_for, redirect
+#from flask_mysqldb import MySQL
 
 app = Flask(__name__)
 
 
 @app.route("/")
 @app.route("/Inicio")
-def despliegue():
+def inicio():
     return render_template("Inicio.html")
+
+@app.route("/Contacto")
+def contacto():
+    return render_template("Contacto.html")
+
+@app.route("/Ayuda")
+def ayuda():
+    return render_template("Ayuda.html")
+
+@app.route("/LogIn")
+def ingresar():
+    return render_template("LogIn.html")
+
+@app.route("/SignUp")
+def registrarse():
+    return render_template("SignUp.html")
 
 
 # @app.route("/suma/<int:num1>/<int:num2>")
