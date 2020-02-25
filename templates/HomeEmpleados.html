@@ -1,0 +1,29 @@
+{% extends 'page_layout.html' %}
+
+{% block referencias %}
+{% endblock %}
+
+{% block estilo %}
+{% endblock %}
+
+{% block titulo %}Labores - Página Principal{% endblock %}
+
+{% block contenido %}
+<div class="container">
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <div class="text-center mb-4">
+                <a class="my-0 mr-md-auto" href="/Inicio" aria-label="Home">
+                    <img class="mb-4" src="{{ url_for('static', filename='images/Empleada_500.png')}}" alt=""
+                        width="250" height="250">
+                </a>
+            </div>
+            <h1 class="display-4">Home Empleados</h1>
+            <p class="lead">Formulario principal de los empleados</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

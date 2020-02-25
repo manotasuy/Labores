@@ -1,4 +1,4 @@
-{% extends 'base_layout.html' %}
+{% extends 'page_layout.html' %}
 
 {% block referencias %}
 {% endblock %}
@@ -6,14 +6,22 @@
 {% block estilo %}
 {% endblock %}
 
-{% block titulo %}<title>Labores - Ayuda</title>{% endblock %}
+{% block titulo %}Labores - Ayuda{% endblock %}
 
 {% block contenido %}
 <div class="container">
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
             <h1 class="display-4">Ayuda</h1>
-            <p class="lead">Formulario de Ayuda</p>
+            {% if not session['usertype'] %}
+            <p class="lead">Formulario de Ayuda del Invitado</p>
+            {% endif %}
+
+            {% if session['usertype'] == 'Empleado' %}
+            <p class="lead">Formulario de Ayuda del EMPLEADO, debo mostrar acceso a sindicato</p>
+            {% elif session['usertype'] == 'Empleador' %}
+            <p class="lead">Formulario de Ayuda del EMPLEADOR, debo mostrar acceso a ligas de amas de casa</p>
+            {% endif %}
         </div>
     </div>
 </div>

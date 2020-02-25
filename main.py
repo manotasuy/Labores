@@ -1,39 +1,94 @@
 import json
-from flask import Flask, request, render_template, url_for, redirect
-#from flask_mysqldb import MySQL
+from flask import Flask, request, render_template, url_for, redirect, flash, session
+from flask_mysqldb import MySQL
+
+# Paquetes implementación
+from Logica import HandlerAdministrador
 
 app = Flask(__name__)
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'computosMySQLRoot'
+app.config['MYSQL_DB'] = 'bdLabores'
+bd = MySQL(app)
+
+# session
+app.secret_key = "session"
+
+print(HandlerAdministrador.prueba())
 
 
-@app.route("/")
-@app.route("/Inicio")
+@app.route('/')
+@app.route('/Inicio')
 def inicio():
-    return render_template("Inicio.html")
+    return render_template('Inicio.html')
 
-@app.route("/Contacto")
+
+@app.route('/Contacto')
 def contacto():
-    return render_template("Contacto.html")
+    return render_template('Contacto.html')
 
-@app.route("/Ayuda")
+
+@app.route('/Ayuda')
 def ayuda():
-    return render_template("Ayuda.html")
+    return render_template('Ayuda.html')
 
-@app.route("/LogIn")
+
+@app.route('/LogIn')
+def logueo():
+    return render_template('LogIn.html')
+
+
+@app.route('/LogOut')
+def deslogueo():
+    session.pop('username')
+    session.pop('usertype')
+    return redirect(url_for('inicio'))
+
+
+@app.route('/Ingresar', methods=['POST'])
 def ingresar():
-    return render_template("LogIn.html")
+    if request.method == 'POST':
+        session['username'] = request.form['user']
+        password = request.form['pass']
+        cursor = bd.connection.cursor()
+        #cursor.execute('INSERT INTO usuario (usuario, clave, tipo) VALUES (%s, %s, %s)', (user, password, 'Empleador'))
+        cursor.execute(
+            'SELECT tipo FROM usuario WHERE usuario = %s AND clave = %s', (session['username'], password))
+        retorno = cursor.fetchall()
+        cursor.close()
+        bd.connection.commit()
+        #tipo = retorno[0]
+        session['usertype'] = retorno[0][0]
 
-@app.route("/SignUp")
+        if session['usertype'] == 'Empleador':
+            return redirect(url_for('inicio_empleadores'))
+        elif session['usertype'] == 'Empleado':
+            return redirect(url_for('inicio_empleados'))
+        else:
+            return redirect(url_for('administrar'))
+
+
+@app.route('/SignUp')
 def registrarse():
-    return render_template("SignUp.html")
+    # return render_template('SignUp.html')
+    return render_template('Registro.html')
 
 
-# @app.route("/suma/<int:num1>/<int:num2>")
-# @app.route("/suma/<int:num1>/<float:num2>")
-# @app.route("/suma/<float:num1>/<int:num2>")
-# @app.route("/suma/<float:num1>/<float:num2>")
-# def suma(num1 = 0, num2 = 0):
-#    contexto = {'numero1' : num1, 'numero2' : num2}
-#    return render_template("suma.html", **contexto)
+@app.route('/HomeEmpleados')
+def inicio_empleados():
+    return render_template('HomeEmpleados.html')
 
-if __name__ == "__main__":
+
+@app.route('/HomeEmpleadores')
+def inicio_empleadores():
+    return render_template('HomeEmpleadores.html')
+
+
+@app.route('/PanelControl')
+def administrar():
+    return render_template('ControlPanel.html')
+
+
+if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,69 @@
+{% extends 'base_layout.html' %}
+
+{% block referencias_page %}
+{% block referencias %}{% endblock %}
+{% endblock %}
+
+{% block estilo_page %}
+{% block estilo %}{% endblock %}
+{% endblock %}
+
+{% block titulo_page %}
+{% block titulo %}{% endblock %}
+{% endblock %}
+
+{% block contenido_page %}
+<header>
+    <div class="container">
+        <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white">
+            <a class="my-0 mr-md-auto" href="/Inicio" aria-label="Home">
+                <!--<img class="mb-4" src="{{ url_for('static', filename='images/LaboresLargeAj.png')}}" alt="" width="370" height="125">-->
+                <img class="mb-4" src="{{ url_for('static', filename='images/LaboresLargeAj.png')}}" alt="" width="444"
+                    height="150">
+            </a>
+            <nav class="my-2 my-md-0 mr-md-3">
+                <a class="p-2 text-dark" href="/Inicio">Inicio</a>
+
+                {% if session['usertype'] != 'Administrador' %}
+                <a class="p-2 text-dark" href="/Contacto">Contacto</a>
+                <a class="p-2 text-dark" href="/Ayuda">Ayuda</a>
+                {% else %}
+                <a class="p-2 text-dark" href="/PanelControl">Panel</a>
+                {% endif %}
+
+                {% if session['usertype'] == 'Empleado' %}
+                <a class="p-2 text-dark" href="/HomeEmpleados">Principal</a>
+                {% elif session['usertype'] == 'Empleador' %}
+                <a class="p-2 text-dark" href="/HomeEmpleadores">Principal</a>
+                {% endif %}
+            </nav>
+
+            {% if session['usertype'] %}
+            <h3>{{session['username']}}</h3>
+            <a class="btn btn-outline-primary" href="/LogOut">Salir</a>
+            {% else %}
+            <a class="btn btn-outline-primary" href="/LogIn">Ingresar</a>
+            {% endif %}
+
+            <!--<a class="btn btn-outline-primary" href="/LogIn">Ingresar</a>-->
+            <!--<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Ingresar</button>-->
+        </div>
+    </div>
+</header>
+
+{% block contenido %}{% endblock %}
+
+<footer class="text">
+    <div class="container">
+        <p class="float-right">
+            <a href="#">Back to top</a>
+        </p>
+        <p>© Los b_ITless 2020</p>
+    </div>
+</footer>
+
+{% block scripts_page %}
+{% block scripts %}{% endblock %}
+{% endblock %}
+
+{% endblock %}

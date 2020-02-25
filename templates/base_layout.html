@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -17,50 +18,28 @@
     <link rel="icon" href="{{ url_for('static', filename='images/Logo.ico')}}">
     <meta name="theme-color" content="#563d7c">
 
-    {% block titulo %}{% endblock %}
+    <title>{% block titulo_page %}{% endblock %}</title>
 
-    {% block referencias %}{% endblock %}
+    {% block referencias_page %}{% endblock %}
 
-    {% block estilo %}{% endblock %}
+    {% block estilo_page %}{% endblock %}
 
 </head>
+
 <body>
-    <header>
-        <div class="container">
-            <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white">
-                <a class="my-0 mr-md-auto" href="/Inicio" aria-label="Home">
-                    <!--<img class="mb-4" src="{{ url_for('static', filename='images/LaboresLargeAj.png')}}" alt="" width="370" height="125">-->
-                    <img class="mb-4" src="{{ url_for('static', filename='images/LaboresLargeAj.png')}}" alt="" width="444" height="150">
-                </a>
-                <nav class="my-2 my-md-0 mr-md-3">
-                    <a class="p-2 text-dark" href="/Inicio">Inicio</a>
-                    <a class="p-2 text-dark" href="/Contacto">Contacto</a>
-                    <a class="p-2 text-dark" href="/Ayuda">Ayuda</a>
-                </nav>
-                <a class="btn btn-outline-primary" href="/LogIn">Ingresar</a>
-                <!--<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Ingresar</button>-->
-            </div>
-        </div>
-    </header>
 
-    <cuerpo>
-        {% block contenido %}
-        {% endblock %}
-    </cuerpo>
+    {% block contenido_page %}
+    {% endblock %}
 
-    <footer class="text">
-        <div class="container">
-            <p class="float-right">
-                <a href="#">Back to top</a>
-            </p>
-            <p>© Los b_ITless 2020</p>
-        </div>
-    </footer>
-
-    <script src="{{ url_for('static', filename='scripts/jquery-3.4.1.slim.min.js')}}" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='scripts/jquery-3.4.1.slim.min.js')}}"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
     <script>window.jQuery || document.write('<script src="{{ url_for("static", filename="scripts/jquery.slim.min.js")}}"><\/script>')</script>
-    <script src="{{ url_for('static', filename='scripts/bootstrap.bundle.min.js')}}" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='scripts/bootstrap.bundle.min.js')}}"
+        integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm"
+        crossorigin="anonymous"></script>
 
-    {% block scripts %}{% endblock %}
+    {% block scripts_page %}{% endblock %}
 </body>
+
 </html>

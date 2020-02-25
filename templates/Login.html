@@ -1,67 +1,49 @@
-﻿
-<!DOCTYPE html>
-<html lang="en"><head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Jekyll v3.8.6">
-    <title>Labores - Iniciar sesión</title>
+﻿{% extends 'base_layout.html' %}
 
-    <link href="{{ url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/base_layout.css')}}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/Login.css')}}" rel="stylesheet">
+{% block referencias_page %}
+{% endblock %}
 
-    <link rel="apple-touch-icon" href="https://getbootstrap.com/docs/4.4/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
-    <link rel="icon" href="https://getbootstrap.com/docs/4.4/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
-    <link rel="icon" href="https://getbootstrap.com/docs/4.4/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
-    <link rel="manifest" href="https://getbootstrap.com/docs/4.4/assets/img/favicons/manifest.json">
-    <link rel="mask-icon" href="https://getbootstrap.com/docs/4.4/assets/img/favicons/safari-pinned-tab.svg" color="#563d7c">
-    <link rel="icon" href="https://getbootstrap.com/docs/4.4/assets/img/favicons/favicon.ico">
-    <meta name="msapplication-config" content="/docs/4.4/assets/img/favicons/browserconfig.xml">
-    <meta name="theme-color" content="#563d7c">
+{% block estilo_page %}
+{% endblock %}
 
-    <style>
-        .bd-placeholder-img {
-            font-size: 1.125rem;
-            text-anchor: middle;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
+{% block titulo_page %}Labores - Ingresar{% endblock %}
 
-        @media (min-width: 768px) {
-            .bd-placeholder-img-lg {
-                font-size: 3.5rem;
-            }
-        }
-    </style>
-</head>
-      <body>
-        <form class="form-signin">
-            <div class="text-center mb-4">
-                <a class="my-0 mr-md-auto" href="/Inicio" aria-label="Home">
-                    <img class="mb-4" src="{{ url_for('static', filename='images/Labores.png')}}" alt="" width="380" height="350">
-                </a>
-            </div>
+{% block contenido_page %}
+<form class="form-signin" action="/Ingresar" method="POST">
+  <div class="text-center mb-4">
+    <a class="my-0 mr-md-auto" href="/Inicio" aria-label="Home">
+      <img class="mb-4" src="{{ url_for('static', filename='images/Labores.png')}}" alt="" width="380" height="350">
+    </a>
+  </div>
 
-      <div class="form-label-group">
-        <input type="text" id="inputUser" class="form-control" placeholder="User" required="" autofocus="">
-        <label for="inputUser">Usuario</label>
-      </div>
+  <!--<div class="alert alert-dark alert-dismissible fade show" role="alert">
+    <p>Error!</p>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>-->
 
-      <div class="form-label-group">
-        <input type="password" id="inputPassword" class="form-control" placeholder="Pass" required="">
-        <label for="inputPassword">Contraseña</label>
-      </div>
+  <div class="form-label-group">
+    <input type="text" id="inputUser" name="user" class="form-control" placeholder="User" required="" autofocus="">
+    <label for="inputUser">Usuario</label>
+  </div>
 
-      <div class="checkbox mb-3">
-        <label>
-          <input type="checkbox" value="remember-me"> Recordarme
-        </label>
-      </div>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Ingresar</button>
-      <p class="mt-5 mb-3 text-muted text-center">© Los b_ITless 2020</p>
-    </form>
-</body></html>
+  <div class="form-label-group">
+    <input type="password" id="inputPassword" name="pass" class="form-control" placeholder="Pass" required="">
+    <label for="inputPassword">Contraseña</label>
+  </div>
+
+  <div class="checkbox mb-3">
+    <label>
+      <input type="checkbox" name="recordar" value="remember-me"> Recordarme
+    </label>
+  </div>
+  <button class="btn btn-lg btn-primary btn-block" type="submit" name="btnIngresar">Ingresar</button>
+  <button class="btn btn-lg btn-success btn-block" type="submit" name="btnIngresar">Registrarse</button>
+
+  <p class="mt-5 mb-3 text-muted text-center">© Los b_ITless 2020</p>
+</form>
+{% endblock %}
+
+{% block scripts_page %}
+{% endblock %}
