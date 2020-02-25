@@ -14,7 +14,7 @@
         <div class="container">
             <h1 class="display-4">Ayuda</h1>
             {% if not session['usertype'] %}
-            <p class="lead">Formulario de Ayuda del Invitado</p>
+            <p class="lead"></p>
             {% endif %}
 
             {% if session['usertype'] == 'Empleado' %}
@@ -22,6 +22,50 @@
             {% elif session['usertype'] == 'Empleador' %}
             <p class="lead">Formulario de Ayuda del EMPLEADOR, debo mostrar acceso a ligas de amas de casa</p>
             {% endif %}
+
+            <form class="form-signin" action="" method="">
+                <div class="form-row align-items-center">
+                    <div class="col-auto my-1 pb-2">
+                        <a class="btn btn-primary my-0 mr-md-auto text-center" href="http://bps.gub.uy"
+                            aria-label="">IR</a>
+                    </div>
+                    <div class="col-auto my-1">
+                        <div class="col-auto mr-sm-2">
+                            <label for="">Información en BPS</label>
+                        </div>
+                    </div>
+
+                    <div class="col-auto my-1 pb-2">
+                        <a class="btn btn-primary my-0 mr-md-auto text-center" href="http://bps.gub.uy"
+                            aria-label="">IR</a>
+                    </div>
+                    <div class="col-auto my-1">
+                        <div class="col-auto mr-sm-2">
+                            <label for="">Información en DGI</label>
+                        </div>
+                    </div>
+
+                    <div class="col-auto my-1 pb-2">
+                        <a class="btn btn-primary my-0 mr-md-auto text-center" href="http://bps.gub.uy"
+                            aria-label="">IR</a>
+                    </div>
+                    <div class="col-auto my-1">
+                        <div class="custom-control mr-sm-2">
+                            <label for="">Ministerio de Trabajo</label>
+                        </div>
+                    </div>
+
+                    <div class="col-auto my-1 pb-2">
+                        <a class="btn btn-primary my-0 mr-md-auto text-center" href="http://bps.gub.uy"
+                            aria-label="">IR</a>
+                    </div>
+                    <div class="col-auto my-1">
+                        <div class="custom-control mr-sm-2">
+                            <label for="">Ley Nº 18065, IMPO</label>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
