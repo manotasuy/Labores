@@ -46,6 +46,11 @@ def deslogueo():
     return redirect(url_for('inicio'))
 
 
+@app.route('/RecuperarPass')
+def recuperar_pass():
+    return render_template('RecuperarClave.html')
+
+
 @app.route('/Ingresar', methods=['POST'])
 def ingresar():
     if request.method == 'POST':
