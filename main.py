@@ -36,7 +36,7 @@ def ayuda():
 
 @app.route('/LogIn')
 def logueo():
-    return render_template('LogIn.html')
+    return render_template('Login.html')
 
 
 @app.route('/LogOut')
