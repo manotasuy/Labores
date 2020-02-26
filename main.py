@@ -60,7 +60,7 @@ def recuperar_pass():
     return render_template('RecuperarClave.html')
 
 
-@app.route('/Ingresar/', methods=['POST'])
+@app.route('/Ingresar', methods=['POST'])
 def ingresar():
     if request.method == 'POST':
         session['username'] = request.form['user']
@@ -83,7 +83,7 @@ def ingresar():
 
 @app.route('/SignUp/')
 def opcion_registrarse():
-    return render_template('OpciónRegistro.html')
+    return render_template('OpcionRegistro.html')
 
 
 @app.route('/Registro/', methods=['POST'])
