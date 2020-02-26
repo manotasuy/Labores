@@ -76,6 +76,10 @@ h1 {
     margin-bottom: 4rem;
 }
 
+.carousel p {
+    color: black;
+}
+
 .carousel-caption {
     bottom: 3rem;
     z-index: 10;
