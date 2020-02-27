@@ -16,15 +16,21 @@
 
       <div class="card-deck">
         <div class="card">
-          <img src="..." class="card-img-top" alt="...">
+          <a href="/Registro">
+            <img src="{{ url_for('static', filename='images/OpcionEmpleado.png')}}" class="card-img-top mt-3" alt="..."
+              width="300" height="300">
+          </a>
           <div class="card-body">
-            <h5 class="card-title">Empleados</h5>
+            <h2 class="card-title text-center">Empleados</h2>
           </div>
         </div>
         <div class="card">
-          <img src="..." class="card-img-top" alt="...">
+          <a href="">
+            <img src="{{ url_for('static', filename='images/OpcionEmpleador.png')}}" class="card-img-top" alt="..."
+              width="300" height="300">
+          </a>
           <div class="card-body">
-            <h5 class="card-title">Empleadores</h5>
+            <h2 class="card-title text-center mt-3">Empleadores</h2>
           </div>
         </div>
       </div>

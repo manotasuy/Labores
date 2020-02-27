@@ -1,30 +1,26 @@
 import json
 from flask import Flask, request, render_template, url_for, redirect, flash, session
-from flask_mysqldb import MySQL
+from enum import Enum
 
 # Paquetes implementación
-from Logica import HandlerAdministrador
+from Implementacion import Conexion
+from Implementacion import Usuario
 
 app = Flask(__name__)
-
-# *** Conexión a base de datos local ***
-# app.config['MYSQL_HOST'] = 'localhost'
-# app.config['MYSQL_USER'] = 'root'
-# app.config['MYSQL_PASSWORD'] = 'computosMySQLRoot'
-# app.config['MYSQL_DB'] = 'bdLabores'
-
-# *** Conexión a base de datos remota ***
-app.config['MYSQL_HOST'] = 'remotemysql.com'
-app.config['MYSQL_USER'] = 'LvP2Ka0CsK'
-app.config['MYSQL_PASSWORD'] = 'kqGcYKaofd'
-app.config['MYSQL_DB'] = 'LvP2Ka0CsK'
-# app.config['MYSQL_DB_PORT'] = '3306'
-bd = MySQL(app)
+bd = Conexion.connection_Db(app)
 
 # session
 app.secret_key = "session"
 
-print(HandlerAdministrador.prueba())
+
+class Tipo_Usuario(Enum):
+    Administrador = 1
+    Empleado = 2
+    Empleador = 3
+
+
+print(Tipo_Usuario.Administrador)
+print(Tipo_Usuario.Administrador.value)
 
 
 @app.route('/')
@@ -63,14 +59,10 @@ def recuperar_pass():
 @app.route('/Ingresar', methods=['POST'])
 def ingresar():
     if request.method == 'POST':
-        session['username'] = request.form['user']
+        user = request.form['user']
         password = request.form['pass']
-        cursor = bd.connection.cursor()
-        cursor.execute('SELECT tu.nombre FROM usuario u INNER JOIN tipo_usuario tu ON u.id_tipo = tu.id WHERE u.usuario = %s AND u.clave = %s',
-                       (session['username'], password))
-        retorno = cursor.fetchall()
-        cursor.close()
-        bd.connection.commit()
+        retorno = Usuario.loginUsuario(bd, user, password)
+        session['username'] = user
         session['usertype'] = retorno[0][0]
 
         if session['usertype'] == 'Empleador':
@@ -86,15 +78,18 @@ def opcion_registrarse():
     return render_template('OpcionRegistro.html')
 
 
-@app.route('/Registro/', methods=['POST'])
+@app.route('/Registro/')
 def registrarse():
+    return render_template('Registro.html')
+
+
+@app.route('/Registrar', methods=['POST'])
+def registrar_usuario():
     if request.method == 'POST':
         user = request.form['user']
         password = request.form['pass']
-        cursor = bd.connection.cursor()
-        cursor.execute('INSERT INTO usuario (usuario, clave, tipo) VALUES (%s, %s, %s)',
-                       (user, password, 'Empleador'))
-        return render_template('Registro.html')
+        tipo = request.form['type']
+        Usuario.crearUsuario(bd, user, password, tipo)
 
 
 @app.route('/HomeEmpleados/')
@@ -110,6 +105,16 @@ def inicio_empleadores():
 @app.route('/PanelControl/')
 def administrar():
     return render_template('ControlPanel.html')
+
+
+@app.route('/Anuncios/')
+def listar_anuncios():
+    return render_template('ListaAnuncios.html')
+
+
+@app.route('/Candidatos/')
+def listar_candidatos():
+    return render_template('ListaCandidatos.html')
 
 
 if __name__ == '__main__':
