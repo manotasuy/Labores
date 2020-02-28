@@ -1,13 +1,16 @@
 import json
 from flask import Flask, request, render_template, url_for, redirect, flash, session
+from flask_mysqldb import MySQL
 from enum import Enum
 
 # Paquetes implementación
 from Implementacion import Conexion
 from Implementacion import Usuario
+from Implementacion import Empleado
+from Implementacion import Empleador
 
 app = Flask(__name__)
-bd = Conexion.connection_Db(app)
+baseDatos = Conexion.connectionDb(app)
 
 # session
 app.secret_key = "session"
@@ -59,9 +62,12 @@ def recuperar_pass():
 @app.route('/Ingresar', methods=['POST'])
 def ingresar():
     if request.method == 'POST':
-        user = request.form['user']
-        password = request.form['pass']
-        retorno = Usuario.loginUsuario(bd, user, password)
+        parametros = request.form
+        user = parametros['user']
+        password = parametros['pass']
+        usuario = Usuario.Usuario(user, password, '')
+        retorno = usuario.loginUsuario(baseDatos)
+        print(retorno)
         session['username'] = user
         session['usertype'] = retorno[0][0]
 
@@ -86,10 +92,12 @@ def registrarse():
 @app.route('/Registrar', methods=['POST'])
 def registrar_usuario():
     if request.method == 'POST':
-        user = request.form['user']
-        password = request.form['pass']
-        tipo = request.form['type']
-        Usuario.crearUsuario(bd, user, password, tipo)
+        parametros = request.form
+        user = parametros['user']
+        password = parametros['pass']
+        tipo = parametros['type']
+        usuario = Usuario.Usuario(user, password, tipo)
+        usuario.crearUsuario(baseDatos)
 
 
 @app.route('/HomeEmpleados/')
@@ -105,6 +113,17 @@ def inicio_empleadores():
 @app.route('/PanelControl/')
 def administrar():
     return render_template('ControlPanel.html')
+
+
+@app.route('/CrearAnuncio/')
+def crear_anuncio():
+    flash('Anuncio creado!')
+    return render_template('CrearAnuncio.html')
+
+
+@app.route('/TusAnuncios/')
+def tus_anuncios():
+    return render_template('TusAnuncios.html')
 
 
 @app.route('/Anuncios/')
