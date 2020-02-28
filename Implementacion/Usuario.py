@@ -1,40 +1,40 @@
-from Implementacion import Conexion
-
 
 class Usuario:
-    usuario = ''
-    clave = ''
-    tipo = ''
 
-    def __init__(self, **kwargs):
-        self.usuario = kwargs.get("usuario")
-        self.clave = kwargs.get("clave")
-        self.tipo = kwargs.get("tipo")
+    def __init__(self, pUsuario, pClave, pTipo):
+        self.usuario = pUsuario
+        self.clave = pClave
+        self.tipo = pTipo
 
     def __str__(self):
         return "Usuario: {}, Clave: {}, Tipo: {}".format(self.usuario, self.clave, self.tipo)
 
+    def loginUsuario(self, bd):
+        try:
+            cursor = bd.connection.cursor()
+            cursor.execute('SELECT tu.nombre FROM usuario u INNER JOIN tipo_usuario tu ON u.id_tipo = tu.id WHERE u.usuario = %s AND u.clave = %s',
+                           (self.usuario, self.clave))
+            retorno = cursor.fetchall()
+            cursor.close()
+            bd.connection.commit()
+            return retorno
+        except:
+            print("Error en login de usuario")
 
-def loginUsuario(bd, usuario, clave):
-    cursor = bd.connection.cursor()
-    cursor.execute('SELECT tu.nombre FROM usuario u INNER JOIN tipo_usuario tu ON u.id_tipo = tu.id WHERE u.usuario = %s AND u.clave = %s',
-                   (usuario, clave))
-    retorno = cursor.fetchall()
-    cursor.close()
-    bd.connection.commit()
-    return retorno
+    def crearUsuario(self, bd):
+        try:
+            cursor = bd.connection.cursor()
+            cursor.execute('INSERT INTO usuario (usuario, clave, tipo) VALUES (%s, %s, %s)',
+                           (self.usuario, self.clave, 'Administrador'))
+            print('Usuario Creado')
+        except:
+            print("Error en creación de usuario")
 
-
-def crearUsuario(bd, user, password, type):
-    cursor = bd.connection.cursor()
-    cursor.execute('INSERT INTO usuario (usuario, clave, tipo) VALUES (%s, %s, %s)',
-                   (user, password, 'Administrador'))
-    print('crear usuario')
-
-
-def cambiarPassword(user, oldPassword, newPassword):
-    bd = Conexion.getConnection()
-    cursor = bd.connection.cursor()
-    cursor.execute('UPDATE usuario SET clave = %s WHERE usuario = %s AND clave = %s',
-                   (newPassword, user, oldPassword))
-    print('contraseña cambiada')
+    def cambiarPassword(self, newPassword, bd):
+        try:
+            cursor = bd.connection.cursor()
+            cursor.execute('UPDATE usuario SET clave = %s WHERE usuario = %s AND clave = %s',
+                           (newPassword, self.usuario, self.clave))
+            print('contraseña cambiada')
+        except:
+            print("Error en cambio de contraseña")

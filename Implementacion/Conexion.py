@@ -1,19 +1,19 @@
 from flask_mysqldb import MySQL
 
+# *** Conexión a base de datos local ***
+#host = 'localhost'
+#user = 'root'
+#password = 'mysql_root'
+#bd = 'bdLabores'
+
+# *** Conexión a base de datos remota ***
 host = 'remotemysql.com'
 user = 'LvP2Ka0CsK'
 password = 'kqGcYKaofd'
 bd = 'LvP2Ka0CsK'
 
 
-def connection_Db(app):
-    # *** Conexión a base de datos local ***
-    # app.config['MYSQL_HOST'] = 'localhost'
-    # app.config['MYSQL_USER'] = 'root'
-    # app.config['MYSQL_PASSWORD'] = 'computosMySQLRoot'
-    # app.config['MYSQL_DB'] = 'bdLabores'
-
-    # *** Conexión a base de datos remota ***
+def connectionDb(app):
     app.config['MYSQL_HOST'] = host
     app.config['MYSQL_USER'] = user
     app.config['MYSQL_PASSWORD'] = password
