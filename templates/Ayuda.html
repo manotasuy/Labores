@@ -12,16 +12,80 @@
 <div class="container">
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
-            <h1 class="display-4">Ayuda</h1>
+            <h1 class="display-4 mb-5">Ayuda</h1>
             {% if not session['usertype'] %}
-            <p class="lead">Formulario de Ayuda del Invitado</p>
+            <p class="lead"></p>
             {% endif %}
 
-            {% if session['usertype'] == 'Empleado' %}
-            <p class="lead">Formulario de Ayuda del EMPLEADO, debo mostrar acceso a sindicato</p>
-            {% elif session['usertype'] == 'Empleador' %}
-            <p class="lead">Formulario de Ayuda del EMPLEADOR, debo mostrar acceso a ligas de amas de casa</p>
-            {% endif %}
+            <form class="form-signin" action="" method="">
+                <div class="form-row align-items-center">
+                    <div class="col-auto my-1 pb-2">
+                        <a class="btn btn-primary my-0 mr-md-auto text-center ml-5"
+                            href="https://www.bps.gub.uy/10275/trabajo-domestico.html" target="_blank"
+                            aria-label="">IR</a>
+                    </div>
+                    <div class="col-auto my-1">
+                        <div class="col-auto mr-sm-2">
+                            <h5>Información en BPS</h5>
+                        </div>
+                    </div>
+
+                    <div class="col-auto my-1 pb-2">
+                        <a class="btn btn-primary my-0 mr-md-auto text-center ml-5" href="https://servicios.dgi.gub.uy/"
+                            target="_blank" aria-label="">IR</a>
+                    </div>
+                    <div class="col-auto my-1">
+                        <div class="col-auto mr-sm-2">
+                            <h5>Información en DGI</h5>
+                        </div>
+                    </div>
+
+                    <div class="col-auto my-1 pb-2">
+                        <a class="btn btn-primary my-0 mr-md-auto text-center ml-5"
+                            href="https://www.gub.uy/ministerio-trabajo-seguridad-social/tematica/trabajo-domestico"
+                            target="_blank" aria-label="">IR</a>
+                    </div>
+                    <div class="col-auto my-1">
+                        <div class="col-auto mr-sm-2">
+                            <h5>Ministerio de Trabajo</h5>
+                        </div>
+                    </div>
+
+                    <div class="col-auto my-1 pb-2">
+                        <a class="btn btn-primary my-0 mr-md-auto text-center ml-5"
+                            href="https://www.impo.com.uy/trabajodomestico/" target="_blank" aria-label="">IR</a>
+                    </div>
+                    <div class="col-auto my-1">
+                        <div class="col-auto mr-sm-2">
+                            <h5>Ley Nº 18065, IMPO</h5>
+                        </div>
+                    </div>
+
+                    {% if session['usertype'] == 'Empleado' %}
+                    <div class="col-auto my-1 pb-2">
+                        <a class="btn btn-primary my-0 mr-md-auto text-center ml-5"
+                            href="https://www.pitcnt.uy/el-pit-cnt/sindicatos-afiliados/item/2221-sindicato-unico-de-trabajadoras-domesticas"
+                            target="_blank" aria-label="">IR</a>
+                    </div>
+                    <div class="col-auto my-1">
+                        <div class="col-auto mr-sm-2">
+                            <h5>Sindicato</h5>
+                        </div>
+                    </div>
+                    {% elif session['usertype'] == 'Empleador' %}
+                    <div class="col-auto my-1 pb-2">
+                        <a class="btn btn-primary my-0 mr-md-auto text-center ml-5"
+                            href="http://ligadeamasdecasa.com.uy/" target="_blank" aria-label="">IR</a>
+                    </div>
+                    <div class="col-auto my-1">
+                        <div class="col-auto mr-sm-2">
+                            <h5>Liga de amas de casa<h5>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                </div>
+            </form>
         </div>
     </div>
 </div>

@@ -15,6 +15,7 @@ cuerpo {
     margin-bottom: 50px;
 }
 
+
 .menu {
     margin-right: 100px;
 }
@@ -73,6 +74,10 @@ h1 {
 
 .carousel {
     margin-bottom: 4rem;
+}
+
+.carousel p {
+    color: black;
 }
 
 .carousel-caption {
@@ -266,6 +271,19 @@ h1 {
 .lh-100 { line-height: 1; }
 .lh-125 { line-height: 1.25; }
 .lh-150 { line-height: 1.5; }
+
+.card .candidatos{
+  width: 300px;
+  height: 300px;
+}
+
+.card-columns{
+  column-count: 2;
+}
+
+.btn .btnperfil {
+  width: 200 px;
+}
 
 /*****************************************************************************/
 /****  RESPONSIVE CSS  *******************************************************/
