@@ -13,53 +13,52 @@
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
             <div class="text-center mb-4 in-line">
-                <a class="my-0 mr-md-auto" href="/Inicio" aria-label="Home">
+                <a class="my-0 mr-md-auto" href="" aria-label="Home">
                     <img class="mb-4" src="{{ url_for('static', filename='images/Slide3.png')}}" alt="" width="190"
                         height="125">
                 </a>
                 <!--<h1 class="display-4">Empleadores</h1>-->
                 <p class="lead">Formulario principal de los empleadores</p>
             </div>
-
             <div class="card-deck">
                 <div class="card">
-                  <a href="/CrearAnuncio">
+                  <a class="btn" href="/CrearAnuncio">
                     <!--<img src="{{ url_for('static', filename='images/...png')}}" class="card-img-top" alt="..."
                       width="32" height="32">-->
+                      <div class="card-body">
+                        <h2 class="card-title text-center">Crear Anuncio</h2>
+                      </div>
                   </a>
-                  <div class="card-body">
-                    <h2 class="card-title text-center">Crear Anuncio</h2>
-                  </div>
                 </div>
                 <div class="card">
-                  <a href="/TusAnuncios">
+                  <a class="btn" href="/TusAnuncios">
                     <!--<img src="{{ url_for('static', filename='images/...png')}}" class="card-img-top" alt="..."
                       width="32" height="32">-->
+                      <div class="card-body">
+                        <h2 class="card-title text-center">Tus Anuncios</h2>
+                      </div>
                   </a>
-                  <div class="card-body">
-                    <h2 class="card-title text-center">Tus Anuncios</h2>
-                  </div>
                 </div>
             </div>
 
             <div class="card-deck mt-4">
                 <div class="card">
-                    <a href="/Candidatos">
+                    <a class="btn" href="/Candidatos">
                         <!--<img src="{{ url_for('static', filename='images/...png')}}" class="card-img-top" alt="..."
                         width="32" height="32">-->
+                        <div class="card-body">
+                          <h2 class="card-title text-center">Candidatos</h2>
+                        </div>
                     </a>
-                  <div class="card-body">
-                    <h2 class="card-title text-center">Candidatos</h2>
-                  </div>
                 </div>
                 <div class="card">
-                    <a href="#">
+                    <a class="btn" href="">
                         <!--<img src="{{ url_for('static', filename='images/...png')}}" class="card-img-top" alt="..."
                         width="32" height="32">-->
+                        <div class="card-body">
+                          <h2 class="card-title text-center">Búsqueda</h2>
+                        </div>
                     </a>
-                    <div class="card-body">
-                      <h2 class="card-title text-center">Búsqueda</h2>
-                    </div>
                   </div>
             </div>
 
