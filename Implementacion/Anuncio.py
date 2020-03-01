@@ -54,7 +54,7 @@ class Anuncio:
         except:
             print("Error en creación del anuncio")
 
-    def updateAnuncio(self, bd):
+    def updateAnuncio(self, bd, id):
         try:
             cursor = bd.connection.cursor()
             cursor.execute('''
@@ -70,6 +70,7 @@ class Anuncio:
                     calificacion_empleado = %s,
                     calificacion_empleador = %s,
                     tiene_vinculo = %s
+                WHERE id = %s
                 )''',(
                         self.titulo,
                         self.descripcion,
@@ -81,7 +82,8 @@ class Anuncio:
                         self.id_empleador,
                         self.calificacion_empleado,
                         self.calificacion_empleador,
-                        self.tiene_vinculo
+                        self.tiene_vinculo,
+                        id                        
                         ))
             mysql.connection.commit()
             print('Anuncio Actualizado')        
