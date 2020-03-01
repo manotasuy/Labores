@@ -17,7 +17,7 @@ class Empleador:
     def __str__(self):
         return 'Cédula: {}, Nombre: {}, Apellido: {}'.format(self.cedula, self.nombre, self.apellido)
 
-    def crearEmpleador(self, bd):
+    def crear(self, bd):
         try:
             cursor = bd.connection.cursor()
             cursor.execute('INSERT INTO empleador...')
@@ -25,6 +25,35 @@ class Empleador:
         except:
             print("Error en creación de empleador")
 
+    def actualizar(self, bd):
+        try:
+            print('función para actualizar empleador')
+        except:
+            print("Error en actualizar el empleador")
+    
+    def listar(self, bd):
+        try:
+            print('función para listar empleadores')
+        except:
+            print("Error al listar empleadores")
+
+    def listarMisAnuncios(self, bd):
+        try:
+            print('función para listar empleadores')
+        except:
+            print("Error al listar empleadores")
+
+    def realizarBusqueda(self, bd):
+        try:
+            print('función para listar empleadores')
+        except:
+            print("Error al listar empleadores")
+
+    def candidatosDeMiAnuncio(self, bd):
+        try:
+            print('función para listar empleadores')
+        except:
+            print("Error al listar empleadores")
 
 def prueba():
     print('Hola! soy el empleador')

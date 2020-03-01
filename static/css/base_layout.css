@@ -69,7 +69,7 @@ h1 {
 }
 
 .fondo_carousel {
-    fill: rgb(156, 238, 217);
+    fill: aliceblue;
 }
 
 .carousel {
@@ -83,11 +83,11 @@ h1 {
 .carousel-caption {
     bottom: 3rem;
     z-index: 10;
-    margin-left: 150px;
 }
 
 .carousel-caption h1 {
-    color: grey;
+    color: black;
+    font-weight: bolder;
 }
 
 .carousel-item {
