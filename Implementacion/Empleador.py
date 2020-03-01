@@ -1,4 +1,3 @@
-
 class Empleador:
 
     def __init__(self, pCedula, pNombre, pApellido, pNacimiento, pGenero, pDom, pNacional, pEmail, pTel, pFoto, pUsuario):
@@ -60,6 +59,7 @@ class Empleador:
             print('función para listar empleadores')
         except:
             print("Error al listar empleadores")
+
 
 def prueba():
     print('Hola! soy el empleador')
