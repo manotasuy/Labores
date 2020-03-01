@@ -29,3 +29,33 @@ class Empleado:
             print('Empleado Creado')
         except:
             print("Error en creación de empleado")
+
+    def modificarEmpleado(self, bd):
+        try:
+            cursor = bd.connection.cursor()
+            cursor.execute('UPDATE empleado...')
+            print('Empleado modificado')
+        except:
+            print("Error en edición de empleado")
+
+    def eliminarEmpleado(self, bd):
+        try:
+            cursor = bd.connection.cursor()
+            cursor.execute('DELETE FROM empleado...')
+            print('Empleado Eliminado')
+        except:
+            print("Error en eliminación de empleado")
+
+    def listarEmpleados(self, bd):
+        try:
+            cursor = bd.connection.cursor()
+            cursor.execute('SELECT * FROM empleado...')
+            print('Listado de empleados')
+        except:
+            print("Error al listar los empleados")
+
+    def postularseParaAnuncio(self, bd):
+        try:
+            print('Postulado para empleo')
+        except:
+            print('Error en postulación')

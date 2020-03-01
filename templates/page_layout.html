@@ -36,24 +36,25 @@
 				                <a class="p-2 text-dark" href="/Anuncios">Anuncios</a>
                 {% elif session['usertype'] == 'Empleador' %}
                 <a class="p-2 text-dark" href="/HomeEmpleadores">Principal</a>
-                <a class="p-2 text-dark" href="/CrearAnuncio">Crear Anuncio</a>
+                <!--<a class="p-2 text-dark" href="/CrearAnuncio">Crear Anuncio</a>
                 <a class="p-2 text-dark" href="/TusAnuncios">Tus Anuncios</a>
-				<a class="p-2 text-dark" href="/Candidatos">Candidatos</a>
+				<a class="p-2 text-dark" href="/Candidatos">Candidatos</a>-->
                 {% endif %}
             </nav>
 
             {% if session['usertype'] %}
             <h3>{{session['username']}}</h3>
-			<div class="mx-3">				  
-            <a class="btn btn-outline-primary ml-3" href="/LogOut">Salir</a>
-            {% else %}
-            <a class="btn btn-outline-primary" href="/LogIn">Ingresar</a>
-            {% endif %}
+			<div class="">				  
+                <a class="btn btn-outline-primary ml-3" href="/LogOut">Salir</a>
+                {% else %}
+                <a class="btn btn-outline-primary" href="/LogIn">Ingresar</a>
+                {% endif %}
 
-            <!--<a class="btn btn-outline-primary" href="/LogIn">Ingresar</a>-->
-            <!--<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Ingresar</button>-->
+                <!--<a class="btn btn-outline-primary" href="/LogIn">Ingresar</a>-->
+                <!--<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Ingresar</button>-->
+            </div>
         </div>
-    </div></div>
+    </div>
 </header>
 
 {% block contenido %}{% endblock %}
