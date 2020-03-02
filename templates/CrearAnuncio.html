@@ -12,19 +12,19 @@
 <div class="container">
 	<div class="jumbotron jumbotron-fluid">
 		<div class="container">
-			<h1 class="display-4 mb-5">Oferta</h1>
-			<form>
+			<h1 class="display-5 mb-5">Oferta</h1>
+			<form action="/CrearAnuncio/" method="POST">
 				<div class="form-group">
 					<label for="titulo">Título</label>
-					<input type="text" class="form-control" id="titulo">
+					<input type="text" class="form-control" id="titulo" name="txtTitulo">
 				</div>
 
 				<div class="form-group mb-5">
 					<label for="descripcion">Descripción</label>
-					<textarea class="form-control" id="descripcion" cols="20" rows="10"></textarea>
+					<textarea class="form-control" id="descripcion" cols="20" rows="10" name="txtDescripcion"></textarea>
 				</div>
 				
-				<div class="form-inline mb-4">
+				<!--<div class="form-inline mb-4">
 					<label for="calificacion">Calificación mínima aceptada </label>
 					<div class="form-group mx-sm-3 mb-2">
 					<select class="form-control" id="calificacion">
@@ -35,152 +35,106 @@
 						<option>5</option>
 					</select>
 					</div>
-				</div>
+				</div>-->
 				
-				<div class="form-group row mb-5">
-					<div class="col-form-label col-sm-10 pt-0">Tipo de trabajo</div>
-					<div class="col-sm-10">
-						<div class="form-check ml-5">
-							<input class="form-check-input" type="radio" name="gridRadios1" id="porHora" value="option1" checked>
-							<label class="form-check-label" for="gridRadios1">
-							  Por hora
-							</label>
-						</div>
+				<div class="d-block my-3 mb-5">
+					<p class="mb-3">Tipo de trabajo</p>
+					<div class="custom-control custom-radio ml-5">
+					  <input id="hora" name="radioDisponibilidad" type="radio" class="custom-control-input" checked="" required="">
+					  <label class="custom-control-label" for="hora">Por hora</label>
 					</div>
-					<div class="col-sm-10">
-						<div class="form-check ml-5">
-							<input class="form-check-input" type="radio" name="gridRadios1" id="porJornada" value="option1" checked>
-							<label class="form-check-label" for="gridRadios1">
-							Por jornada
-							</label>
-						</div>
+					<div class="custom-control custom-radio ml-5">
+					  <input id="jornada" name="radioDisponibilidad" type="radio" class="custom-control-input" required="">
+					  <label class="custom-control-label" for="jornada">Por jornada</label>
 					</div>
-					<div class="col-sm-10">
-						<div class="form-check ml-5">
-							<input class="form-check-input" type="radio" name="gridRadios1" id="tareaPuntual" value="option1"
-							  checked>
-							<label class="form-check-label" for="gridRadios1">
-							  Por tarea puntual
-							</label>
-						</div>
+					<div class="custom-control custom-radio ml-5">
+					  <input id="tarea" name="radioDisponibilidad" type="radio" class="custom-control-input" required="">
+					  <label class="custom-control-label" for="tarea">Por tarea puntual</label>
 					</div>
-					<div class="col-sm-10">
-						<div class="form-check ml-5">
-							<input class="form-check-input" type="radio" name="gridRadios1" id="porMes" value="option1" checked>
-							<label class="form-check-label" for="gridRadios1">
-							Por mes
-							</label>
-						</div>
-					</div>
+					<div class="custom-control custom-radio ml-5">
+						<input id="mes" name="radioDisponibilidad" type="radio" class="custom-control-input" required="">
+						<label class="custom-control-label" for="mes">Por mes</label>
+					  </div>
 				</div>
-		  
-		  
+		  		  
 				<div class="form-group row mb-5">
 					<div class="col-form-label col-sm-10 pt-0">Tareas a realizar</div>
 					<div class="col-sm-10">
-					  <div class="form-check ml-5">
-						<input class="form-check-input" type="checkbox" id="hogar">
-						<label class="form-check-label" for="gridCheck1">
-						  Hogar
-						</label>
+					  <div class="custom-control custom-checkbox ml-5">
+						<input type="checkbox" class="custom-control-input" id="hogar" name="chkHogar">
+						<label class="custom-control-label" for="hogar">Hogar</label>
 					  </div>
-					  <div class="form-check ml-5">
-						<input class="form-check-input" type="checkbox" id="oficina">
-						<label class="form-check-label" for="gridCheck1">
-						  Oficina
-						</label>
+					  <div class="custom-control custom-checkbox ml-5">
+						<input type="checkbox" class="custom-control-input" id="oficina" name="chkOficina">
+						<label class="custom-control-label" for="oficina">Oficina</label>
 					  </div>
-					  <div class="form-check ml-5">
-						<input class="form-check-input" type="checkbox" id="cocinar">
-						<label class="form-check-label" for="gridCheck1">
-						  Cocinar
-						</label>
+					  <div class="custom-control custom-checkbox ml-5">
+						<input type="checkbox" class="custom-control-input" id="cocinar" name="chkCocinar">
+						<label class="custom-control-label" for="cocinar">Cocinar</label>
 					  </div>
-					  <div class="form-check ml-5">
-						<input class="form-check-input" type="checkbox" id="banios">
-						<label class="form-check-label" for="gridCheck1">
-						  Limpieza de baños
-						</label>
+					  <div class="custom-control custom-checkbox ml-5">
+						<input type="checkbox" class="custom-control-input" id="banios" name="chkLimpBanios">
+						<label class="custom-control-label" for="banios">Limpieza de baños</label>
 					  </div>
-					  <div class="form-check ml-5">
-						<input class="form-check-input" type="checkbox" id="cocinas">
-						<label class="form-check-label" for="gridCheck1">
-						  Limpieza de cocinas
-						</label>
+					  <div class="custom-control custom-checkbox ml-5">
+						<input type="checkbox" class="custom-control-input" id="cocinas" name="chkLimpCocinas">
+						<label class="custom-control-label" for="cocinas">Limpieza de cocinas</label>
+					  </div>					  
+					  <div class="custom-control custom-checkbox ml-5">
+						<input type="checkbox" class="custom-control-input" id="dormitorios" name="chkLimpDormitorios">
+						<label class="custom-control-label" for="dormitorios">Limpieza de dormitorios</label>
 					  </div>
-					  <div class="form-check ml-5">
-						<input class="form-check-input" type="checkbox" id="dormitorios">
-						<label class="form-check-label" for="gridCheck1">
-						  Limpieza de dormitorios
-						</label>
+					  <div class="custom-control custom-checkbox ml-5">
+						<input type="checkbox" class="custom-control-input" id="ninios" nme="chkCuidadoNinios">
+						<label class="custom-control-label" for="ninios">Cuidado de niños</label>
 					  </div>
-					  <div class="form-check ml-5">
-						<input class="form-check-input" type="checkbox" id="ninios">
-						<label class="form-check-label" for="gridCheck1">
-						  Cuidado de niños
-						</label>
+					  <div class="custom-control custom-checkbox ml-5">
+						<input type="checkbox" class="custom-control-input" id="bebes" name="chkCuidadoBebes">
+						<label class="custom-control-label" for="bebes">Cuidado de bebés</label>
 					  </div>
-					  <div class="form-check ml-5">
-						<input class="form-check-input" type="checkbox" id="bebes">
-						<label class="form-check-label" for="gridCheck1">
-						  Cuidado de bebés
-						</label>
+					  <div class="custom-control custom-checkbox ml-5">
+						<input type="checkbox" class="custom-control-input" id="mayores" name="chkCuidadoAdultos">
+						<label class="custom-control-label" for="mayores">Cuidado de adultos mayores</label>
 					  </div>
-					  <div class="form-check ml-5">
-						<input class="form-check-input" type="checkbox" id="mayores">
-						<label class="form-check-label" for="gridCheck1">
-						  Cuidado de adultos mayores
-						</label>
-					  </div>
-					  <div class="form-check ml-5">
-						<input class="form-check-input" type="checkbox" id="mascota">
-						<label class="form-check-label" for="gridCheck1">
-						  Cuidado de mascota
-						</label>
+					  <div class="custom-control custom-checkbox ml-5">
+						<input type="checkbox" class="custom-control-input" id="mascotas" anme="chkCuidadoMascotas">
+						<label class="custom-control-label" for="mascotas">Cuidado de mascotas</label>
 					  </div>
 					</div>
 				</div>
 
-				<div class="sm-40 mb-4">
-					<label for="experiencia">Búscas a alguien con experiencia?</label>
-					<div class="col-sm-10">
-					  <div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="inlineRadioOptions" id="siExperiencia"
-						  value="option1">
-						<label class="form-check-label" for="inlineRadio1">Si</label>
-					  </div>
-					  <div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="inlineRadioOptions" id="noNecesario"
-						  value="option1">
-						<label class="form-check-label" for="inlineRadio1">No es necesario</label>
-					  </div>
+				<div class="d-block my-3 mb-4">
+					<p class="mb-3">Búscas a alguien con experiencia?</p>
+					<div class="custom-control custom-radio ml-5">
+					  <input id="experienciaSi" name="radioExperiencia" type="radio" class="custom-control-input" checked="" required="">
+					  <label class="custom-control-label" for="experienciaSi">Si</label>
+					</div>
+					<div class="custom-control custom-radio ml-5">
+					  <input id="experienciaNo" name="radioExperiencia" type="radio" class="custom-control-input" required="">
+					  <label class="custom-control-label" for="experienciaNo">No es necesario</label>
 					</div>
 				</div>
 
 				<div class="form-group row">
-					<label for="colFormLabelLg" class="col-sm-10 col-form-label col-form-label-lg">Cuánto pagas la
+					<label for="colFormLabelLg" class="col-sm-10 col-form-label col-form-label">Cuánto pagas la
 					  hora?</label>
-					<div class="col-sm-10 mb-4">
-					  <input type="email" class="form-control form-control-lg" id="pagoPorHora" placeholder="$U">
-					</div>
-					</br></br></br>
-
-
-					<div class="form-check form-check-inline">
-					  <input class="form-check-input" type="radio" name="inlineRadio" id="activar" value="option1">
-					  <label class="form-check-label" for="inlineRadio1">Activar oferta</label>
-					</div>
-					<div class="form-check form-check-inline">
-					  <input class="form-check-input" type="radio" name="inlineRadio" id="desactivar" value="option1">
-					  <label class="form-check-label" for="inlineRadio1">Desactivar oferta</label>
-					</div>
-					</br></br></br></br>
-
-
-					<div class="col-sm-10 mt-4">
-					  <a href="/TusAnuncios" class="btn btn-primary">GUARDAR</a>
+					<div class="col-sm-3 mb-4">
+					  <input type="text" class="form-control" id="pagoPorHora" placeholder="$U">
 					</div>
 				</div>
+
+				<div class="d-block my-3 mb-5">
+					<p class="mb-3">Estado de la oferta</p>
+					<div class="custom-control custom-radio ml-5">
+					  <input id="estadoActiva" name="radioEstado" type="radio" class="custom-control-input" checked="" required="">
+					  <label class="custom-control-label" for="estadoActiva">Activa</label>
+					</div>
+					<div class="custom-control custom-radio ml-5">
+					  <input id="estadoInactiva" name="radioEstado" type="radio" class="custom-control-input" required="">
+					  <label class="custom-control-label" for="estadoInactiva">Inactiva</label>
+					</div>
+				</div>
+				<a href="/CrearAnuncio/" class="btn btn-primary btn btn-block" type="submit">GUARDAR</a>
 
 				{% with message = get_flashed_messages() %}
 				{% if messages %}

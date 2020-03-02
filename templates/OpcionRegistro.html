@@ -12,29 +12,29 @@
 <div class="container">
   <div class="jumbotron jumbotron-fluid">
     <div class="container">
-      <h1 class="display-4 mb-5">Opción de Registro</h1>
-
-      <div class="card-deck">
-        <div class="card">
-          <a href="/Registro">
-            <img src="{{ url_for('static', filename='images/OpcionEmpleado.png')}}" class="card-img-top mt-3" alt="..."
-              width="300" height="300">
-          </a>
-          <div class="card-body">
-            <h2 class="card-title text-center">Empleados</h2>
+      <h1 class="display-5 mb-5">Opción de Registro</h1>
+      <form class="form" action="/Registro" method="POST">
+        <div class="card-deck">
+          <div class="card">
+            <a href="/Registro/Empleado" name="OpcionEmpleado">
+              <img src="{{ url_for('static', filename='images/OpcionEmpleado.png')}}" class="card-img-top mt-3" alt="..."
+                width="300" height="300">
+            </a>
+            <div class="card-body">
+              <h2 class="card-title text-center">Empleados</h2>
+            </div>
+          </div>
+          <div class="card">
+            <a href="/Registro/Empleador" name="OpcionEmpleador">
+              <img src="{{ url_for('static', filename='images/OpcionEmpleador.png')}}" class="card-img-top" alt="..."
+                width="300" height="300">
+            </a>
+            <div class="card-body">
+              <h2 class="card-title text-center mt-3">Empleadores</h2>
+            </div>
           </div>
         </div>
-        <div class="card">
-          <a href="">
-            <img src="{{ url_for('static', filename='images/OpcionEmpleador.png')}}" class="card-img-top" alt="..."
-              width="300" height="300">
-          </a>
-          <div class="card-body">
-            <h2 class="card-title text-center mt-3">Empleadores</h2>
-          </div>
-        </div>
-      </div>
-
+      </form>
     </div>
   </div>
 </div>

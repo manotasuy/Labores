@@ -13,13 +13,55 @@
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
             <div class="text-center mb-4">
-                <a class="my-0 mr-md-auto" href="/Inicio" aria-label="Home">
+                <a class="my-0 mr-md-auto" href="" aria-label="Home">
                     <img class="mb-4" src="{{ url_for('static', filename='images/Empleada_500.png')}}" alt=""
-                        width="250" height="250">
+                         width="125" height="125">
                 </a>
+                <!--<h1 class="display-4">Home Empleados</h1>-->
+                <p class="lead">Formulario principal de los empleados</p>
             </div>
-            <h1 class="display-4">Home Empleados</h1>
-            <p class="lead">Formulario principal de los empleados</p>
+
+            <div class="card-deck">
+                <div class="card">
+                    <a class="btn" href="/Anuncios">
+                        <!--<img src="{{ url_for('static', filename='images/...png')}}" class="card-img-top" alt="..."
+                        width="32" height="32">-->
+                        <div class="card-body">
+                            <h3 class="card-title text-center">Ver Anuncios</h3>
+                        </div>
+                    </a>
+                </div>
+                <div class="card">
+                    <a class="btn" href="#">
+                        <!--<img src="{{ url_for('static', filename='images/...png')}}" class="card-img-top" alt="..."
+                        width="32" height="32">-->
+                        <div class="card-body">
+                            <h3 class="card-title text-center">Buscar Anuncios</h2>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="card-deck mt-4">
+                <div class="card">
+                    <a class="btn" href="#">
+                        <!--<img src="{{ url_for('static', filename='images/...png')}}" class="card-img-top" alt="..."
+                        width="32" height="32">-->
+                        <div class="card-body">
+                            <h3 class="card-title text-center">Mis Vínculos</h3>
+                        </div>
+                    </a>
+                </div>
+                <div class="card">
+                    <a class="btn" href="#">
+                        <!--<img src="{{ url_for('static', filename='images/...png')}}" class="card-img-top" alt="..."
+                        width="32" height="32">-->
+                        <div class="card-body">
+                            <h3 class="card-title text-center">Mensajes</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </div>

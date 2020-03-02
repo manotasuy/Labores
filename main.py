@@ -8,6 +8,7 @@ from Implementacion import Conexion
 from Implementacion import Usuario
 from Implementacion import Empleado
 from Implementacion import Empleador
+from Implementacion import Anuncio
 
 app = Flask(__name__)
 baseDatos = Conexion.connectionDb(app)
@@ -21,10 +22,8 @@ class Tipo_Usuario(Enum):
     Empleado = 2
     Empleador = 3
 
-
-print(Tipo_Usuario.Administrador)
-print(Tipo_Usuario.Administrador.value)
-
+#print(Tipo_Usuario.Administrador)
+#print(Tipo_Usuario.Administrador.value)
 
 @app.route('/')
 @app.route('/Inicio/')
@@ -65,7 +64,7 @@ def ingresar():
         parametros = request.form
         user = parametros['user']
         password = parametros['pass']
-        usuario = Usuario.Usuario(user, password, '')
+        usuario = Usuario.Usuario(0, user, password, '')
         retorno = usuario.loginUsuario(baseDatos)
         print(retorno)
         session['username'] = user
@@ -84,20 +83,39 @@ def opcion_registrarse():
     return render_template('OpcionRegistro.html')
 
 
-@app.route('/Registro/')
-def registrarse():
+@app.route('/Registro/<opcion>')
+def registrarse(opcion):
+    session['user_option'] = opcion
     return render_template('Registro.html')
 
 
-@app.route('/Registrar', methods=['POST'])
-def registrar_usuario():
+@app.route('/Registrar/<opcion>', methods=['POST'])
+def registrar_usuario(opcion):
     if request.method == 'POST':
         parametros = request.form
-        user = parametros['user']
-        password = parametros['pass']
-        tipo = parametros['type']
-        usuario = Usuario.Usuario(user, password, tipo)
+        nombre = parametros['txtNombre']
+        apellido = parametros['txtApellido']
+        nacimiento = parametros['txtNacimiento']
+        genero = 'Masculino'
+        cedula = parametros['txtCedula']
+        domicilio = parametros['txtDomicilio']
+        nacionalidad = parametros['txtNacionalidad']
+        mail = parametros['txtMail']
+        telefono = parametros['txtTelefono']
+        password = 'labores'
+
+        usuario = Usuario.Usuario(0, cedula, password, opcion)
         usuario.crearUsuario(baseDatos)
+
+        if opcion == 'Empleado':
+            empleado = Empleado.Empleado(0, cedula, nombre, apellido, nacimiento, genero, domicilio, nacionalidad, mail, telefono, None, None, None, usuario, None, None, None)
+            empleado.crearEmpleado(baseDatos)
+            return redirect(url_for('inicio_empleados'))
+        elif opcion == 'Empleador':
+            empleador = Empleador.Empleador(0, cedula, nombre, apellido, nacimiento, genero, domicilio, nacionalidad, mail, telefono, None, usuario)
+            print(empleador)
+            empleador.crearEmpleador(baseDatos)
+            return redirect(url_for('inicio_empleadores'))
 
 
 @app.route('/HomeEmpleados/')
