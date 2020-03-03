@@ -91,19 +91,15 @@ class Empleador:
                 bd.connection.close()  
                 print("MySQL connection is closed")
 
-    def crearAnuncio(self, bd):
+
+    def crearAnuncio(self, bd, Titulo, Descripcion, FechaInicio, FechaCierre, Estado, Experiencia, Salario, IdEmpleador, CalEmpleado, CalEmpleador, TieneVicnulo):
         try:
-            cursor = bd.connection.cursor()
-            cursor.execute('...')
-            bd.connection.commit()
-            print('función para crear anuncio')
+            newAnuncio = anuncio.Anuncio(Titulo, Descripcion, FechaInicio, FechaCierre, Estado, Experiencia, Salario, IdEmpleador, CalEmpleado, CalEmpleador, TieneVinculo)
+            newAnuncio.createAnuncio
+            print('El empleador mandó el anuncio')
         except:
             print("Error al crear anuncio")
-        finally:
-            if (bd.connection.open):
-                cursor.close()
-                bd.connection.close()  
-                print("MySQL connection is closed")
+
 
     def listarMisAnuncios(self, bd):
         try:

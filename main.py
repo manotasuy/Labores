@@ -133,10 +133,36 @@ def administrar():
     return render_template('ControlPanel.html')
 
 
-@app.route('/CrearAnuncio/')
+#en desarrollo!!
+@app.route('/CrearAnuncio/', methods=["POST"])
 def crear_anuncio():
-    flash('Anuncio creado!')
-    return render_template('CrearAnuncio.html')
+    if request.method == 'POST':
+        titulo = request.form['titulo']
+        descripcion = request.form['descripcion']
+        #fechaInicio =  tomarla con datetime
+        #fechaCierre =  null
+        estado = request.form['estado']
+        experiencia = request.form['experiencia']
+        salario = request.form['salario']
+        #idEmpleador = viene de la seción
+        calEmpleado = request.form['calEmpleado']
+        calEmpleador = request.form['calEmpleador']
+        tieneVinculo = request.form['tieneVinculo']
+        Empleador.crearAnuncio(
+            titulo, 
+            descripcion, 
+            #fechaInicio, 
+            #fechaCierre,
+            estado,
+            experiencia,
+            salario,
+            #idEmpleador,
+            calEmpleado,
+            calEmpleador,
+            tieneVinculo
+            )
+        flash('Anuncio creado!')
+        return redirect(url_for('tus_anuncios'))
 
 
 @app.route('/TusAnuncios/')
