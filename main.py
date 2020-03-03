@@ -248,5 +248,8 @@ def listar_candidatos():
         return render_template('ListaCandidatos.html')
 
 
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
