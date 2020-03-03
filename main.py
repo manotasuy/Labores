@@ -248,8 +248,13 @@ def listar_candidatos():
         return render_template('ListaCandidatos.html')
 
 
+@app.route('/registroVale/')
+def registroVale():
+    return render_template('registroVale.html')
 
-
+@app.route('/perfilEmpleado/')
+def perfilEmpleado():
+    return render_template('perfilEmpleado.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
