@@ -1,0 +1,260 @@
+{% extends 'page_layout.html' %}
+
+{% block referencias %}
+{% endblock %}
+
+{% block estilo %}
+{% endblock %}
+
+{% block titulo %}Labores - Registro{% endblock %}
+
+{% block contenido %}
+
+<div class="container">
+  <div class="py-4 text-center">
+  </div>
+  <div class="row">
+    <div class="col">
+      <h4 class="mb-3">Editar perfil</h4>
+      <form class="needs-validation" novalidate="">
+        
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="name">Nombre</label>
+            <input type="text" class="form-control" name="name" id="name" placeholder="Nombre" value="" required="">
+            <div class="invalid-feedback">
+              Se requiere un Nombre válido.
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="lastName">Apellido</label>
+            <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Apellido" value="" required="">
+            <div class="invalid-feedback">
+              Se requiere un Apellido válido.
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="phone">Teléfono</label>
+            <input type="tel" class="form-control" id="phone" placeholder="23655544" required="">
+            <div class="invalid-feedback">
+              Por favor seleccione un Teléfono válido.
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="ci">Cédula de identidad</label>
+            <input type="number" class="form-control" name="ci" id="ci" placeholder="5072662" required="">
+            <div class="invalid-feedback">
+              Por favor seleccione una CI válida.
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="email">Email </label>
+          <input type="email" class="form-control" name="email" id="email" placeholder="nombre@gmal.com" required="">
+          <div class="invalid-feedback">
+            Se requiere un Email válido.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="emailConf">Confirmar Email </label>
+          <input type="email" class="form-control" name="emailConf" id="emailConf" placeholder="nombre@gmal.com" required="">
+          <div class="invalid-feedback">
+            Se requiere un Email válido.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="address">Dirección</label>
+          <input type="text" class="form-control" name="address" id="address" placeholder="Calle 123" required="">
+          <div class="invalid-feedback">
+            Por favor seleccione una Direccion válida.
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-3 mb-3">
+            <label for="country">Pais</label>
+            <select class="custom-select d-block w-100" name="country" id="country" required="">
+              <option value="">Seleccionar...</option>
+              <option value="Argentina">Argentina</option>
+              <option value="Brasil">Brasil</option>
+              <option value="Chile">Chile</option>
+              <option value="Uruguay">Uruguay</option>
+            </select>
+            <div class="invalid-feedback">
+              Por favor seleccione un País válido.
+            </div>
+          </div>
+          <div class="col-md-3 mb-3">
+            <label for="state">Departamento</label>
+            <select class="custom-select d-block w-100" name="state" id="state" required="">
+              <option value="">Seleccionar...</option>
+              <option value="Canelones">Canelones</option>
+              <option value="Montevideo">Montevideo</option>
+            </select>
+            <div class="invalid-feedback">
+              Por favor seleccione un Departamento válido.
+            </div>
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="city">Ciudad</label>
+            <select class="custom-select d-block w-100" name="city" id="city" required="">
+              <option value="">Seleccionar...</option>
+              <option value="Las Piedras">Las Piedras</option>
+              <option value="La Paz">La Paz</option>
+            </select>
+            <div class="invalid-feedback">
+              Por favor seleccione una Ciudad válida.
+            </div>
+          </div>
+        </div>
+
+        <hr class="mb-4">
+
+        
+        <div class="d-block my-3">
+          <p>Género</p>
+          <div class="custom-control custom-radio">
+            <input id="genderF" name="gender" type="radio" class="custom-control-input" checked="" required="">
+            <label class="custom-control-label" for="genderF">Femenino</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input id="genderM" name="gender" type="radio" class="custom-control-input" required="">
+            <label class="custom-control-label" for="genderM">Masculino</label>
+          </div>
+        </div>
+
+          <div class="mb-3">
+            <label for="birthdate">Fecha de nacimiento</label>
+            <input type="date" id="birthdate" required="">
+            <div class="invalid-feedback">
+              Por favor seleccione una Fecha de nacimiento válida.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="password">Contraseña</label>
+            <input type="password" class="form-control" name="password" id="password" placeholder="" required="">
+            <div class="invalid-feedback">
+              Requiere una Contraseña válida.
+            </div>
+          </div>
+    
+
+          <div class="mb-3">
+            <label for="passwordConf">Confirmar contraseña</label>
+            <input type="password" class="form-control" name="passwordConf" id="passwordConf" placeholder="" required="">
+          </div>
+
+          <div class="d-block my-3">
+            <p>¿Tiebe experiencia en el rubro?</p>
+            <div class="custom-control custom-radio">
+              <input id="experienciaSi" name="experienciaNo" type="radio" class="custom-control-input" checked="" required="">
+              <label class="custom-control-label" for="experienciaSi">Si</label>
+            </div>
+            <div class="custom-control custom-radio">
+              <input id="experienciaNo" name="experienciaNo" type="radio" class="custom-control-input" required="">
+              <label class="custom-control-label" for="experienciaNo">No</label>
+            </div>
+          </div>
+
+          <div class="d-block my-3">
+            <p>Disponibilidad</p>
+            <div class="custom-control custom-radio">
+              <input id="dispHora" name="disponibilidad" type="radio" class="custom-control-input" checked="" required="">
+              <label class="custom-control-label" for="dispHora">Por hora</label>
+            </div>
+            <div class="custom-control custom-radio">
+              <input id="dispJorn" name="disponibilidad" type="radio" class="custom-control-input" required="">
+              <label class="custom-control-label" for="dispJorn">Por jornada</label>
+            </div>
+            <div class="custom-control custom-radio">
+              <input id="dispTarea" name="disponibilidad" type="radio" class="custom-control-input" required="">
+              <label class="custom-control-label" for="dispTarea">Por tarea puntual</label>
+            </div>
+            <div class="custom-control custom-radio">
+              <input id="dispMes" name="disponibilidad type="radio" class="custom-control-input" required="">
+              <label class="custom-control-label" for="dispMes">Por mes</label>
+            </div>
+          </div>
+
+          <div class="d-block my-3">
+            <p>Tareas que realizas:</p>
+            <div class="custom-control">
+              <input id="tareaHogar" name="tareaHogar" type="checkbox" class="custom-control-input" >
+              <label class="custom-control-label" for="tareaHogar">Hogar</label>
+            </div>
+            <div class="custom-control">
+              <input id="tareaOficina" name="tareaOficina" type="checkbox" class="custom-control-input" >
+              <label class="custom-control-label" for="tareaOficina">Oficina</label>
+            </div>
+            <div class="custom-control">
+              <input id="tareaCocina" name="tareaCocina" type="checkbox" class="custom-control-input" >
+              <label class="custom-control-label" for="tareaCocina">Cocina</label>
+            </div>
+            <div class="custom-control">
+              <input id="tareaLimpBañ" name="tareaLimpBañ" type="checkbox" class="custom-control-input" >
+              <label class="custom-control-label" for="tareaLimpBañ">Limpieza de baños</label>
+            </div>
+            <div class="custom-control">
+              <input id="tareaLimpCoc" name="tareaLimpCoc" type="checkbox" class="custom-control-input" >
+              <label class="custom-control-label" for="tareaLimpCoc">Limpieza de cocina</label>
+            </div>
+            <div class="custom-control">
+              <input id="tareaLimpDor" name="tareaLimpDor" type="checkbox" class="custom-control-input" >
+              <label class="custom-control-label" for="tareaLimpDor">Limpieza de dormitorio</label>
+            </div>
+            <div class="custom-control">
+              <input id="tareaCuidNiño" name="tareaCuidNiño" type="checkbox" class="custom-control-input" >
+              <label class="custom-control-label" for="tareaCuidNiño">Cuidado de niños</label>
+            </div>
+            <div class="custom-control">
+              <input id="tareaCuidBebe" name="tareaCuidBebe" type="checkbox" class="custom-control-input" >
+              <label class="custom-control-label" for="tareaCuidBebe">Cuidado de bebes</label>
+            </div>
+            <div class="custom-control">
+              <input id="tareaCuidAdulto" name="tareaCuidAdulto" type="checkbox" class="custom-control-input" >
+              <label class="custom-control-label" for="tareaCuidAdulto">Adultos mayores</label>
+            </div>
+            <div class="custom-control">
+              <input id="tareaCuidMasc" name="tareaCuidMasc" type="checkbox" class="custom-control-input" >
+              <label class="custom-control-label" for="tareaCuidMasc">Cuidado de mascotas</label>
+            </div>
+          </div>
+        <hr class="mb-4">
+          
+          <h4>Los empleadores te invitaran a pasar a su casa
+            ¡cuentales algo sobre ti, así comienzan a conocerte!</h4>
+          <textarea name="presentacion" rows="10" cols="100" placeholder="Escribe aqui..."></textarea>
+
+          <hr class="mb-4">
+            <p>¿Tienes referencias de empleos anteriores?Agregalas aquí</p>
+          <div class="col-md-6 mb-3">
+            <label for="nombreEmp">Nombre del empleador</label>
+            <input type="text" class="form-control" name="nombreEmp id="nombreEmp" placeholder="Nombre" value="">
+            <label for="telefonoEmp">Teléfono del empleador</label>
+            <input type="text" class="form-control" name="telefonoEmp id="telefonoEmp" placeholder="Nombre" value="">
+            <label for="expTrabDesde">Trabaje desde</label>
+            <input type="date" id="expTrabDesde"><br>
+            <label for="expTrabHasta">Trabaje hasta</label>
+            <input type="date" id="expTrabDesde">
+          </div>
+
+        <hr class="mb-4">
+        <button class="btn btn-primary btn-lg btn-block" type="submit">GUARDAR</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
