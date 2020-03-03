@@ -6,7 +6,7 @@
 {% block estilo %}
 {% endblock %}
 
-{% block titulo %}<title>Labores - TusAnuncios</title>{% endblock %}
+{% block titulo %}Labores - TusAnuncios{% endblock %}
 
 {% block contenido %}
 
@@ -41,7 +41,7 @@
 											</td>
 											<td>{{ anuncio.1 }}</td>
 											<td>
-												<!--estado de oferta-->
+											<!--Estado de anuncio --><input type="checkbox">Activa</input>
 											</td>
 
 											<td><a href="/editarAnuncio/{{ anuncio.0 }}"
@@ -53,7 +53,7 @@
 										{% endfor %}
 
 
-										</tr>-->
+										</tr>
 									</tbody>
 								</table>
 
