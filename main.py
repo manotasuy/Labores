@@ -256,5 +256,11 @@ def registroVale():
 def perfilEmpleado():
     return render_template('perfilEmpleado.html')
 
+@app.route('/perfilEmpleador/')
+def perfilEmpleador():
+    return render_template('perfilEmpleador.html')
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
