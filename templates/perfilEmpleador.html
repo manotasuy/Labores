@@ -116,9 +116,6 @@
           </div>
         </div>
 
-        <hr class="mb-4">
-
-        
         <div class="d-block my-3">
           <p>Género</p>
           <div class="custom-control custom-radio">
@@ -153,8 +150,10 @@
             <input type="password" class="form-control" name="passwordConf" id="passwordConf" placeholder="" required="">
           </div>
 
+          <hr class="mb-4">
+
           <div class="d-block my-3">
-            <p>¿Tiebe experiencia en el rubro?</p>
+            <p>¿Estás registrad@ como empleador/a en el BPS?</p>
             <div class="custom-control custom-radio">
               <input id="experienciaSi" name="experienciaNo" type="radio" class="custom-control-input" checked="" required="">
               <label class="custom-control-label" for="experienciaSi">Si</label>
@@ -165,87 +164,14 @@
             </div>
           </div>
 
-          <div class="d-block my-3">
-            <p>Disponibilidad</p>
-            <div class="custom-control custom-radio">
-              <input id="dispHora" name="disponibilidad" type="radio" class="custom-control-input" checked="" required="">
-              <label class="custom-control-label" for="dispHora">Por hora</label>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="empleadorNumRegBPS">Número de registro</label>
+              <input type="number" class="form-control" name="empleadorNumRegBPS" id="empleadorNumRegBPS" placeholder="679102987">
+              <div class="invalid-feedback">
+                Por favor seleccione un Número de registro válido.
+              </div>
             </div>
-            <div class="custom-control custom-radio">
-              <input id="dispJorn" name="disponibilidad" type="radio" class="custom-control-input" required="">
-              <label class="custom-control-label" for="dispJorn">Por jornada</label>
-            </div>
-            <div class="custom-control custom-radio">
-              <input id="dispTarea" name="disponibilidad" type="radio" class="custom-control-input" required="">
-              <label class="custom-control-label" for="dispTarea">Por tarea puntual</label>
-            </div>
-            <div class="custom-control custom-radio">
-              <input id="dispMes" name="disponibilidad type="radio" class="custom-control-input" required="">
-              <label class="custom-control-label" for="dispMes">Por mes</label>
-            </div>
-          </div>
-
-          <div class="d-block my-3">
-            <p>Tareas que realizas:</p>
-            <div class="custom-control">
-              <input id="tareaHogar" name="tareaHogar" type="checkbox" class="custom-control-input" >
-              <label class="custom-control-label" for="tareaHogar">Hogar</label>
-            </div>
-            <div class="custom-control">
-              <input id="tareaOficina" name="tareaOficina" type="checkbox" class="custom-control-input" >
-              <label class="custom-control-label" for="tareaOficina">Oficina</label>
-            </div>
-            <div class="custom-control">
-              <input id="tareaCocina" name="tareaCocina" type="checkbox" class="custom-control-input" >
-              <label class="custom-control-label" for="tareaCocina">Cocina</label>
-            </div>
-            <div class="custom-control">
-              <input id="tareaLimpBañ" name="tareaLimpBañ" type="checkbox" class="custom-control-input" >
-              <label class="custom-control-label" for="tareaLimpBañ">Limpieza de baños</label>
-            </div>
-            <div class="custom-control">
-              <input id="tareaLimpCoc" name="tareaLimpCoc" type="checkbox" class="custom-control-input" >
-              <label class="custom-control-label" for="tareaLimpCoc">Limpieza de cocina</label>
-            </div>
-            <div class="custom-control">
-              <input id="tareaLimpDor" name="tareaLimpDor" type="checkbox" class="custom-control-input" >
-              <label class="custom-control-label" for="tareaLimpDor">Limpieza de dormitorio</label>
-            </div>
-            <div class="custom-control">
-              <input id="tareaCuidNiño" name="tareaCuidNiño" type="checkbox" class="custom-control-input" >
-              <label class="custom-control-label" for="tareaCuidNiño">Cuidado de niños</label>
-            </div>
-            <div class="custom-control">
-              <input id="tareaCuidBebe" name="tareaCuidBebe" type="checkbox" class="custom-control-input" >
-              <label class="custom-control-label" for="tareaCuidBebe">Cuidado de bebes</label>
-            </div>
-            <div class="custom-control">
-              <input id="tareaCuidAdulto" name="tareaCuidAdulto" type="checkbox" class="custom-control-input" >
-              <label class="custom-control-label" for="tareaCuidAdulto">Adultos mayores</label>
-            </div>
-            <div class="custom-control">
-              <input id="tareaCuidMasc" name="tareaCuidMasc" type="checkbox" class="custom-control-input" >
-              <label class="custom-control-label" for="tareaCuidMasc">Cuidado de mascotas</label>
-            </div>
-          </div>
-        <hr class="mb-4">
-          
-          <h4>Los empleadores te invitaran a pasar a su casa
-            ¡cuentales algo sobre ti, así comienzan a conocerte!</h4>
-          <textarea name="presentacion" rows="10" cols="100" placeholder="Escribe aqui..."></textarea>
-
-          <hr class="mb-4">
-            <p>¿Tienes referencias de empleos anteriores?Agregalas aquí</p>
-          <div class="col-md-6 mb-3">
-            <label for="nombreEmp">Nombre del empleador</label>
-            <input type="text" class="form-control" name="nombreEmp id="nombreEmp" placeholder="Nombre" value="">
-            <label for="telefonoEmp">Teléfono del empleador</label>
-            <input type="text" class="form-control" name="telefonoEmp id="telefonoEmp" placeholder="Nombre" value="">
-            <label for="expTrabDesde">Trabaje desde</label>
-            <input type="date" id="expTrabDesde"><br>
-            <label for="expTrabHasta">Trabaje hasta</label>
-            <input type="date" id="expTrabDesde">
-          </div>
 
         <hr class="mb-4">
         <button class="btn btn-primary btn-lg btn-block" type="submit">GUARDAR</button>
