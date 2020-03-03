@@ -13,7 +13,7 @@
 	<div class="jumbotron jumbotron-fluid">
 		<div class="container">
 			<h1 class="display-5 mb-5">Oferta</h1>
-			<form action="/CrearAnuncio/" method="POST">
+			<form action="/PublicarAnuncio" method="POST">
 				<div class="form-group">
 					<label for="titulo">Título</label>
 					<input type="text" class="form-control" id="titulo" name="txtTitulo">
@@ -134,7 +134,8 @@
 					  <label class="custom-control-label" for="estadoInactiva">Inactiva</label>
 					</div>
 				</div>
-				<a href="/CrearAnuncio/" class="btn btn-primary btn btn-block" type="submit">GUARDAR</a>
+				
+				<button class="btn btn-primary btn-block" type="submit" name="btnGuardar">GUARDAR</button>
 
 				{% with message = get_flashed_messages() %}
 				{% if messages %}

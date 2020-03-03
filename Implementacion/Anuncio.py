@@ -1,3 +1,4 @@
+from datetime import datetime
 
 class Anuncio:
 
@@ -50,14 +51,11 @@ class Anuncio:
                         self.tiene_vinculo
                     ))
             bd.connection.commit()
+            cursor.close()
             print('Anuncio Creado')        
         except:
             print("Error en creación del anuncio")
-        finally:
-            if (bd.connection.open):
-                cursor.close()
-                bd.connection.close()  
-                print("MySQL connection is closed")
+
 
     def updateAnuncio(self, bd, id):
         try:
@@ -91,11 +89,7 @@ class Anuncio:
                         id                        
                         ))
             bd.connection.commit()
+            cursor.close()
             print('Anuncio Actualizado')        
         except:
             print("Error al actualizar el anuncio")
-        finally:
-            if (bd.connection.open):
-                cursor.close()
-                bd.connection.close()  
-                print("MySQL connection is closed")

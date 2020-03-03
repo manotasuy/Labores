@@ -17,37 +17,47 @@ class Usuario:
                            (self.usuario, self.clave))
             retorno = cursor.fetchall()
             bd.connection.commit()
+            cursor.close()
             return retorno
         except:
             print("Error en login de usuario")
-        finally:
-            if (bd.connection.open):
-                cursor.close()
-                bd.connection.close()  
-                print("MySQL connection is closed")
+
+
+    def getIdUsuario(self, bd):
+        try:
+            cursor = bd.connection.cursor()
+            cursor.execute('SELECT id FROM usuario WHERE usuario = %s AND clave = %s',
+                           (self.usuario, self.clave))
+            retorno = cursor.fetchall()
+            self.id = retorno[0][0]
+            bd.connection.commit()
+            cursor.close()
+            return retorno
+        except:
+            print("Error en login de usuario")
+
 
     def crearUsuario(self, bd):
         try:
-            cursor = bd.connection.cursor()
             intTipo: int
             if self.tipo == 'Administrador':
                 intTipo = 1
             elif self.tipo == 'Empleador':
                 intTipo = 2
-            elif self.tipo == 'Empleador':
+            elif self.tipo == 'Empleado':
                 intTipo = 3
+
+            print(self.usuario)
+            print(self.clave)
+            print(intTipo)
+
+            cursor = bd.connection.cursor()
             cursor.execute('INSERT INTO usuario (usuario, clave, id_tipo) VALUES (%s, %s, %s)', (self.usuario, self.clave, intTipo))
-            self.id = cursor.execute('SELECT LAST_INSERT_ID()')
-            print(self.id)
             bd.connection.commit()
+            cursor.close()
             print('Usuario Creado')
         except:
             print("Error en creación de usuario")
-        finally:
-            if (bd.connection.open):
-                cursor.close()
-                bd.connection.close()  
-                print("MySQL connection is closed")
 
 
     def cambiarPassword(self, newPassword, bd):
@@ -56,11 +66,7 @@ class Usuario:
             cursor.execute('UPDATE usuario SET clave = %s WHERE usuario = %s AND clave = %s',
                            (newPassword, self.usuario, self.clave))
             bd.connection.commit()
+            cursor.close()
             print('contraseña cambiada')
         except:
             print("Error en cambio de contraseña")
-        finally:
-            if (bd.connection.open):
-                cursor.close()
-                bd.connection.close()  
-                print("MySQL connection is closed")

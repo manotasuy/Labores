@@ -12,8 +12,8 @@
 <div class="container">
   <div class="jumbotron jumbotron-fluid">
     <div class="container">
-      <h1 class="display-5 mb-5">Registro {{session['user_option']}}</h1>
-      <form class="needs-validation" novalidate="" action="/Registrar/{{session['user_option']}}" method="POST">
+      <h1 class="display-5 mb-5">Registro {{session['useroption']}}</h1>
+      <form class="needs-validation" novalidate="" action="/Registrar/{{session['useroption']}}" method="POST">
         <div class="row">
           <div class="col-md-6 mb-3">
             <label for="nombre">Nombre</label>
@@ -40,11 +40,11 @@
 					<p class="mb-1">Género</p>
 					<div class="custom-control custom-radio ml-5">
 					  <input id="generoFemenino" name="radioGenero" type="radio" class="custom-control-input" checked="" required="">
-					  <label class="custom-control-label" for="estadoActiva">Femenino</label>
+					  <label class="custom-control-label" for="generoFemenino">Femenino</label>
 					</div>
 					<div class="custom-control custom-radio ml-5">
 					  <input id="generoMasculino" name="radioGenero" type="radio" class="custom-control-input" required="">
-					  <label class="custom-control-label" for="estadoInactiva">Masculino</label>
+					  <label class="custom-control-label" for="generoMasculino">Masculino</label>
 					</div>
         </div>
 
@@ -89,11 +89,9 @@
 
         <div class="mb-3">
           <label for="telefono">Teléfono</label>
-          <div class="input-group">
-            <input type="text" class="form-control col-sm-3" id="telefono" placeholder="099123456" required="" name="txtTelefono">
-            <div class="invalid-feedback" style="width: 100%;">
-              Debe ingresar su teléfono.
-            </div>
+          <input type="text" class="form-control col-sm-5" id="telefono" placeholder="099123456" name="txtTelefono">
+          <div class="invalid-feedback" style="width: 100%;">
+            Debe ingresar su teléfono.
           </div>
         </div>
 
@@ -116,7 +114,6 @@
           </div>
         </div>
 
-        <!--<a href="/Registrar/{{session['user_option']}}" class="btn btn-primary btn btn-block" type="submit">REGISTRARSE</a>-->
         <button class="btn btn btn-primary btn-block" type="submit" name="btnRegistrar">REGISTRARSE</button>
 
         {% with message = get_flashed_messages() %}

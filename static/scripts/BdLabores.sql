@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS empleador (
 	nombre varchar(50) NOT NULL,
 	apellido varchar(50) NOT NULL,
 	fecha_nacimiento date DEFAULT NULL,
-	genero bit(1) DEFAULT NULL,
+	genero bit(1) DEFAULT NULL, -- 0:Femenino, 1:Masculino
 	domicilio varchar(50) DEFAULT NULL,
 	nacionalidad varchar(50) DEFAULT NULL,
 	email varchar(50) DEFAULT NULL,
@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS empleado (
 	nombre varchar(50) NOT NULL,
 	apellido varchar(50) NOT NULL,
 	fecha_nacimiento date DEFAULT NULL,
-	genero bit(1) DEFAULT NULL,
+	genero bit(1) DEFAULT NULL, -- 0:Femenino, 1:Masculino
 	domicilio varchar(50) DEFAULT NULL,
 	nacionalidad varchar(50) DEFAULT NULL,
 	email varchar(50) DEFAULT NULL,
@@ -277,7 +277,8 @@ INSERT INTO tarea (descripcion)
 VALUES ('Cuidado de Mascotas');
 
 -- En tabla "empleado"
-
+INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
+VALUES (1234567-8, 'el peoncito', 'jodido', '1982-03-12', 1, 'Ejido 1857', 'Uruguayo', 'peoncito@gmail.com', '099987654', 0, '', '', 0, 3);
 
 -- En tabla "empleado_disponibilidad"
 
@@ -289,8 +290,8 @@ VALUES ('Cuidado de Mascotas');
 
 
 -- En tabla "empleador"
-INSERT INTO empleador (id, cedula, nombre, apellido, fecha_nacimiento, genero,domicilio, nacionalidad, email, telefono, registro_bps, foto, promedio_calificacion, id_usuario)
-VALUES (id, cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, registro_bps, foto, promedio_calificacion, id_usuario);
+INSERT INTO empleador (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, registro_bps, foto, promedio_calificacion, id_usuario)
+VALUES (1234567-8, 'la jefecita', 'ma mejor', '1975-05-22', 0, 'Yi 1234', 'Uruguayo', 'jefecita@gmail.com', '099123456', 0, '', 0, 2);
 
 -- En tabla "anuncio"
 

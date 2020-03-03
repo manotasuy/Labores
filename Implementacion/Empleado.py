@@ -1,7 +1,8 @@
+from datetime import datetime
 
 class Empleado:
 
-    def __init__(self, pId, pCedula, pNombre, pApellido, pNacimiento, pGenero, pDom, pNacional, pEmail, pTel, pExp, pFoto, pDesc, pUsuario, pRefer, pTareas, pDispon):
+    def __init__(self, pId, pCedula, pNombre, pApellido, pNacimiento, pGenero, pDom, pNacional, pEmail, pTel, pExp, pFoto, pDesc, pCalif, pUsuario, pRefer, pTareas, pDispon):
         self.id = pId
         self.cedula = pCedula
         self.nombre = pNombre
@@ -15,6 +16,7 @@ class Empleado:
         self.experiencia_meses = pExp
         self.foto = pFoto
         self.descripcion = pDesc
+        self.promedioCalificacion = pCalif
         self.usuario = pUsuario
         self.referencias = pRefer
         self.tareas = pTareas
@@ -25,6 +27,32 @@ class Empleado:
 
     def crearEmpleado(self, bd):
         try:
+            intGenero: int
+            print(self.genero)
+            if self.genero == 'Femenino':
+                intGenero = 0
+            else:
+                intGenero = 1
+            print(self.nacimiento)
+            fechaFormateada = self.nacimiento.strftime('%Y-%m-%d')
+
+            print(self.cedula)
+            print(self.nombre)
+            print(self.apellido)
+            print(fechaFormateada)
+            print(intGenero)
+            print(self.domicilio)
+            print(self.nacionalidad)
+            print(self.email)
+            print(self.telefono)
+            print(self.experiencia_meses)
+            print(self.descripcion)
+            print(self.foto)
+            print(self.promedioCalificacion)
+            print(self.usuario.id)
+            print(self.usuario.usuario)
+            print(self.usuario.clave)
+
             cursor = bd.connection.cursor()
             cursor.execute('''
                 INSERT INTO empleado 
@@ -49,83 +77,67 @@ class Empleado:
                         self.cedula,
                         self.nombre,
                         self.apellido,
-                        self.nacimiento,
-                        self.genero,
+                        fechaFormateada,
+                        intGenero,
                         self.domicilio,
                         self.nacionalidad,
                         self.email,
                         self.telefono,
-                        None,
-                        None,
-                        None,
-                        None,
+                        self.experiencia_meses,
+                        self.descripcion,
+                        self.foto,
+                        self.promedioCalificacion,
                         self.usuario.id
                     ))
             bd.connection.commit()
+            cursor.close()
             print('Empleado Creado')        
         except:
             print("Error en creación del empleado")
-        finally:
-            if (bd.connection.open):
-                cursor.close()
-                bd.connection.close()  
-                print("MySQL connection is closed")
+
 
     def modificarEmpleado(self, bd):
         try:
             cursor = bd.connection.cursor()
             cursor.execute('UPDATE empleado...')
             bd.connection.commit()
+            cursor.close()
             print('Empleado modificado')
         except:
             print("Error en edición de empleado")
-        finally:
-            if (bd.connection.open):
-                cursor.close()
-                bd.connection.close()  
-                print("MySQL connection is closed")
+
 
     def eliminarEmpleado(self, bd):
         try:
             cursor = bd.connection.cursor()
             cursor.execute('DELETE FROM empleado...')
             bd.connection.commit()
+            cursor.close()
             print('Empleado Eliminado')
         except:
             print("Error en eliminación de empleado")
-        finally:
-            if (bd.connection.open):
-                cursor.close()
-                bd.connection.close()  
-                print("MySQL connection is closed")
+
 
     def listarEmpleados(self, bd):
         try:
             cursor = bd.connection.cursor()
             cursor.execute('SELECT * FROM empleado...')
             bd.connection.commit()
+            cursor.close()
             print('Listado de empleados')
         except:
             print("Error al listar los empleados")
-        finally:
-            if (bd.connection.open):
-                cursor.close()
-                bd.connection.close()  
-                print("MySQL connection is closed")
+
 
     def postularseParaAnuncio(self, bd):
         try:
             cursor = bd.connection.cursor()
             cursor.execute('SELECT * FROM empleado...')
             bd.connection.commit()
+            cursor.close()
             print('Postulado para empleo')
         except:
             print('Error en postulación')
-        finally:
-            if (bd.connection.open):
-                cursor.close()
-                bd.connection.close()  
-                print("MySQL connection is closed")
 
 
 def prueba():
