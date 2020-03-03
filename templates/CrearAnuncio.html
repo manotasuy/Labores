@@ -28,11 +28,11 @@
 					<label for="calificacion">Calificación mínima aceptada </label>
 					<div class="form-group mx-sm-3 mb-2">
 					<select class="form-control" id="calificacion">
-						<option>1</option>
-						<option>2</option>
-						<option>3</option>
-						<option>4</option>
-						<option>5</option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
 					</select>
 					</div>
 				</div>-->
@@ -40,7 +40,7 @@
 				<div class="d-block my-3 mb-5">
 					<p class="mb-3">Tipo de trabajo</p>
 					<div class="custom-control custom-radio ml-5">
-					  <input id="hora" name="radioDisponibilidad" type="radio" class="custom-control-input" checked="" required="">
+					  <input id="hora" name="porHora" type="radio" class="custom-control-input" checked="" required="">
 					  <label class="custom-control-label" for="hora">Por hora</label>
 					</div>
 					<div class="custom-control custom-radio ml-5">
@@ -85,7 +85,7 @@
 						<label class="custom-control-label" for="dormitorios">Limpieza de dormitorios</label>
 					  </div>
 					  <div class="custom-control custom-checkbox ml-5">
-						<input type="checkbox" class="custom-control-input" id="ninios" nme="chkCuidadoNinios">
+						<input type="checkbox" class="custom-control-input" id="ninios" name="chkCuidadoNinios">
 						<label class="custom-control-label" for="ninios">Cuidado de niños</label>
 					  </div>
 					  <div class="custom-control custom-checkbox ml-5">
@@ -97,7 +97,7 @@
 						<label class="custom-control-label" for="mayores">Cuidado de adultos mayores</label>
 					  </div>
 					  <div class="custom-control custom-checkbox ml-5">
-						<input type="checkbox" class="custom-control-input" id="mascotas" anme="chkCuidadoMascotas">
+						<input type="checkbox" class="custom-control-input" id="mascotas" name="chkCuidadoMascotas">
 						<label class="custom-control-label" for="mascotas">Cuidado de mascotas</label>
 					  </div>
 					</div>
