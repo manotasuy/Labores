@@ -191,11 +191,11 @@ def publicar_anuncio():
             estado = request.form['estado']
             experiencia = request.form['experiencia']
             salario = request.form['salario']
-            #idEmpleador = viene de la seción
+            #idEmpleador = viene de la sesión
             calEmpleado = request.form['calEmpleado']
             calEmpleador = request.form['calEmpleador']
             tieneVinculo = request.form['tieneVinculo']
-            Empleador.crearAnuncio(
+            crearAnuncio(
                 titulo, 
                 descripcion, 
                 #fechaInicio, 

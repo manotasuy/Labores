@@ -128,12 +128,16 @@ class Empleador:
     def listarMisAnuncios(self, bd):
         try:
             cursor = bd.connection.cursor()
-            cursor.execute('...')
-            bd.connection.commit()
-            cursor.close()
-            print('función para listar mis anuncios')
+            cursor.execute("SELECT * FROM anuncios WHERE id_empleador = '{}'".format(idEmpleador))
+            data = cursor.fetchall()
+            return data
         except:
             print("Error al listar mis anuncios")
+        finally:
+            if (bd.connection.open):
+                cursor.close()
+                bd.connection.close()  
+                print("MySQL connection is closed")
 
 
     def realizarBusqueda(self, bd):
