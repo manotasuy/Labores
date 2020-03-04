@@ -1,6 +1,5 @@
 USE LvP2Ka0CsK;
 
-
 DROP TABLE IF EXISTS vinculo;
 DROP TABLE IF EXISTS mensaje;
 DROP TABLE IF EXISTS postulacion;
@@ -19,7 +18,6 @@ DROP TABLE IF EXISTS tipo_usuario;
 
 
 -- *** CREACIÓN DE LAS TABLAS ***
-
 
 -- Tabla: Tipo de Usuario
 CREATE TABLE IF NOT EXISTS tipo_usuario
@@ -42,7 +40,6 @@ CREATE TABLE IF NOT EXISTS usuario
     CONSTRAINT UK_usuario UNIQUE (usuario),
     CONSTRAINT FK_usuario_tipo FOREIGN KEY (id_tipo) REFERENCES tipo_usuario(id)
 );
-
 
 
 -- Tabla: tarea
@@ -148,7 +145,7 @@ CREATE TABLE IF NOT EXISTS anuncio (
 	fecha_cierre date DEFAULT NULL,
 	estado bit(1) NOT NULL, -- 0:Inactivo, 1:Activo
 	experiencia tinyint(1) NOT NULL,
-	salario int DEFAULT NULL,
+	pago_hora int DEFAULT NULL,
 	id_empleador int NOT NULL,
 	calificacion_desde double DEFAULT NULL,
 	calificacion_hasta double DEFAULT NULL,

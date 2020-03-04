@@ -1,5 +1,6 @@
 from datetime import datetime
 
+
 class Anuncio:
 
     def __init__(self, pTitulo, pDescripcion, pFechaInicio, pFechaCierre, pEstado, pExperiencia, pSalario, pIdEmpleador, pCalDesde, pCalHasta, pTieneVinculo):
@@ -37,25 +38,24 @@ class Anuncio:
                         tiene_vinculo
                     )
                 VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)''',
-                    (
-                        self.titulo,
-                        self.descripcion,
-                        self.fecha_inicio,
-                        self.fecha_cierre,
-                        self.estado,
-                        self.experiencia,
-                        self.salario,
-                        self.id_empleador,
-                        self.calificacion_desde,
-                        self.calificacion_hasta,
-                        self.tiene_vinculo
-                    ))
+                           (
+                               self.titulo,
+                               self.descripcion,
+                               self.fecha_inicio,
+                               self.fecha_cierre,
+                               self.estado,
+                               self.experiencia,
+                               self.salario,
+                               self.id_empleador,
+                               self.calificacion_desde,
+                               self.calificacion_hasta,
+                               self.tiene_vinculo
+                           ))
             bd.connection.commit()
             cursor.close()
-            print('Anuncio Creado')        
+            print('Anuncio Creado')
         except:
             print("Error en creación del anuncio")
-
 
     def updateAnuncio(self, bd, id):
         try:
@@ -74,22 +74,61 @@ class Anuncio:
                     calificacion_hasta = %s,
                     tiene_vinculo = %s
                 WHERE id = %s
-                )''',(
-                        self.titulo,
-                        self.descripcion,
-                        self.fecha_inicio,
-                        self.fecha_cierre,
-                        self.estado,
-                        self.experiencia,
-                        self.salario,
-                        self.id_empleador,
-                        self.calificacion_desde,
-                        self.calificacion_hasta,
-                        self.tiene_vinculo,
-                        id                        
-                        ))
+                )''', (
+                self.titulo,
+                self.descripcion,
+                self.fecha_inicio,
+                self.fecha_cierre,
+                self.estado,
+                self.experiencia,
+                self.salario,
+                self.id_empleador,
+                self.calificacion_desde,
+                self.calificacion_hasta,
+                self.tiene_vinculo,
+                id
+            ))
             bd.connection.commit()
             cursor.close()
-            print('Anuncio Actualizado')        
+            print('Anuncio Actualizado')
         except:
             print("Error al actualizar el anuncio")
+
+
+def getAnuncioByID(bd, id):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('''
+            SELECT
+                id,
+                titulo,
+                descripcion,
+                fecha_inicio,
+                fecha_cierre,
+                estado,
+                experiencia,
+                pago_hora,
+                id_empleador,
+                calificacion_desde,
+                calificacion_hasta,
+                tiene_vinculo
+            FROM anuncio WHERE id = %s''', (id))
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+        anuncio = Anuncio(
+            retorno['id'],
+            retorno['titulo'],
+            retorno['descripcion'],
+            retorno['fecha_inicio'],
+            retorno['fecha_cierre'],
+            retorno['estado'],
+            retorno['experiencia'],
+            retorno['pago_hora'],
+            retorno['id_empleador'],
+            retorno['calificacion_desde'],
+            retorno['calificacion_hasta'],
+            retorno['tiene_vinculo'])
+        return anuncio
+    except:
+        print("Error en getAnuncioByID")

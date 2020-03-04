@@ -13,7 +13,7 @@ class Usuario:
     def loginUsuario(self, bd):
         try:
             cursor = bd.connection.cursor()
-            cursor.execute('SELECT tu.nombre FROM usuario u INNER JOIN tipo_usuario tu ON u.id_tipo = tu.id WHERE u.usuario = %s AND u.clave = %s',
+            cursor.execute('SELECT tu.nombre, u.id FROM usuario u INNER JOIN tipo_usuario tu ON u.id_tipo = tu.id WHERE u.usuario = %s AND u.clave = %s',
                            (self.usuario, self.clave))
             retorno = cursor.fetchall()
             bd.connection.commit()
@@ -21,7 +21,6 @@ class Usuario:
             return retorno
         except:
             print("Error en login de usuario")
-
 
     def getIdUsuario(self, bd):
         try:
@@ -35,7 +34,6 @@ class Usuario:
             return retorno
         except:
             print("Error en login de usuario")
-
 
     def crearUsuario(self, bd):
         try:
@@ -52,13 +50,13 @@ class Usuario:
             print(intTipo)
 
             cursor = bd.connection.cursor()
-            cursor.execute('INSERT INTO usuario (usuario, clave, id_tipo) VALUES (%s, %s, %s)', (self.usuario, self.clave, intTipo))
+            cursor.execute('INSERT INTO usuario (usuario, clave, id_tipo) VALUES (%s, %s, %s)',
+                           (self.usuario, self.clave, intTipo))
             bd.connection.commit()
             cursor.close()
             print('Usuario Creado')
         except:
             print("Error en creación de usuario")
-
 
     def cambiarPassword(self, newPassword, bd):
         try:
@@ -70,3 +68,18 @@ class Usuario:
             print('contraseña cambiada')
         except:
             print("Error en cambio de contraseña")
+
+
+def getUsuarioByID(bd, id):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute(
+            'SELECT id, usuario, clave, tipo FROM usuario WHERE id = %s', (id))
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+        usuario = Usuario(retorno['id'], retorno['usuario'],
+                          retorno['clave'], retorno['tipo'])
+        return usuario
+    except:
+        print("Error en getUsuarioByID")

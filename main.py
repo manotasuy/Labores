@@ -5,26 +5,24 @@ from datetime import datetime
 from enum import Enum
 
 # Paquetes implementación
-from Implementacion import Conexion
-from Implementacion import Usuario
-from Implementacion import Empleado
-from Implementacion import Empleador
-from Implementacion import Anuncio
+from Implementacion.Conexion import connectionDb
+from Implementacion.Usuario import Usuario
+from Implementacion.Empleado import Empleado
+from Implementacion.Empleador import Empleador
+from Implementacion.Usuario import getUsuarioByID
+from Implementacion.Empleador import getEmpleadorByID
+from Implementacion.Empleador import getEmpleadorByUsuarioID
+from Implementacion.Empleado import getEmpleadoByID
+from Implementacion.Empleado import getEmpleadoByUsuarioID
+from Implementacion.Anuncio import getAnuncioByID
+from Implementacion.Anuncio import Anuncio
 
 app = Flask(__name__)
-baseDatos = Conexion.connectionDb(app)
+baseDatos = connectionDb(app)
 
 # session
 app.secret_key = "session"
 
-
-class Tipo_Usuario(Enum):
-    Administrador = 1
-    Empleado = 2
-    Empleador = 3
-
-#print(Tipo_Usuario.Administrador)
-#print(Tipo_Usuario.Administrador.value)
 
 @app.route('/')
 @app.route('/Inicio/')
@@ -55,30 +53,34 @@ def deslogueo():
 
 @app.route('/RecuperarPass/')
 def recuperar_pass():
-    if session.get('usertype') == None:
-        return redirect(url_for('logueo'))
-    else:
-        return render_template('RecuperarClave.html')
+    return render_template('RecuperarClave.html')
 
 
 @app.route('/Ingresar', methods=['POST'])
 def ingresar():
     if request.method == 'POST':
-            parametros = request.form
-            user = parametros['user']
-            password = parametros['pass']
-            usuario = Usuario.Usuario(0, user, password, '')
-            retorno = usuario.loginUsuario(baseDatos)
-            session['username'] = user
-            session['usertype'] = retorno[0][0]
+        parametros = request.form
+        user = parametros['user']
+        password = parametros['pass']
+        usuario = Usuario(0, user, password, '')
+        retorno = usuario.loginUsuario(baseDatos)
+        session['username'] = user
+        session['usertype'] = retorno[0][0]
+        session['id_usuario'] = retorno[0][1]
 
-            if session['usertype'] == 'Empleador':
-                return redirect(url_for('inicio_empleadores'))
-            elif session['usertype'] == 'Empleado':
-                return redirect(url_for('inicio_empleados'))
-            else:
-                return redirect(url_for('administrar'))
-        
+        if session['usertype'] == 'Empleador':
+            # debo obtener el empleador y guardar su id en la sesion
+            #empleador = getEmpleadorByUsuarioID(baseDatos, session['id_usuario'])
+            #session['id_empleador'] = empleador.id
+            return redirect(url_for('inicio_empleadores'))
+        elif session['usertype'] == 'Empleado':
+            # debo obtener el empleado y guardar su id en la sesion
+            #empleado = getEmpleadoByUsuarioID(baseDatos, session['id_usuario'])
+            #session['id_empleado'] = empleado.id
+            return redirect(url_for('inicio_empleados'))
+        else:
+            return redirect(url_for('administrar'))
+
 
 @app.route('/SignUp/')
 def opcion_registrarse():
@@ -110,16 +112,18 @@ def registrar_usuario(opcion):
             telefono = parametros['txtTelefono']
             password = 'labores'
 
-            usuario = Usuario.Usuario(0, cedula, password, opcion)
+            usuario = Usuario(0, cedula, password, opcion)
             usuario.crearUsuario(baseDatos)
             usuario.getIdUsuario(baseDatos)
 
             if opcion == 'Empleado':
-                empleado = Empleado.Empleado(0, cedula, nombre, apellido, nacimiento, genero, domicilio, nacionalidad, mail, telefono, None, None, None, None, usuario, None, None, None)
+                empleado = Empleado(0, cedula, nombre, apellido, nacimiento, genero, domicilio,
+                                    nacionalidad, mail, telefono, None, None, None, None, usuario, None, None, None)
                 empleado.crearEmpleado(baseDatos)
                 return redirect(url_for('inicio_empleados'))
             elif opcion == 'Empleador':
-                empleador = Empleador.Empleador(0, cedula, nombre, apellido, nacimiento, genero, domicilio, nacionalidad, mail, telefono, None, None, None, usuario)
+                empleador = Empleador(0, cedula, nombre, apellido, nacimiento,
+                                      genero, domicilio, nacionalidad, mail, telefono, None, None, None, usuario)
                 empleador.crearEmpleador(baseDatos)
                 return redirect(url_for('inicio_empleadores'))
 
@@ -186,28 +190,30 @@ def publicar_anuncio():
         if request.method == 'POST':
             titulo = request.form['titulo']
             descripcion = request.form['descripcion']
-            #fechaInicio =  tomarla con datetime
-            #fechaCierre =  null
+            fechaInicio = datetime.now()
+            fechaCierre = None
             estado = request.form['estado']
             experiencia = request.form['experiencia']
             salario = request.form['salario']
-            #idEmpleador = viene de la sesión
+            # debo traerlo de: session['id_empleador'] pero aún no está funcional, da error el método Empleador.getEmpleadorByUsuarioID
+            idEmpleador = 1
+            empleador = getEmpleadorByID(baseDatos, idEmpleador)
             calEmpleado = request.form['calEmpleado']
             calEmpleador = request.form['calEmpleador']
             tieneVinculo = request.form['tieneVinculo']
-            crearAnuncio(
-                titulo, 
-                descripcion, 
-                #fechaInicio, 
-                #fechaCierre,
+            empleador.crearAnuncio
+            (
+                titulo,
+                descripcion,
+                fechaInicio,
+                fechaCierre,
                 estado,
                 experiencia,
                 salario,
-                #idEmpleador,
                 calEmpleado,
                 calEmpleador,
                 tieneVinculo
-                )
+            )
             flash('Anuncio creado!')
             return redirect(url_for('tus_anuncios'))
 
@@ -252,14 +258,15 @@ def listar_candidatos():
 def registroVale():
     return render_template('registroVale.html')
 
+
 @app.route('/perfilEmpleado/')
 def perfilEmpleado():
     return render_template('perfilEmpleado.html')
 
+
 @app.route('/perfilEmpleador/')
 def perfilEmpleador():
     return render_template('perfilEmpleador.html')
-
 
 
 if __name__ == '__main__':
