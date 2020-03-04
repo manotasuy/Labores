@@ -65,22 +65,29 @@ def ingresar():
         password = parametros['pass']
         usuario = Usuario(0, user, password, '')
         retorno = usuario.loginUsuario(baseDatos)
-        session['username'] = user
-        session['usertype'] = retorno[0][0]
-        session['id_usuario'] = retorno[0][1]
-
-        if session['usertype'] == 'Empleador':
-            # debo obtener el empleador y guardar su id en la sesion
-            empleador = getEmpleadorByUsuarioID(baseDatos, retorno[0][1])
-            session['id_empleador'] = empleador.id
-            return redirect(url_for('inicio_empleadores'))
-        elif session['usertype'] == 'Empleado':
-            # debo obtener el empleado y guardar su id en la sesion
-            empleado = getEmpleadoByUsuarioID(baseDatos, retorno[0][1])
-            session['id_empleado'] = empleado.id
-            return redirect(url_for('inicio_empleados'))
+        # Si no existe el usuario debo alertar
+        if retorno == ():
+            print('No existe el usuario!')
+            flash('No existe el usuario!')
+            return redirect(url_for('logueo'))
         else:
-            return redirect(url_for('administrar'))
+            print("Retorno: ", retorno)
+            session['username'] = user
+            session['usertype'] = retorno[0][0]
+            session['id_usuario'] = retorno[0][1]
+
+            if session['usertype'] == 'Empleador':
+                # debo obtener el empleador y guardar su id en la sesion
+                empleador = getEmpleadorByUsuarioID(baseDatos, retorno[0][1])
+                session['id_empleador'] = empleador.id
+                return redirect(url_for('inicio_empleadores'))
+            elif session['usertype'] == 'Empleado':
+                # debo obtener el empleado y guardar su id en la sesion
+                empleado = getEmpleadoByUsuarioID(baseDatos, retorno[0][1])
+                session['id_empleado'] = empleado.id
+                return redirect(url_for('inicio_empleados'))
+            else:
+                return redirect(url_for('administrar'))
 
 
 @app.route('/SignUp/')
