@@ -20,6 +20,7 @@ from Implementacion.Anuncio import Anuncio
 app = Flask(__name__)
 baseDatos = connectionDb(app)
 
+
 # session
 app.secret_key = "session"
 
@@ -70,13 +71,13 @@ def ingresar():
 
         if session['usertype'] == 'Empleador':
             # debo obtener el empleador y guardar su id en la sesion
-            #empleador = getEmpleadorByUsuarioID(baseDatos, session['id_usuario'])
-            #session['id_empleador'] = empleador.id
+            empleador = getEmpleadorByUsuarioID(baseDatos, retorno[0][1])
+            session['id_empleador'] = empleador.id
             return redirect(url_for('inicio_empleadores'))
         elif session['usertype'] == 'Empleado':
             # debo obtener el empleado y guardar su id en la sesion
-            #empleado = getEmpleadoByUsuarioID(baseDatos, session['id_usuario'])
-            #session['id_empleado'] = empleado.id
+            empleado = getEmpleadoByUsuarioID(baseDatos, retorno[0][1])
+            session['id_empleado'] = empleado.id
             return redirect(url_for('inicio_empleados'))
         else:
             return redirect(url_for('administrar'))
@@ -195,8 +196,7 @@ def publicar_anuncio():
             estado = request.form['estado']
             experiencia = request.form['experiencia']
             salario = request.form['salario']
-            # debo traerlo de: session['id_empleador'] pero aún no está funcional, da error el método Empleador.getEmpleadorByUsuarioID
-            idEmpleador = 1
+            idEmpleador = session['id_empleador']
             empleador = getEmpleadorByID(baseDatos, idEmpleador)
             calEmpleado = request.form['calEmpleado']
             calEmpleador = request.form['calEmpleador']
@@ -254,19 +254,34 @@ def listar_candidatos():
         return render_template('ListaCandidatos.html')
 
 
-@app.route('/registroVale/')
-def registroVale():
+@app.route('/registroVale/<opcion>')
+def registroVale(opcion):
+    session['useroption'] = opcion
     return render_template('registroVale.html')
 
 
 @app.route('/perfilEmpleado/')
 def perfilEmpleado():
-    return render_template('perfilEmpleado.html')
+    if session.get('usertype') == None:
+        return redirect(url_for('logueo'))
+    elif session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    elif session.get('usertype') == 'Empleador':
+        return redirect(url_for('inicio_empleadores'))
+    else:
+        return render_template('perfilEmpleado.html')
 
 
 @app.route('/perfilEmpleador/')
 def perfilEmpleador():
-    return render_template('perfilEmpleador.html')
+    if session.get('usertype') == None:
+        return redirect(url_for('logueo'))
+    elif session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    elif session.get('usertype') == 'Empleado':
+        return redirect(url_for('inicio_empleados'))
+    else:
+        return render_template('perfilEmpleador.html')
 
 
 if __name__ == '__main__':

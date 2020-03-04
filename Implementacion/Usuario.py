@@ -19,8 +19,8 @@ class Usuario:
             bd.connection.commit()
             cursor.close()
             return retorno
-        except:
-            print("Error en login de usuario")
+        except Exception as e:
+            print("Error en loginUsuario ", e)
 
     def getIdUsuario(self, bd):
         try:
@@ -32,8 +32,8 @@ class Usuario:
             bd.connection.commit()
             cursor.close()
             return retorno
-        except:
-            print("Error en login de usuario")
+        except Exception as e:
+            print("Error en getIdUsuario ", e)
 
     def crearUsuario(self, bd):
         try:
@@ -55,8 +55,8 @@ class Usuario:
             bd.connection.commit()
             cursor.close()
             print('Usuario Creado')
-        except:
-            print("Error en creación de usuario")
+        except Exception as e:
+            print("Error en crearUsuario ", e)
 
     def cambiarPassword(self, newPassword, bd):
         try:
@@ -66,8 +66,8 @@ class Usuario:
             bd.connection.commit()
             cursor.close()
             print('contraseña cambiada')
-        except:
-            print("Error en cambio de contraseña")
+        except Exception as e:
+            print("Error en cambiarPassword ", e)
 
 
 def getUsuarioByID(bd, id):
@@ -78,8 +78,8 @@ def getUsuarioByID(bd, id):
         retorno = cursor.fetchall()
         bd.connection.commit()
         cursor.close()
-        usuario = Usuario(retorno['id'], retorno['usuario'],
-                          retorno['clave'], retorno['tipo'])
+        usuario = Usuario(retorno[0][0], retorno[0][1],
+                          retorno[0][2], retorno[0][3])
         return usuario
-    except:
-        print("Error en getUsuarioByID")
+    except Exception as e:
+        print("Error en getUsuarioByID ", e)

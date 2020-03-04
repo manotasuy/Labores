@@ -54,8 +54,8 @@ class Anuncio:
             bd.connection.commit()
             cursor.close()
             print('Anuncio Creado')
-        except:
-            print("Error en creación del anuncio")
+        except Exception as e:
+            print("Error en createAnuncio ", e)
 
     def updateAnuncio(self, bd, id):
         try:
@@ -91,8 +91,8 @@ class Anuncio:
             bd.connection.commit()
             cursor.close()
             print('Anuncio Actualizado')
-        except:
-            print("Error al actualizar el anuncio")
+        except Exception as e:
+            print("Error en updateAnuncio ", e)
 
 
 def getAnuncioByID(bd, id):
@@ -112,23 +112,23 @@ def getAnuncioByID(bd, id):
                 calificacion_desde,
                 calificacion_hasta,
                 tiene_vinculo
-            FROM anuncio WHERE id = %s''', (id))
+            FROM anuncio WHERE id = {}'''.format(id))
         retorno = cursor.fetchall()
         bd.connection.commit()
         cursor.close()
         anuncio = Anuncio(
-            retorno['id'],
-            retorno['titulo'],
-            retorno['descripcion'],
-            retorno['fecha_inicio'],
-            retorno['fecha_cierre'],
-            retorno['estado'],
-            retorno['experiencia'],
-            retorno['pago_hora'],
-            retorno['id_empleador'],
-            retorno['calificacion_desde'],
-            retorno['calificacion_hasta'],
-            retorno['tiene_vinculo'])
+            retorno[0][0],
+            retorno[0][1],
+            retorno[0][2],
+            retorno[0][3],
+            retorno[0][4],
+            retorno[0][5],
+            retorno[0][6],
+            retorno[0][7],
+            retorno[0][8],
+            retorno[0][9],
+            retorno[0][10],
+            retorno[0][11])
         return anuncio
-    except:
-        print("Error en getAnuncioByID")
+    except Exception as e:
+        print("Error en getAnuncioByID ", e)

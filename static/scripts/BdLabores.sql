@@ -144,7 +144,7 @@ CREATE TABLE IF NOT EXISTS anuncio (
 	fecha_inicio date NOT NULL,
 	fecha_cierre date DEFAULT NULL,
 	estado bit(1) NOT NULL, -- 0:Inactivo, 1:Activo
-	experiencia tinyint(1) NOT NULL,
+	experiencia bit(1) NOT NULL, -- 0:Con Experiencia, 1:Sin Experiencia
 	pago_hora int DEFAULT NULL,
 	id_empleador int NOT NULL,
 	calificacion_desde double DEFAULT NULL,
@@ -291,7 +291,22 @@ INSERT INTO empleador (cedula, nombre, apellido, fecha_nacimiento, genero, domic
 VALUES (1234567-8, 'la jefecita', 'ma mejor', '1975-05-22', 0, 'Yi 1234', 'Uruguayo', 'jefecita@gmail.com', '099123456', 0, '', 0, 2);
 
 -- En tabla "anuncio"
-
+INSERT INTO anuncio (titulo, descripcion, fecha_inicio, fecha_cierre, estado, experiencia, pago_hora, id_empleador, calificacion_desde, calificacion_hasta, tiene_vinculo)
+VALUES ('Necesito limpiar mi casa', 'Lo del título', '2020-02-20', NULL, 1, 1, 120, 1, NULL, NULL, false);
+INSERT INTO anuncio_disponibilidad (id_anuncio, id_disponibilidad)
+VALUES (1, 4);
+INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
+VALUES (1, 3);
+INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
+VALUES (1, 4);
+INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
+VALUES (1, 5);
+INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
+VALUES (1, 6);
+INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
+VALUES (1, 7);
+INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
+VALUES (1, 10);
 
 -- En tabla "anuncio_disponibilidad"
 

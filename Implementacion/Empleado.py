@@ -93,8 +93,8 @@ class Empleado:
             bd.connection.commit()
             cursor.close()
             print('Empleado Creado')
-        except:
-            print("Error en creación del empleado")
+        except Exception as e:
+            print("Error en creación del empleado ", e)
 
     def modificarEmpleado(self, bd):
         try:
@@ -103,8 +103,8 @@ class Empleado:
             bd.connection.commit()
             cursor.close()
             print('Empleado modificado')
-        except:
-            print("Error en edición de empleado")
+        except Exception as e:
+            print("Error en edición de empleado ", e)
 
     def eliminarEmpleado(self, bd):
         try:
@@ -113,8 +113,8 @@ class Empleado:
             bd.connection.commit()
             cursor.close()
             print('Empleado Eliminado')
-        except:
-            print("Error en eliminación de empleado")
+        except Exception as e:
+            print("Error en eliminación de empleado ", e)
 
     def listarEmpleados(self, bd):
         try:
@@ -123,8 +123,8 @@ class Empleado:
             bd.connection.commit()
             cursor.close()
             print('Listado de empleados')
-        except:
-            print("Error al listar los empleados")
+        except Exception as e:
+            print("Error al listar los empleados ", e)
 
     def postularseParaAnuncio(self, bd):
         try:
@@ -133,8 +133,8 @@ class Empleado:
             bd.connection.commit()
             cursor.close()
             print('Postulado para empleo')
-        except:
-            print('Error en postulación')
+        except Exception as e:
+            print('Error en postulación ', e)
 
 
 def getEmpleadoByID(bd, id):
@@ -157,29 +157,32 @@ def getEmpleadoByID(bd, id):
                 foto,
                 promedio_calificacion,
                 id_usuario
-            FROM empleado WHERE id = %s''', (id))
+            FROM empleado WHERE id = {}'''.format(id))
         retorno = cursor.fetchall()
         bd.connection.commit()
         cursor.close()
         empleado = Empleado(
-            retorno['id'],
-            retorno['cedula'],
-            retorno['nombre'],
-            retorno['apellido'],
-            retorno['fecha_nacimiento'],
-            retorno['genero'],
-            retorno['domicilio'],
-            retorno['nacionalidad'],
-            retorno['email'],
-            retorno['telefono'],
-            retorno['experiencia_meses'],
-            retorno['descripcion'],
-            retorno['foto'],
-            retorno['promedio_calificacion'],
-            retorno['id_usuario'])
+            retorno[0][0],
+            retorno[0][1],
+            retorno[0][2],
+            retorno[0][3],
+            retorno[0][4],
+            retorno[0][5],
+            retorno[0][6],
+            retorno[0][7],
+            retorno[0][8],
+            retorno[0][9],
+            retorno[0][10],
+            retorno[0][11],
+            retorno[0][12],
+            retorno[0][13],
+            retorno[0][14],
+            None,
+            None,
+            None)
         return empleado
-    except:
-        print("Error en getEmpleadoByID")
+    except Exception as e:
+        print("Error en getEmpleadoByID ", e)
 
 
 def getEmpleadoByUsuarioID(bd, idUsuario):
@@ -202,26 +205,29 @@ def getEmpleadoByUsuarioID(bd, idUsuario):
                 e.foto,
                 e.promedio_calificacion,
                 e.id_usuario
-            FROM empleado e INNER JOIN usuario u ON e.id_usuario = u.id WHERE u.id = %s''', (idUsuario))
+            FROM empleado e INNER JOIN usuario u ON e.id_usuario = u.id WHERE u.id = {}'''.format(idUsuario))
         retorno = cursor.fetchall()
         bd.connection.commit()
         cursor.close()
         empleado = Empleado(
-            retorno['id'],
-            retorno['cedula'],
-            retorno['nombre'],
-            retorno['apellido'],
-            retorno['fecha_nacimiento'],
-            retorno['genero'],
-            retorno['domicilio'],
-            retorno['nacionalidad'],
-            retorno['email'],
-            retorno['telefono'],
-            retorno['experiencia_meses'],
-            retorno['descripcion'],
-            retorno['foto'],
-            retorno['promedio_calificacion'],
-            retorno['id_usuario'])
+            retorno[0][0],
+            retorno[0][1],
+            retorno[0][2],
+            retorno[0][3],
+            retorno[0][4],
+            retorno[0][5],
+            retorno[0][6],
+            retorno[0][7],
+            retorno[0][8],
+            retorno[0][9],
+            retorno[0][10],
+            retorno[0][11],
+            retorno[0][12],
+            retorno[0][13],
+            retorno[0][14],
+            None,
+            None,
+            None)
         return empleado
-    except:
-        print("Error en getEmpleadoByUsuarioID")
+    except Exception as e:
+        print("Error en getEmpleadoByUsuarioID ", e)
