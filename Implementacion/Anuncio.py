@@ -3,14 +3,14 @@ from datetime import datetime
 
 class Anuncio:
 
-    def __init__(self, pTitulo, pDescripcion, pFechaInicio, pFechaCierre, pEstado, pExperiencia, pSalario, pIdEmpleador, pCalDesde, pCalHasta, pTieneVinculo):
+    def __init__(self, pTitulo, pDescripcion, pFechaInicio, pFechaCierre, pEstado, pExperiencia, pPago_hora, pIdEmpleador, pCalDesde, pCalHasta, pTieneVinculo):
         self.titulo = pTitulo
         self.descripcion = pDescripcion
         self.fecha_inicio = pFechaInicio
         self.fecha_cierre = pFechaCierre
         self.estado = pEstado
         self.experiencia = pExperiencia
-        self.salario = pSalario
+        self.pago_hora = pPago_hora
         self.id_empleador = pIdEmpleador
         self.calificacion_desde = pCalDesde
         self.calificacion_hasta = pCalHasta
@@ -31,21 +31,20 @@ class Anuncio:
                         fecha_cierre,
                         estado,
                         experiencia,
-                        salario,
+                        pago_hora,
                         id_empleador,
                         calificacion_desde,
                         calificacion_hasta,
                         tiene_vinculo
                     )
-                VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)''',
-                           (
+                VALUES ("{}","{}","{}","{}","{}","{}","{}","{}","{}","{}","{}")'''.format(
                                self.titulo,
                                self.descripcion,
                                self.fecha_inicio,
                                self.fecha_cierre,
                                self.estado,
                                self.experiencia,
-                               self.salario,
+                               self.pago_hora,
                                self.id_empleador,
                                self.calificacion_desde,
                                self.calificacion_hasta,
@@ -68,7 +67,7 @@ class Anuncio:
                     fecha_cierre = %s,
                     estado = %s,
                     experiencia = %s,
-                    salario = %s,
+                    pago_hora = %s,
                     id_empleador = %s,
                     calificacion_desde = %s,
                     calificacion_hasta = %s,
@@ -81,7 +80,7 @@ class Anuncio:
                 self.fecha_cierre,
                 self.estado,
                 self.experiencia,
-                self.salario,
+                self.pago_hora,
                 self.id_empleador,
                 self.calificacion_desde,
                 self.calificacion_hasta,
@@ -117,7 +116,6 @@ def getAnuncioByID(bd, id):
         bd.connection.commit()
         cursor.close()
         anuncio = Anuncio(
-            retorno[0][0],
             retorno[0][1],
             retorno[0][2],
             retorno[0][3],
