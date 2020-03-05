@@ -16,51 +16,100 @@
       <form class="needs-validation" novalidate="" action="/Registrar/{{session['useroption']}}" method="POST">
         <div class="row">
           <div class="col-md-6 mb-3">
-            <label for="nombre">Nombre</label>
-            <input type="text" class="form-control" id="nombre" placeholder="" value="" required="" name="txtNombre">
+            <label for="name">Nombre</label>
+            <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre" value="" required="">
             <div class="invalid-feedback">
-              Debe ingresar su nombre.
+              Se requiere un Nombre válido.
             </div>
           </div>
           <div class="col-md-6 mb-3">
-            <label for="apellido">Apellido</label>
-            <input type="text" class="form-control" id="apellido" placeholder="" value="" required="" name="txtApellido">
+            <label for="lastName">Apellido</label>
+            <input type="text" class="form-control" name="apellido" id="apelido" placeholder="Apellido" value="" required="">
             <div class="invalid-feedback">
-              Debe ingresar su apellido.
+              Se requiere un Apellido válido.
             </div>
           </div>
         </div>
 
-        <div class="mb-3">
-          <label for="apellido">Fecha de nacimiento</label>
-          <input type="text" class="form-control col-sm-3" id="nacimiento" placeholder="01/01/0001" value="" required="" name="txtNacimiento">
-        </div>
-
-        <div class="d-block my-3 mb-3">
-					<p class="mb-1">Género</p>
-					<div class="custom-control custom-radio ml-5">
-					  <input id="generoFemenino" name="radioGenero" type="radio" class="custom-control-input" checked="" required="">
-					  <label class="custom-control-label" for="generoFemenino">Femenino</label>
-					</div>
-					<div class="custom-control custom-radio ml-5">
-					  <input id="generoMasculino" name="radioGenero" type="radio" class="custom-control-input" required="">
-					  <label class="custom-control-label" for="generoMasculino">Masculino</label>
-					</div>
-        </div>
-
-        <div class="mb-3">
-          <label for="cedula">Cédula de identidad</label>
-          <div class="input-group">
-            <input type="text" class="form-control col-sm-3" id="cedula" placeholder="1.234.567-8" required="" name="txtCedula">
-            <div class="invalid-feedback" style="width: 100%;">
-              Debe ingresar su cédula.
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="ci">Cédula de identidad</label>
+            <input type="text" class="form-control" name="ci" id="ci" placeholder="50726621" required="">
+            <div class="invalid-feedback">
+              Por favor seleccione una CI válida.
             </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="phone">Teléfono</label>
+            <input type="text" class="form-control" name="tel" id="tel" placeholder="23655544" required="">
+            <div class="invalid-feedback">
+              Por favor seleccione un Teléfono válido.
+            </div>
+          </div>
+        </div>
+
+        <!--<div class="row">
+          <div class="col-md-3 mb-3">
+            <label for="country">Pais</label>
+            <select class="custom-select d-block w-100" name="country" id="country" required="">
+              <option value="">Seleccionar...</option>
+              <option value="Argentina">Argentina</option>
+              <option value="Brasil">Brasil</option>
+              <option value="Chile">Chile</option>
+              <option value="Uruguay">Uruguay</option>
+            </select>
+            <div class="invalid-feedback">
+              Por favor seleccione un País válido.
+            </div>
+          </div>
+          <div class="col-md-3 mb-3">
+            <label for="state">Departamento</label>
+            <select class="custom-select d-block w-100" name="state" id="state" required="">
+              <option value="">Seleccionar...</option>
+              <option value="Canelones">Canelones</option>
+              <option value="Montevideo">Montevideo</option>
+            </select>
+            <div class="invalid-feedback">
+              Por favor seleccione un Departamento válido.
+            </div>
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="city">Ciudad</label>
+            <select class="custom-select d-block w-100" name="city" id="city" required="">
+              <option value="">Seleccionar...</option>
+              <option value="Las Piedras">Las Piedras</option>
+              <option value="La Paz">La Paz</option>
+            </select>
+            <div class="invalid-feedback">
+              Por favor seleccione una Ciudad válida.
+            </div>
+          </div>
+        </div>-->
+        
+        <div class="d-block my-3">
+          <p>Género</p>
+          <div class="custom-control custom-radio">
+            <input id="genderF" name="genero" type="radio" class="custom-control-input" checked="" required="">
+            <label class="custom-control-label" for="genderF">Femenino</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input id="genderM" name="genero" type="radio" class="custom-control-input" required="">
+            <label class="custom-control-label" for="genderM">Masculino</label>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="birthdate">Fecha de nacimiento</label>
+          <input type="date" class="form-control col-sm-3" name ="cumple" id="cumple" value="" required="">
+          <div class="invalid-feedback">
+            Por favor seleccione una Fecha de nacimiento válida.
           </div>
         </div>
 
         <div class="mb-3">
           <label for="domicilio">Domicilio</label>
-          <input type="text" class="form-control" id="domicilio" placeholder="18 de Julio 1234" required="" name="txtDomicilio">
+          <input type="text" class="form-control" name="domicilio" id="domicilio" placeholder="18 de Julio 1234" required="">
           <div class="invalid-feedback">
             Debe ingresar su domicilio.
           </div>
@@ -68,37 +117,29 @@
 
         <div class="mb-3">
           <label for="nacionalidad">Nacionalidad</label>
-          <input type="text" class="form-control col-sm-5" id="nacionalidad" placeholder="Uruguayo" name="txtNacionalidad">
+          <input type="text" class="form-control col-sm-5" name="nacionalidad" id="nacionalidad" placeholder="Uruguayo">
         </div>
 
         <div class="mb-3">
-          <label for="email">Email <span class="text-muted">(Optional)</span></label>
-          <input type="email" class="form-control" id="email" placeholder="tu@ejemplo.com" name="txtMail">
+          <label for="email">Email </label>
+          <input type="email" class="form-control" name="email" id="email" placeholder="nombre@gmail.com" required="">
           <div class="invalid-feedback">
-            Debe ingresar un correo electrónico válido.
+            Se requiere un Email válido.
           </div>
         </div>
 
         <div class="mb-3">
-          <label for="emailConfirm">Confirmar Email <span class="text-muted">(Optional)</span></label>
-            <input type="email" class="form-control" id="emailConfirm" placeholder="tu@ejemplo.com" name="txtConfirmaMail">
+          <label for="emailConf">Confirmar Email </label>
+          <input type="email" class="form-control" name="emailConf" id="emailConf" placeholder="nombre@gmail.com" required="">
           <div class="invalid-feedback">
-            Debe ingresar un correo electrónico válido.
+            Se requiere un Email válido.
           </div>
         </div>
 
-        <div class="mb-3">
-          <label for="telefono">Teléfono</label>
-          <input type="text" class="form-control col-sm-5" id="telefono" placeholder="099123456" name="txtTelefono">
-          <div class="invalid-feedback" style="width: 100%;">
-            Debe ingresar su teléfono.
-          </div>
-        </div>
-
-        <div class="row mb-5">
+          <div class="row mb-5">
           <div class="col-md-6 mt-5 mb-3">
             <label for="password">Contraseña</label>
-            <input type="password" class="form-control" id="password" placeholder="" required="" name="txtPassword">
+            <input type="password" class="form-control" name="password" id="password" placeholder="" required="">
             <small class="text-muted">Debe contener al menos 8 caracteres</small>
             <div class="invalid-feedback">
               Debe ingresar una contraseña
@@ -106,7 +147,7 @@
           </div>
           <div class="col-md-6 mt-5   mb-3">
             <label for="repassword">Confirmar contraseña</label>
-            <input type="password" class="form-control" id="repassword" placeholder="" required="" name="txtConfirmaPassword">
+            <input type="password" class="form-control" name="passwordConf" id="repassword" placeholder="" required="">
             <small class="text-muted">Debe reingresar la contraseña</small>
             <div class="invalid-feedback">
               Debe confirmar la contraseña
@@ -114,7 +155,7 @@
           </div>
         </div>
 
-        <button class="btn btn btn-primary btn-block" type="submit" name="btnRegistrar">REGISTRARSE</button>
+        <button class="btn btn btn-success btn-block" type="submit" name="btnRegistrar">REGISTRARSE</button>
 
         {% with message = get_flashed_messages() %}
 				{% if messages %}

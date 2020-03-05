@@ -18,7 +18,7 @@ from Implementacion.Anuncio import getAnuncioByID
 from Implementacion.Anuncio import Anuncio
 
 app = Flask(__name__)
-baseDatos = connectionDb(app)
+baseDatos = connectionDb(app, True)
 
 
 # session
@@ -267,6 +267,15 @@ def registroVale(opcion):
     return render_template('registroVale.html')
 
 
+@app.route('/Perfil/')
+def perfil():
+    #session['usertype'] = 'Empleado'
+    if session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    else:
+        return render_template('Perfil.html')
+
+
 @app.route('/perfilEmpleado/')
 def perfilEmpleado():
     if session.get('usertype') == None:
@@ -290,6 +299,10 @@ def perfilEmpleador():
     else:
         return render_template('perfilEmpleador.html')
 
+
+@app.route('/Editar/<opcion>', methods=['POST'])
+def editar_usuario(opcion):
+    return 'Hola!'
 
 if __name__ == '__main__':
     app.run(debug=True)
