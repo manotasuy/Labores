@@ -9,6 +9,11 @@ from Implementacion.Conexion import connectionDb
 from Implementacion.Usuario import Usuario
 from Implementacion.Empleado import Empleado
 from Implementacion.Empleador import Empleador
+from Implementacion.Anuncio import Anuncio
+from Implementacion.Postulación import Postulacion
+from Implementacion.Tarea import Tarea
+from Implementacion.Disponibilidad import Disponibilidad
+
 from Implementacion.Usuario import getUsuarioByID
 from Implementacion.Empleador import getEmpleadorByID
 from Implementacion.Empleador import getEmpleadorByUsuarioID
@@ -18,7 +23,8 @@ from Implementacion.Empleado import getTareasEmpleado
 from Implementacion.Empleado import getReferenciasEmpleado
 from Implementacion.Empleado import getDisponibilidadEmpleado
 from Implementacion.Anuncio import getAnuncioByID
-from Implementacion.Anuncio import Anuncio
+from Implementacion.Postulación import getPostulacionesAnuncio
+from Implementacion.Postulación import getPostulacionesEmpleado
 
 app = Flask(__name__)
 
@@ -334,8 +340,8 @@ def listar_anuncios():
         return render_template('ListaAnuncios.html')
 
 
-@app.route('/Candidatos/')
-def listar_candidatos():
+@app.route('/Candidatos/<anuncio>', methods=['POST', 'GET'])
+def listar_candidatos(anuncio):
     if session.get('usertype') == None:
         return redirect(url_for('logueo'))
     elif session.get('usertype') == 'Administrador':
@@ -343,7 +349,11 @@ def listar_candidatos():
     elif session.get('usertype') == 'Empleado':
         return redirect(url_for('inicio_empleados'))
     else:
-        return render_template('ListaCandidatos.html')
+        # Debo obtener la lista de postulaciones para el anuncio dado
+        postulaciones = getPostulacionesAnuncio(baseDatos, anuncio)
+        print('Anuncio: ', anuncio)
+        print('Postulaciones:', postulaciones)
+        return render_template('ListaCandidatos.html', data=postulaciones)
 
 
 @app.route('/Editar/<opcion>', methods=['POST'])

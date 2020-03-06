@@ -99,6 +99,16 @@ class Anuncio:
         except Exception as e:
             print("Error en updateAnuncio ", e)
 
+    def obtenerPostulaciones(self, bd):
+        try:
+            cursor = bd.connection.cursor()
+            cursor.execute('SELECT * FROM empleado...')
+            bd.connection.commit()
+            cursor.close()
+            print('Postulado para empleo')
+        except Exception as e:
+            print('Error en postulación ', e)
+
 
 def getAnuncioByID(bd, id):
     try:

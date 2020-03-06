@@ -141,7 +141,7 @@ CREATE TABLE IF NOT EXISTS referencia (
 -- Tabla: anuncio
 CREATE TABLE IF NOT EXISTS anuncio (
 	id int NOT NULL AUTO_INCREMENT,
-	titulo varchar(50) NOT NULL,
+	titulo varchar(100) NOT NULL,
 	descripcion text,
 	fecha_inicio date NOT NULL,
 	fecha_cierre date DEFAULT NULL,
@@ -183,7 +183,6 @@ CREATE TABLE IF NOT EXISTS postulacion (
 	id_empleado int NOT NULL,
 	id_anuncio int NOT NULL,
 	fecha date DEFAULT NULL,
-	mensaje varchar(50) DEFAULT NULL,
 	genera_vinculo boolean NULL,
 	CONSTRAINT PK_postulacion PRIMARY KEY (id),
 	CONSTRAINT FK_postulacion_empleado FOREIGN KEY (id_empleado) REFERENCES empleado(id),
@@ -200,7 +199,7 @@ CREATE TABLE IF NOT EXISTS vinculo (
 	fecha_inicio date DEFAULT NULL,
 	fecha_fin date DEFAULT NULL,
 	motivo_fin text,
-	descripcion varchar(200) DEFAULT NULL,
+	descripcion text DEFAULT NULL,
 	calificacion_empleado double DEFAULT NULL,
 	calificacion_empleador double DEFAULT NULL,
 	CONSTRAINT PK_vinculo PRIMARY KEY (id),
@@ -217,7 +216,7 @@ CREATE TABLE IF NOT EXISTS mensaje (
 	id_empleador int NOT NULL,
 	id_anuncio int NOT NULL,
 	fecha date NULL,
-	mensaje varchar(200) NULL,
+	mensaje text NULL,
 	CONSTRAINT PK_mensaje PRIMARY KEY (id),
 	CONSTRAINT FK_mensaje_anuncio FOREIGN KEY (id_anuncio) REFERENCES anuncio (id),
 	CONSTRAINT FK_mensaje_empleado FOREIGN KEY (id_empleado) REFERENCES empleado (id),
@@ -329,17 +328,26 @@ VALUES (3, 2);
 
 -- En tabla "postulacion"
 INSERT INTO postulacion (id_empleado, id_anuncio, fecha, mensaje, genera_vinculo)
-VALUES (1, 1, '2020-02-20', 'Estoy interesada en el anuncio, tengo buenas referencias', false);
+VALUES (1, 1, '2020-02-20', false);
 INSERT INTO postulacion (id_empleado, id_anuncio, fecha, mensaje, genera_vinculo)
-VALUES (1, 3, '2020-02-28', 'Quisiera postularme para el empleo, aguardo respuesta', false);
+VALUES (1, 3, '2020-02-28', false);
 INSERT INTO postulacion (id_empleado, id_anuncio, fecha, mensaje, genera_vinculo)
-VALUES (2, 1, '2020-02-21', 'Lo quiero', false);
+VALUES (2, 1, '2020-02-21', false);
 INSERT INTO postulacion (id_empleado, id_anuncio, fecha, mensaje, genera_vinculo)
-VALUES (2, 2, '2020-02-29', 'Me encanta el empleo', false);
+VALUES (2, 2, '2020-02-29', false);
 INSERT INTO postulacion (id_empleado, id_anuncio, fecha, mensaje, genera_vinculo)
-VALUES (2, 3, '2020-03-05', 'Tengo gran experiencia en limpieza de oficinas', false);
+VALUES (2, 3, '2020-03-05', false);
 
 -- En tabla "mensaje"
-
+INSERT INTO mensaje (id_empleado, id_empleador, id_anuncio, fecha, mensaje)
+VALUES (1, 1, 1, '2020-02-20', 'Estoy interesada en el anuncio, tengo buenas referencias');
+INSERT INTO mensaje (id_empleado, id_empleador, id_anuncio, fecha, mensaje)
+VALUES (1, 1, 3, '2020-02-20', 'Quisiera postularme para el empleo, aguardo respuesta');
+INSERT INTO mensaje (id_empleado, id_empleador, id_anuncio, fecha, mensaje)
+VALUES (2, 1, 1, '2020-02-20', 'Lo quiero... al empleo, no a ud.');
+INSERT INTO mensaje (id_empleado, id_empleador, id_anuncio, fecha, mensaje)
+VALUES (2, 1, 2, '2020-02-20',  'Me encanta el empleo');
+INSERT INTO mensaje (id_empleado, id_empleador, id_anuncio, fecha, mensaje)
+VALUES (2, 1, 3, '2020-02-20', 'Tengo gran experiencia en limpieza de oficinas');
 
 -- En tabla "vinculo"

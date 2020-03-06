@@ -302,59 +302,68 @@ def getEmpleadoByUsuarioID(bd, idUsuario):
 
 
 def getTareasEmpleado(bd, idEmpleado):
-    cursor = bd.connection.cursor()
-    cursor.execute('''
-            SELECT
-                t.id,
-                t.descripcion
-            FROM empleado_tarea et INNER JOIN tarea t ON et.id_tarea = t.id WHERE et.id_empleado = {}'''.format(idEmpleado))
-    retorno = cursor.fetchall()
-    bd.connection.commit()
-    cursor.close()
-    # desde el retorno debo generar los objetos Tarea
-    tareas = Tarea().__dict__
-    for tuplaTarea in retorno:
-        objeto = Tarea(tuplaTarea[0], tuplaTarea[1])
-        tareas[len(tareas) - 1] = objeto
-    return tareas
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('''
+                SELECT
+                    t.id,
+                    t.descripcion
+                FROM empleado_tarea et INNER JOIN tarea t ON et.id_tarea = t.id WHERE et.id_empleado = {}'''.format(idEmpleado))
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+        # desde el retorno debo generar los objetos Tarea
+        tareas = Tarea().__dict__
+        for tuplaTarea in retorno:
+            tarea = Tarea(tuplaTarea[0], tuplaTarea[1])
+            tareas[len(tareas) - 1] = tarea
+        return tareas
+    except Exception as e:
+        print("Error en getTareasEmpleado ", e)
 
 
 def getDisponibilidadEmpleado(bd, idEmpleado):
-    cursor = bd.connection.cursor()
-    cursor.execute('''
-            SELECT
-                d.id,
-                d.descripcion
-            FROM empleado_disponibilidad ed INNER JOIN disponibilidad d ON ed.id_disponibilidad = d.id WHERE ed.id_empleado = {}'''.format(idEmpleado))
-    retorno = cursor.fetchall()
-    bd.connection.commit()
-    cursor.close()
-    # desde el retono debo generar los objetos Disponibilidad
-    disponibilidad = Disponibilidad().__dict__
-    for tuplaDisponibilidad in retorno:
-        objeto = Disponibilidad(tuplaDisponibilidad[0], tuplaDisponibilidad[1])
-        disponibilidad[len(disponibilidad) - 1] = objeto
-    return disponibilidad
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('''
+                SELECT
+                    d.id,
+                    d.descripcion
+                FROM empleado_disponibilidad ed INNER JOIN disponibilidad d ON ed.id_disponibilidad = d.id WHERE ed.id_empleado = {}'''.format(idEmpleado))
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+        # desde el retono debo generar los objetos Disponibilidad
+        disponibilidades = Disponibilidad().__dict__
+        for tuplaDisponibilidad in retorno:
+            disponibilidad = Disponibilidad(
+                tuplaDisponibilidad[0], tuplaDisponibilidad[1])
+            disponibilidades[len(disponibilidades) - 1] = disponibilidad
+        return disponibilidades
+    except Exception as e:
+        print("Error en getDisponibilidadEmpleado ", e)
 
 
 def getReferenciasEmpleado(bd, idEmpleado):
-    cursor = bd.connection.cursor()
-    cursor.execute('''
-            SELECT
-                id,
-                nombre,
-                telefono,
-                fecha_desde,
-                fecha_hasta
-            FROM referencia WHERE id_empleado = {}'''.format(idEmpleado))
-    retorno = cursor.fetchall()
-    bd.connection.commit()
-    cursor.close()
-    # desde el retono debo generar los objetos Referencia
-    referencias = None
-    referencias = Referencia().__dict__
-    for tuplaReferencia in retorno:
-        objeto = Referencia(tuplaReferencia[0], getEmpleadoByID(bd, idEmpleado), tuplaReferencia[1],
-                            tuplaReferencia[2], tuplaReferencia[3], tuplaReferencia[4])
-        referencias[len(referencias) - 1] = objeto
-    return referencias
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('''
+                SELECT
+                    id,
+                    nombre,
+                    telefono,
+                    fecha_desde,
+                    fecha_hasta
+                FROM referencia WHERE id_empleado = {}'''.format(idEmpleado))
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+        # desde el retono debo generar los objetos Referencia
+        referencias = Referencia().__dict__
+        for tuplaReferencia in retorno:
+            referencia = Referencia(tuplaReferencia[0], getEmpleadoByID(bd, idEmpleado), tuplaReferencia[1],
+                                    tuplaReferencia[2], tuplaReferencia[3], tuplaReferencia[4])
+            referencias[len(referencias) - 1] = referencia
+        return referencias
+    except Exception as e:
+        print("Error en getReferenciasEmpleado ", e)
