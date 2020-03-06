@@ -1,0 +1,76 @@
+{% extends 'page_layout.html' %}
+
+{% block referencias %}
+{% endblock %}
+
+{% block estilo %}
+{% endblock %}
+
+{% block titulo %}<title>Labores - Plantilla</title>{% endblock %}
+
+{% block contenido %}
+
+    <nav class="container">
+        <table class="table table-responsive table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col" colspan="7">Lista de cuentas registradas como Empleado</th>
+                    </tr>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Email</th>
+                        <th>Teléfono</th>
+                        <th>Nacionalidad</th>
+                        <th>Cédula de Identidad</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>John</td>
+                        <td>Doe</td>
+                        <td>john@example.com</td>
+                        <td>098555666</td>
+                        <td>Oriental</td>
+                        <td>54443330</td>
+                        <td>
+                            <button type="button" class="btn btn-danger">Eliminar</button>
+                            <button type="button" class="btn btn-secondary">Editar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Smith</td>
+                        <td>Thomas</td>
+                        <td>smith@example.com</td>
+                        <td>098555111</td>
+                        <td>Argentino</td>
+                        <td>54412330</td>
+                        <td>
+                            <button type="button" class="btn btn-danger">Eliminar</button>
+                            <button type="button" class="btn btn-secondary">Editar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Merry</td>
+                        <td>Jim</td>
+                        <td>merry@example.com</td>
+                        <td>098999666</td>
+                        <td>Oriental</td>
+                        <td>54446780</td>
+                        <td>
+                            <button type="button" class="btn btn-danger">Eliminar</button>
+                            <button type="button" class="btn btn-secondary">Editar</button>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+
+    <a href="/PanelControl" class="btn btn-primary btn-block" >Volver</a>
+
+</nav>
+
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
