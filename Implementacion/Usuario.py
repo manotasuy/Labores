@@ -1,7 +1,7 @@
 
 class Usuario:
 
-    def __init__(self, pId=None, pUsuario=None, pClave=None, pTipo=None):
+    def __init__(self, pId=0, pUsuario='', pClave='', pTipo=''):
         self.id = pId
         self.usuario = pUsuario
         self.clave = pClave

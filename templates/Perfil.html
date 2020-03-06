@@ -135,15 +135,25 @@
         <hr class="mt-5 mb-5">
         <div class="d-block my-3">
           <p>¿Tiene experiencia en el rubro?</p>
+          {% if data.experiencia_meses is none or data.experiencia_meses == 0 %}
           <div class="custom-control custom-radio">
-            <input id="experienciaSi" name="experiencia" type="radio" class="custom-control-input" checked=""
-              required="">
+            <input name="experiencia" type="radio" class="custom-control-input" required="">
             <label class="custom-control-label" for="experienciaSi">Si</label>
           </div>
           <div class="custom-control custom-radio">
-            <input id="experienciaNo" name="experiencia" type="radio" class="custom-control-input" required="">
+            <input name="experiencia" type="radio" class="custom-control-input" checked="" required="">
             <label class="custom-control-label" for="experienciaNo">No</label>
           </div>
+          {% else %}
+          <div class="custom-control custom-radio">
+            <input name="experiencia" type="radio" class="custom-control-input" checked="" required="">
+            <label class="custom-control-label" for="experienciaSi">Si</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input name="experiencia" type="radio" class="custom-control-input" required="">
+            <label class="custom-control-label" for="experienciaNo">No</label>
+          </div>
+          {% endif %}
         </div>
 
         <div class="d-block my-3">
@@ -265,7 +275,28 @@
         {% endif %}
 
         <button class="btn btn-success btn btn-block" type="submit">GUARDAR</button>
-        <button class="btn btn-danger btn-block" type="submit">Eliminar cuenta</button>
+        <a class="btn btn btn-danger btn-delete btn-block" href="" aria-label="" data-toggle="modal"
+          data-target="#modal">Eliminar cuenta</a>
+
+        <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="mensaje" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">Mensaje</h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <h4>Funcionalidad no implementada</h4>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Aceptar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </form>
     </div>
   </div>
@@ -273,4 +304,5 @@
 {% endblock %}
 
 {% block scripts %}
+<!--<script src="{{url_for('static', filename='scripts/main.js')}}"></script>-->
 {% endblock %}

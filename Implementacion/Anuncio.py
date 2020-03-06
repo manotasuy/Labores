@@ -1,9 +1,11 @@
 from datetime import datetime
+from Implementacion.Tarea import Tarea
+from Implementacion.Disponibilidad import Disponibilidad
 
 
 class Anuncio:
 
-    def __init__(self, pId=None, pTitulo=None, pDescripcion=None, pFechaInicio=None, pFechaCierre=None, pEstado=None, pExperiencia=None, pPago_hora=None, pIdEmpleador=None, pCalDesde=None, pCalHasta=None, pTieneVinculo=None):
+    def __init__(self, pId=0, pTitulo='', pDescripcion='', pFechaInicio='', pFechaCierre='', pEstado='', pExperiencia='', pPago_hora='', pIdEmpleador=0, pCalDesde='', pCalHasta='', pTieneVinculo=''):
         self.id = pId
         self.titulo = pTitulo
         self.descripcion = pDescripcion

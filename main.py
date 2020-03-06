@@ -114,6 +114,10 @@ def perfil(opcion):
     else:
         logueado = session.get('usertype') is not None
 
+        # Debo traer las tareas y disponibilidades para cargarlas dinámicamente
+        #tareasTodas = getTareas(baseDatos)
+        #disponibilidadTodas = getDisponibilidades(baseDatos)
+
         if opcion == 'Empleado':
             objeto = Empleado()
             if logueado:
@@ -202,6 +206,19 @@ def guardar_perfil(tipo):
                 else:
                     empleador.crearEmpleador(baseDatos)
                 return redirect(url_for('inicio_empleadores'))
+
+
+# Se deja standby porque requiere desactivar un montón de cosas y no era parte de las funcionalidades planteadas
+@app.route('/EliminarCuenta/', methods=['POST'])
+def cancelar_cuenta():
+    usuarioLogueado = session.get('usertype')
+    if usuarioLogueado == 'Empleado':
+        idEmpleado = session['id_empleado']
+        objeto = getEmpleadoByID(baseDatos, idEmpleado)
+    else:
+        idEmpleador = session['id_empleador']
+        objeto = getEmpleadorByID(baseDatos, idEmpleador)
+    return 'Hola!'
 
 
 @app.route('/HomeEmpleados/')
@@ -327,44 +344,6 @@ def listar_candidatos():
         return redirect(url_for('inicio_empleados'))
     else:
         return render_template('ListaCandidatos.html')
-
-
-# @app.route('/registroVale/<opcion>')
-# def registroVale(opcion):
-    #session['useroption'] = opcion
-    # return render_template('registroVale.html')
-
-
-# @app.route('/perfilEmpleado/')
-# def perfilEmpleado():
-    # if session.get('usertype') == None:
-        # return redirect(url_for('logueo'))
-    # elif session.get('usertype') == 'Administrador':
-        # return redirect(url_for('administrar'))
-    # elif session.get('usertype') == 'Empleador':
-        # return redirect(url_for('inicio_empleadores'))
-    # else:
-        # return render_template('perfilEmpleado.html')
-
-
-# @app.route('/perfilEmpleador/')
-# def perfilEmpleador():
-    # if session.get('usertype') == None:
-        # return redirect(url_for('logueo'))
-    # elif session.get('usertype') == 'Administrador':
-        # return redirect(url_for('administrar'))
-    # elif session.get('usertype') == 'Empleado':
-        # return redirect(url_for('inicio_empleados'))
-    # else:
-        # return render_template('perfilEmpleador.html')
-
-@app.route('/listarEmpleados/')
-def listarEmpleados():
-    return render_template('listarEmpleados.html')
-
-@app.route('/listarEmpleadores/')
-def listarEmpleadores():
-    return render_template('listarEmpleadores.html')
 
 
 @app.route('/Editar/<opcion>', methods=['POST'])

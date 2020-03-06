@@ -299,7 +299,6 @@ VALUES (1, 'Susana Riux', '091115028', '2015-02-23', '2017-04-22');
 INSERT INTO referencia (id_empleado, nombre, telefono, fecha_desde, fecha_hasta)
 VALUES (1, 'Leopoldo Garcia', '096524741', '2017-06-21', '2019-11-05');
 
-
 -- En tabla "empleador"
 INSERT INTO empleador (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, registro_bps, foto, promedio_calificacion, id_usuario)
 VALUES (1234567-8, 'la jefecita', 'ma mejor', '1975-05-22', 0, 'Yi 1234', 'Uruguayo', 'jefecita@gmail.com', '099123456', 0, '', 0, 2);
@@ -310,21 +309,35 @@ VALUES ('Necesito limpiar mi casa', 'Lo del título', '2020-02-20', NULL, 1, 1, 
 INSERT INTO anuncio_disponibilidad (id_anuncio, id_disponibilidad)
 VALUES (1, 4);
 INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
-VALUES (1, 3);
-INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
 VALUES (1, 4);
 INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
 VALUES (1, 5);
 INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
 VALUES (1, 6);
+INSERT INTO anuncio (titulo, descripcion, fecha_inicio, fecha_cierre, estado, experiencia, pago_hora, id_empleador, calificacion_desde, calificacion_hasta, tiene_vinculo)
+VALUES ('Cuidado de niños', 'Uno tiene 6, fatal!!!, el otro tiene 16, buenísimo pero fume porro', '2020-02-25', NULL, 1, 1, 200, 1, NULL, NULL, false);
+INSERT INTO anuncio_disponibilidad (id_anuncio, id_disponibilidad)
+VALUES (2, 2);
 INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
-VALUES (1, 7);
+VALUES (2, 7);
+INSERT INTO anuncio (titulo, descripcion, fecha_inicio, fecha_cierre, estado, experiencia, pago_hora, id_empleador, calificacion_desde, calificacion_hasta, tiene_vinculo)
+VALUES ('Limpieza de oficina', 'Es una oficina chica, en 2 horitas debería quedar pronta', '2020-02-26', NULL, 1, 1, 180, 1, NULL, NULL, false);
+INSERT INTO anuncio_disponibilidad (id_anuncio, id_disponibilidad)
+VALUES (3, 3);
 INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
-VALUES (1, 10);
-
+VALUES (3, 2);
 
 -- En tabla "postulacion"
-
+INSERT INTO postulacion (id_empleado, id_anuncio, fecha, mensaje, genera_vinculo)
+VALUES (1, 1, '2020-02-20', 'Estoy interesada en el anuncio, tengo buenas referencias', false);
+INSERT INTO postulacion (id_empleado, id_anuncio, fecha, mensaje, genera_vinculo)
+VALUES (1, 3, '2020-02-28', 'Quisiera postularme para el empleo, aguardo respuesta', false);
+INSERT INTO postulacion (id_empleado, id_anuncio, fecha, mensaje, genera_vinculo)
+VALUES (2, 1, '2020-02-21', 'Lo quiero', false);
+INSERT INTO postulacion (id_empleado, id_anuncio, fecha, mensaje, genera_vinculo)
+VALUES (2, 2, '2020-02-29', 'Me encanta el empleo', false);
+INSERT INTO postulacion (id_empleado, id_anuncio, fecha, mensaje, genera_vinculo)
+VALUES (2, 3, '2020-03-05', 'Tengo gran experiencia en limpieza de oficinas', false);
 
 -- En tabla "mensaje"
 

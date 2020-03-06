@@ -4,7 +4,7 @@ from Implementacion import Anuncio
 
 class Empleador:
 
-    def __init__(self, pId=None, pCedula=None, pNombre=None, pApellido=None, pNacimiento=None, pGenero=None, pDom=None, pNacional=None, pEmail=None, pTel=None, pBps=None, pFoto=None, pCalif=None, pUsuario=None):
+    def __init__(self, pId=0, pCedula='', pNombre='', pApellido='', pNacimiento='', pGenero='', pDom='', pNacional='', pEmail='', pTel='', pBps='', pFoto='', pCalif='', pUsuario=None):
         self.id = pId
         self.cedula = pCedula
         self.nombre = pNombre

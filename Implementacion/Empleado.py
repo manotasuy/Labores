@@ -1,9 +1,11 @@
 from datetime import datetime
+from Implementacion.Tarea import Tarea
+from Implementacion.Disponibilidad import Disponibilidad
 
 
 class Empleado:
 
-    def __init__(self, pId=None, pCedula=None, pNombre=None, pApellido=None, pNacimiento=None, pGenero=None, pDom=None, pNacional=None, pEmail=None, pTel=None, pExp=None, pFoto=None, pDesc=None, pCalif=None, pUsuario=None, pRefer=None, pTareas=None, pDispon=None):
+    def __init__(self, pId=0, pCedula='', pNombre='', pApellido='', pNacimiento='', pGenero='', pDom='', pNacional='', pEmail='', pTel='', pExp='', pFoto='', pDesc='None', pCalif='', pUsuario=None, pRefer=None, pTareas=None, pDispon=None):
         self.id = pId
         self.cedula = pCedula
         self.nombre = pNombre
@@ -185,30 +187,6 @@ class Empleado:
             print('Postulado para empleo')
         except Exception as e:
             print('Error en postulación ', e)
-
-
-class Tarea:
-    def __init__(self, pId=None, pDescripcion=None):
-        self.id = pId
-        self.descripcion = pDescripcion
-
-    def __getitem__(self, item):
-        return self.__dict__[item]
-
-    def __str__(self):
-        return 'Descripción: {}'.format(self.descripcion)
-
-
-class Disponibilidad:
-    def __init__(self, pId=None, pDescripcion=None):
-        self.id = pId
-        self.descripcion = pDescripcion
-
-    def __getitem__(self, item):
-        return self.__dict__[item]
-
-    def __str__(self):
-        return 'Descripción: {}'.format(self.descripcion)
 
 
 class Referencia:
