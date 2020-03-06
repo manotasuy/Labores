@@ -3,7 +3,7 @@ from datetime import datetime
 
 class Empleado:
 
-    def __init__(self, pId, pCedula, pNombre, pApellido, pNacimiento, pGenero, pDom, pNacional, pEmail, pTel, pExp, pFoto, pDesc, pCalif, pUsuario, pRefer, pTareas, pDispon):
+    def __init__(self, pId=None, pCedula=None, pNombre=None, pApellido=None, pNacimiento=None, pGenero=None, pDom=None, pNacional=None, pEmail=None, pTel=None, pExp=None, pFoto=None, pDesc=None, pCalif=None, pUsuario=None, pRefer=None, pTareas=None, pDispon=None):
         self.id = pId
         self.cedula = pCedula
         self.nombre = pNombre
@@ -22,6 +22,9 @@ class Empleado:
         self.referencias = pRefer
         self.tareas = pTareas
         self.disponibilidad = pDispon
+
+    def __getitem__(self, item):
+        return self.__dict__[item]
 
     def __str__(self):
         return 'Cédula: {}, Nombre: {}, Apellido: {}'.format(self.cedula, self.nombre, self.apellido)
@@ -56,7 +59,7 @@ class Empleado:
 
             cursor = bd.connection.cursor()
             cursor.execute('''
-                INSERT INTO empleado 
+                INSERT INTO empleado
                     (
                         cedula,
                         nombre,
@@ -99,12 +102,59 @@ class Empleado:
     def modificarEmpleado(self, bd):
         try:
             cursor = bd.connection.cursor()
-            cursor.execute('UPDATE empleado...')
+            cursor.execute('''
+                UPDATE empleado SET
+                    nombre = %s,
+                    apellido = %s,
+                    fecha_nacimiento = %s,
+                    genero = %s,
+                    domicilio = %s,
+                    nacionalidad = %s,
+                    email = %s,
+                    telefono = %s,
+                    experiencia_meses = %s,
+                    descripcion = %s,
+                    foto = %s,
+                    promedio_calificacion = %s
+                WHERE id = %s''',
+                           (
+                               self.nombre,
+                               self.apellido,
+                               self.nacimiento,
+                               self.genero,
+                               self.domicilio,
+                               self.nacionalidad,
+                               self.email,
+                               self.telefono,
+                               self.experiencia_meses,
+                               self.descripcion,
+                               self.foto,
+                               self.promedioCalificacion,
+                               self.id
+                           ))
             bd.connection.commit()
             cursor.close()
             print('Empleado modificado')
         except Exception as e:
             print("Error en edición de empleado ", e)
+
+    def cargarTareas(self, tareas):
+        try:
+            self.tareas = tareas
+        except Exception as e:
+            print("Error en cargarTareas ", e)
+
+    def cargarReferencias(self, referencias):
+        try:
+            self.referencias = referencias
+        except Exception as e:
+            print("Error en cargarReferencias ", e)
+
+    def cargarDisponibilidad(self, disponibilidad):
+        try:
+            self.disponibilidad = disponibilidad
+        except Exception as e:
+            print("Error en cargarDisponibilidad ", e)
 
     def eliminarEmpleado(self, bd):
         try:
@@ -135,6 +185,46 @@ class Empleado:
             print('Postulado para empleo')
         except Exception as e:
             print('Error en postulación ', e)
+
+
+class Tarea:
+    def __init__(self, pId=None, pDescripcion=None):
+        self.id = pId
+        self.descripcion = pDescripcion
+
+    def __getitem__(self, item):
+        return self.__dict__[item]
+
+    def __str__(self):
+        return 'Descripción: {}'.format(self.descripcion)
+
+
+class Disponibilidad:
+    def __init__(self, pId=None, pDescripcion=None):
+        self.id = pId
+        self.descripcion = pDescripcion
+
+    def __getitem__(self, item):
+        return self.__dict__[item]
+
+    def __str__(self):
+        return 'Descripción: {}'.format(self.descripcion)
+
+
+class Referencia:
+    def __init__(self, pId=None, pEmpleado=None, pNombre=None, pTelefono=None, pFechaDesde=None, pFechaHasta=None):
+        self.id = pId
+        self.empleado = pEmpleado
+        self.nombre = pNombre
+        self.telefono = pTelefono
+        self.fechaDesde = pFechaDesde
+        self.fechaHasta = pFechaHasta
+
+    def __getitem__(self, item):
+        return self.__dict__[item]
+
+    def __str__(self):
+        return 'Nombre empleado: {}, Nombre Referencia: {}, Telefono: {}, Fecha desde: {}, Fecha hasta: {}'.format(self.empleado.id, self.nombre, self.telefono, self.fechaDesde, self.fechaHasta)
 
 
 def getEmpleadoByID(bd, id):
@@ -231,3 +321,62 @@ def getEmpleadoByUsuarioID(bd, idUsuario):
         return empleado
     except Exception as e:
         print("Error en getEmpleadoByUsuarioID ", e)
+
+
+def getTareasEmpleado(bd, idEmpleado):
+    cursor = bd.connection.cursor()
+    cursor.execute('''
+            SELECT
+                t.id,
+                t.descripcion
+            FROM empleado_tarea et INNER JOIN tarea t ON et.id_tarea = t.id WHERE et.id_empleado = {}'''.format(idEmpleado))
+    retorno = cursor.fetchall()
+    bd.connection.commit()
+    cursor.close()
+    # desde el retorno debo generar los objetos Tarea
+    tareas = Tarea().__dict__
+    for tuplaTarea in retorno:
+        objeto = Tarea(tuplaTarea[0], tuplaTarea[1])
+        tareas[len(tareas) - 1] = objeto
+    return tareas
+
+
+def getDisponibilidadEmpleado(bd, idEmpleado):
+    cursor = bd.connection.cursor()
+    cursor.execute('''
+            SELECT
+                d.id,
+                d.descripcion
+            FROM empleado_disponibilidad ed INNER JOIN disponibilidad d ON ed.id_disponibilidad = d.id WHERE ed.id_empleado = {}'''.format(idEmpleado))
+    retorno = cursor.fetchall()
+    bd.connection.commit()
+    cursor.close()
+    # desde el retono debo generar los objetos Disponibilidad
+    disponibilidad = Disponibilidad().__dict__
+    for tuplaDisponibilidad in retorno:
+        objeto = Disponibilidad(tuplaDisponibilidad[0], tuplaDisponibilidad[1])
+        disponibilidad[len(disponibilidad) - 1] = objeto
+    return disponibilidad
+
+
+def getReferenciasEmpleado(bd, idEmpleado):
+    cursor = bd.connection.cursor()
+    cursor.execute('''
+            SELECT
+                id,
+                nombre,
+                telefono,
+                fecha_desde,
+                fecha_hasta
+            FROM referencia WHERE id_empleado = {}'''.format(idEmpleado))
+    retorno = cursor.fetchall()
+    bd.connection.commit()
+    cursor.close()
+    # desde el retono debo generar los objetos Referencia
+    referencias = None
+    referencias = Referencia().__dict__
+    for tuplaReferencia in retorno:
+        objeto = Referencia(tuplaReferencia[0], getEmpleadoByID(bd, idEmpleado), tuplaReferencia[1],
+                            tuplaReferencia[2], tuplaReferencia[3], tuplaReferencia[4])
+        referencias[len(referencias) - 1] = objeto
+    return referencias

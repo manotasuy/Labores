@@ -1,5 +1,6 @@
-CREATE SCHEMA IF NOT EXISTS bdLabores DEFAULT CHARACTER SET utf8mb4;
-USE bdLabores;
+-- DROP SCHEMA bdLabores;
+CREATE SCHEMA IF NOT EXISTS bdlabores DEFAULT CHARACTER SET utf8mb4;
+USE bdlabores;
 
 DROP TABLE IF EXISTS vinculo;
 DROP TABLE IF EXISTS mensaje;
@@ -277,14 +278,26 @@ VALUES ('Cuidado de Mascotas');
 -- En tabla "empleado"
 INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
 VALUES (1234567-8, 'el peoncito', 'jodido', '1982-03-12', 1, 'Ejido 1857', 'Uruguayo', 'peoncito@gmail.com', '099987654', 0, '', '', 0, 3);
-
--- En tabla "empleado_disponibilidad"
-
-
--- Eb tabla "empleado_tarea"
-
+INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
+VALUES (1, 4);
+INSERT INTO empleado_tarea (id_empleado, id_tarea)
+VALUES (1, 3);
+INSERT INTO empleado_tarea (id_empleado, id_tarea)
+VALUES (1, 4);
+INSERT INTO empleado_tarea (id_empleado, id_tarea)
+VALUES (1, 5);
+INSERT INTO empleado_tarea (id_empleado, id_tarea)
+VALUES (1, 6);
+INSERT INTO empleado_tarea (id_empleado, id_tarea)
+VALUES (1, 7);
+INSERT INTO empleado_tarea (id_empleado, id_tarea)
+VALUES (1, 10);
 
 -- En tabla "referencia"
+INSERT INTO referencia (id_empleado, nombre, telefono, fecha_desde, fecha_hasta)
+VALUES (1, 'Susana Riux', '091115028', '2015-02-23', '2017-04-22');
+INSERT INTO referencia (id_empleado, nombre, telefono, fecha_desde, fecha_hasta)
+VALUES (1, 'Leopoldo Garcia', '096524741', '2017-06-21', '2019-11-05');
 
 
 -- En tabla "empleador"
@@ -308,11 +321,6 @@ INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
 VALUES (1, 7);
 INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
 VALUES (1, 10);
-
--- En tabla "anuncio_disponibilidad"
-
-
--- En tabla "anuncio_tarea"
 
 
 -- En tabla "postulacion"

@@ -17,18 +17,20 @@
       {% else %}
       <h1 class="display-5 mb-5">Registro</h1>
       {% endif %}
-      <form class="needs-validation" novalidate="" action="/Editar/{{session['useroption']}}" method="POST">
+      <form class="needs-validation" novalidate="" action="/GuardarPerfil/{{tipo}}" method="POST">
         <div class="row">
           <div class="col-md-6 mb-3">
             <label for="name">Nombre</label>
-            <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre" value="" required="">
+            <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre"
+              value="{{data.nombre}}" required="">
             <div class="invalid-feedback">
               Se requiere un Nombre válido.
             </div>
           </div>
           <div class="col-md-6 mb-3">
             <label for="lastName">Apellido</label>
-            <input type="text" class="form-control" name="apellido" id="apelido" placeholder="Apellido" value="" required="">
+            <input type="text" class="form-control" name="apellido" id="apelido" placeholder="Apellido"
+              value="{{data.apellido}}" required="">
             <div class="invalid-feedback">
               Se requiere un Apellido válido.
             </div>
@@ -38,20 +40,22 @@
         <div class="row">
           <div class="col-md-6 mb-3">
             <label for="ci">Cédula de identidad</label>
-            <input type="text" class="form-control" name="ci" id="ci" placeholder="50726621" required="">
+            <input type="text" class="form-control" name="cedula" id="cedula" placeholder="50726621" required=""
+              value="{{data.cedula}}">
             <div class="invalid-feedback">
               Por favor seleccione una CI válida.
             </div>
           </div>
           <div class="col-md-6 mb-3">
             <label for="phone">Teléfono</label>
-            <input type="text" class="form-control" name="tel" id="tel" placeholder="23655544" required="">
+            <input type="text" class="form-control" name="tel" id="tel" placeholder="23655544" required=""
+              value="{{data.telefono}}">
             <div class="invalid-feedback">
               Por favor seleccione un Teléfono válido.
             </div>
           </div>
         </div>
-        
+
         <div class="d-block my-3">
           <p>Género</p>
           <div class="custom-control custom-radio">
@@ -66,7 +70,8 @@
 
         <div class="mb-3">
           <label for="birthdate">Fecha de nacimiento</label>
-          <input type="date" class="form-control col-sm-3" name ="cumple" id="cumple" value="" required="">
+          <input type="date" class="form-control col-sm-3" name="cumple" id="cumple" value="{{data.nacimiento}}"
+            required="">
           <div class="invalid-feedback">
             Por favor seleccione una Fecha de nacimiento válida.
           </div>
@@ -74,7 +79,8 @@
 
         <div class="mb-3">
           <label for="domicilio">Domicilio</label>
-          <input type="text" class="form-control" name="domicilio" id="domicilio" placeholder="18 de Julio 1234" required="">
+          <input type="text" class="form-control" name="domicilio" id="domicilio" placeholder="18 de Julio 1234"
+            required="" value="{{data.domicilio}}">
           <div class="invalid-feedback">
             Debe ingresar su domicilio.
           </div>
@@ -82,12 +88,14 @@
 
         <div class="mb-3">
           <label for="nacionalidad">Nacionalidad</label>
-          <input type="text" class="form-control col-sm-5" name="nacionalidad" id="nacionalidad" placeholder="Uruguayo">
+          <input type="text" class="form-control col-sm-5" name="nacionalidad" id="nacionalidad" placeholder="Uruguayo"
+            value="{{data.nacionalidad}}">
         </div>
 
         <div class="mb-3">
           <label for="email">Email </label>
-          <input type="email" class="form-control" name="email" id="email" placeholder="nombre@gmail.com" required="">
+          <input type="email" class="form-control" name="email" id="email" placeholder="nombre@gmail.com" required=""
+            value="{{data.email}}">
           <div class="invalid-feedback">
             Se requiere un Email válido.
           </div>
@@ -95,16 +103,18 @@
 
         <div class="mb-3">
           <label for="emailConf">Confirmar Email </label>
-          <input type="email" class="form-control" name="emailConf" id="emailConf" placeholder="nombre@gmail.com" required="">
+          <input type="email" class="form-control" name="emailConf" id="emailConf" placeholder="nombre@gmail.com"
+            required="" value="{{data.email}}">
           <div class="invalid-feedback">
             Se requiere un Email válido.
           </div>
         </div>
 
-          <div class="row mb-5">
+        <div class="row mb-5">
           <div class="col-md-6 mt-5 mb-3">
             <label for="password">Contraseña</label>
-            <input type="password" class="form-control" name="password" id="password" placeholder="" required="">
+            <input type="password" class="form-control" name="password" id="password" placeholder="" required=""
+              value="">
             <small class="text-muted">Debe contener al menos 8 caracteres</small>
             <div class="invalid-feedback">
               Debe ingresar una contraseña
@@ -112,7 +122,8 @@
           </div>
           <div class="col-md-6 mt-5   mb-3">
             <label for="repassword">Confirmar contraseña</label>
-            <input type="password" class="form-control" name="passwordConf" id="repassword" placeholder="" required="">
+            <input type="password" class="form-control" name="passwordConf" id="repassword" placeholder="" required=""
+              value="">
             <small class="text-muted">Debe reingresar la contraseña</small>
             <div class="invalid-feedback">
               Debe confirmar la contraseña
@@ -125,7 +136,8 @@
         <div class="d-block my-3">
           <p>¿Tiene experiencia en el rubro?</p>
           <div class="custom-control custom-radio">
-            <input id="experienciaSi" name="experiencia" type="radio" class="custom-control-input" checked="" required="">
+            <input id="experienciaSi" name="experiencia" type="radio" class="custom-control-input" checked=""
+              required="">
             <label class="custom-control-label" for="experienciaSi">Si</label>
           </div>
           <div class="custom-control custom-radio">
@@ -136,20 +148,20 @@
 
         <div class="d-block my-3">
           <p>Disponibilidad</p>
-          <div class="custom-control custom-radio">
-            <input id="dispHora" name="disponibilidad" type="radio" class="custom-control-input" checked="" required="">
+          <div class="custom-control">
+            <input id="dispHora" name="tareaHogar" type="checkbox" class="custom-control-input">
             <label class="custom-control-label" for="dispHora">Por hora</label>
           </div>
-          <div class="custom-control custom-radio">
-            <input id="dispJorn" name="disponibilidad" type="radio" class="custom-control-input" required="">
+          <div class="custom-control">
+            <input id="dispJorn" name="tareaOficina" type="checkbox" class="custom-control-input">
             <label class="custom-control-label" for="dispJorn">Por jornada</label>
           </div>
-          <div class="custom-control custom-radio">
-            <input id="dispTarea" name="disponibilidad" type="radio" class="custom-control-input" required="">
+          <div class="custom-control">
+            <input id="dispTarea" name="tareaCocina" type="checkbox" class="custom-control-input">
             <label class="custom-control-label" for="dispTarea">Por tarea puntual</label>
           </div>
-          <div class="custom-control custom-radio">
-            <input id="dispMes" name="disponibilidad" type="radio" class="custom-control-input" required="">
+          <div class="custom-control">
+            <input id="dispMes" name="tareaLimpBañ" type="checkbox" class="custom-control-input">
             <label class="custom-control-label" for="dispMes">Por mes</label>
           </div>
         </div>
@@ -157,51 +169,51 @@
         <div class="d-block my-3">
           <p>Tareas que realizas</p>
           <div class="custom-control">
-            <input id="tareaHogar" name="tareaHogar" type="checkbox" class="custom-control-input" >
+            <input id="tareaHogar" name="tareaHogar" type="checkbox" class="custom-control-input">
             <label class="custom-control-label" for="tareaHogar">Hogar</label>
           </div>
           <div class="custom-control">
-            <input id="tareaOficina" name="tareaOficina" type="checkbox" class="custom-control-input" >
+            <input id="tareaOficina" name="tareaOficina" type="checkbox" class="custom-control-input">
             <label class="custom-control-label" for="tareaOficina">Oficina</label>
           </div>
           <div class="custom-control">
-            <input id="tareaCocina" name="tareaCocina" type="checkbox" class="custom-control-input" >
+            <input id="tareaCocina" name="tareaCocina" type="checkbox" class="custom-control-input">
             <label class="custom-control-label" for="tareaCocina">Cocinar</label>
           </div>
           <div class="custom-control">
-            <input id="tareaLimpBañ" name="tareaLimpBañ" type="checkbox" class="custom-control-input" >
+            <input id="tareaLimpBañ" name="tareaLimpBañ" type="checkbox" class="custom-control-input">
             <label class="custom-control-label" for="tareaLimpBañ">Limpieza de baños</label>
           </div>
           <div class="custom-control">
-            <input id="tareaLimpCoc" name="tareaLimpCoc" type="checkbox" class="custom-control-input" >
+            <input id="tareaLimpCoc" name="tareaLimpCoc" type="checkbox" class="custom-control-input">
             <label class="custom-control-label" for="tareaLimpCoc">Limpieza de cocina</label>
           </div>
           <div class="custom-control">
-            <input id="tareaLimpDor" name="tareaLimpDor" type="checkbox" class="custom-control-input" >
+            <input id="tareaLimpDor" name="tareaLimpDor" type="checkbox" class="custom-control-input">
             <label class="custom-control-label" for="tareaLimpDor">Limpieza de dormitorio</label>
           </div>
           <div class="custom-control">
-            <input id="tareaCuidNiño" name="tareaCuidNiño" type="checkbox" class="custom-control-input" >
+            <input id="tareaCuidNiño" name="tareaCuidNiño" type="checkbox" class="custom-control-input">
             <label class="custom-control-label" for="tareaCuidNiño">Cuidado de niños</label>
           </div>
           <div class="custom-control">
-            <input id="tareaCuidBebe" name="tareaCuidBebe" type="checkbox" class="custom-control-input" >
+            <input id="tareaCuidBebe" name="tareaCuidBebe" type="checkbox" class="custom-control-input">
             <label class="custom-control-label" for="tareaCuidBebe">Cuidado de bebes</label>
           </div>
           <div class="custom-control">
-            <input id="tareaCuidAdulto" name="tareaCuidAdulto" type="checkbox" class="custom-control-input" >
+            <input id="tareaCuidAdulto" name="tareaCuidAdulto" type="checkbox" class="custom-control-input">
             <label class="custom-control-label" for="tareaCuidAdulto">Adultos mayores</label>
           </div>
           <div class="custom-control">
-            <input id="tareaCuidMasc" name="tareaCuidMasc" type="checkbox" class="custom-control-input" >
+            <input id="tareaCuidMasc" name="tareaCuidMasc" type="checkbox" class="custom-control-input">
             <label class="custom-control-label" for="tareaCuidMasc">Cuidado de mascotas</label>
           </div>
         </div>
 
         <hr class="mt-5 mb-5">
-          
-        <h5>Los empleadores te invitaran a pasar a su casa
-          ¡cuentales algo sobre ti, así comienzan a conocerte!</h5>
+
+        <h5>Los empleadores te invitarán a pasar a su casa <br>
+          ¡cuentales algo sobre tí, así comienzan a conocerte!</h5>
         <textarea name="presentacion" rows="10" cols="60" placeholder="Escribe aqui..."></textarea>
 
         <hr class="mt-5 mb-5">
@@ -209,20 +221,22 @@
         <p>¿Tienes referencias de empleos anteriores? Agregalas aquí</p>
         <div class="mt-4 mb-3">
           <label for="nombreEmp">Nombre del empleador</label>
-          <input type="text" class="form-control col-sm-10" name="nombreEmp" id="nombreEmp" placeholder="Nombre" value="">
+          <input type="text" class="form-control col-sm-10" name="refNombreEmp" id="nombreEmp" placeholder="Nombre"
+            value="">
         </div>
         <div class="mb-3">
           <label for="telefonoEmp">Teléfono del empleador</label>
-          <input type="text" class="form-control col-sm-5" name="telefonoEmp" id="telefonoEmp" placeholder="Teléfono" value="">
+          <input type="text" class="form-control col-sm-5" name="refTelefonoEmp" id="telefonoEmp" placeholder="Teléfono"
+            value="">
         </div>
 
         <div class="mb-3">
           <label for="refTrabDesde">Trabaje desde</label>
-          <input type="date" class="form-control col-sm-3" name ="refTrabDesde" id="refTrabDesde" value="" required="">
+          <input type="date" class="form-control col-sm-3" name="refTrabDesde" id="refTrabDesde" value="" required="">
         </div>
         <div class="mb-3">
           <label for="refTrabDesde">Trabaje hasta</label>
-          <input type="date" class="form-control col-sm-3" name ="refTrabDesde" id="refTrabDesde" value="" required="">
+          <input type="date" class="form-control col-sm-3" name="refTrabDesde" id="refTrabHasta" value="" required="">
         </div>
         <hr class="mt-5 mb-5">
         {% elif session['usertype'] == 'Empleador' %}
@@ -240,7 +254,8 @@
         </div>
         <div class="mb-3">
           <label for="empleadorNumRegBPS">Número de registro</label>
-          <input type="text" class="form-control col-sm-5" name="empleadorNumRegBPS" id="empleadorNumRegBPS" placeholder="679102987">
+          <input type="text" class="form-control col-sm-5" name="empleadorNumRegBPS" id="empleadorNumRegBPS"
+            placeholder="679102987">
           <div class="invalid-feedback">
             Por favor seleccione un Número de registro válido.
           </div>

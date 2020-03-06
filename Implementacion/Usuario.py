@@ -1,11 +1,14 @@
 
 class Usuario:
 
-    def __init__(self, pId, pUsuario, pClave, pTipo):
+    def __init__(self, pId=None, pUsuario=None, pClave=None, pTipo=None):
         self.id = pId
         self.usuario = pUsuario
         self.clave = pClave
         self.tipo = pTipo
+
+    def __getitem__(self, item):
+        return self.__dict__[item]
 
     def __str__(self):
         return "Id: {}, Usuario: {}, Clave: {}, Tipo: {}".format(self.id, self.usuario, self.clave, self.tipo)

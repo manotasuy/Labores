@@ -4,7 +4,7 @@ from Implementacion import Anuncio
 
 class Empleador:
 
-    def __init__(self, pId, pCedula, pNombre, pApellido, pNacimiento, pGenero, pDom, pNacional, pEmail, pTel, pBps, pFoto, pCalif, pUsuario):
+    def __init__(self, pId=None, pCedula=None, pNombre=None, pApellido=None, pNacimiento=None, pGenero=None, pDom=None, pNacional=None, pEmail=None, pTel=None, pBps=None, pFoto=None, pCalif=None, pUsuario=None):
         self.id = pId
         self.cedula = pCedula
         self.nombre = pNombre
@@ -19,6 +19,9 @@ class Empleador:
         self.foto = pFoto
         self.promedioCalificacion = pCalif
         self.usuario = pUsuario
+
+    def __getitem__(self, item):
+        return self.__dict__[item]
 
     def __str__(self):
         return 'Id: {}, Cédula: {}, Nombre: {}, Apellido: {}, Nacimiento: {}, Genero: {}, Domicilio: {}, Nacionalidad: {}, Email: {}, Telefono: {}, Foto: {}, Usuario: {}'.format(self.id, self.cedula, self.nombre, self.apellido, self.nacimiento, self.genero, self.domicilio, self.nacionalidad, self.email, self.telefono, self.foto, self.usuario)
@@ -90,13 +93,41 @@ class Empleador:
         except Exception as e:
             print("Error en crearEmpleador ", e)
 
-    def actualizarEmpleador(self, bd):
+    def modificarEmpleador(self, bd):
         try:
+            print('Self: ', self)
             cursor = bd.connection.cursor()
-            cursor.execute('...')
+            cursor.execute('''
+                UPDATE empleador SET
+                    nombre = %s,
+                    apellido = %s,
+                    fecha_nacimiento = %s,
+                    genero = %s,
+                    domicilio = %s,
+                    nacionalidad = %s,
+                    email = %s,
+                    telefono = %s,
+                    registro_bps = %s,
+                    foto = %s,
+                    promedio_calificacion = %s
+                WHERE id = %s''',
+                           (
+                               self.nombre,
+                               self.apellido,
+                               self.nacimiento,
+                               self.genero,
+                               self.domicilio,
+                               self.nacionalidad,
+                               self.email,
+                               self.telefono,
+                               self.registroBps,
+                               self.foto,
+                               self.promedioCalificacion,
+                               self.id
+                           ))
             bd.connection.commit()
             cursor.close()
-            print('función para actualizar empleador')
+            print('Empleador modificado')
         except Exception as e:
             print("Error en actualizarEmpleador ", e)
 

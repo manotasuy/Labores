@@ -3,7 +3,8 @@ from datetime import datetime
 
 class Anuncio:
 
-    def __init__(self, pTitulo, pDescripcion, pFechaInicio, pFechaCierre, pEstado, pExperiencia, pPago_hora, pIdEmpleador, pCalDesde, pCalHasta, pTieneVinculo):
+    def __init__(self, pId=None, pTitulo=None, pDescripcion=None, pFechaInicio=None, pFechaCierre=None, pEstado=None, pExperiencia=None, pPago_hora=None, pIdEmpleador=None, pCalDesde=None, pCalHasta=None, pTieneVinculo=None):
+        self.id = pId
         self.titulo = pTitulo
         self.descripcion = pDescripcion
         self.fecha_inicio = pFechaInicio
@@ -15,6 +16,9 @@ class Anuncio:
         self.calificacion_desde = pCalDesde
         self.calificacion_hasta = pCalHasta
         self.tiene_vinculo = pTieneVinculo
+
+    def __getitem__(self, item):
+        return self.__dict__[item]
 
     def __str__(self):
         return 'Título: {}, Empleador {}, Vinculo {}'.format(self.titulo, self.id_empleador, self.tiene_vinculo)
@@ -38,18 +42,18 @@ class Anuncio:
                         tiene_vinculo
                     )
                 VALUES ("{}","{}","{}","{}","{}","{}","{}","{}","{}","{}","{}")'''.format(
-                               self.titulo,
-                               self.descripcion,
-                               self.fecha_inicio,
-                               self.fecha_cierre,
-                               self.estado,
-                               self.experiencia,
-                               self.pago_hora,
-                               self.id_empleador,
-                               self.calificacion_desde,
-                               self.calificacion_hasta,
-                               self.tiene_vinculo
-                           ))
+                self.titulo,
+                self.descripcion,
+                self.fecha_inicio,
+                self.fecha_cierre,
+                self.estado,
+                self.experiencia,
+                self.pago_hora,
+                self.id_empleador,
+                self.calificacion_desde,
+                self.calificacion_hasta,
+                self.tiene_vinculo
+            ))
             bd.connection.commit()
             cursor.close()
             print('Anuncio Creado')

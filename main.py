@@ -14,11 +14,17 @@ from Implementacion.Empleador import getEmpleadorByID
 from Implementacion.Empleador import getEmpleadorByUsuarioID
 from Implementacion.Empleado import getEmpleadoByID
 from Implementacion.Empleado import getEmpleadoByUsuarioID
+from Implementacion.Empleado import getTareasEmpleado
+from Implementacion.Empleado import getReferenciasEmpleado
+from Implementacion.Empleado import getDisponibilidadEmpleado
 from Implementacion.Anuncio import getAnuncioByID
 from Implementacion.Anuncio import Anuncio
 
 app = Flask(__name__)
-baseDatos = connectionDb(app, True)
+
+#baseDatos = connectionDb(app, 'local')
+#baseDatos = connectionDb(app, 'remotemysql.com')
+baseDatos = connectionDb(app, 'aws')
 
 
 # session
@@ -95,44 +101,106 @@ def opcion_registrarse():
     return render_template('OpcionRegistro.html')
 
 
-@app.route('/Registro/<opcion>')
-def registrarse(opcion):
-    session['useroption'] = opcion
-    return render_template('Registro.html')
+# @app.route('/Registro/<opcion>')
+# def registrarse(opcion):
+    #session['useroption'] = opcion
+    # return render_template('Registro.html')
 
 
-@app.route('/Registrar/<opcion>', methods=['POST'])
-def registrar_usuario(opcion):
+@app.route('/Perfil/<opcion>', methods=['POST', 'GET'])
+def perfil(opcion):
+    if session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    else:
+        logueado = session.get('usertype') is not None
+
+        if opcion == 'Empleado':
+            objeto = Empleado()
+            if logueado:
+                # debo cargar sus datos en el form
+                # debo obtener los datos del empleado
+                idEmpleado = session['id_empleado']
+                objeto = getEmpleadoByID(baseDatos, idEmpleado)
+                # luego cargar sus tareas, referencias y disponibilidad
+                tareas = getTareasEmpleado(baseDatos, objeto.id)
+                objeto.cargarTareas(tareas)
+                referencias = getReferenciasEmpleado(baseDatos, objeto.id)
+                objeto.cargarReferencias(referencias)
+                disponibilidad = getDisponibilidadEmpleado(
+                    baseDatos, objeto.id)
+                objeto.cargarDisponibilidad(disponibilidad)
+                return render_template('Perfil.html', tipo=opcion, data=objeto)
+            # else:
+                # cargo el formulario vacío porque es registro
+                #data = Empleado(None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None)
+            return render_template('Perfil.html', tipo=opcion, data=objeto)
+
+        elif opcion == 'Empleador':
+            objeto = Empleador()
+            if logueado:
+                # debo cargar sus datos en el form
+                # debo obtener los datos del empleado
+                idEmpleador = session['id_empleador']
+                objeto = getEmpleadorByID(baseDatos, idEmpleador)
+                return render_template('Perfil.html', tipo=opcion, data=objeto)
+            # else:
+                # cargo el formulario vacío porque es registro
+                #objeto = Empleador(None, None, None, None, None, None, None, None, None, None, None, None, None, None)
+            return render_template('Perfil.html', tipo=opcion, data=objeto)
+
+
+@app.route('/GuardarPerfil/<tipo>', methods=['POST'])
+def guardar_perfil(tipo):
     if session.get('usertype') == 'Administrador':
         return redirect(url_for('administrar'))
     else:
         if request.method == 'POST':
             parametros = request.form
-            nombre = parametros['txtNombre']
-            apellido = parametros['txtApellido']
-            txtNacimiento = parametros['txtNacimiento']
-            nacimiento = datetime.strptime(txtNacimiento, '%d/%m/%Y')
+            nombre = parametros['nombre']
+            apellido = parametros['apellido']
+            nacimiento = parametros['cumple']
             genero = 'Masculino'
-            cedula = parametros['txtCedula']
-            domicilio = parametros['txtDomicilio']
-            nacionalidad = parametros['txtNacionalidad']
-            mail = parametros['txtMail']
-            telefono = parametros['txtTelefono']
-            password = 'labores'
+            cedula = parametros['cedula']
+            domicilio = parametros['domicilio']
+            nacionalidad = parametros['nacionalidad']
+            mail = parametros['email']
+            telefono = parametros['tel']
+            password = parametros['password']
 
-            usuario = Usuario(0, cedula, password, opcion)
-            usuario.crearUsuario(baseDatos)
-            usuario.getIdUsuario(baseDatos)
+            logueado = session.get('usertype') is not None
+            usuario = None
 
-            if opcion == 'Empleado':
-                empleado = Empleado(0, cedula, nombre, apellido, nacimiento, genero, domicilio,
+            if not logueado:
+                # debo crear primero el usuario ya que se trata de un registro (alta) ya que no está logueado
+                usuario = Usuario(0, cedula, password, tipo)
+                usuario.crearUsuario(baseDatos)
+                usuario.getIdUsuario(baseDatos)
+
+            # chequear el tipo para realizar las operaciones en empleado o empleador
+            if tipo == 'Empleado':
+                # debo crear un empleado
+                empleado = Empleado(session['id_empleado'], cedula, nombre, apellido, nacimiento, genero, domicilio,
                                     nacionalidad, mail, telefono, None, None, None, None, usuario, None, None, None)
-                empleado.crearEmpleado(baseDatos)
+
+                # como es edición de perfil debo modificar la contraseña y el empleado
+                if logueado:
+                    empleado.modificarEmpleado(baseDatos)
+                # como es registro (alta) debo crear el empleado
+                else:
+                    empleado.crearEmpleado(baseDatos)
                 return redirect(url_for('inicio_empleados'))
-            elif opcion == 'Empleador':
-                empleador = Empleador(0, cedula, nombre, apellido, nacimiento,
+
+            elif tipo == 'Empleador':
+                # debo crear un empleador
+                empleador = Empleador(session['id_empleador'], cedula, nombre, apellido, nacimiento,
                                       genero, domicilio, nacionalidad, mail, telefono, None, None, None, usuario)
-                empleador.crearEmpleador(baseDatos)
+
+                # como es edición de perfil debo modificar la contraseña y el empleador
+                if logueado:
+                    empleador.modificarEmpleador(baseDatos)
+                # como es registro (alta) debo crear el empleado
+                else:
+                    empleador.crearEmpleador(baseDatos)
                 return redirect(url_for('inicio_empleadores'))
 
 
@@ -261,48 +329,40 @@ def listar_candidatos():
         return render_template('ListaCandidatos.html')
 
 
-@app.route('/registroVale/<opcion>')
-def registroVale(opcion):
-    session['useroption'] = opcion
-    return render_template('registroVale.html')
+# @app.route('/registroVale/<opcion>')
+# def registroVale(opcion):
+    #session['useroption'] = opcion
+    # return render_template('registroVale.html')
 
 
-@app.route('/Perfil/')
-def perfil():
-    #session['usertype'] = 'Empleado'
-    if session.get('usertype') == 'Administrador':
-        return redirect(url_for('administrar'))
-    else:
-        return render_template('Perfil.html')
+# @app.route('/perfilEmpleado/')
+# def perfilEmpleado():
+    # if session.get('usertype') == None:
+        # return redirect(url_for('logueo'))
+    # elif session.get('usertype') == 'Administrador':
+        # return redirect(url_for('administrar'))
+    # elif session.get('usertype') == 'Empleador':
+        # return redirect(url_for('inicio_empleadores'))
+    # else:
+        # return render_template('perfilEmpleado.html')
 
 
-@app.route('/perfilEmpleado/')
-def perfilEmpleado():
-    if session.get('usertype') == None:
-        return redirect(url_for('logueo'))
-    elif session.get('usertype') == 'Administrador':
-        return redirect(url_for('administrar'))
-    elif session.get('usertype') == 'Empleador':
-        return redirect(url_for('inicio_empleadores'))
-    else:
-        return render_template('perfilEmpleado.html')
-
-
-@app.route('/perfilEmpleador/')
-def perfilEmpleador():
-    if session.get('usertype') == None:
-        return redirect(url_for('logueo'))
-    elif session.get('usertype') == 'Administrador':
-        return redirect(url_for('administrar'))
-    elif session.get('usertype') == 'Empleado':
-        return redirect(url_for('inicio_empleados'))
-    else:
-        return render_template('perfilEmpleador.html')
+# @app.route('/perfilEmpleador/')
+# def perfilEmpleador():
+    # if session.get('usertype') == None:
+        # return redirect(url_for('logueo'))
+    # elif session.get('usertype') == 'Administrador':
+        # return redirect(url_for('administrar'))
+    # elif session.get('usertype') == 'Empleado':
+        # return redirect(url_for('inicio_empleados'))
+    # else:
+        # return render_template('perfilEmpleador.html')
 
 
 @app.route('/Editar/<opcion>', methods=['POST'])
 def editar_usuario(opcion):
     return 'Hola!'
+
 
 if __name__ == '__main__':
     app.run(debug=True)
