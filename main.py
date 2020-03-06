@@ -358,6 +358,14 @@ def listar_candidatos():
     # else:
         # return render_template('perfilEmpleador.html')
 
+@app.route('/listarEmpleados/')
+def listarEmpleados():
+    return render_template('listarEmpleados.html')
+
+@app.route('/listarEmpleadores/')
+def listarEmpleadores():
+    return render_template('listarEmpleadores.html')
+
 
 @app.route('/Editar/<opcion>', methods=['POST'])
 def editar_usuario(opcion):
