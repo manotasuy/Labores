@@ -353,7 +353,7 @@ def listandoMisAnuncios():
     else:
         empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
         retorno = empleador.listarMisAnuncios(baseDatos)
-        return render_template('pruebas_daniel.html', listaMisAnuncios = retorno)
+        return render_template('TusAnuncios.html', listaMisAnuncios = retorno)
 
 
 @app.route('/eliminandoAnuncio/<idAnuncio>/')
@@ -407,7 +407,7 @@ def borrandoAnuncio(idAnuncio):
         del_CuidadoAdultos,
         del_CuidadoMascotas)
     flash('Anuncio eliminado!')
-    return redirect(url_for('tus_anuncios'))
+    return redirect(url_for('listandoMisAnuncios'))
 
 
 @app.route('/TusAnuncios/')
