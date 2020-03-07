@@ -600,43 +600,43 @@ def getAnuncioByID(bd, id):
         retorno_disponibilidad = cursor.fetchall()
         bd.connection.commit()
         cursor.close()    
-        if 1 in retorno_tarea:
+        if (1,) in retorno_tarea:
             bd_hogar = True
         else:
             bd_hogar = False
-        if 2 in retorno_tarea:
+        if (2,) in retorno_tarea:
             bd_oficina = True
         else:
             bd_oficina = False
-        if 3 in retorno_tarea:
+        if (3,) in retorno_tarea:
             bd_cocinar = True
         else:
             bd_cocinar = False
-        if 4 in retorno_tarea:
+        if (4,) in retorno_tarea:
             bd_limp_banios = True
         else:
             bd_limp_banios = False
-        if 5 in retorno_tarea:
+        if (5,) in retorno_tarea:
             bd_limp_cocinas = True
         else:
             bd_limp_cocinas = False 
-        if 6 in retorno_tarea:
+        if (6,) in retorno_tarea:
             bd_limp_dorm = True
         else:
             bd_limp_dorm = False     
-        if 7 in retorno_tarea:
+        if (7,) in retorno_tarea:
             bd_cuid_ninios = True
         else:
             bd_cuid_ninios = False 
-        if 8 in retorno_tarea:
+        if (8,) in retorno_tarea:
             bd_cuid_bebes = True
         else:
             bd_cuid_bebes = False
-        if 9 in retorno_tarea:
+        if (9,) in retorno_tarea:
             bd_cuid_adult = True
         else:
             bd_cuid_adult = False  
-        if 10 in retorno_tarea:
+        if (10,) in retorno_tarea:
             bd_cuid_pet = True
         else:
             bd_cuid_pet = False                                                                             
