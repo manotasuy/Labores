@@ -141,27 +141,179 @@ class Empleador:
         except Exception as e:
             print("Error en listarEmpleadores ", e)
 
-    def crearAnuncio(self, bd, Titulo, Descripcion, FechaInicio, FechaCierre, Estado, Experiencia, Salario, CalEmpleado, CalEmpleador, TieneVinculo):
+    def crearAnuncio(
+        self, 
+        bd, 
+        Titulo, 
+        Descripcion, 
+        FechaInicio, 
+        FechaCierre, 
+        Estado, 
+        Experiencia, 
+        Pago_hora, 
+        CalEmpleado, 
+        CalEmpleador, 
+        TieneVinculo,
+        Disponibilidad,
+        Hogar,
+        Oficina,
+        Cocinar,
+        LimpBanios,
+        LimpCocinas,
+        LimpDormitorios,
+        CuidadoNinios,
+        CuidadoBebes,
+        CuidadoAdultos,
+        CuidadoMascotas):
         try:
-            # cursor = bd.connection.cursor()
-            # cursor.execute('...')
-            # bd.connection.commit()
-            # cursor.close()
-            newAnuncio = Anuncio.Anuncio(Titulo, Descripcion, FechaInicio, FechaCierre, Estado,
-                                         Experiencia, Salario, self.id, CalEmpleado, CalEmpleador, TieneVinculo)
+            newAnuncio = Anuncio.Anuncio(
+                Titulo, 
+                Descripcion, 
+                FechaInicio, 
+                FechaCierre, 
+                Estado,
+                Experiencia,
+                Pago_hora,
+                self.id, 
+                CalEmpleado, 
+                CalEmpleador, 
+                TieneVinculo,
+                Disponibilidad,
+                Hogar,
+                Oficina,
+                Cocinar,
+                LimpBanios,
+                LimpCocinas,
+                LimpDormitorios,
+                CuidadoNinios,
+                CuidadoBebes,
+                CuidadoAdultos,
+                CuidadoMascotas)
             newAnuncio.createAnuncio(bd)
             print('El empleador generó el anuncio')
         except Exception as e:
             print("Error en crearAnuncio ", e)
 
+
+    def actualizarAnuncio(
+        self, 
+        bd, 
+        idAnuncio, 
+        Titulo, 
+        Descripcion, 
+        FechaInicio, 
+        FechaCierre, 
+        Estado, 
+        Experiencia, 
+        Pago_hora, 
+        CalEmpleado, 
+        CalEmpleador, 
+        TieneVinculo,
+        Disponibilidad,
+        Hogar,
+        Oficina,
+        Cocinar,
+        LimpBanios,
+        LimpCocinas,
+        LimpDormitorios,
+        CuidadoNinios,
+        CuidadoBebes,
+        CuidadoAdultos,
+        CuidadoMascotas
+        ):
+        try:
+            newAnuncio = Anuncio.Anuncio(
+                Titulo, 
+                Descripcion, 
+                FechaInicio, 
+                FechaCierre, 
+                Estado,
+                Experiencia, 
+                Pago_hora, 
+                self.id, 
+                CalEmpleado, 
+                CalEmpleador, 
+                TieneVinculo,
+                Disponibilidad,
+                Hogar,
+                Oficina,
+                Cocinar,
+                LimpBanios,
+                LimpCocinas,
+                LimpDormitorios,
+                CuidadoNinios,
+                CuidadoBebes,
+                CuidadoAdultos,
+                CuidadoMascotas
+                )
+            newAnuncio.updateAnuncio(bd, idAnuncio)
+            print('El empleador actualizó el anuncio')
+        except Exception as e:
+            print("Error en actualizarAnuncio ", e)
+
+    def borrarAnuncio(
+        self, 
+        bd, 
+        idAnuncio, 
+        Titulo, 
+        Descripcion, 
+        FechaInicio, 
+        FechaCierre, 
+        Estado, 
+        Experiencia, 
+        Pago_hora, 
+        CalEmpleado, 
+        CalEmpleador, 
+        TieneVinculo,
+        Disponibilidad,
+        Hogar,
+        Oficina,
+        Cocinar,
+        LimpBanios,
+        LimpCocinas,
+        LimpDormitorios,
+        CuidadoNinios,
+        CuidadoBebes,
+        CuidadoAdultos,
+        CuidadoMascotas
+        ):
+        try:
+            delAnuncio = Anuncio.Anuncio(
+                Titulo, 
+                Descripcion, 
+                FechaInicio, 
+                FechaCierre, 
+                Estado,
+                Experiencia, 
+                Pago_hora, 
+                self.id, 
+                CalEmpleado, 
+                CalEmpleador, 
+                TieneVinculo,
+                Disponibilidad,
+                Hogar,
+                Oficina,
+                Cocinar,
+                LimpBanios,
+                LimpCocinas,
+                LimpDormitorios,
+                CuidadoNinios,
+                CuidadoBebes,
+                CuidadoAdultos,
+                CuidadoMascotas
+                )
+            delAnuncio.deleteAnuncio(bd, idAnuncio)
+            print('El empleador eliminó el anuncio')
+        except Exception as e:
+            print("Error en borrarAnuncio ", e)
+
     def listarMisAnuncios(self, bd):
         try:
             cursor = bd.connection.cursor()
             cursor.execute(
-                'SELECT * FROM anuncios WHERE id_empleador = {}'.format(self.id))
+                'SELECT * FROM anuncio WHERE id_empleador = {}'.format(self.id))
             data = cursor.fetchall()
             cursor.close()
-            bd.connection.close()
             return data
         except Exception as e:
             print("Error en listarMisAnuncios ", e)

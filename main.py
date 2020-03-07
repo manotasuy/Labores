@@ -287,31 +287,57 @@ def publicar_anuncio():
         return redirect(url_for('inicio_empleados'))
     else:
         if request.method == 'POST':
-            titulo = request.form['titulo']
-            descripcion = request.form['descripcion']
-            fechaInicio = datetime.now()
-            fechaCierre = None
-            estado = request.form['estado']
-            experiencia = request.form['experiencia']
-            salario = request.form['salario']
-            idEmpleador = session['id_empleador']
-            empleador = getEmpleadorByID(baseDatos, idEmpleador)
-            calEmpleado = request.form['calEmpleado']
-            calEmpleador = request.form['calEmpleador']
-            tieneVinculo = request.form['tieneVinculo']
-            empleador.crearAnuncio
-            (
-                titulo,
-                descripcion,
-                fechaInicio,
-                fechaCierre,
-                estado,
-                experiencia,
-                salario,
-                calEmpleado,
-                calEmpleador,
-                tieneVinculo
-            )
+            empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
+            nDisponibilidad = request.form.get('radioDisponibilidad') 
+            nHogar = request.form.getlist('chkHogar') 
+            nOficina = request.form.getlist('chkOficina') 
+            nCocinar = request.form.getlist('chkCocinar')
+            nLimpBanios = request.form.getlist('chkLimpBanios') 
+            nLimpCocinas = request.form.getlist('chkLimpCocinas') 
+            nLimpDormitorios = request.form.getlist('chkLimpDormitorios') 
+            nCuidadoNinios = request.form.getlist('chkCuidadoNinios') 
+            nCuidadoBebes = request.form.getlist('chkCuidadoBebes') 
+            nCuidadoAdultos = request.form.getlist('chkCuidadoAdultos') 
+            nCuidadoMascotas = request.form.getlist('chkCuidadoMascotas') 
+            ntitulo = request.form['txtTitulo']
+            ndescripcion = request.form['txtDescripcion']
+            nfecha_incio = datetime.now()
+            nfecha_cierre = None
+            if request.form['radioEstado'] == 'estadoActiva':
+                nestado = 1
+            else:
+                nestado = 0
+            if request.form['radioExperiencia'] == 'experienciaSi':
+                nexperiencia = 1
+            else:
+                nexperiencia = 0
+            npago_hora = request.form['pagoPorHora']
+            ncal_desde = None
+            ncal_hasta = None
+            nvinculo = 1
+            empleador.crearAnuncio(
+                baseDatos, 
+                ntitulo, 
+                ndescripcion, 
+                nfecha_incio, 
+                nfecha_cierre, 
+                nestado, 
+                nexperiencia, 
+                npago_hora, 
+                ncal_desde, 
+                ncal_hasta, 
+                nvinculo,
+                nDisponibilidad,
+                nHogar,
+                nOficina,
+                nCocinar,
+                nLimpBanios,
+                nLimpCocinas,
+                nLimpDormitorios,
+                nCuidadoNinios,
+                nCuidadoBebes,
+                nCuidadoAdultos,
+                nCuidadoMascotas)
             flash('Anuncio creado!')
             return redirect(url_for('tus_anuncios'))
 
