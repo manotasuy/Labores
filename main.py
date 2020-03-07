@@ -277,7 +277,7 @@ def crear_anuncio():
 
 
 # *** En desarrollo por Daniel ***
-@app.route('/PublicarAnuncio', methods=['POST'])
+@app.route('/PublicarAnuncio/', methods=['POST'])
 def publicar_anuncio():
     if session.get('usertype') == None:
         return redirect(url_for('logueo'))
@@ -342,6 +342,74 @@ def publicar_anuncio():
             return redirect(url_for('tus_anuncios'))
 
 
+@app.route('/listandoMisAnuncios/')
+def listandoMisAnuncios():
+    if session.get('usertype') == None:
+        return redirect(url_for('logueo'))
+    elif session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    elif session.get('usertype') == 'Empleado':
+        return redirect(url_for('inicio_empleados'))
+    else:
+        empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
+        retorno = empleador.listarMisAnuncios(baseDatos)
+        return render_template('pruebas_daniel.html', listaMisAnuncios = retorno)
+
+
+@app.route('/eliminandoAnuncio/<idAnuncio>/')
+def borrandoAnuncio(idAnuncio):
+    empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
+    print(empleador)
+    idAnuncio = idAnuncio
+    del_titulo = None
+    del_descripcion = None
+    del_fecha_incio = None
+    del_fecha_cierre = None
+    del_estado = None
+    del_experiencia = None
+    del_pago_hora = None
+    del_cal_desde = None
+    del_cal_hasta = None
+    del_vinculo = None
+    del_Disponibilidad = None
+    del_Hogar = None
+    del_Oficina = None
+    del_Cocinar = None
+    del_LimpBanios = None
+    del_LimpCocinas = None
+    del_LimpDormitorios = None
+    del_CuidadoNinios = None
+    del_CuidadoBebes = None
+    del_CuidadoAdultos = None
+    del_CuidadoMascotas = None 
+    empleador.borrarAnuncio(
+        baseDatos, 
+        idAnuncio, 
+        del_titulo, 
+        del_descripcion, 
+        del_fecha_incio, 
+        del_fecha_cierre, 
+        del_estado, 
+        del_experiencia, 
+        del_pago_hora, 
+        del_cal_desde, 
+        del_cal_hasta, 
+        del_vinculo,
+        del_Disponibilidad,
+        del_Hogar,
+        del_Oficina,
+        del_Cocinar,
+        del_LimpBanios,
+        del_LimpCocinas,
+        del_LimpDormitorios,
+        del_CuidadoNinios,
+        del_CuidadoBebes,
+        del_CuidadoAdultos,
+        del_CuidadoMascotas)
+    flash('Anuncio eliminado!')
+    return redirect(url_for('tus_anuncios'))
+
+
 @app.route('/TusAnuncios/')
 def tus_anuncios():
     if session.get('usertype') == None:
@@ -351,7 +419,9 @@ def tus_anuncios():
     elif session.get('usertype') == 'Empleado':
         return redirect(url_for('inicio_empleados'))
     else:
-        return render_template('TusAnuncios.html')
+        empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
+        retorno = empleador.listarMisAnuncios(baseDatos)
+        return render_template('TusAnuncios.html', listaMisAnuncios = retorno)
 
 
 @app.route('/Anuncios/')

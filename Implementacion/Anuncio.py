@@ -18,6 +18,7 @@ class Anuncio:
         pCalDesde, 
         pCalHasta, 
         pTieneVinculo,
+        #--------------
         pDisponibilidad,
         pHogar,
         pOficina,
@@ -300,12 +301,7 @@ class Anuncio:
 
     def deleteAnuncio(self, bd, idAnuncio):
         try:
-            cursor = bd.connection.cursor()
-            cursor.execute('''
-                DELETE FROM anuncio WHERE id = "{}"
-                '''.format(idAnuncio))
-            bd.connection.commit()
-            cursor.close()
+
             cursor = bd.connection.cursor()
             cursor.execute('''
                 DELETE FROM anuncio_disponibilidad WHERE id_anuncio = "{}"
@@ -314,10 +310,16 @@ class Anuncio:
             cursor.close()       
             cursor = bd.connection.cursor()
             cursor.execute('''
-                DELETE FROM anuncio_tareas WHERE id_anuncio = "{}"
+                DELETE FROM anuncio_tarea WHERE id_anuncio = "{}"
                 '''.format(idAnuncio))
             bd.connection.commit()
             cursor.close()                 
+            cursor = bd.connection.cursor()
+            cursor.execute('''
+                DELETE FROM anuncio WHERE id = "{}"
+                '''.format(idAnuncio))
+            bd.connection.commit()
+            cursor.close()            
             print('Anuncio Borrado')
         except Exception as e:
             print("Error en deleteAnuncio ", e)

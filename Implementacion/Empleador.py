@@ -154,6 +154,7 @@ class Empleador:
         CalEmpleado, 
         CalEmpleador, 
         TieneVinculo,
+        #-----------
         Disponibilidad,
         Hogar,
         Oficina,
@@ -178,6 +179,7 @@ class Empleador:
                 CalEmpleado, 
                 CalEmpleador, 
                 TieneVinculo,
+                #------------
                 Disponibilidad,
                 Hogar,
                 Oficina,
@@ -209,6 +211,7 @@ class Empleador:
         CalEmpleado, 
         CalEmpleador, 
         TieneVinculo,
+        #----------
         Disponibilidad,
         Hogar,
         Oficina,
@@ -234,6 +237,7 @@ class Empleador:
                 CalEmpleado, 
                 CalEmpleador, 
                 TieneVinculo,
+                #--------------
                 Disponibilidad,
                 Hogar,
                 Oficina,
@@ -265,6 +269,7 @@ class Empleador:
         CalEmpleado, 
         CalEmpleador, 
         TieneVinculo,
+        #---------------
         Disponibilidad,
         Hogar,
         Oficina,
@@ -290,6 +295,7 @@ class Empleador:
                 CalEmpleado, 
                 CalEmpleador, 
                 TieneVinculo,
+                #-------------
                 Disponibilidad,
                 Hogar,
                 Oficina,
@@ -302,6 +308,8 @@ class Empleador:
                 CuidadoAdultos,
                 CuidadoMascotas
                 )
+            print('cree el delAnuncio')
+            print(delAnuncio)
             delAnuncio.deleteAnuncio(bd, idAnuncio)
             print('El empleador eliminó el anuncio')
         except Exception as e:
