@@ -1,0 +1,120 @@
+{% extends 'page_layout.html' %}
+
+{% block referencias %}
+{% endblock %}
+
+{% block estilo %}
+{% endblock %}
+
+{% block titulo %}<title>Labores - Plantilla</title>{% endblock %}
+
+{% block contenido %}
+<div class="container">
+    <h2>Oferta</h2>
+
+    <form>
+        <div class="form-group row">
+          <label for="staticEmail" class="col-sm-3 col-form-label">Título de la oferta</label>
+          <div class="col-sm-5">
+            <input class="form-control" type="text" placeholder="" name="verOfertaTit" readonly>
+          </div>
+        </div>
+        <div class="form-group row">
+            <label for="staticEmail" class="col-sm-3 col-form-label">Descripción</label>
+            <div class="col-sm-5">
+                <textarea class="form-control" type="text" placeholder="" name="verOfertaDesc" readonly ></textarea>
+            </div>
+        </div>
+
+        <div class="d-block my-3">
+            <p>Tipo de trabajo</p>
+            <div class="custom-control custom-radio">
+              <input id="dispHora" name="disponibilidad" type="radio" class="custom-control-input" required="" disabled>
+              <label class="custom-control-label" for="dispHora">Por hora</label>
+            </div>
+            <div class="custom-control custom-radio">
+              <input  id="dispJorn" name="disponibilidad" type="radio" class="custom-control-input" required="" disabled>
+              <label class="custom-control-label" for="dispJorn">Por jornada</label>
+            </div>
+            <div class="custom-control custom-radio">
+              <input id="dispTarea" name="disponibilidad" type="radio" class="custom-control-input" required="" checked="">
+              <label class="custom-control-label" for="dispTarea">Por tarea puntual</label>
+            </div>
+            <div class="custom-control custom-radio">
+              <input id="dispMes" name="disponibilidad type="radio" class="custom-control-input" required="" disabled>
+              <label class="custom-control-label" for="dispMes">Por mes</label>
+            </div>
+          </div>
+
+          <div class="d-block my-3">
+            <p>Tareas que realizas:</p>
+            <div class="custom-control">
+              <input id="tareaHogar" name="tareaHogar" type="checkbox" class="custom-control-input" disabled>
+              <label class="custom-control-label" for="tareaHogar">Hogar</label>
+            </div>
+            <div class="custom-control">
+              <input id="tareaOficina" name="tareaOficina" type="checkbox" class="custom-control-input" checked="">
+              <label class="custom-control-label" for="tareaOficina">Oficina</label>
+            </div>
+            <div class="custom-control">
+              <input id="tareaCocina" name="tareaCocina" type="checkbox" class="custom-control-input" disabled>
+              <label class="custom-control-label" for="tareaCocina">Cocinar</label>
+            </div>
+            <div class="custom-control">
+              <input id="tareaLimpBañ" name="tareaLimpBañ" type="checkbox" class="custom-control-input"disabled>
+              <label class="custom-control-label" for="tareaLimpBañ">Limpieza de baños</label>
+            </div>
+            <div class="custom-control">
+              <input id="tareaLimpCoc" name="tareaLimpCoc" type="checkbox" class="custom-control-input" checked="">
+              <label class="custom-control-label" for="tareaLimpCoc">Limpieza de cocina</label>
+            </div>
+            <div class="custom-control">
+              <input id="tareaLimpDor" name="tareaLimpDor" type="checkbox" class="custom-control-input" checked="">
+              <label class="custom-control-label" for="tareaLimpDor">Limpieza de dormitorio</label>
+            </div>
+            <div class="custom-control">
+              <input id="tareaCuidNiño" name="tareaCuidNiño" type="checkbox" class="custom-control-input" disabled>
+              <label class="custom-control-label" for="tareaCuidNiño">Cuidado de niños</label>
+            </div>
+            <div class="custom-control">
+              <input id="tareaCuidBebe" name="tareaCuidBebe" type="checkbox" class="custom-control-input" checked="">
+              <label class="custom-control-label" for="tareaCuidBebe">Cuidado de bebes</label>
+            </div>
+            <div class="custom-control">
+              <input id="tareaCuidAdulto" name="tareaCuidAdulto" type="checkbox" class="custom-control-input" checked="">
+              <label class="custom-control-label" for="tareaCuidAdulto">Adultos mayores</label>
+            </div>
+            <div class="custom-control">
+              <input id="tareaCuidMasc" name="tareaCuidMasc" type="checkbox" class="custom-control-input"disabled >
+              <label class="custom-control-label" for="tareaCuidMasc">Cuidado de mascotas</label>
+            </div>
+          </div>
+
+        <div class="form-group row">
+            <label for="staticEmail" class="col-sm-3 col-form-label">Experiencia previa</label>
+            <div class="col-sm-1">
+              <input class="form-control" type="text" placeholder="" name="verOfertaExperiencia" readonly>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="staticEmail" class="col-sm-3 col-form-label">Pago por hora ofrecido</label>
+            <div class="col-sm-3">
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">$</span>
+                    </div>
+                    <input class="form-control" type="text" placeholder="" name="verOfertaPaga" readonly>
+                </div>  
+            </div>
+        </div>
+        <button type="button" class="btn btn-warning float-right">Me interesa. ¡Contactar!</button>
+        <button type="button" class="btn btn-primary">Volver a las ofertas</button>
+      </form>
+
+      <hr class="mb-4">
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

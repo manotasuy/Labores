@@ -457,5 +457,14 @@ def editar_usuario(opcion):
     return 'Hola!'
 
 
+@app.route('/chat/')
+def chat():
+    return render_template('chat.html')
+
+@app.route('/verOferta/')
+def verOferta():
+    return render_template('verOferta.html')
+
+
 if __name__ == '__main__':
     app.run(debug=True)
