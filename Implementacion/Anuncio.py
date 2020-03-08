@@ -361,7 +361,7 @@ class Anuncio:
             cursor.close()       
             cursor = bd.connection.cursor()
             cursor.execute('''
-                DELETE FROM anuncio_tareas WHERE id_anuncio = "{}"
+                DELETE FROM anuncio_tarea WHERE id_anuncio = "{}"
                 '''.format(idAnuncio))
             bd.connection.commit()
             cursor.close()

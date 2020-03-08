@@ -312,9 +312,9 @@ def publicar_anuncio():
             else:
                 nexperiencia = 0
             npago_hora = request.form['pagoPorHora']
-            ncal_desde = None
-            ncal_hasta = None
-            nvinculo = 1
+            ncal_desde = None #esto no va?
+            ncal_hasta = None #esto no va?
+            nvinculo = None #esto hay que ver como lo hacemos
             empleador.crearAnuncio(
                 baseDatos, 
                 ntitulo, 
@@ -356,58 +356,137 @@ def listandoMisAnuncios():
         return render_template('TusAnuncios.html', listaMisAnuncios = retorno)
 
 
-@app.route('/eliminandoAnuncio/<idAnuncio>/')
+@app.route('/eliminandoAnuncio/<idAnuncio>/', methods = ['POST','GET'])
 def borrandoAnuncio(idAnuncio):
-    empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
-    print(empleador)
-    idAnuncio = idAnuncio
-    del_titulo = None
-    del_descripcion = None
-    del_fecha_incio = None
-    del_fecha_cierre = None
-    del_estado = None
-    del_experiencia = None
-    del_pago_hora = None
-    del_cal_desde = None
-    del_cal_hasta = None
-    del_vinculo = None
-    del_Disponibilidad = None
-    del_Hogar = None
-    del_Oficina = None
-    del_Cocinar = None
-    del_LimpBanios = None
-    del_LimpCocinas = None
-    del_LimpDormitorios = None
-    del_CuidadoNinios = None
-    del_CuidadoBebes = None
-    del_CuidadoAdultos = None
-    del_CuidadoMascotas = None 
-    empleador.borrarAnuncio(
-        baseDatos, 
-        idAnuncio, 
-        del_titulo, 
-        del_descripcion, 
-        del_fecha_incio, 
-        del_fecha_cierre, 
-        del_estado, 
-        del_experiencia, 
-        del_pago_hora, 
-        del_cal_desde, 
-        del_cal_hasta, 
-        del_vinculo,
-        del_Disponibilidad,
-        del_Hogar,
-        del_Oficina,
-        del_Cocinar,
-        del_LimpBanios,
-        del_LimpCocinas,
-        del_LimpDormitorios,
-        del_CuidadoNinios,
-        del_CuidadoBebes,
-        del_CuidadoAdultos,
-        del_CuidadoMascotas)
-    flash('Anuncio eliminado!')
-    return redirect(url_for('listandoMisAnuncios'))
+    if session.get('usertype') == None:
+        return redirect(url_for('logueo'))
+    elif session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    elif session.get('usertype') == 'Empleado':
+        return redirect(url_for('inicio_empleados'))
+    else:
+        empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
+        print(empleador)
+        idAnuncio = idAnuncio
+        del_titulo = None
+        del_descripcion = None
+        del_fecha_incio = None
+        del_fecha_cierre = None
+        del_estado = None
+        del_experiencia = None
+        del_pago_hora = None
+        del_cal_desde = None
+        del_cal_hasta = None
+        del_vinculo = None
+        del_Disponibilidad = None
+        del_Hogar = None
+        del_Oficina = None
+        del_Cocinar = None
+        del_LimpBanios = None
+        del_LimpCocinas = None
+        del_LimpDormitorios = None
+        del_CuidadoNinios = None
+        del_CuidadoBebes = None
+        del_CuidadoAdultos = None
+        del_CuidadoMascotas = None 
+        empleador.borrarAnuncio(
+            baseDatos, 
+            idAnuncio, 
+            del_titulo, 
+            del_descripcion, 
+            del_fecha_incio, 
+            del_fecha_cierre, 
+            del_estado, 
+            del_experiencia, 
+            del_pago_hora, 
+            del_cal_desde, 
+            del_cal_hasta, 
+            del_vinculo,
+            del_Disponibilidad,
+            del_Hogar,
+            del_Oficina,
+            del_Cocinar,
+            del_LimpBanios,
+            del_LimpCocinas,
+            del_LimpDormitorios,
+            del_CuidadoNinios,
+            del_CuidadoBebes,
+            del_CuidadoAdultos,
+            del_CuidadoMascotas)
+        flash('Anuncio eliminado!')
+        return redirect(url_for('listandoMisAnuncios'))
+
+#acá va la funcion que envía los datos viejos para llenar el form del anuncio q se va a cambiar
+@app.route('/actualizandoAnuncio/<idAnuncio>/', methods=['POST', 'GET'])
+def editandoAnuncio(idAnuncio):
+    pass
+
+#esta funcion recibe los nuevos datos y actualiza la bd:
+@app.route('/editandoAnuncio/<idAnuncio>/', methods=['POST'])
+def actualizandoAnuncio(idAnuncio):
+    if session.get('usertype') == None:
+        return redirect(url_for('logueo'))
+    elif session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    elif session.get('usertype') == 'Empleado':
+        return redirect(url_for('inicio_empleados'))
+    else:
+        if request.method == 'POST':
+            empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
+            idAnuncio = idAnuncio
+            new_titulo = request.form['txtTitulo']
+            new_descripcion = request.form['txtDescripcion']
+            old_fecha_incio = None
+            new_fecha_cierre = None
+            if request.form['radioEstado'] == 'estadoActiva':
+                new_estado = 1
+            else:
+                new_estado = 0
+            if request.form['radioExperiencia'] == 'experienciaSi':
+                new_experiencia = 1
+            else:
+                new_experiencia = 0
+            new_pago_hora = request.form['pagoPorHora']
+            new_cal_desde = None 
+            new_cal_hasta = None 
+            new_vinculo = None
+            new_Disponibilidad = request.form.get('radioDisponibilidad')
+            new_Hogar = request.form.getlist('chkHogar') 
+            new_Oficina = request.form.getlist('chkOficina')
+            new_Cocinar = request.form.getlist('chkCocinar')
+            new_LimpBanios = request.form.getlist('chkLimpBanios')
+            new_LimpCocinas = request.form.getlist('chkLimpCocinas') 
+            new_LimpDormitorios = request.form.getlist('chkLimpDormitorios')
+            new_CuidadoNinios = request.form.getlist('chkCuidadoNinios')
+            new_CuidadoBebes = request.form.getlist('chkCuidadoBebes') 
+            new_CuidadoAdultos = request.form.getlist('chkCuidadoAdultos')
+            new_CuidadoMascotas = request.form.getlist('chkCuidadoMascotas') 
+            empleador.actualizarAnuncio(
+                baseDatos, 
+                idAnuncio, 
+                new_titulo, 
+                new_descripcion, 
+                old_fecha_incio, 
+                new_fecha_cierre, 
+                new_estado, 
+                new_experiencia, 
+                new_pago_hora, 
+                new_cal_desde, 
+                new_cal_hasta, 
+                new_vinculo,
+                new_Disponibilidad,
+                new_Hogar,
+                new_Oficina,
+                new_Cocinar,
+                new_LimpBanios,
+                new_LimpCocinas,
+                new_LimpDormitorios,
+                new_CuidadoNinios,
+                new_CuidadoBebes,
+                new_CuidadoAdultos,
+                new_CuidadoMascotas
+                )
+            return redirect(url_for('listandoMisAnuncios'))
 
 
 @app.route('/TusAnuncios/')
