@@ -78,7 +78,7 @@ class Anuncio:
                         calificacion_hasta,
                         tiene_vinculo
                     )
-                VALUES ("{}","{}", "{}","{}","{}","{}","{}","{}","{}","{}")'''.format(
+                VALUES ("{}","{}", "{}",{},"{}","{}","{}","{}","{}","{}")'''.format(
                                self.titulo,
                                self.descripcion,
                                datetime.now().date(),
@@ -107,7 +107,7 @@ class Anuncio:
                             id_anuncio,
                             id_disponibilidad
                         )
-                    VALUES ("{}","{}")'''.format(
+                    VALUES ({},{})'''.format(
                                 idAnuncio,
                                 1
                             ))
@@ -121,7 +121,7 @@ class Anuncio:
                             id_anuncio,
                             id_disponibilidad
                         )
-                    VALUES ("{}","{}")'''.format(
+                    VALUES ({},{})'''.format(
                                 idAnuncio,
                                 2
                             ))
@@ -135,7 +135,7 @@ class Anuncio:
                             id_anuncio,
                             id_disponibilidad
                         )
-                    VALUES ("{}","{}")'''.format(
+                    VALUES ({},{})'''.format(
                                 idAnuncio,
                                 3
                             ))
@@ -149,7 +149,7 @@ class Anuncio:
                             id_anuncio,
                             id_disponibilidad
                         )
-                    VALUES ("{}","{}")'''.format(
+                    VALUES ({},{})'''.format(
                                 idAnuncio,
                                 4
                             ))
@@ -163,7 +163,7 @@ class Anuncio:
                             id_anuncio,
                             id_tarea
                         )
-                    VALUES ("{}","{}")'''.format(
+                    VALUES ({},{})'''.format(
                                 idAnuncio,
                                 1
                             ))
@@ -177,7 +177,7 @@ class Anuncio:
                             id_anuncio,
                             id_tarea
                         )
-                    VALUES ("{}","{}")'''.format(
+                    VALUES ({},{})'''.format(
                                 idAnuncio,
                                 2
                             ))
@@ -191,7 +191,7 @@ class Anuncio:
                             id_anuncio,
                             id_tarea
                         )
-                    VALUES ("{}","{}")'''.format(
+                    VALUES ({},{})'''.format(
                                 idAnuncio,
                                 3
                             ))
@@ -205,7 +205,7 @@ class Anuncio:
                             id_anuncio,
                             id_tarea
                         )
-                    VALUES ("{}","{}")'''.format(
+                    VALUES ({},{})'''.format(
                                 idAnuncio,
                                 4
                             ))
@@ -219,7 +219,7 @@ class Anuncio:
                             id_anuncio,
                             id_tarea
                         )
-                    VALUES ("{}","{}")'''.format(
+                    VALUES ({},{})'''.format(
                                 idAnuncio,
                                 5
                             ))
@@ -233,7 +233,7 @@ class Anuncio:
                             id_anuncio,
                             id_tarea
                         )
-                    VALUES ("{}","{}")'''.format(
+                    VALUES ({},{})'''.format(
                                 idAnuncio,
                                 6
                             ))
@@ -247,7 +247,7 @@ class Anuncio:
                             id_anuncio,
                             id_tarea
                         )
-                    VALUES ("{}","{}")'''.format(
+                    VALUES ({},{})'''.format(
                                 idAnuncio,
                                 7
                             ))
@@ -261,7 +261,7 @@ class Anuncio:
                             id_anuncio,
                             id_tarea
                         )
-                    VALUES ("{}","{}")'''.format(
+                    VALUES ({},{})'''.format(
                                 idAnuncio,
                                 8
                             ))
@@ -275,7 +275,7 @@ class Anuncio:
                             id_anuncio,
                             id_tarea
                         )
-                    VALUES ("{}","{}")'''.format(
+                    VALUES ({},{})'''.format(
                                 idAnuncio,
                                 9
                             ))
@@ -289,7 +289,7 @@ class Anuncio:
                             id_anuncio,
                             id_tarea
                         )
-                    VALUES ("{}","{}")'''.format(
+                    VALUES ({},{})'''.format(
                                 idAnuncio,
                                 10
                             ))
@@ -304,19 +304,19 @@ class Anuncio:
 
             cursor = bd.connection.cursor()
             cursor.execute('''
-                DELETE FROM anuncio_disponibilidad WHERE id_anuncio = "{}"
+                DELETE FROM anuncio_disponibilidad WHERE id_anuncio = {}
                 '''.format(idAnuncio))
             bd.connection.commit()
             cursor.close()       
             cursor = bd.connection.cursor()
             cursor.execute('''
-                DELETE FROM anuncio_tarea WHERE id_anuncio = "{}"
+                DELETE FROM anuncio_tarea WHERE id_anuncio = {}
                 '''.format(idAnuncio))
             bd.connection.commit()
             cursor.close()                 
             cursor = bd.connection.cursor()
             cursor.execute('''
-                DELETE FROM anuncio WHERE id = "{}"
+                DELETE FROM anuncio WHERE id = {}
                 '''.format(idAnuncio))
             bd.connection.commit()
             cursor.close()            
@@ -332,13 +332,13 @@ class Anuncio:
                     titulo = "{}",
                     descripcion = "{}",
                     fecha_cierre = "{}",
-                    estado = "{}",
+                    estado = {},
                     experiencia = "{}",
                     pago_hora = "{}",
                     calificacion_desde = "{}",
                     calificacion_hasta = "{}",
                     tiene_vinculo = "{}"
-                WHERE id = "{}"
+                WHERE id = {}
                 '''.format(
                 self.titulo,
                 self.descripcion,
@@ -355,13 +355,13 @@ class Anuncio:
             cursor.close()
             cursor = bd.connection.cursor()
             cursor.execute('''
-                DELETE FROM anuncio_disponibilidad WHERE id_anuncio = "{}"
+                DELETE FROM anuncio_disponibilidad WHERE id_anuncio = {}
                 '''.format(idAnuncio))
             bd.connection.commit()
             cursor.close()       
             cursor = bd.connection.cursor()
             cursor.execute('''
-                DELETE FROM anuncio_tarea WHERE id_anuncio = "{}"
+                DELETE FROM anuncio_tarea WHERE id_anuncio = {}
                 '''.format(idAnuncio))
             bd.connection.commit()
             cursor.close()
@@ -374,7 +374,7 @@ class Anuncio:
                             id_anuncio,
                             id_disponibilidad
                         )
-                    VALUES ("{}","{}")'''.format(
+                    VALUES ({},{})'''.format(
                                 idAnuncio,
                                 1
                             ))
@@ -388,7 +388,7 @@ class Anuncio:
                             id_anuncio,
                             id_disponibilidad
                         )
-                    VALUES ("{}","{}")'''.format(
+                    VALUES ({},{})'''.format(
                                 idAnuncio,
                                 2
                             ))
@@ -402,7 +402,7 @@ class Anuncio:
                             id_anuncio,
                             id_disponibilidad
                         )
-                    VALUES ("{}","{}")'''.format(
+                    VALUES ({},{})'''.format(
                                 idAnuncio,
                                 3
                             ))
@@ -416,7 +416,7 @@ class Anuncio:
                             id_anuncio,
                             id_disponibilidad
                         )
-                    VALUES ("{}","{}")'''.format(
+                    VALUES ({},{})'''.format(
                                 idAnuncio,
                                 4
                             ))
@@ -430,7 +430,7 @@ class Anuncio:
                             id_anuncio,
                             id_tarea
                         )
-                    VALUES ("{}","{}")'''.format(
+                    VALUES ({},{})'''.format(
                                 idAnuncio,
                                 1
                             ))
@@ -444,7 +444,7 @@ class Anuncio:
                             id_anuncio,
                             id_tarea
                         )
-                    VALUES ("{}","{}")'''.format(
+                    VALUES ({},{})'''.format(
                                 idAnuncio,
                                 2
                             ))
@@ -458,7 +458,7 @@ class Anuncio:
                             id_anuncio,
                             id_tarea
                         )
-                    VALUES ("{}","{}")'''.format(
+                    VALUES ({},{})'''.format(
                                 idAnuncio,
                                 3
                             ))
@@ -472,7 +472,7 @@ class Anuncio:
                             id_anuncio,
                             id_tarea
                         )
-                    VALUES ("{}","{}")'''.format(
+                    VALUES ({},{})'''.format(
                                 idAnuncio,
                                 4
                             ))
@@ -486,7 +486,7 @@ class Anuncio:
                             id_anuncio,
                             id_tarea
                         )
-                    VALUES ("{}","{}")'''.format(
+                    VALUES ({},{})'''.format(
                                 idAnuncio,
                                 5
                             ))
@@ -500,7 +500,7 @@ class Anuncio:
                             id_anuncio,
                             id_tarea
                         )
-                    VALUES ("{}","{}")'''.format(
+                    VALUES ({},{})'''.format(
                                 idAnuncio,
                                 6
                             ))
@@ -514,7 +514,7 @@ class Anuncio:
                             id_anuncio,
                             id_tarea
                         )
-                    VALUES ("{}","{}")'''.format(
+                    VALUES ({},{})'''.format(
                                 idAnuncio,
                                 7
                             ))
@@ -528,7 +528,7 @@ class Anuncio:
                             id_anuncio,
                             id_tarea
                         )
-                    VALUES ("{}","{}")'''.format(
+                    VALUES ({},{})'''.format(
                                 idAnuncio,
                                 8
                             ))
@@ -556,7 +556,7 @@ class Anuncio:
                             id_anuncio,
                             id_tarea
                         )
-                    VALUES ("{}","{}")'''.format(
+                    VALUES ({},{})'''.format(
                                 idAnuncio,
                                 10
                             ))

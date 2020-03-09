@@ -272,7 +272,6 @@ def crear_anuncio():
     elif session.get('usertype') == 'Empleado':
         return redirect(url_for('inicio_empleados'))
     else:
-        flash('Anuncio creado!')
         return render_template('CrearAnuncio.html')
 
 
@@ -303,14 +302,13 @@ def publicar_anuncio():
             ndescripcion = request.form['txtDescripcion']
             nfecha_incio = datetime.now()
             nfecha_cierre = None
-            if request.form['radioEstado'] == 'estadoActiva':
+            if request.form.get('radioEstado') == '1':
                 nestado = 1
-            else:
+            elif request.form.get('radioEstado') == '0':
                 nestado = 0
-            if request.form['radioExperiencia'] == 'experienciaSi':
-                nexperiencia = 1
             else:
-                nexperiencia = 0
+                nestado = 'No leyó'
+            nexperiencia = request.form.get('radioExperiencia')
             npago_hora = request.form['pagoPorHora']
             ncal_desde = None #esto no va?
             ncal_hasta = None #esto no va?
@@ -342,18 +340,6 @@ def publicar_anuncio():
             return redirect(url_for('tus_anuncios'))
 
 
-@app.route('/listandoMisAnuncios/')
-def listandoMisAnuncios():
-    if session.get('usertype') == None:
-        return redirect(url_for('logueo'))
-    elif session.get('usertype') == 'Administrador':
-        return redirect(url_for('administrar'))
-    elif session.get('usertype') == 'Empleado':
-        return redirect(url_for('inicio_empleados'))
-    else:
-        empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
-        retorno = empleador.listarMisAnuncios(baseDatos)
-        return render_template('TusAnuncios.html', listaMisAnuncios = retorno)
 
 
 @app.route('/eliminandoAnuncio/<idAnuncio>/', methods = ['POST','GET'])
@@ -442,6 +428,7 @@ def actualizandoAnuncio(idAnuncio):
                 new_estado = 1
             else:
                 new_estado = 0
+            
             if request.form['radioExperiencia'] == 'experienciaSi':
                 new_experiencia = 1
             else:
@@ -500,7 +487,29 @@ def tus_anuncios():
     else:
         empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
         retorno = empleador.listarMisAnuncios(baseDatos)
-        return render_template('TusAnuncios.html', listaMisAnuncios = retorno)
+        listado = []
+        for anuncio in retorno:
+            lista = []
+            lista += [anuncio[0]]
+            lista += [anuncio[1]]
+            lista += [anuncio[2]]
+            lista += [anuncio[3]]
+            lista += [anuncio[4]]
+            if anuncio[5] == b'\x01':
+                lista += [1]
+            else: 
+                lista += [0]
+            if anuncio[6] == b'\x01':
+                lista += [1]
+            else: 
+                lista += [0]
+            lista += [anuncio[7]]
+            lista += [anuncio[8]]
+            lista += [anuncio[9]]
+            lista += [anuncio[10]]
+            lista += [anuncio[11]]
+            listado += [lista]
+        return render_template('TusAnuncios.html', listaMisAnuncios = listado)
 
 
 @app.route('/Anuncios/')
