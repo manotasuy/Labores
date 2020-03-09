@@ -306,8 +306,6 @@ def publicar_anuncio():
                 nestado = 1
             elif request.form.get('radioEstado') == '0':
                 nestado = 0
-            else:
-                nestado = 'No leyó'
             nexperiencia = request.form.get('radioExperiencia')
             npago_hora = request.form['pagoPorHora']
             ncal_desde = None #esto no va?
@@ -353,7 +351,6 @@ def borrandoAnuncio(idAnuncio):
     else:
         empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
         print(empleador)
-        idAnuncio = idAnuncio
         del_titulo = None
         del_descripcion = None
         del_fecha_incio = None
@@ -404,12 +401,46 @@ def borrandoAnuncio(idAnuncio):
 
 #acá va la funcion que envía los datos viejos para llenar el form del anuncio q se va a cambiar
 @app.route('/actualizandoAnuncio/<idAnuncio>/', methods=['POST', 'GET'])
-def editandoAnuncio(idAnuncio):
-    pass
+def ectualizandoAnuncio(idAnuncio):
+    if session.get('usertype') == None:
+        return redirect(url_for('logueo'))
+    elif session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    elif session.get('usertype') == 'Empleado':
+        return redirect(url_for('inicio_empleados'))
+    else:
+        empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
+        anuncio = getAnuncioByID(baseDatos, idAnuncio)
+        if anuncio.estado == b'\x01':
+            estado = 1
+        else:
+            estado = 0
+        lista = [
+            idAnuncio,
+            anuncio.titulo,
+            anuncio.descripcion,
+            anuncio.disponibilidad,
+            anuncio.hogar,
+            anuncio.oficina,
+            anuncio.cocinar,
+            anuncio.limp_banios,
+            anuncio.limp_cocinas,
+            anuncio.limp_dormitorios,
+            anuncio.cuidado_ninios,
+            anuncio.cuidado_bebes,
+            anuncio.cuidado_adultos,
+            anuncio.cuidado_mascotas,
+            anuncio.experiencia,
+            anuncio.pago_hora,
+            estado
+            ]
+        return render_template('editarAnuncio.html', anuncio = lista)
+
+
 
 #esta funcion recibe los nuevos datos y actualiza la bd:
 @app.route('/editandoAnuncio/<idAnuncio>/', methods=['POST'])
-def actualizandoAnuncio(idAnuncio):
+def editandoAnuncio(idAnuncio):
     if session.get('usertype') == None:
         return redirect(url_for('logueo'))
     elif session.get('usertype') == 'Administrador':
