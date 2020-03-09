@@ -409,8 +409,8 @@ def ectualizandoAnuncio(idAnuncio):
     elif session.get('usertype') == 'Empleado':
         return redirect(url_for('inicio_empleados'))
     else:
-        empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
         anuncio = getAnuncioByID(baseDatos, idAnuncio)
+        print(anuncio)
         if anuncio.estado == b'\x01':
             estado = 1
         else:
@@ -450,35 +450,30 @@ def editandoAnuncio(idAnuncio):
     else:
         if request.method == 'POST':
             empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
-            idAnuncio = idAnuncio
+            new_Disponibilidad = request.form.get('radioDisponibilidad') 
+            new_Hogar = request.form.getlist('chkHogar') 
+            new_Oficina = request.form.getlist('chkOficina') 
+            new_Cocinar = request.form.getlist('chkCocinar')
+            new_LimpBanios = request.form.getlist('chkLimpBanios') 
+            new_LimpCocinas = request.form.getlist('chkLimpCocinas') 
+            new_LimpDormitorios = request.form.getlist('chkLimpDormitorios') 
+            new_CuidadoNinios = request.form.getlist('chkCuidadoNinios') 
+            new_CuidadoBebes = request.form.getlist('chkCuidadoBebes') 
+            new_CuidadoAdultos = request.form.getlist('chkCuidadoAdultos') 
+            new_CuidadoMascotas = request.form.getlist('chkCuidadoMascotas') 
             new_titulo = request.form['txtTitulo']
             new_descripcion = request.form['txtDescripcion']
             old_fecha_incio = None
             new_fecha_cierre = None
-            if request.form['radioEstado'] == 'estadoActiva':
+            if request.form.get('radioEstado') == '1':
                 new_estado = 1
-            else:
+            elif request.form.get('radioEstado') == '0':
                 new_estado = 0
-            
-            if request.form['radioExperiencia'] == 'experienciaSi':
-                new_experiencia = 1
-            else:
-                new_experiencia = 0
+            new_experiencia = request.form.get('radioExperiencia')
             new_pago_hora = request.form['pagoPorHora']
-            new_cal_desde = None 
-            new_cal_hasta = None 
-            new_vinculo = None
-            new_Disponibilidad = request.form.get('radioDisponibilidad')
-            new_Hogar = request.form.getlist('chkHogar') 
-            new_Oficina = request.form.getlist('chkOficina')
-            new_Cocinar = request.form.getlist('chkCocinar')
-            new_LimpBanios = request.form.getlist('chkLimpBanios')
-            new_LimpCocinas = request.form.getlist('chkLimpCocinas') 
-            new_LimpDormitorios = request.form.getlist('chkLimpDormitorios')
-            new_CuidadoNinios = request.form.getlist('chkCuidadoNinios')
-            new_CuidadoBebes = request.form.getlist('chkCuidadoBebes') 
-            new_CuidadoAdultos = request.form.getlist('chkCuidadoAdultos')
-            new_CuidadoMascotas = request.form.getlist('chkCuidadoMascotas') 
+            new_cal_desde = None #esto no va?
+            new_cal_hasta = None #esto no va?
+            new_vinculo = None #esto hay que ver como lo hacemos
             empleador.actualizarAnuncio(
                 baseDatos, 
                 idAnuncio, 
@@ -504,7 +499,7 @@ def editandoAnuncio(idAnuncio):
                 new_CuidadoAdultos,
                 new_CuidadoMascotas
                 )
-            return redirect(url_for('listandoMisAnuncios'))
+            return redirect(url_for('tus_anuncios'))
 
 
 @app.route('/TusAnuncios/')
