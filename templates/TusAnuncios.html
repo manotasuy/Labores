@@ -1,15 +1,15 @@
 {% extends 'page_layout.html' %}
-
+​
 {% block referencias %}
 {% endblock %}
-
+​
 {% block estilo %}
 {% endblock %}
-
+​
 {% block titulo %}Labores - TusAnuncios{% endblock %}
-
+​
 {% block contenido %}
-
+​
 <div class="container">
 	<div class="jumbotron jumbotron-fluid">
 		<div class="mx-auto col-sm-8 main-section" id="myTab" role="tablist">
@@ -24,41 +24,42 @@
 								<table id="userList" class="table table-bordered table-hover table-striped">
 									<thead class="thead-light">
 										<tr>
-
 											<th scope="col">Fecha de publicación</th>
 											<th scope="col">Título</th>
 											<th scope="col">Estado</th>
 											<th></th>
-											<th></th>
-
+											
+​
 										</tr>
 									</thead>
 									<tbody>
 										{% for anuncio in listaMisAnuncios %}
 										<tr>
-											<td>
-												<!--fecha de publicacion-->
-											</td>
+											<td>{{ anuncio.3 }}</td>
 											<td>{{ anuncio.1 }}</td>
 											<td>
-											<!--Estado de anuncio --><input type="checkbox">Activa</input>
+												{% if anuncio.5 == 1 %}
+												<p>Activa</p>
+												{% elif anuncio.5 == 0 %}
+												<p>Inactiva</p>
+												{% endif %}
 											</td>
-
-											<td><a href="/editarAnuncio/{{ anuncio.0 }}"
+​
+											<td><a href="/actualizandoAnuncio/{{ anuncio.0 }}"
 													class="btn btn-primary">Editar</a>
-
-												<a href="/Candidatos" class="btn btn-success">Candidatos</a></td>
+​
+												<a href="/Candidatos/" class="btn btn-success">Candidatos</a></td>
 										</tr>
-
+​
 										{% endfor %}
-
-
+​
+​
 										</tr>
 									</tbody>
 								</table>
-
+​
 							</div>
-
+​
 						</div>
 					</div>
 				</div>
@@ -73,6 +74,4 @@
 		</div>
 	</div>
 </div>
-
-
 {% endblock %}
