@@ -13,7 +13,7 @@
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
             <h1 class="display-5 mb-5">Oferta</h1>
-            <form action="/editandoAnuncio/{{ data.0 }}/" method="POST">
+            <form action="/editandoAnuncio/{{ anuncio.0 }}/" method="POST">
                 <div class="form-group">
                     <label for="titulo">Título</label>
                     <input type="text" class="form-control" id="titulo" name="txtTitulo" value="{{ anuncio.1 }}">
@@ -42,22 +42,22 @@
                     <p class="mb-3">Tipo de trabajo</p>
                     <div class="custom-control custom-radio ml-5">
                         <input id="hora" name="radioDisponibilidad" type="radio" class="custom-control-input" checked=""
-                            required="" value="{{ anuncio.4 }}">
+                            required="" value="{{ anuncio.3 }}">
                         <label class="custom-control-label" for="hora">Por hora</label>
                     </div>
                     <div class="custom-control custom-radio ml-5">
                         <input id="jornada" name="radioDisponibilidad" type="radio" class="custom-control-input"
-                            required="" value="{{ anuncio.4 }}">
+                            required="" value="{{ anuncio.3 }}">
                         <label class="custom-control-label" for="jornada">Por jornada</label>
                     </div>
                     <div class="custom-control custom-radio ml-5">
                         <input id="tarea" name="radioDisponibilidad" type="radio" class="custom-control-input"
-                            required="" value="{{ anuncio.4 }}">
+                            required="" value="{{ anuncio.3 }}">
                         <label class="custom-control-label" for="tarea">Por tarea puntual</label>
                     </div>
                     <div class="custom-control custom-radio ml-5">
                         <input id="mes" name="radioDisponibilidad" type="radio" class="custom-control-input" required=""
-                            value="{{ anuncio.4 }}">
+                            value="{{ anuncio.3 }}">
                         <label class="custom-control-label" for="mes">Por mes</label>
                     </div>
                 </div>
@@ -67,7 +67,7 @@
                     <div class="col-sm-10">
                         <div class="custom-control custom-checkbox ml-5">
                             <input type="checkbox" class="custom-control-input" id="hogar" name="chkHogar"
-                                value="{{ anuncio.5 }}">
+                                value="{{ anuncio.4 }}">
                             <label class="custom-control-label" for="hogar">Hogar</label>
                         </div>
                         <div class="custom-control custom-checkbox ml-5">
@@ -77,42 +77,42 @@
                         </div>
                         <div class="custom-control custom-checkbox ml-5">
                             <input type="checkbox" class="custom-control-input" id="cocinar" name="chkCocinar"
-                                value="{{ anuncio.5 }}">
+                                value="{{ anuncio.6 }}">
                             <label class="custom-control-label" for="cocinar">Cocinar</label>
                         </div>
                         <div class="custom-control custom-checkbox ml-5">
                             <input type="checkbox" class="custom-control-input" id="banios" name="chkLimpBanios"
-                                value="{{ anuncio.5 }}">
+                                value="{{ anuncio.7 }}">
                             <label class="custom-control-label" for="banios">Limpieza de baños</label>
                         </div>
                         <div class="custom-control custom-checkbox ml-5">
                             <input type="checkbox" class="custom-control-input" id="cocinas" name="chkLimpCocinas"
-                                value="{{ anuncio.5 }}">
+                                value="{{ anuncio.8 }}">
                             <label class="custom-control-label" for="cocinas">Limpieza de cocinas</label>
                         </div>
                         <div class="custom-control custom-checkbox ml-5">
                             <input type="checkbox" class="custom-control-input" id="dormitorios"
-                                name="chkLimpDormitorios" value="{{ anuncio.5 }}">
+                                name="chkLimpDormitorios" value="{{ anuncio.9 }}">
                             <label class="custom-control-label" for="dormitorios">Limpieza de dormitorios</label>
                         </div>
                         <div class="custom-control custom-checkbox ml-5">
                             <input type="checkbox" class="custom-control-input" id="ninios" name="chkCuidadoNinios"
-                                value="{{ anuncio.5 }}">
+                                value="{{ anuncio.10 }}">
                             <label class="custom-control-label" for="ninios">Cuidado de niños</label>
                         </div>
                         <div class="custom-control custom-checkbox ml-5">
                             <input type="checkbox" class="custom-control-input" id="bebes" name="chkCuidadoBebes"
-                                value="{{ anuncio.5 }}">
+                                value="{{ anuncio.11 }}">
                             <label class="custom-control-label" for="bebes">Cuidado de bebés</label>
                         </div>
                         <div class="custom-control custom-checkbox ml-5">
                             <input type="checkbox" class="custom-control-input" id="mayores" name="chkCuidadoAdultos"
-                                value="{{ anuncio.5 }}">
+                                value="{{ anuncio.12 }}">
                             <label class="custom-control-label" for="mayores">Cuidado de adultos mayores</label>
                         </div>
                         <div class="custom-control custom-checkbox ml-5">
                             <input type="checkbox" class="custom-control-input" id="mascotas" name="chkCuidadoMascotas"
-                                value="{{ anuncio.5 }}">
+                                value="{{ anuncio.13 }}">
                             <label class="custom-control-label" for="mascotas">Cuidado de mascotas</label>
                         </div>
                     </div>
@@ -122,12 +122,12 @@
                     <p class="mb-3">Búscas a alguien con experiencia?</p>
                     <div class="custom-control custom-radio ml-5">
                         <input id="experienciaSi" name="radioExperiencia" type="radio" class="custom-control-input"
-                            checked="" required="" value="{{ anuncio.6 }}">
+                            checked="" required="" value="{{ anuncio.14 }}">
                         <label class="custom-control-label" for="experienciaSi">Si</label>
                     </div>
                     <div class="custom-control custom-radio ml-5">
                         <input id="experienciaNo" name="radioExperiencia" type="radio" class="custom-control-input"
-                            required="" value="{{ anuncio.6 }}">
+                            required="" value="{{ anuncio.14 }}">
                         <label class="custom-control-label" for="experienciaNo">No es necesario</label>
                     </div>
                 </div>
@@ -137,7 +137,7 @@
                         hora?</label>
                     <div class="col-sm-3 mb-4">
                         <input type="text" class="form-control" id="pagoPorHora" placeholder="$U"
-                            value="{{ anuncio.7 }}">
+                            value="{{ anuncio.15 }}">
                     </div>
                 </div>
 
@@ -145,12 +145,12 @@
                     <p class="mb-3">Estado de la oferta</p>
                     <div class="custom-control custom-radio ml-5">
                         <input id="estadoActiva" name="radioEstado" type="radio" class="custom-control-input" checked=""
-                            required="" value="{{ anuncio.8 }}">
+                            required="" value="{{ anuncio.16 }}">
                         <label class="custom-control-label" for="estadoActiva">Activa</label>
                     </div>
                     <div class="custom-control custom-radio ml-5">
                         <input id="estadoInactiva" name="radioEstado" type="radio" class="custom-control-input"
-                            required="" value="{{ anuncio.8 }}">
+                            required="" value="{{ anuncio.16 }}">
                         <label class="custom-control-label" for="estadoInactiva">Inactiva</label>
                     </div>
                 </div>
