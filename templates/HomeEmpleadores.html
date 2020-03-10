@@ -12,17 +12,17 @@
 <div class="container">
   <div class="jumbotron jumbotron-fluid">
     <div class="container">
-      <div class="text-center mb-4 in-line">
+      <div class="text-center mb-5 in-line">
         <a class="my-0 mr-md-auto" href="" aria-label="Home">
           <img class="mb-4" src="{{ url_for('static', filename=sujeto.foto)}}" alt="" width="125" height="125">
         </a>
-        <p class="lead"><a href="/Perfil/Empleador/session['id_empleador']">Editar perfil</a></p>
+        <p class="lead"><a href="/Perfil/Empleador/{{session['id_empleador']}}">Editar perfil</a></p>
       </div>
       <div class="card-deck">
         <div class="card">
           <a class="btn" href="/Anuncio/Alta">
-            <!--<img src="{{ url_for('static', filename='images/...png')}}" class="card-img-top" alt="..."
-                      width="32" height="32">-->
+            <!--<img src="{{ url_for('static', filename='images/...png')}}" class="card-img-top" alt="..." width="32"
+              height="128">-->
             <div class="card-body">
               <h3 class="card-title text-center">Crear Anuncio</h3>
             </div>
@@ -30,8 +30,8 @@
         </div>
         <div class="card">
           <a class="btn" href="/TusAnuncios">
-            <!--<img src="{{ url_for('static', filename='images/...png')}}" class="card-img-top" alt="..."
-                      width="32" height="32">-->
+            <!--<img src="{{ url_for('static', filename='images/...png')}}" class="card-img-top" alt="..." width="32"
+              height="32">-->
             <div class="card-body">
               <h3 class="card-title text-center">Tus Anuncios</h3>
             </div>
@@ -41,23 +41,23 @@
 
       <div class="card-deck mt-4">
         <div class="card">
-          <a class="btn" href="/Candidatos/1">
-            <!--<img src="{{ url_for('static', filename='images/...png')}}" class="card-img-top" alt="..."
-                        width="32" height="32">-->
+          <a class="btn" href="/Mensajes">
+            <!--<img src="{{ url_for('static', filename='images/...png')}}" class="card-img-top" alt="..." width="32"
+              height="32">-->
             <div class="card-body">
-              <h3 class="card-title text-center">Candidatos</h3>
+              <h3 class="card-title text-center">Mensajes</h3>
             </div>
           </a>
         </div>
-        <div class="card">
+        <!--<div class="card">
           <a class="btn" href="#">
-            <!--<img src="{{ url_for('static', filename='images/...png')}}" class="card-img-top" alt="..."
-                        width="32" height="32">-->
+            <img src="{{ url_for('static', filename='images/...png')}}" class="card-img-top" alt="..."
+                        width="32" height="32">
             <div class="card-body">
               <h3 class="card-title text-center">Búsqueda</h3>
             </div>
           </a>
-        </div>
+        </div>-->
       </div>
 
     </div>

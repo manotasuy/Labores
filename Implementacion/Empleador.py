@@ -19,7 +19,7 @@ class Empleador:
         self.registroBps = pBps
         self.foto = pFoto
         self.promedioCalificacion = pCalif
-        self.usuario : Usuario = pUsuario
+        self.usuario: Usuario = pUsuario
 
     def __getitem__(self, item):
         return self.__dict__[item]
@@ -30,29 +30,13 @@ class Empleador:
     def crearEmpleador(self, bd):
         try:
             intGenero: int
-            print(self.genero)
             if self.genero == 'Femenino':
                 intGenero = 0
             else:
                 intGenero = 1
-            print(self.nacimiento)
-            fechaFormateada = self.nacimiento.strftime('%Y-%m-%d')
-
-            print(self.cedula)
-            print(self.nombre)
-            print(self.apellido)
-            print(fechaFormateada)
-            print(intGenero)
-            print(self.domicilio)
-            print(self.nacionalidad)
-            print(self.email)
-            print(self.telefono)
-            print(self.registroBps)
-            print(self.foto)
-            print(self.promedioCalificacion)
-            print(self.usuario.id)
-            print(self.usuario.usuario)
-            print(self.usuario.clave)
+            #fechaFormateada = self.nacimiento.strftime('%Y-%m-%d')
+            if self.foto is None or self.foto == '':
+                self.foto = 'images/NoImage.png'
 
             cursor = bd.connection.cursor()
             cursor.execute('''
@@ -77,7 +61,8 @@ class Empleador:
                                self.cedula,
                                self.nombre,
                                self.apellido,
-                               fechaFormateada,
+                               # fechaFormateada,
+                               self.nacimiento,
                                intGenero,
                                self.domicilio,
                                self.nacionalidad,
@@ -96,7 +81,10 @@ class Empleador:
 
     def modificarEmpleador(self, bd):
         try:
-            #print('Self: ', self)
+            # print('Self: ', self)
+            if self.foto is None or self.foto == '':
+                self.foto = 'images/NoImage.png'
+
             cursor = bd.connection.cursor()
             cursor.execute('''
                 UPDATE empleador SET
@@ -143,42 +131,42 @@ class Empleador:
             print("Error en listarEmpleadores ", e)
 
     def crearAnuncio(
-        self, 
-        bd, 
-        Titulo, 
-        Descripcion, 
-        FechaInicio, 
-        FechaCierre, 
-        Estado, 
-        Experiencia, 
-        Pago_hora, 
-        CalDesde, 
-        CalHasta, 
-        TieneVinculo,
-        Disponibilidad,
-        Hogar,
-        Oficina,
-        Cocinar,
-        LimpBanios,
-        LimpCocinas,
-        LimpDormitorios,
-        CuidadoNinios,
-        CuidadoBebes,
-        CuidadoAdultos,
-        CuidadoMascotas):
+            self,
+            bd,
+            Titulo,
+            Descripcion,
+            FechaInicio,
+            FechaCierre,
+            Estado,
+            Experiencia,
+            Pago_hora,
+            CalDesde,
+            CalHasta,
+            TieneVinculo,
+            Disponibilidad,
+            Hogar,
+            Oficina,
+            Cocinar,
+            LimpBanios,
+            LimpCocinas,
+            LimpDormitorios,
+            CuidadoNinios,
+            CuidadoBebes,
+            CuidadoAdultos,
+            CuidadoMascotas):
         try:
-            newAnuncio = Anuncio.Anuncio(
+            newAnuncio = Anuncio(
                 0,
-                Titulo, 
-                Descripcion, 
-                FechaInicio, 
-                FechaCierre, 
+                Titulo,
+                Descripcion,
+                FechaInicio,
+                FechaCierre,
                 Estado,
                 Experiencia,
                 Pago_hora,
-                self, 
-                CalDesde, 
-                CalHasta, 
+                self,
+                CalDesde,
+                CalHasta,
                 TieneVinculo,
                 Disponibilidad,
                 None,
@@ -197,20 +185,19 @@ class Empleador:
         except Exception as e:
             print("Error en crearAnuncio ", e)
 
-
     def actualizarAnuncio(
-        self, 
-        bd, 
-        idAnuncio, 
-        Titulo, 
-        Descripcion, 
-        FechaInicio, 
-        FechaCierre, 
-        Estado, 
-        Experiencia, 
-        Pago_hora, 
-        CalEmpleado, 
-        CalEmpleador, 
+        self,
+        bd,
+        elAnuncio,
+        Titulo,
+        Descripcion,
+        FechaInicio,
+        FechaCierre,
+        Estado,
+        Experiencia,
+        Pago_hora,
+        CalEmpleado,
+        CalEmpleador,
         TieneVinculo,
         Disponibilidad,
         Hogar,
@@ -223,19 +210,20 @@ class Empleador:
         CuidadoBebes,
         CuidadoAdultos,
         CuidadoMascotas
-        ):
+    ):
         try:
-            newAnuncio = Anuncio.Anuncio(
-                Titulo, 
-                Descripcion, 
-                FechaInicio, 
-                FechaCierre, 
+            newAnuncio = Anuncio(
+                elAnuncio.id,
+                Titulo,
+                Descripcion,
+                FechaInicio,
+                FechaCierre,
                 Estado,
-                Experiencia, 
-                Pago_hora, 
-                self, 
-                CalEmpleado, 
-                CalEmpleador, 
+                Experiencia,
+                Pago_hora,
+                self,
+                CalEmpleado,
+                CalEmpleador,
                 TieneVinculo,
                 Disponibilidad,
                 None,
@@ -249,25 +237,25 @@ class Empleador:
                 CuidadoBebes,
                 CuidadoAdultos,
                 CuidadoMascotas
-                )
-            newAnuncio.updateAnuncio(bd, idAnuncio)
+            )
+            newAnuncio.updateAnuncio(bd)
             print('El empleador actualizó el anuncio')
         except Exception as e:
             print("Error en actualizarAnuncio ", e)
 
     def borrarAnuncio(
-        self, 
-        bd, 
-        idAnuncio, 
-        Titulo, 
-        Descripcion, 
-        FechaInicio, 
-        FechaCierre, 
-        Estado, 
-        Experiencia, 
-        Pago_hora, 
-        CalEmpleado, 
-        CalEmpleador, 
+        self,
+        bd,
+        elAnuncio,
+        Titulo,
+        Descripcion,
+        FechaInicio,
+        FechaCierre,
+        Estado,
+        Experiencia,
+        Pago_hora,
+        CalEmpleado,
+        CalEmpleador,
         TieneVinculo,
         Disponibilidad,
         Hogar,
@@ -280,21 +268,23 @@ class Empleador:
         CuidadoBebes,
         CuidadoAdultos,
         CuidadoMascotas
-        ):
+    ):
         try:
-            delAnuncio = Anuncio.Anuncio(
-                Titulo, 
-                Descripcion, 
-                FechaInicio, 
-                FechaCierre, 
+            delAnuncio = Anuncio(
+                elAnuncio.id,
+                Titulo,
+                Descripcion,
+                FechaInicio,
+                FechaCierre,
                 Estado,
-                Experiencia, 
-                Pago_hora, 
-                self, 
-                CalEmpleado, 
-                CalEmpleador, 
+                Experiencia,
+                Pago_hora,
+                self,
+                CalEmpleado,
+                CalEmpleador,
                 TieneVinculo,
                 Disponibilidad,
+                None,
                 Hogar,
                 Oficina,
                 Cocinar,
@@ -305,9 +295,8 @@ class Empleador:
                 CuidadoBebes,
                 CuidadoAdultos,
                 CuidadoMascotas
-                )
-            delAnuncio.deleteAnuncio(bd, idAnuncio)
-            print('El empleador eliminó el anuncio')
+            )
+            delAnuncio.deleteAnuncio(bd)
         except Exception as e:
             print("Error en borrarAnuncio ", e)
 
@@ -391,7 +380,7 @@ def getEmpleadorByID(bd, id):
             retorno[0][11],
             retorno[0][12],
             getUsuarioByID(bd, retorno[0][13]),)
-        #print('Empleador: ', empleador)
+        # print('Empleador: ', empleador)
         return empleador
     except Exception as e:
         print("Error en getEmpleadorByID ", e)

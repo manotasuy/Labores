@@ -18,6 +18,7 @@
                 {{ elanuncio.descripcion }} <br>
                 Publicado el {{ elanuncio.fecha_inicio }}
             </p>
+            <a href="/TusAnuncios" type="button" class="btn btn-primary float-right">Volver a mis anuncios</a>
         </div>
     </div>
 
@@ -40,8 +41,10 @@
                                 Meses de experiencia: {{item_pares.experiencia_meses}}<br>
                                 Promedio de calificación: {{item_pares.promedioCalificacion}}
                             </p>
-                            <a class="btn btn-sm btn-success float-right" href="#/Perfil/Empleado/item_pares.empleado.id" aria-label="">Ir al Perfil</a>
-                            <p class="card-text"><small class="text-muted">Su postulación fue en: {{item_pares.fecha}}</small></p>
+                            <a class="btn btn-sm btn-success float-right"
+                                href="#/Perfil/Empleado/item_pares.empleado.id" aria-label="">Ir al Perfil</a>
+                            <p class="card-text"><small class="text-muted">Su postulación fue en:
+                                    {{item_pares.fecha}}</small></p>
                         </div>
                     </div>
                 </div>
@@ -51,17 +54,21 @@
             <div class="card mb-3" style="max-width: 500px;">
                 <div class="row no-gutters">
                     <div class="col-md-4">
-                        <img src="{{ url_for('static', filename=item_impares.empleado.foto)}}" class="card-img" alt="...">
+                        <img src="{{ url_for('static', filename=item_impares.empleado.foto)}}" class="card-img"
+                            alt="...">
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
-                            <h5 class="card-title">{{item_impares.empleado.nombre}} {{item_impares.empleado.apellido}}</h5>
+                            <h5 class="card-title">{{item_impares.empleado.nombre}} {{item_impares.empleado.apellido}}
+                            </h5>
                             <p class="card-text">
                                 Meses de experiencia: {{item_impares.experiencia_meses}}<br>
                                 Promedio de calificación: {{item_impares.promedioCalificacion}}
                             </p>
-                            <a class="btn btn-sm btn-success float-right" href="#/Perfil/Empleado/item_impares.empleado.id" aria-label="">Ir al Perfil</a>
-                            <p class="card-text"><small class="text-muted">Su postulación fue en: {{item_impares.fecha}}</small></p>
+                            <a class="btn btn-sm btn-success float-right"
+                                href="#/Perfil/Empleado/item_impares.empleado.id" aria-label="">Ir al Perfil</a>
+                            <p class="card-text"><small class="text-muted">Su postulación fue en:
+                                    {{item_impares.fecha}}</small></p>
                         </div>
                     </div>
                 </div>

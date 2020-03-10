@@ -36,7 +36,7 @@ class Anuncio:
         pCuidadoAdultos,
         pCuidadoMascotas
         # Deberían sacarse estos atributos y cargarlos dinámicamente desde la bd [Fin]
-        ):
+    ):
         self.id = pId
         self.titulo = pTitulo
         self.descripcion = pDescripcion
@@ -45,7 +45,7 @@ class Anuncio:
         self.estado = pEstado
         self.experiencia = pExperiencia
         self.pago_hora = pPago_hora
-        self.empleador : Empleador = pEmpleador
+        self.empleador: Empleador = pEmpleador
         self.calificacion_desde = pCalDesde
         self.calificacion_hasta = pCalHasta
         self.tiene_vinculo = pTieneVinculo
@@ -65,7 +65,7 @@ class Anuncio:
         # Deberían sacarse estos atributos y cargarlos dinámicamente desde la bd [Fin]
 
     def __str__(self):
-        return 'Título: {}, Empleador {}, Vinculo {}'.format(self.titulo, self.empleador.id, self.tiene_vinculo)
+        return 'Id: {}, Título: {}, Empleador: {}, Vinculo: {}'.format(self.id, self.titulo, self.empleador.id, self.tiene_vinculo)
 
     def __getitem__(self, item):
         return self.__dict__[item]
@@ -88,10 +88,11 @@ class Anuncio:
                         calificacion_hasta,
                         tiene_vinculo
                     )
-                VALUES ({},{},{},{},{},{},{},{},{},{})'''.format(
+                VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)''',
+                           (
                                self.titulo,
                                self.descripcion,
-							   self.fecha_inicio,
+                               self.fecha_inicio,
                                self.fecha_cierre,
                                self.estado,
                                self.experiencia,
@@ -104,7 +105,8 @@ class Anuncio:
             bd.connection.commit()
             cursor.close()
             cursor = bd.connection.cursor()
-            cursor.execute('''SELECT MAX(id) FROM anuncio WHERE id_empleador = {}'''.format(self.empleador.id))
+            cursor.execute('''SELECT MAX(id) FROM anuncio WHERE id_empleador = {}'''.format(
+                self.empleador.id))
             retorno = cursor.fetchall()
             idAnuncio = retorno[0][0]
             bd.connection.commit()
@@ -119,9 +121,9 @@ class Anuncio:
                             id_disponibilidad
                         )
                     VALUES ({},{})'''.format(
-                                idAnuncio,
-                                1
-                            ))
+                    idAnuncio,
+                    1
+                ))
                 bd.connection.commit()
                 cursor.close()
             elif self.disponibilidad == 'jornada':
@@ -133,11 +135,11 @@ class Anuncio:
                             id_disponibilidad
                         )
                     VALUES ({},{})'''.format(
-                                idAnuncio,
-                                2
-                            ))
+                    idAnuncio,
+                    2
+                ))
                 bd.connection.commit()
-                cursor.close()                            
+                cursor.close()
             elif self.disponibilidad == 'tarea':
                 cursor = bd.connection.cursor()
                 cursor.execute('''
@@ -147,11 +149,11 @@ class Anuncio:
                             id_disponibilidad
                         )
                     VALUES ({},{})'''.format(
-                                idAnuncio,
-                                3
-                            ))
+                    idAnuncio,
+                    3
+                ))
                 bd.connection.commit()
-                cursor.close()                            
+                cursor.close()
             elif self.disponibilidad == 'mes':
                 cursor = bd.connection.cursor()
                 cursor.execute('''
@@ -161,11 +163,11 @@ class Anuncio:
                             id_disponibilidad
                         )
                     VALUES ({},{})'''.format(
-                                idAnuncio,
-                                4
-                            ))
+                    idAnuncio,
+                    4
+                ))
                 bd.connection.commit()
-                cursor.close()                            
+                cursor.close()
             if self.hogar:
                 cursor = bd.connection.cursor()
                 cursor.execute('''
@@ -175,9 +177,9 @@ class Anuncio:
                             id_tarea
                         )
                     VALUES ({},{})'''.format(
-                                idAnuncio,
-                                1
-                            ))
+                    idAnuncio,
+                    1
+                ))
                 bd.connection.commit()
                 cursor.close()
             if self.oficina:
@@ -189,9 +191,9 @@ class Anuncio:
                             id_tarea
                         )
                     VALUES ({},{})'''.format(
-                                idAnuncio,
-                                2
-                            ))
+                    idAnuncio,
+                    2
+                ))
                 bd.connection.commit()
                 cursor.close()
             if self.cocinar:
@@ -203,9 +205,9 @@ class Anuncio:
                             id_tarea
                         )
                     VALUES ({},{})'''.format(
-                                idAnuncio,
-                                3
-                            ))
+                    idAnuncio,
+                    3
+                ))
                 bd.connection.commit()
                 cursor.close()
             if self.limp_banios:
@@ -217,11 +219,11 @@ class Anuncio:
                             id_tarea
                         )
                     VALUES ({},{})'''.format(
-                                idAnuncio,
-                                4
-                            ))
+                    idAnuncio,
+                    4
+                ))
                 bd.connection.commit()
-                cursor.close()        
+                cursor.close()
             if self.limp_cocinas:
                 cursor = bd.connection.cursor()
                 cursor.execute('''
@@ -231,11 +233,11 @@ class Anuncio:
                             id_tarea
                         )
                     VALUES ({},{})'''.format(
-                                idAnuncio,
-                                5
-                            ))
+                    idAnuncio,
+                    5
+                ))
                 bd.connection.commit()
-                cursor.close()         
+                cursor.close()
             if self.limp_dormitorios:
                 cursor = bd.connection.cursor()
                 cursor.execute('''
@@ -245,11 +247,11 @@ class Anuncio:
                             id_tarea
                         )
                     VALUES ({},{})'''.format(
-                                idAnuncio,
-                                6
-                            ))
+                    idAnuncio,
+                    6
+                ))
                 bd.connection.commit()
-                cursor.close()           
+                cursor.close()
             if self.cuidado_ninios:
                 cursor = bd.connection.cursor()
                 cursor.execute('''
@@ -259,11 +261,11 @@ class Anuncio:
                             id_tarea
                         )
                     VALUES ({},{})'''.format(
-                                idAnuncio,
-                                7
-                            ))
+                    idAnuncio,
+                    7
+                ))
                 bd.connection.commit()
-                cursor.close()    
+                cursor.close()
             if self.cuidado_bebes:
                 cursor = bd.connection.cursor()
                 cursor.execute('''
@@ -273,9 +275,9 @@ class Anuncio:
                             id_tarea
                         )
                     VALUES ({},{})'''.format(
-                                idAnuncio,
-                                8
-                            ))
+                    idAnuncio,
+                    8
+                ))
                 bd.connection.commit()
                 cursor.close()
             if self.cuidado_adultos:
@@ -287,9 +289,9 @@ class Anuncio:
                             id_tarea
                         )
                     VALUES ({},{})'''.format(
-                                idAnuncio,
-                                9
-                            ))
+                    idAnuncio,
+                    9
+                ))
                 bd.connection.commit()
                 cursor.close()
             if self.cuidado_mascotas:
@@ -301,79 +303,80 @@ class Anuncio:
                             id_tarea
                         )
                     VALUES ({},{})'''.format(
-                                idAnuncio,
-                                10
-                            ))
+                    idAnuncio,
+                    10
+                ))
                 bd.connection.commit()
-                cursor.close()                
+                cursor.close()
             print('Anuncio Creado')
         except Exception as e:
             print("Error en createAnuncio ", e)
 
-    def deleteAnuncio(self, bd, idAnuncio):
+    def deleteAnuncio(self, bd):
         try:
 
             cursor = bd.connection.cursor()
             cursor.execute('''
                 DELETE FROM anuncio_disponibilidad WHERE id_anuncio = {}
-                '''.format(idAnuncio))
+                '''.format(self.id))
             bd.connection.commit()
-            cursor.close()       
+            cursor.close()
             cursor = bd.connection.cursor()
             cursor.execute('''
                 DELETE FROM anuncio_tarea WHERE id_anuncio = {}
-                '''.format(idAnuncio))
+                '''.format(self.id))
             bd.connection.commit()
-            cursor.close()                 
+            cursor.close()
             cursor = bd.connection.cursor()
             cursor.execute('''
                 DELETE FROM anuncio WHERE id = {}
-                '''.format(idAnuncio))
+                '''.format(self.id))
             bd.connection.commit()
-            cursor.close()            
+            cursor.close()
             print('Anuncio Borrado')
         except Exception as e:
             print("Error en deleteAnuncio ", e)
 
-    def updateAnuncio(self, bd, idAnuncio):
+    def updateAnuncio(self, bd):
         try:
             cursor = bd.connection.cursor()
             cursor.execute('''
                 UPDATE anuncio SET
-                    titulo = {},
-                    descripcion = {},
-                    fecha_cierre = {},
-                    estado = {},
-                    experiencia = {},
-                    pago_hora = {},
-                    calificacion_desde = {},
-                    calificacion_hasta = {},
-                    tiene_vinculo = {}
-                WHERE id = {}
-                '''.format(
-                self.titulo,
-                self.descripcion,
-                self.fecha_cierre,
-                self.estado,
-                self.experiencia,
-                self.pago_hora,
-                self.calificacion_desde,
-                self.calificacion_hasta,
-                self.tiene_vinculo,
-                idAnuncio
-            ))
+                    titulo = %s,
+                    descripcion = %s,
+                    fecha_cierre = %s,
+                    estado = %s,
+                    experiencia = %s,
+                    pago_hora = %s,
+                    calificacion_desde = %s,
+                    calificacion_hasta = %s,
+                    tiene_vinculo = %s
+                WHERE id = %s''',
+                           (
+                               self.titulo,
+                               self.descripcion,
+                               self.fecha_cierre,
+                               self.estado,
+                               self.experiencia,
+                               self.pago_hora,
+                               self.calificacion_desde,
+                               self.calificacion_hasta,
+                               self.tiene_vinculo,
+                               self.id
+                           ))
+
             bd.connection.commit()
             cursor.close()
             cursor = bd.connection.cursor()
             cursor.execute('''
                 DELETE FROM anuncio_disponibilidad WHERE id_anuncio = {}
-                '''.format(idAnuncio))
+                '''.format(self.id))
             bd.connection.commit()
-            cursor.close()       
+            cursor.close()
             cursor = bd.connection.cursor()
             cursor.execute('''
                 DELETE FROM anuncio_tarea WHERE id_anuncio = {}
-                '''.format(idAnuncio))
+                '''.format(self.id))
             bd.connection.commit()
             cursor.close()
             cursor = bd.connection.cursor()
@@ -386,9 +389,9 @@ class Anuncio:
                             id_disponibilidad
                         )
                     VALUES ({},{})'''.format(
-                                idAnuncio,
-                                1
-                            ))
+                    self.id,
+                    1
+                ))
                 bd.connection.commit()
                 cursor.close()
             elif self.disponibilidad == 'jornada':
@@ -400,11 +403,11 @@ class Anuncio:
                             id_disponibilidad
                         )
                     VALUES ({},{})'''.format(
-                                idAnuncio,
-                                2
-                            ))
+                    self.id,
+                    2
+                ))
                 bd.connection.commit()
-                cursor.close()                            
+                cursor.close()
             elif self.disponibilidad == 'tarea':
                 cursor = bd.connection.cursor()
                 cursor.execute('''
@@ -414,11 +417,11 @@ class Anuncio:
                             id_disponibilidad
                         )
                     VALUES ({},{})'''.format(
-                                idAnuncio,
-                                3
-                            ))
+                    self.id,
+                    3
+                ))
                 bd.connection.commit()
-                cursor.close()                            
+                cursor.close()
             elif self.disponibilidad == 'mes':
                 cursor = bd.connection.cursor()
                 cursor.execute('''
@@ -428,11 +431,11 @@ class Anuncio:
                             id_disponibilidad
                         )
                     VALUES ({},{})'''.format(
-                                idAnuncio,
-                                4
-                            ))
+                    self.id,
+                    4
+                ))
                 bd.connection.commit()
-                cursor.close()                            
+                cursor.close()
             if self.hogar:
                 cursor = bd.connection.cursor()
                 cursor.execute('''
@@ -442,9 +445,9 @@ class Anuncio:
                             id_tarea
                         )
                     VALUES ({},{})'''.format(
-                                idAnuncio,
-                                1
-                            ))
+                    self.id,
+                    1
+                ))
                 bd.connection.commit()
                 cursor.close()
             if self.oficina:
@@ -456,9 +459,9 @@ class Anuncio:
                             id_tarea
                         )
                     VALUES ({},{})'''.format(
-                                idAnuncio,
-                                2
-                            ))
+                    self.id,
+                    2
+                ))
                 bd.connection.commit()
                 cursor.close()
             if self.cocinar:
@@ -470,9 +473,9 @@ class Anuncio:
                             id_tarea
                         )
                     VALUES ({},{})'''.format(
-                                idAnuncio,
-                                3
-                            ))
+                    self.id,
+                    3
+                ))
                 bd.connection.commit()
                 cursor.close()
             if self.limp_banios:
@@ -484,11 +487,11 @@ class Anuncio:
                             id_tarea
                         )
                     VALUES ({},{})'''.format(
-                                idAnuncio,
-                                4
-                            ))
+                    self.id,
+                    4
+                ))
                 bd.connection.commit()
-                cursor.close()        
+                cursor.close()
             if self.limp_cocinas:
                 cursor = bd.connection.cursor()
                 cursor.execute('''
@@ -498,11 +501,11 @@ class Anuncio:
                             id_tarea
                         )
                     VALUES ({},{})'''.format(
-                                idAnuncio,
-                                5
-                            ))
+                    self.id,
+                    5
+                ))
                 bd.connection.commit()
-                cursor.close()         
+                cursor.close()
             if self.limp_dormitorios:
                 cursor = bd.connection.cursor()
                 cursor.execute('''
@@ -512,11 +515,11 @@ class Anuncio:
                             id_tarea
                         )
                     VALUES ({},{})'''.format(
-                                idAnuncio,
-                                6
-                            ))
+                    self.id,
+                    6
+                ))
                 bd.connection.commit()
-                cursor.close()           
+                cursor.close()
             if self.cuidado_ninios:
                 cursor = bd.connection.cursor()
                 cursor.execute('''
@@ -526,11 +529,11 @@ class Anuncio:
                             id_tarea
                         )
                     VALUES ({},{})'''.format(
-                                idAnuncio,
-                                7
-                            ))
+                    self.id,
+                    7
+                ))
                 bd.connection.commit()
-                cursor.close()    
+                cursor.close()
             if self.cuidado_bebes:
                 cursor = bd.connection.cursor()
                 cursor.execute('''
@@ -540,9 +543,9 @@ class Anuncio:
                             id_tarea
                         )
                     VALUES ({},{})'''.format(
-                                idAnuncio,
-                                8
-                            ))
+                    self.id,
+                    8
+                ))
                 bd.connection.commit()
                 cursor.close()
             if self.cuidado_adultos:
@@ -554,9 +557,9 @@ class Anuncio:
                             id_tarea
                         )
                     VALUES ({},{})'''.format(
-                                idAnuncio,
-                                9
-                            ))
+                    self.id,
+                    9
+                ))
                 bd.connection.commit()
                 cursor.close()
             if self.cuidado_mascotas:
@@ -568,11 +571,11 @@ class Anuncio:
                             id_tarea
                         )
                     VALUES ({},{})'''.format(
-                                idAnuncio,
-                                10
-                            ))
+                    self.id,
+                    10
+                ))
                 bd.connection.commit()
-                cursor.close()              
+                cursor.close()
             print('Anuncio Actualizado')
         except Exception as e:
             print("Error en updateAnuncio ", e)
@@ -610,7 +613,7 @@ def getAnuncioByID(bd, id):
             SELECT id_disponibilidad FROM anuncio_disponibilidad WHERE id_anuncio = {}'''.format(id))
         retorno_disponibilidad = cursor.fetchall()
         bd.connection.commit()
-        cursor.close()    
+        cursor.close()
         if (1,) in retorno_tarea:
             bd_hogar = True
         else:
@@ -630,15 +633,15 @@ def getAnuncioByID(bd, id):
         if (5,) in retorno_tarea:
             bd_limp_cocinas = True
         else:
-            bd_limp_cocinas = False 
+            bd_limp_cocinas = False
         if (6,) in retorno_tarea:
             bd_limp_dorm = True
         else:
-            bd_limp_dorm = False     
+            bd_limp_dorm = False
         if (7,) in retorno_tarea:
             bd_cuid_ninios = True
         else:
-            bd_cuid_ninios = False 
+            bd_cuid_ninios = False
         if (8,) in retorno_tarea:
             bd_cuid_bebes = True
         else:
@@ -646,13 +649,13 @@ def getAnuncioByID(bd, id):
         if (9,) in retorno_tarea:
             bd_cuid_adult = True
         else:
-            bd_cuid_adult = False  
+            bd_cuid_adult = False
         if (10,) in retorno_tarea:
             bd_cuid_pet = True
         else:
-            bd_cuid_pet = False                                                                             
+            bd_cuid_pet = False
         anuncio = Anuncio(
-			retorno_anuncio[0][0],
+            retorno_anuncio[0][0],
             retorno_anuncio[0][1],
             retorno_anuncio[0][2],
             retorno_anuncio[0][3],
@@ -676,7 +679,7 @@ def getAnuncioByID(bd, id):
             bd_cuid_bebes,
             bd_cuid_adult,
             bd_cuid_pet
-            )
+        )
         return anuncio
     except Exception as e:
         print("Error en getAnuncioByID ", e)

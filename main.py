@@ -178,7 +178,7 @@ def guardar_perfil(tipo):
             # chequear el tipo para realizar las operaciones en empleado o empleador
             if tipo == 'Empleado':
                 # debo crear un empleado
-                empleado = Empleado(session['id_empleado'], cedula, nombre, apellido, nacimiento, genero, domicilio,
+                empleado = Empleado(0, cedula, nombre, apellido, nacimiento, genero, domicilio,
                                     nacionalidad, mail, telefono, 0, '', 'images/NoImage.png', 0, usuario, None, None, None)
 
                 # como es edición de perfil debo modificar la contraseña y el empleado
@@ -188,6 +188,7 @@ def guardar_perfil(tipo):
                     experiencia = parametros['experiencia']
                     descripcion = parametros['presentacion']
                     foto = parametros['fotoPerfil']
+                    empleado.id = session['id_empleado']
                     empleado.experiencia_meses = experiencia
                     empleado.descripcion = descripcion
                     if foto != '':
@@ -200,7 +201,7 @@ def guardar_perfil(tipo):
 
             elif tipo == 'Empleador':
                 # debo crear un empleador
-                empleador = Empleador(session['id_empleador'], cedula, nombre, apellido, nacimiento,
+                empleador = Empleador(0, cedula, nombre, apellido, nacimiento,
                                       genero, domicilio, nacionalidad, mail, telefono, 0, 'images/NoImage.png', 0, usuario)
 
                 # como es edición de perfil debo modificar la contraseña y el empleador
@@ -211,6 +212,7 @@ def guardar_perfil(tipo):
                     empleador.registroBps = regBPS
                     if foto != '':
                         empleador.foto = foto
+                    empleador.id = session['id_empleador']
                     empleador.modificarEmpleador(baseDatos)
                 # como es registro (alta) debo crear el empleado
                 else:
@@ -253,7 +255,7 @@ def inicio_empleadores():
     elif session.get('usertype') == 'Empleado':
         return redirect(url_for('inicio_empleados'))
     else:
-        empleador = getEmpleadorByID(baseDatos, session['id_empleador'])        
+        empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
         return render_template('HomeEmpleadores.html', sujeto=empleador)
 
 
@@ -275,10 +277,7 @@ def anuncio(accion):
         return redirect(url_for('logueo'))
     elif session.get('usertype') == 'Administrador':
         return redirect(url_for('administrar'))
-    elif session.get('usertype') == 'Empleado':
-        return redirect(url_for('inicio_empleados'))
     else:
-        flash('Anuncio creado!')
         return render_template('Anuncio.html', opcion=accion)
 
 
@@ -306,30 +305,30 @@ def publicar_anuncio():
             nCuidadoMascotas = request.form.getlist('chkCuidadoMascotas')
             ntitulo = request.form['txtTitulo']
             ndescripcion = request.form['txtDescripcion']
-            nfecha_incio = datetime.now()
+            nfecha_inicio = datetime.now()
             nfecha_cierre = None
             # En el alta el anuncio queda activo, si quiere desactivar debe modificarlo [Inicio]
-            #if request.form['radioEstado'] == 'estadoActiva':
-                #nestado = 1
-            #else:
-                #nestado = 0
+            # if request.form['radioEstado'] == 'estadoActiva':
+            #nestado = 1
+            # else:
+            #nestado = 0
             # En el alta el anuncio queda activo, si quiere desactivar debe modificarlo [Fin]
             nexperiencia = request.form.get('radioExperiencia')
             npago_hora = request.form['pagoPorHora']
-            ncal_desde = None #por ahora no se maneja a nivel de anuncio
-            ncal_hasta = None #por ahora no se maneja a nivel de anuncio
-            nvinculo = False # cuando se crea no hay vínculo
+            ncal_desde = None  # por ahora no se maneja a nivel de anuncio
+            ncal_hasta = None  # por ahora no se maneja a nivel de anuncio
+            nvinculo = False  # cuando se crea no hay vínculo
             empleador.crearAnuncio(
-                baseDatos, 
-                ntitulo, 
-                ndescripcion, 
-                nfecha_incio, 
-                nfecha_cierre, 
-                True, # al crear el anuncio este queda activo
-                nexperiencia, 
-                npago_hora, 
-                ncal_desde, 
-                ncal_hasta, 
+                baseDatos,
+                ntitulo,
+                ndescripcion,
+                nfecha_inicio,
+                nfecha_cierre,
+                True,  # al crear el anuncio este queda activo
+                nexperiencia,
+                npago_hora,
+                ncal_desde,
+                ncal_hasta,
                 nvinculo,
                 nDisponibilidad,
                 nHogar,
@@ -357,10 +356,10 @@ def listandoMisAnuncios():
     else:
         empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
         retorno = empleador.listarMisAnuncios(baseDatos)
-        return render_template('TusAnuncios.html', listaMisAnuncios = retorno)
+        return render_template('TusAnuncios.html', listaMisAnuncios=retorno)
 
 
-@app.route('/eliminandoAnuncio/<idAnuncio>/', methods=['POST','GET'])
+@app.route('/eliminandoAnuncio/<idAnuncio>/', methods=['POST', 'GET'])
 def borrandoAnuncio(idAnuncio):
     if session.get('usertype') == None:
         return redirect(url_for('logueo'))
@@ -391,19 +390,20 @@ def borrandoAnuncio(idAnuncio):
         del_CuidadoNinios = None
         del_CuidadoBebes = None
         del_CuidadoAdultos = None
-        del_CuidadoMascotas = None 
+        del_CuidadoMascotas = None
+        anuncio = getAnuncioByID(baseDatos, idAnuncio)
         empleador.borrarAnuncio(
-            baseDatos, 
-            idAnuncio, 
-            del_titulo, 
-            del_descripcion, 
-            del_fecha_incio, 
-            del_fecha_cierre, 
-            del_estado, 
-            del_experiencia, 
-            del_pago_hora, 
-            del_cal_desde, 
-            del_cal_hasta, 
+            baseDatos,
+            anuncio,
+            del_titulo,
+            del_descripcion,
+            del_fecha_incio,
+            del_fecha_cierre,
+            del_estado,
+            del_experiencia,
+            del_pago_hora,
+            del_cal_desde,
+            del_cal_hasta,
             del_vinculo,
             del_Disponibilidad,
             del_Hogar,
@@ -419,7 +419,7 @@ def borrandoAnuncio(idAnuncio):
         flash('Anuncio eliminado!')
         return redirect(url_for('listandoMisAnuncios'))
 
-#acá va la funcion que envía los datos viejos para llenar el form del anuncio q se va a cambiar
+# acá va la funcion que envía los datos viejos para llenar el form del anuncio q se va a cambiar
 @app.route('/actualizandoAnuncio/<idAnuncio>/', methods=['POST', 'GET'])
 def actualizandoAnuncio(idAnuncio):
     if session.get('usertype') == None:
@@ -453,11 +453,11 @@ def actualizandoAnuncio(idAnuncio):
             anuncio.experiencia,
             anuncio.pago_hora,
             estado
-            ]
-        return render_template('editarAnuncio.html', anuncio = lista)
+        ]
+        return render_template('editarAnuncio.html', anuncio=lista)
 
 
-#esta funcion recibe los nuevos datos y actualiza la bd:
+# esta funcion recibe los nuevos datos y actualiza la bd:
 @app.route('/editandoAnuncio/<idAnuncio>/', methods=['POST'])
 def editandoAnuncio(idAnuncio):
     if session.get('usertype') == None:
@@ -469,17 +469,17 @@ def editandoAnuncio(idAnuncio):
     else:
         if request.method == 'POST':
             empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
-            new_Disponibilidad = request.form.get('radioDisponibilidad') 
-            new_Hogar = request.form.getlist('chkHogar') 
-            new_Oficina = request.form.getlist('chkOficina') 
+            new_Disponibilidad = request.form.get('radioDisponibilidad')
+            new_Hogar = request.form.getlist('chkHogar')
+            new_Oficina = request.form.getlist('chkOficina')
             new_Cocinar = request.form.getlist('chkCocinar')
-            new_LimpBanios = request.form.getlist('chkLimpBanios') 
-            new_LimpCocinas = request.form.getlist('chkLimpCocinas') 
-            new_LimpDormitorios = request.form.getlist('chkLimpDormitorios') 
-            new_CuidadoNinios = request.form.getlist('chkCuidadoNinios') 
-            new_CuidadoBebes = request.form.getlist('chkCuidadoBebes') 
-            new_CuidadoAdultos = request.form.getlist('chkCuidadoAdultos') 
-            new_CuidadoMascotas = request.form.getlist('chkCuidadoMascotas') 
+            new_LimpBanios = request.form.getlist('chkLimpBanios')
+            new_LimpCocinas = request.form.getlist('chkLimpCocinas')
+            new_LimpDormitorios = request.form.getlist('chkLimpDormitorios')
+            new_CuidadoNinios = request.form.getlist('chkCuidadoNinios')
+            new_CuidadoBebes = request.form.getlist('chkCuidadoBebes')
+            new_CuidadoAdultos = request.form.getlist('chkCuidadoAdultos')
+            new_CuidadoMascotas = request.form.getlist('chkCuidadoMascotas')
             new_titulo = request.form['txtTitulo']
             new_descripcion = request.form['txtDescripcion']
             old_fecha_incio = None
@@ -490,21 +490,22 @@ def editandoAnuncio(idAnuncio):
                 new_estado = 0
             new_experiencia = request.form.get('radioExperiencia')
             new_pago_hora = request.form['pagoPorHora']
-            new_cal_desde = None #esto no va?
-            new_cal_hasta = None #esto no va?
-            new_vinculo = None #esto hay que ver como lo hacemos
+            new_cal_desde = None  # esto no va?
+            new_cal_hasta = None  # esto no va?
+            new_vinculo = None  # esto hay que ver como lo hacemos
+            anuncio = getAnuncioByID(baseDatos, idAnuncio)
             empleador.actualizarAnuncio(
-                baseDatos, 
-                idAnuncio, 
-                new_titulo, 
-                new_descripcion, 
-                old_fecha_incio, 
-                new_fecha_cierre, 
-                new_estado, 
-                new_experiencia, 
-                new_pago_hora, 
-                new_cal_desde, 
-                new_cal_hasta, 
+                baseDatos,
+                anuncio,
+                new_titulo,
+                new_descripcion,
+                old_fecha_incio,
+                new_fecha_cierre,
+                new_estado,
+                new_experiencia,
+                new_pago_hora,
+                new_cal_desde,
+                new_cal_hasta,
                 new_vinculo,
                 new_Disponibilidad,
                 new_Hogar,
@@ -517,7 +518,7 @@ def editandoAnuncio(idAnuncio):
                 new_CuidadoBebes,
                 new_CuidadoAdultos,
                 new_CuidadoMascotas
-                )
+            )
             return redirect(url_for('tus_anuncios'))
 
 
@@ -542,11 +543,11 @@ def tus_anuncios():
             lista += [anuncio[4]]
             if anuncio[5] == b'\x01':
                 lista += [1]
-            else: 
+            else:
                 lista += [0]
             if anuncio[6] == b'\x01':
                 lista += [1]
-            else: 
+            else:
                 lista += [0]
             lista += [anuncio[7]]
             lista += [anuncio[8]]
@@ -554,7 +555,7 @@ def tus_anuncios():
             lista += [anuncio[10]]
             lista += [anuncio[11]]
             listado += [lista]
-        return render_template('TusAnuncios.html', listaMisAnuncios = listado)
+        return render_template('TusAnuncios.html', listaMisAnuncios=listado)
 
 
 @app.route('/Anuncios/')
@@ -595,6 +596,7 @@ def chat():
     else:
         return render_template('chat.html')
 
+
 @app.route('/verOferta/')
 def verOferta():
     if session.get('usertype') == None:
@@ -603,7 +605,7 @@ def verOferta():
         return redirect(url_for('administrar'))
     else:
         # 2020-03-08 (A) - Se unifica todo el manejo de anuncios en un único form: Anuncio.html [Inicio]
-        #return render_template('verOferta.html')
+        # return render_template('verOferta.html')
         return render_template('Anuncio.html')
         # 2020-03-08 (A) - Se unifica todo el manejo de anuncios en un único form: Anuncio.html [Fin]
 

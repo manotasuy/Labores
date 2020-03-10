@@ -21,7 +21,7 @@ class Empleado:
         self.foto = pFoto
         self.descripcion = pDesc
         self.promedioCalificacion = pCalif
-        self.usuario :Usuario = pUsuario
+        self.usuario: Usuario = pUsuario
         self.referencias = pRefer
         self.tareas = pTareas
         self.disponibilidad = pDispon
@@ -35,30 +35,33 @@ class Empleado:
     def crearEmpleado(self, bd):
         try:
             intGenero: int
-            print(self.genero)
+            # print(self.genero)
             if self.genero == 'Femenino':
                 intGenero = 0
             else:
                 intGenero = 1
-            print(self.nacimiento)
+            # print(self.nacimiento)
             fechaFormateada = self.nacimiento.strftime('%Y-%m-%d')
 
-            print(self.cedula)
-            print(self.nombre)
-            print(self.apellido)
-            print(fechaFormateada)
-            print(intGenero)
-            print(self.domicilio)
-            print(self.nacionalidad)
-            print(self.email)
-            print(self.telefono)
-            print(self.experiencia_meses)
-            print(self.descripcion)
-            print(self.foto)
-            print(self.promedioCalificacion)
-            print(self.usuario.id)
-            print(self.usuario.usuario)
-            print(self.usuario.clave)
+            # print(self.cedula)
+            # print(self.nombre)
+            # print(self.apellido)
+            # print(fechaFormateada)
+            # print(intGenero)
+            # print(self.domicilio)
+            # print(self.nacionalidad)
+            # print(self.email)
+            # print(self.telefono)
+            # print(self.experiencia_meses)
+            # print(self.descripcion)
+            # print(self.foto)
+            # print(self.promedioCalificacion)
+            # print(self.usuario.id)
+            # print(self.usuario.usuario)
+            # print(self.usuario.clave)
+
+            if self.foto is None or self.foto == '':
+                self.foto = 'images/NoImage.png'
 
             cursor = bd.connection.cursor()
             cursor.execute('''
@@ -104,6 +107,9 @@ class Empleado:
 
     def modificarEmpleado(self, bd):
         try:
+            if self.foto is None or self.foto == '':
+                self.foto = 'images/NoImage.png'
+
             cursor = bd.connection.cursor()
             cursor.execute('''
                 UPDATE empleado SET
