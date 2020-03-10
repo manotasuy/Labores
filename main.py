@@ -396,6 +396,7 @@ def borrandoAnuncio(idAnuncio):
             del_CuidadoBebes,
             del_CuidadoAdultos,
             del_CuidadoMascotas)
+            #flash para mostar mensaje al ejecutar la accion/ es de prueba(Sole)
         flash('Anuncio eliminado!')
         return redirect(url_for('listandoMisAnuncios'))
 
@@ -499,6 +500,8 @@ def editandoAnuncio(idAnuncio):
                 new_CuidadoAdultos,
                 new_CuidadoMascotas
                 )
+                #flash para mostar mensaje al ejecutar la accion/ es de prueba(Sole)
+            flash('Editado correctamente')
             return redirect(url_for('tus_anuncios'))
 
 
@@ -535,6 +538,8 @@ def tus_anuncios():
             lista += [anuncio[10]]
             lista += [anuncio[11]]
             listado += [lista]
+            #flash para mostar mensaje al ejecutar la accion/ es de prueba(Sole)
+            flash('Editado correctamente')
         return render_template('TusAnuncios.html', listaMisAnuncios = listado)
 
 

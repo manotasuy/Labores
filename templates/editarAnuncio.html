@@ -199,7 +199,28 @@
                 </div>
 
                 <button class="btn btn-primary" type="submit" name="btnGuardar">GUARDAR</button>
-                <a href="/eliminandoAnuncio/{{ anuncio.0 }}" class="btn btn-danger">ELIMINAR</a>
+                  
+                <!-- Ventana de alerta para eliminar anuncio -->
+               <a href="#ventana" class="btn btn-danger" data-toggle="modal">ELIMINAR</a>
+                <div class="modal fade" id="ventana">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Eliminarás el anuncio.</h4>
+                                <button tyle="button" class="close" data-dismiss="modal" aria-hidden="true" >&times;</button>
+                                
+                                </div>
+                                <div class="modal-body">
+                                    <p>Con la siguiente acción eliminarás el anuncio.</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="/eliminandoAnuncio/{{ anuncio.0 }}" class="btn btn-danger">CONFIRMAR</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+
 
                 {% with message = get_flashed_messages() %}
                 {% if messages %}

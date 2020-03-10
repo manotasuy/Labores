@@ -74,4 +74,21 @@
 		</div>
 	</div>
 </div>
+
+{% with message = get_flashed_messages() %}
+                {% if messages %}
+                {% for message in messages %}
+                <div clas="alert alert-success alert-dismissible fade show" role="alert">
+                    {{message}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endfor %}
+                {% endif %}
+				{% endwith %}
+				
+{% endblock %}
+
+{% block scripts %}
 {% endblock %}
