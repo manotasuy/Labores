@@ -290,7 +290,7 @@ VALUES ('Cuidado de Mascotas');
 
 -- En tabla "empleado"
 INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
-VALUES (22222222, 'Ramón', 'Santos', '1982-03-12', 1, 'Ejido 1857', 'Uruguayo', 'rsantos@gmail.com', '099987654', 0, '', '', 0, 3);
+VALUES (22222222, 'Ramón', 'Santos', '1982-03-12', 1, 'Ejido 1857', 'Uruguayo', 'rsantos@gmail.com', '099987654', 0, '', 'images/Perfiles/RSantos.png', 0, 3);
 INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
 VALUES (1, 4);
 INSERT INTO empleado_tarea (id_empleado, id_tarea)
@@ -306,7 +306,7 @@ VALUES (1, 7);
 INSERT INTO empleado_tarea (id_empleado, id_tarea)
 VALUES (1, 9);
 INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
-VALUES (38628415, 'Juana', 'Perez', '1975-01-23', 0, 'Rodeau 1411', 'Uruguayo', 'jperez@gmail.com', '091030215', 0, '', '', 0, 4);
+VALUES (38628415, 'Juana', 'Perez', '1975-01-23', 0, 'Rodeau 1411', 'Uruguayo', 'jperez@gmail.com', '091030215', 0, '', 'images/Perfiles/JPerez.png', 0, 4);
 INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
 VALUES (2, 1);
 INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
@@ -318,7 +318,7 @@ VALUES (2, 4);
 INSERT INTO empleado_tarea (id_empleado, id_tarea)
 VALUES (2, 5);
 INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
-VALUES (23562363, 'Maria', 'Gutierrez', '1977-04-02', 0, 'Yi 2110', 'Uruguayo', 'mguti@gmail.com', '095251600', 0, '', '', 0, 5);
+VALUES (23562363, 'Maria', 'Gutierrez', '1977-04-02', 0, 'Yi 2110', 'Uruguayo', 'mguti@gmail.com', '095251600', 0, '', 'images/Perfiles/MGutierrez.png', 0, 5);
 INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
 VALUES (3, 1);
 INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
@@ -338,7 +338,7 @@ VALUES (1, 'Leopoldo Garcia', '096524741', '2017-06-21', '2019-11-05');
 
 -- En tabla "empleador"
 INSERT INTO empleador (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, registro_bps, foto, promedio_calificacion, id_usuario)
-VALUES (11111111, 'Luisa', 'Ramos', '1975-05-22', 0, 'Yi 1234', 'Uruguayo', 'lramos@gmail.com', '099123456', 0, '', 0, 2);
+VALUES (11111111, 'Luisa', 'Ramos', '1975-05-22', 0, 'Yi 1234', 'Uruguayo', 'lramos@gmail.com', '099123456', 0, 'images/Perfiles/LRamos.png', 0, 2);
 
 -- En tabla "anuncio"
 INSERT INTO anuncio (titulo, descripcion, fecha_inicio, fecha_cierre, estado, experiencia, pago_hora, id_empleador, calificacion_desde, calificacion_hasta, tiene_vinculo)
@@ -352,7 +352,7 @@ VALUES (1, 5);
 INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
 VALUES (1, 6);
 INSERT INTO anuncio (titulo, descripcion, fecha_inicio, fecha_cierre, estado, experiencia, pago_hora, id_empleador, calificacion_desde, calificacion_hasta, tiene_vinculo)
-VALUES ('Cuidado de niños', 'Uno tiene 6, fatal!!!, el otro tiene 16, buenísimo pero fuma porro', '2020-02-25', NULL, true, 1, 200, 1, NULL, NULL, false);
+VALUES ('Cuidado de niños', 'Uno tiene 6, fatal!!!, el otro tiene 16, buenísimo pero es metalero', '2020-02-25', NULL, true, 1, 200, 1, NULL, NULL, false);
 INSERT INTO anuncio_disponibilidad (id_anuncio, id_disponibilidad)
 VALUES (2, 2);
 INSERT INTO anuncio_tarea (id_anuncio, id_tarea)

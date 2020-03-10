@@ -6,7 +6,7 @@
 {% block estilo %}
 {% endblock %}
 
-{% block titulo %}Labores - Crear Anuncio{% endblock %}
+{% block titulo %}Labores - Anuncio{% endblock %}
 
 {% block contenido %}
 <div class="container">
@@ -14,14 +14,17 @@
 		<div class="container">
 			<h1 class="display-5 mb-5">Oferta</h1>
 			<form action="/PublicarAnuncio/" method="POST">
+
+				
+
 				<div class="form-group">
 					<label for="titulo">Título</label>
-					<input type="text" class="form-control" id="titulo" name="txtTitulo">
+					<input type="text" class="form-control" id="titulo" name="txtTitulo" {% if session['usertype'] == 'Empleado' %} readonly {% endif %}>
 				</div>
 
 				<div class="form-group mb-5">
 					<label for="descripcion">Descripción</label>
-					<textarea class="form-control" id="descripcion" cols="20" rows="10" name="txtDescripcion"></textarea>
+					<textarea class="form-control" id="descripcion" cols="20" rows="10" name="txtDescripcion" {% if session['usertype'] == 'Empleado' %} readonly {% endif %}></textarea>
 				</div>
 				
 				<!--<div class="form-inline mb-4">
@@ -40,19 +43,19 @@
 				<div class="d-block my-3 mb-5">
 					<p class="mb-3">Tipo de trabajo</p>
 					<div class="custom-control custom-radio ml-5">
-					  <input id="hora" name="radioDisponibilidad" value="hora" type="radio" class="custom-control-input" checked="" required="">
+					  <input id="hora" name="radioDisponibilidad" value="hora" type="radio" class="custom-control-input" checked="" required="" {% if session['usertype'] == 'Empleado' %} disabled {% endif %}>
 					  <label class="custom-control-label" for="hora">Por hora</label>
 					</div>
 					<div class="custom-control custom-radio ml-5">
-					  <input id="jornada" name="radioDisponibilidad" value="jornada" type="radio" class="custom-control-input" required="">
+					  <input id="jornada" name="radioDisponibilidad" value="jornada" type="radio" class="custom-control-input" required="" {% if session['usertype'] == 'Empleado' %} disabled {% endif %}>
 					  <label class="custom-control-label" for="jornada">Por jornada</label>
 					</div>
 					<div class="custom-control custom-radio ml-5">
-					  <input id="tarea" name="radioDisponibilidad" value="tarea" type="radio" class="custom-control-input" required="">
+					  <input id="tarea" name="radioDisponibilidad" value="tarea" type="radio" class="custom-control-input" required="" {% if session['usertype'] == 'Empleado' %} disabled {% endif %}>
 					  <label class="custom-control-label" for="tarea">Por tarea puntual</label>
 					</div>
 					<div class="custom-control custom-radio ml-5">
-						<input id="mes" name="radioDisponibilidad" value="mes" type="radio" class="custom-control-input" required="">
+						<input id="mes" name="radioDisponibilidad" value="mes" type="radio" class="custom-control-input" required="" {% if session['usertype'] == 'Empleado' %} disabled {% endif %}>
 						<label class="custom-control-label" for="mes">Por mes</label>
 					  </div>
 				</div>
@@ -61,43 +64,43 @@
 					<div class="col-form-label col-sm-10 pt-0">Tareas a realizar</div>
 					<div class="col-sm-10">
 					  <div class="custom-control custom-checkbox ml-5">
-						<input type="checkbox" class="custom-control-input" id="hogar" name="chkHogar">
+						<input type="checkbox" class="custom-control-input" id="hogar" name="chkHogar" {% if session['usertype'] == 'Empleado' %} disabled {% endif %}>
 						<label class="custom-control-label" for="hogar">Hogar</label>
 					  </div>
 					  <div class="custom-control custom-checkbox ml-5">
-						<input type="checkbox" class="custom-control-input" id="oficina" name="chkOficina">
+						<input type="checkbox" class="custom-control-input" id="oficina" name="chkOficina" {% if session['usertype'] == 'Empleado' %} disabled {% endif %}>
 						<label class="custom-control-label" for="oficina">Oficina</label>
 					  </div>
 					  <div class="custom-control custom-checkbox ml-5">
-						<input type="checkbox" class="custom-control-input" id="cocinar" name="chkCocinar">
+						<input type="checkbox" class="custom-control-input" id="cocinar" name="chkCocinar" {% if session['usertype'] == 'Empleado' %} disabled {% endif %}>
 						<label class="custom-control-label" for="cocinar">Cocinar</label>
 					  </div>
 					  <div class="custom-control custom-checkbox ml-5">
-						<input type="checkbox" class="custom-control-input" id="banios" name="chkLimpBanios">
+						<input type="checkbox" class="custom-control-input" id="banios" name="chkLimpBanios" {% if session['usertype'] == 'Empleado' %} disabled {% endif %}>
 						<label class="custom-control-label" for="banios">Limpieza de baños</label>
 					  </div>
 					  <div class="custom-control custom-checkbox ml-5">
-						<input type="checkbox" class="custom-control-input" id="cocinas" name="chkLimpCocinas">
+						<input type="checkbox" class="custom-control-input" id="cocinas" name="chkLimpCocinas" {% if session['usertype'] == 'Empleado' %} disabled {% endif %}>
 						<label class="custom-control-label" for="cocinas">Limpieza de cocinas</label>
 					  </div>					  
 					  <div class="custom-control custom-checkbox ml-5">
-						<input type="checkbox" class="custom-control-input" id="dormitorios" name="chkLimpDormitorios">
+						<input type="checkbox" class="custom-control-input" id="dormitorios" name="chkLimpDormitorios" {% if session['usertype'] == 'Empleado' %} disabled {% endif %}>
 						<label class="custom-control-label" for="dormitorios">Limpieza de dormitorios</label>
 					  </div>
 					  <div class="custom-control custom-checkbox ml-5">
-						<input type="checkbox" class="custom-control-input" id="ninios" name="chkCuidadoNinios">
+						<input type="checkbox" class="custom-control-input" id="ninios" name="chkCuidadoNinios" {% if session['usertype'] == 'Empleado' %} disabled {% endif %}>
 						<label class="custom-control-label" for="ninios">Cuidado de niños</label>
 					  </div>
 					  <div class="custom-control custom-checkbox ml-5">
-						<input type="checkbox" class="custom-control-input" id="bebes" name="chkCuidadoBebes">
+						<input type="checkbox" class="custom-control-input" id="bebes" name="chkCuidadoBebes" {% if session['usertype'] == 'Empleado' %} disabled {% endif %}>
 						<label class="custom-control-label" for="bebes">Cuidado de bebés</label>
 					  </div>
 					  <div class="custom-control custom-checkbox ml-5">
-						<input type="checkbox" class="custom-control-input" id="mayores" name="chkCuidadoAdultos">
+						<input type="checkbox" class="custom-control-input" id="mayores" name="chkCuidadoAdultos" {% if session['usertype'] == 'Empleado' %} disabled {% endif %}>
 						<label class="custom-control-label" for="mayores">Cuidado de adultos mayores</label>
 					  </div>
 					  <div class="custom-control custom-checkbox ml-5">
-						<input type="checkbox" class="custom-control-input" id="mascotas" name="chkCuidadoMascotas">
+						<input type="checkbox" class="custom-control-input" id="mascotas" name="chkCuidadoMascotas" {% if session['usertype'] == 'Empleado' %} disabled {% endif %}>
 						<label class="custom-control-label" for="mascotas">Cuidado de mascotas</label>
 					  </div>
 					</div>
@@ -106,36 +109,47 @@
 				<div class="d-block my-3 mb-4">
 					<p class="mb-3">Búscas a alguien con experiencia?</p>
 					<div class="custom-control custom-radio ml-5">
-						<input id="1" name="radioExperiencia" value="1" type="radio" class="custom-control-input" checked="" required="">
-						<label class="custom-control-label" for="1">Si</label>
+					  <input id="experienciaSi" name="radioExperiencia" type="radio" class="custom-control-input" checked="" required="" {% if session['usertype'] == 'Empleado' %} disabled {% endif %}>
+					  <label class="custom-control-label" for="experienciaSi">Si</label>
 					</div>
 					<div class="custom-control custom-radio ml-5">
-					  <input id="0" name="radioExperiencia" value="0" type="radio" class="custom-control-input" required="">
-					  <label class="custom-control-label" for="0">No es necesario</label>
+					  <input id="experienciaNo" name="radioExperiencia" type="radio" class="custom-control-input" required="" {% if session['usertype'] == 'Empleado' %} disabled {% endif %}>
+					  <label class="custom-control-label" for="experienciaNo">No es necesario</label>
 					</div>
 				</div>
 
 				<div class="form-group row">
-					<label for="colFormLabelLg" class="col-sm-10 col-form-label col-form-label">Cuánto pagas la
-					  hora?</label>
+					<label for="colFormLabelLg" class="col-sm-10 col-form-label col-form-label">Pago por hora ofrecido</label>
 					<div class="col-sm-3 mb-4">
-					  <input type="text" class="form-control" id="pagoPorHora" name="pagoPorHora" placeholder="$U">
-					</div>
-				</div>
-
-				<div class="d-block my-3 mb-5">
-					<p class="mb-3">Estado de la oferta</p>
-					<div class="custom-control custom-radio ml-5">
-					  <input id="estadoActiva" name="radioEstado" type="radio" value="1" class="custom-control-input" checked="" required="">
-					  <label class="custom-control-label" for="estadoActiva">Activa</label>
-					</div>
-					<div class="custom-control custom-radio ml-5">
-					  <input id="estadoInactiva" name="radioEstado" type="radio" value="0" class="custom-control-input" required="">
-					  <label class="custom-control-label" for="estadoInactiva">Inactiva</label>
+						<div class="input-group mb-2">
+							<div class="input-group-prepend">
+							<span class="input-group-text">$</span>
+							</div>
+							<input class="form-control" type="text" placeholder="" id="pagoPorHora" name="pagoPorHora" {% if session['usertype'] == 'Empleado' %} readonly {% endif %}>
+						</div>
 					</div>
 				</div>
 				
+				{% if session['usertype'] == 'Empleador' %}
+				{% if not opcion == 'Alta' %}
+				<div class="d-block my-3 mb-5">
+					<p class="mb-3">Estado de la oferta</p>
+					<div class="custom-control custom-radio ml-5">
+					  <input id="estadoActiva" name="radioEstado" type="radio" class="custom-control-input" checked="" required="">
+					  <label class="custom-control-label" for="estadoActiva">Activa</label>
+					</div>
+					<div class="custom-control custom-radio ml-5">
+					  <input id="estadoInactiva" name="radioEstado" type="radio" class="custom-control-input" required="">
+					  <label class="custom-control-label" for="estadoInactiva">Inactiva</label>
+					</div>
+				</div>
+				{% endif %}
+
 				<button class="btn btn-success btn-block" type="submit" name="btnGuardar">GUARDAR</button>
+				{% elif session['usertype'] == 'Empleado' %}
+				<button type="submit" class="btn btn-warning float-right">Me interesa. ¡Contactar!</button>
+        		<a href="/Anuncios" type="button" class="btn btn-primary">Volver a las ofertas</a>
+				{% endif %}
 
 				{% with message = get_flashed_messages() %}
 				{% if messages %}

@@ -8,6 +8,12 @@ def connectionDb(app, servidor):
         app.config['MYSQL_PASSWORD'] = 'kqGcYKaofd'
         app.config['MYSQL_DB'] = 'LvP2Ka0CsK'
         return MySQL(app)
+    elif servidor == 'CloudAccess':
+        app.config['MYSQL_HOST'] = 'labores.cloudaccess.host'
+        app.config['MYSQL_USER'] = 'amqtvopx'
+        app.config['MYSQL_PASSWORD'] = ':*SsJ445aIky8I'
+        app.config['MYSQL_DB'] = 'amqtvopx'
+        return MySQL(app)
     elif servidor == 'aws':
         app.config['MYSQL_HOST'] = 'labores.cdjsb04v3a46.us-east-1.rds.amazonaws.com'
         app.config['MYSQL_USER'] = 'master'

@@ -1,5 +1,6 @@
 from datetime import datetime
-from Implementacion import Anuncio
+from Implementacion.Usuario import getUsuarioByID
+from Implementacion.Anuncio import Anuncio
 
 
 class Empleador:
@@ -18,13 +19,13 @@ class Empleador:
         self.registroBps = pBps
         self.foto = pFoto
         self.promedioCalificacion = pCalif
-        self.usuario = pUsuario
+        self.usuario : Usuario = pUsuario
 
     def __getitem__(self, item):
         return self.__dict__[item]
 
     def __str__(self):
-        return 'Id: {}, Cédula: {}, Nombre: {}, Apellido: {}, Nacimiento: {}, Genero: {}, Domicilio: {}, Nacionalidad: {}, Email: {}, Telefono: {}, Foto: {}, Usuario: {}'.format(self.id, self.cedula, self.nombre, self.apellido, self.nacimiento, self.genero, self.domicilio, self.nacionalidad, self.email, self.telefono, self.foto, self.usuario)
+        return 'Id: {}, Cédula: {}, Nombre: {}, Apellido: {}, Nacimiento: {}, Genero: {}, Domicilio: {}, Nacionalidad: {}, Email: {}, Telefono: {}, Foto: {}, Usuario: {}'.format(self.id, self.cedula, self.nombre, self.apellido, self.nacimiento, self.genero, self.domicilio, self.nacionalidad, self.email, self.telefono, self.foto, self.usuario.id)
 
     def crearEmpleador(self, bd):
         try:
@@ -95,7 +96,7 @@ class Empleador:
 
     def modificarEmpleador(self, bd):
         try:
-            print('Self: ', self)
+            #print('Self: ', self)
             cursor = bd.connection.cursor()
             cursor.execute('''
                 UPDATE empleador SET
@@ -151,10 +152,9 @@ class Empleador:
         Estado, 
         Experiencia, 
         Pago_hora, 
-        CalEmpleado, 
-        CalEmpleador, 
+        CalDesde, 
+        CalHasta, 
         TieneVinculo,
-        #-----------
         Disponibilidad,
         Hogar,
         Oficina,
@@ -168,6 +168,7 @@ class Empleador:
         CuidadoMascotas):
         try:
             newAnuncio = Anuncio.Anuncio(
+                0,
                 Titulo, 
                 Descripcion, 
                 FechaInicio, 
@@ -175,12 +176,12 @@ class Empleador:
                 Estado,
                 Experiencia,
                 Pago_hora,
-                self.id, 
-                CalEmpleado, 
-                CalEmpleador, 
+                self, 
+                CalDesde, 
+                CalHasta, 
                 TieneVinculo,
-                #------------
                 Disponibilidad,
+                None,
                 Hogar,
                 Oficina,
                 Cocinar,
@@ -211,7 +212,6 @@ class Empleador:
         CalEmpleado, 
         CalEmpleador, 
         TieneVinculo,
-        #----------
         Disponibilidad,
         Hogar,
         Oficina,
@@ -233,12 +233,12 @@ class Empleador:
                 Estado,
                 Experiencia, 
                 Pago_hora, 
-                self.id, 
+                self, 
                 CalEmpleado, 
                 CalEmpleador, 
                 TieneVinculo,
-                #--------------
                 Disponibilidad,
+                None,
                 Hogar,
                 Oficina,
                 Cocinar,
@@ -269,7 +269,6 @@ class Empleador:
         CalEmpleado, 
         CalEmpleador, 
         TieneVinculo,
-        #---------------
         Disponibilidad,
         Hogar,
         Oficina,
@@ -291,11 +290,10 @@ class Empleador:
                 Estado,
                 Experiencia, 
                 Pago_hora, 
-                self.id, 
+                self, 
                 CalEmpleado, 
                 CalEmpleador, 
                 TieneVinculo,
-                #-------------
                 Disponibilidad,
                 Hogar,
                 Oficina,
@@ -308,8 +306,6 @@ class Empleador:
                 CuidadoAdultos,
                 CuidadoMascotas
                 )
-            print('cree el delAnuncio')
-            print(delAnuncio)
             delAnuncio.deleteAnuncio(bd, idAnuncio)
             print('El empleador eliminó el anuncio')
         except Exception as e:
@@ -394,7 +390,8 @@ def getEmpleadorByID(bd, id):
             retorno[0][10],
             retorno[0][11],
             retorno[0][12],
-            retorno[0][13])
+            getUsuarioByID(bd, retorno[0][13]),)
+        #print('Empleador: ', empleador)
         return empleador
     except Exception as e:
         print("Error en getEmpleadorByID ", e)
@@ -437,7 +434,7 @@ def getEmpleadorByUsuarioID(bd, idUsuario):
             retorno[0][10],
             retorno[0][11],
             retorno[0][12],
-            retorno[0][13])
+            getUsuarioByID(bd, retorno[0][13]),)
         return empleador
     except Exception as e:
         print("Error en getEmpleadorByUsuarioID ", e)

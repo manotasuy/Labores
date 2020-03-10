@@ -14,10 +14,10 @@
         <div class="container">
             <div class="text-center mb-4">
                 <a class="my-0 mr-md-auto" href="" aria-label="Home">
-                    <img class="mb-4" src="{{ url_for('static', filename='images/Empleada_500.png')}}" alt=""
+                    <img class="mb-4" src="{{ url_for('static', filename=sujeto.foto)}}" alt=""
                         width="125" height="125">
                 </a>
-                <p class="lead"><a href="/Perfil/Empleado">Editar perfil</a></p>
+                <p class="lead"><a href="/Perfil/Empleado/session['id_empleado']">Editar perfil</a></p>
             </div>
 
             <div class="card-deck">
@@ -52,7 +52,7 @@
                     </a>
                 </div>
                 <div class="card">
-                    <a class="btn" href="#">
+                    <a class="btn" href="/Mensajes">
                         <!--<img src="{{ url_for('static', filename='images/...png')}}" class="card-img-top" alt="..."
                         width="32" height="32">-->
                         <div class="card-body">

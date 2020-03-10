@@ -1,4 +1,5 @@
 from datetime import datetime
+from Implementacion.Usuario import getUsuarioByID
 from Implementacion.Tarea import Tarea
 from Implementacion.Disponibilidad import Disponibilidad
 
@@ -20,7 +21,7 @@ class Empleado:
         self.foto = pFoto
         self.descripcion = pDesc
         self.promedioCalificacion = pCalif
-        self.usuario = pUsuario
+        self.usuario :Usuario = pUsuario
         self.referencias = pRefer
         self.tareas = pTareas
         self.disponibilidad = pDispon
@@ -29,7 +30,7 @@ class Empleado:
         return self.__dict__[item]
 
     def __str__(self):
-        return 'Cédula: {}, Nombre: {}, Apellido: {}'.format(self.cedula, self.nombre, self.apellido)
+        return 'Cédula: {}, Nombre: {}, Apellido: {}, Foto: {}'.format(self.cedula, self.nombre, self.apellido, self.foto)
 
     def crearEmpleado(self, bd):
         try:
@@ -221,8 +222,8 @@ def getEmpleadoByID(bd, id):
                 email,
                 telefono,
                 experiencia_meses,
-                descripcion,
                 foto,
+                descripcion,
                 promedio_calificacion,
                 id_usuario
             FROM empleado WHERE id = {}'''.format(id))
@@ -244,10 +245,11 @@ def getEmpleadoByID(bd, id):
             retorno[0][11],
             retorno[0][12],
             retorno[0][13],
-            retorno[0][14],
+            getUsuarioByID(bd, retorno[0][14]),
             None,
             None,
             None)
+        #print('Empleado: ', empleado)
         return empleado
     except Exception as e:
         print("Error en getEmpleadoByID ", e)
@@ -269,8 +271,8 @@ def getEmpleadoByUsuarioID(bd, idUsuario):
                 e.email,
                 e.telefono,
                 e.experiencia_meses,
-                e.descripcion,
                 e.foto,
+                e.descripcion,
                 e.promedio_calificacion,
                 e.id_usuario
             FROM empleado e INNER JOIN usuario u ON e.id_usuario = u.id WHERE u.id = {}'''.format(idUsuario))
@@ -292,7 +294,7 @@ def getEmpleadoByUsuarioID(bd, idUsuario):
             retorno[0][11],
             retorno[0][12],
             retorno[0][13],
-            retorno[0][14],
+            getUsuarioByID(bd, retorno[0][14]),
             None,
             None,
             None)
@@ -313,10 +315,10 @@ def getTareasEmpleado(bd, idEmpleado):
         bd.connection.commit()
         cursor.close()
         # desde el retorno debo generar los objetos Tarea
-        tareas = Tarea().__dict__
+        tareas = list()
         for tuplaTarea in retorno:
             tarea = Tarea(tuplaTarea[0], tuplaTarea[1])
-            tareas[len(tareas) - 1] = tarea
+            tareas.append(tarea)
         return tareas
     except Exception as e:
         print("Error en getTareasEmpleado ", e)
@@ -334,11 +336,11 @@ def getDisponibilidadEmpleado(bd, idEmpleado):
         bd.connection.commit()
         cursor.close()
         # desde el retono debo generar los objetos Disponibilidad
-        disponibilidades = Disponibilidad().__dict__
+        disponibilidades = list()
         for tuplaDisponibilidad in retorno:
             disponibilidad = Disponibilidad(
                 tuplaDisponibilidad[0], tuplaDisponibilidad[1])
-            disponibilidades[len(disponibilidades) - 1] = disponibilidad
+            disponibilidades.append(disponibilidad)
         return disponibilidades
     except Exception as e:
         print("Error en getDisponibilidadEmpleado ", e)
@@ -359,11 +361,11 @@ def getReferenciasEmpleado(bd, idEmpleado):
         bd.connection.commit()
         cursor.close()
         # desde el retono debo generar los objetos Referencia
-        referencias = Referencia().__dict__
+        referencias = list()
         for tuplaReferencia in retorno:
             referencia = Referencia(tuplaReferencia[0], getEmpleadoByID(bd, idEmpleado), tuplaReferencia[1],
                                     tuplaReferencia[2], tuplaReferencia[3], tuplaReferencia[4])
-            referencias[len(referencias) - 1] = referencia
+            referencias.append(referencia)
         return referencias
     except Exception as e:
         print("Error en getReferenciasEmpleado ", e)

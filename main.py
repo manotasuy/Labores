@@ -25,12 +25,15 @@ from Implementacion.Empleado import getDisponibilidadEmpleado
 from Implementacion.Anuncio import getAnuncioByID
 from Implementacion.Postulación import getPostulacionesAnuncio
 from Implementacion.Postulación import getPostulacionesEmpleado
+from Implementacion.Tarea import getTareasRegistradas
+from Implementacion.Disponibilidad import getDisponibilidadesRegistradas
 
 app = Flask(__name__)
 
 #baseDatos = connectionDb(app, 'local')
 #baseDatos = connectionDb(app, 'remotemysql.com')
-baseDatos = connectionDb(app, 'aws')
+baseDatos = connectionDb(app, 'CloudAccess')
+#baseDatos = connectionDb(app, 'aws')
 
 
 # session
@@ -83,7 +86,7 @@ def ingresar():
             flash('No existe el usuario!')
             return redirect(url_for('logueo'))
         else:
-            print("Retorno: ", retorno)
+            #print("Retorno: ", retorno)
             session['username'] = user
             session['usertype'] = retorno[0][0]
             session['id_usuario'] = retorno[0][1]
@@ -107,31 +110,26 @@ def opcion_registrarse():
     return render_template('OpcionRegistro.html')
 
 
-# @app.route('/Registro/<opcion>')
-# def registrarse(opcion):
-    #session['useroption'] = opcion
-    # return render_template('Registro.html')
-
-
-@app.route('/Perfil/<opcion>', methods=['POST', 'GET'])
-def perfil(opcion):
+@app.route('/Perfil/<opcion>/<id>', methods=['POST', 'GET'])
+def perfil(opcion, id):
     if session.get('usertype') == 'Administrador':
         return redirect(url_for('administrar'))
     else:
         logueado = session.get('usertype') is not None
+        if session.get('id_empleado') is None:
+            session['id_empleado'] = id
 
         # Debo traer las tareas y disponibilidades para cargarlas dinámicamente
-        #tareasTodas = getTareas(baseDatos)
-        #disponibilidadTodas = getDisponibilidades(baseDatos)
+        tareasTodas = getTareasRegistradas(baseDatos)
+        disponibilidadTodas = getDisponibilidadesRegistradas(baseDatos)
 
         if opcion == 'Empleado':
             objeto = Empleado()
             if logueado:
-                # debo cargar sus datos en el form
-                # debo obtener los datos del empleado
+                # obtengo los datos del empleado
                 idEmpleado = session['id_empleado']
                 objeto = getEmpleadoByID(baseDatos, idEmpleado)
-                # luego cargar sus tareas, referencias y disponibilidad
+                # cargo sus tareas, referencias y disponibilidad
                 tareas = getTareasEmpleado(baseDatos, objeto.id)
                 objeto.cargarTareas(tareas)
                 referencias = getReferenciasEmpleado(baseDatos, objeto.id)
@@ -139,23 +137,14 @@ def perfil(opcion):
                 disponibilidad = getDisponibilidadEmpleado(
                     baseDatos, objeto.id)
                 objeto.cargarDisponibilidad(disponibilidad)
-                return render_template('Perfil.html', tipo=opcion, data=objeto)
-            # else:
-                # cargo el formulario vacío porque es registro
-                #data = Empleado(None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None)
-            return render_template('Perfil.html', tipo=opcion, data=objeto)
+            return render_template('Perfil.html', tipo=opcion, sujeto=id, data=objeto)
 
         elif opcion == 'Empleador':
             objeto = Empleador()
             if logueado:
-                # debo cargar sus datos en el form
-                # debo obtener los datos del empleado
+                # obtengo los datos del empleador
                 idEmpleador = session['id_empleador']
                 objeto = getEmpleadorByID(baseDatos, idEmpleador)
-                return render_template('Perfil.html', tipo=opcion, data=objeto)
-            # else:
-                # cargo el formulario vacío porque es registro
-                #objeto = Empleador(None, None, None, None, None, None, None, None, None, None, None, None, None, None)
             return render_template('Perfil.html', tipo=opcion, data=objeto)
 
 
@@ -190,10 +179,19 @@ def guardar_perfil(tipo):
             if tipo == 'Empleado':
                 # debo crear un empleado
                 empleado = Empleado(session['id_empleado'], cedula, nombre, apellido, nacimiento, genero, domicilio,
-                                    nacionalidad, mail, telefono, None, None, None, None, usuario, None, None, None)
+                                    nacionalidad, mail, telefono, 0, '', 'images/NoImage.png', 0, usuario, None, None, None)
 
                 # como es edición de perfil debo modificar la contraseña y el empleado
                 if logueado:
+                    # modificar contraseña?
+                    #experiencia = request.form.get('experiencia')
+                    experiencia = parametros['experiencia']
+                    descripcion = parametros['presentacion']
+                    foto = parametros['fotoPerfil']
+                    empleado.experiencia_meses = experiencia
+                    empleado.descripcion = descripcion
+                    if foto != '':
+                        empleado.foto = foto
                     empleado.modificarEmpleado(baseDatos)
                 # como es registro (alta) debo crear el empleado
                 else:
@@ -203,10 +201,16 @@ def guardar_perfil(tipo):
             elif tipo == 'Empleador':
                 # debo crear un empleador
                 empleador = Empleador(session['id_empleador'], cedula, nombre, apellido, nacimiento,
-                                      genero, domicilio, nacionalidad, mail, telefono, None, None, None, usuario)
+                                      genero, domicilio, nacionalidad, mail, telefono, 0, 'images/NoImage.png', 0, usuario)
 
                 # como es edición de perfil debo modificar la contraseña y el empleador
                 if logueado:
+                    # modificar contraseña?
+                    regBPS = parametros['empleadorNumRegBPS']
+                    foto = parametros['fotoPerfil']
+                    empleador.registroBps = regBPS
+                    if foto != '':
+                        empleador.foto = foto
                     empleador.modificarEmpleador(baseDatos)
                 # como es registro (alta) debo crear el empleado
                 else:
@@ -236,7 +240,8 @@ def inicio_empleados():
     elif session.get('usertype') == 'Empleador':
         return redirect(url_for('inicio_empleadores'))
     else:
-        return render_template('HomeEmpleados.html')
+        empleado = getEmpleadoByID(baseDatos, session['id_empleado'])
+        return render_template('HomeEmpleados.html', sujeto=empleado)
 
 
 @app.route('/HomeEmpleadores/')
@@ -248,7 +253,8 @@ def inicio_empleadores():
     elif session.get('usertype') == 'Empleado':
         return redirect(url_for('inicio_empleados'))
     else:
-        return render_template('HomeEmpleadores.html')
+        empleador = getEmpleadorByID(baseDatos, session['id_empleador'])        
+        return render_template('HomeEmpleadores.html', sujeto=empleador)
 
 
 @app.route('/PanelControl/')
@@ -263,8 +269,8 @@ def administrar():
         return render_template('ControlPanel.html')
 
 
-@app.route('/CrearAnuncio/')
-def crear_anuncio():
+@app.route('/Anuncio/<accion>')
+def anuncio(accion):
     if session.get('usertype') == None:
         return redirect(url_for('logueo'))
     elif session.get('usertype') == 'Administrador':
@@ -272,10 +278,10 @@ def crear_anuncio():
     elif session.get('usertype') == 'Empleado':
         return redirect(url_for('inicio_empleados'))
     else:
-        return render_template('CrearAnuncio.html')
+        flash('Anuncio creado!')
+        return render_template('Anuncio.html', opcion=accion)
 
 
-# *** En desarrollo por Daniel ***
 @app.route('/PublicarAnuncio/', methods=['POST'])
 def publicar_anuncio():
     if session.get('usertype') == None:
@@ -287,37 +293,39 @@ def publicar_anuncio():
     else:
         if request.method == 'POST':
             empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
-            nDisponibilidad = request.form.get('radioDisponibilidad') 
-            nHogar = request.form.getlist('chkHogar') 
-            nOficina = request.form.getlist('chkOficina') 
+            nDisponibilidad = request.form.get('radioDisponibilidad')
+            nHogar = request.form.getlist('chkHogar')
+            nOficina = request.form.getlist('chkOficina')
             nCocinar = request.form.getlist('chkCocinar')
-            nLimpBanios = request.form.getlist('chkLimpBanios') 
-            nLimpCocinas = request.form.getlist('chkLimpCocinas') 
-            nLimpDormitorios = request.form.getlist('chkLimpDormitorios') 
-            nCuidadoNinios = request.form.getlist('chkCuidadoNinios') 
-            nCuidadoBebes = request.form.getlist('chkCuidadoBebes') 
-            nCuidadoAdultos = request.form.getlist('chkCuidadoAdultos') 
-            nCuidadoMascotas = request.form.getlist('chkCuidadoMascotas') 
+            nLimpBanios = request.form.getlist('chkLimpBanios')
+            nLimpCocinas = request.form.getlist('chkLimpCocinas')
+            nLimpDormitorios = request.form.getlist('chkLimpDormitorios')
+            nCuidadoNinios = request.form.getlist('chkCuidadoNinios')
+            nCuidadoBebes = request.form.getlist('chkCuidadoBebes')
+            nCuidadoAdultos = request.form.getlist('chkCuidadoAdultos')
+            nCuidadoMascotas = request.form.getlist('chkCuidadoMascotas')
             ntitulo = request.form['txtTitulo']
             ndescripcion = request.form['txtDescripcion']
             nfecha_incio = datetime.now()
             nfecha_cierre = None
-            if request.form.get('radioEstado') == '1':
-                nestado = 1
-            elif request.form.get('radioEstado') == '0':
-                nestado = 0
+            # En el alta el anuncio queda activo, si quiere desactivar debe modificarlo [Inicio]
+            #if request.form['radioEstado'] == 'estadoActiva':
+                #nestado = 1
+            #else:
+                #nestado = 0
+            # En el alta el anuncio queda activo, si quiere desactivar debe modificarlo [Fin]
             nexperiencia = request.form.get('radioExperiencia')
             npago_hora = request.form['pagoPorHora']
-            ncal_desde = None #esto no va?
-            ncal_hasta = None #esto no va?
-            nvinculo = None #esto hay que ver como lo hacemos
+            ncal_desde = None #por ahora no se maneja a nivel de anuncio
+            ncal_hasta = None #por ahora no se maneja a nivel de anuncio
+            nvinculo = False # cuando se crea no hay vínculo
             empleador.crearAnuncio(
                 baseDatos, 
                 ntitulo, 
                 ndescripcion, 
                 nfecha_incio, 
                 nfecha_cierre, 
-                nestado, 
+                True, # al crear el anuncio este queda activo
                 nexperiencia, 
                 npago_hora, 
                 ncal_desde, 
@@ -338,9 +346,21 @@ def publicar_anuncio():
             return redirect(url_for('tus_anuncios'))
 
 
+@app.route('/listandoMisAnuncios/')
+def listandoMisAnuncios():
+    if session.get('usertype') == None:
+        return redirect(url_for('logueo'))
+    elif session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    elif session.get('usertype') == 'Empleado':
+        return redirect(url_for('inicio_empleados'))
+    else:
+        empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
+        retorno = empleador.listarMisAnuncios(baseDatos)
+        return render_template('TusAnuncios.html', listaMisAnuncios = retorno)
 
 
-@app.route('/eliminandoAnuncio/<idAnuncio>/', methods = ['POST','GET'])
+@app.route('/eliminandoAnuncio/<idAnuncio>/', methods=['POST','GET'])
 def borrandoAnuncio(idAnuncio):
     if session.get('usertype') == None:
         return redirect(url_for('logueo'))
@@ -396,13 +416,12 @@ def borrandoAnuncio(idAnuncio):
             del_CuidadoBebes,
             del_CuidadoAdultos,
             del_CuidadoMascotas)
-            #flash para mostar mensaje al ejecutar la accion/ es de prueba(Sole)
         flash('Anuncio eliminado!')
         return redirect(url_for('listandoMisAnuncios'))
 
 #acá va la funcion que envía los datos viejos para llenar el form del anuncio q se va a cambiar
 @app.route('/actualizandoAnuncio/<idAnuncio>/', methods=['POST', 'GET'])
-def ectualizandoAnuncio(idAnuncio):
+def actualizandoAnuncio(idAnuncio):
     if session.get('usertype') == None:
         return redirect(url_for('logueo'))
     elif session.get('usertype') == 'Administrador':
@@ -436,7 +455,6 @@ def ectualizandoAnuncio(idAnuncio):
             estado
             ]
         return render_template('editarAnuncio.html', anuncio = lista)
-
 
 
 #esta funcion recibe los nuevos datos y actualiza la bd:
@@ -500,8 +518,6 @@ def editandoAnuncio(idAnuncio):
                 new_CuidadoAdultos,
                 new_CuidadoMascotas
                 )
-                #flash para mostar mensaje al ejecutar la accion/ es de prueba(Sole)
-            flash('Editado correctamente')
             return redirect(url_for('tus_anuncios'))
 
 
@@ -538,8 +554,6 @@ def tus_anuncios():
             lista += [anuncio[10]]
             lista += [anuncio[11]]
             listado += [lista]
-            #flash para mostar mensaje al ejecutar la accion/ es de prueba(Sole)
-            flash('Editado correctamente')
         return render_template('TusAnuncios.html', listaMisAnuncios = listado)
 
 
@@ -555,8 +569,8 @@ def listar_anuncios():
         return render_template('ListaAnuncios.html')
 
 
-@app.route('/Candidatos/<anuncio>', methods=['POST', 'GET'])
-def listar_candidatos(anuncio):
+@app.route('/Candidatos/<id_anuncio>', methods=['POST', 'GET'])
+def listar_candidatos(id_anuncio):
     if session.get('usertype') == None:
         return redirect(url_for('logueo'))
     elif session.get('usertype') == 'Administrador':
@@ -564,25 +578,34 @@ def listar_candidatos(anuncio):
     elif session.get('usertype') == 'Empleado':
         return redirect(url_for('inicio_empleados'))
     else:
-        # Debo obtener la lista de postulaciones para el anuncio dado
-        postulaciones = getPostulacionesAnuncio(baseDatos, anuncio)
-        print('Anuncio: ', anuncio)
-        print('Postulaciones:', postulaciones)
-        return render_template('ListaCandidatos.html', data=postulaciones)
+        # Obtengo la lista de postulaciones para el anuncio dado
+        anuncio = getAnuncioByID(baseDatos, id_anuncio)
+        postulaciones = getPostulacionesAnuncio(baseDatos, id_anuncio)
+        pares = postulaciones[0:][::2]
+        impares = postulaciones[1:][::2]
+        return render_template('ListaCandidatos.html', elemPares=pares, elemImpares=impares, elanuncio=anuncio)
 
 
-@app.route('/Editar/<opcion>', methods=['POST'])
-def editar_usuario(opcion):
-    return 'Hola!'
-
-
-@app.route('/chat/')
+@app.route('/Mensajes/')
 def chat():
-    return render_template('chat.html')
+    if session.get('usertype') == None:
+        return redirect(url_for('logueo'))
+    elif session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    else:
+        return render_template('chat.html')
 
 @app.route('/verOferta/')
 def verOferta():
-    return render_template('verOferta.html')
+    if session.get('usertype') == None:
+        return redirect(url_for('logueo'))
+    elif session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    else:
+        # 2020-03-08 (A) - Se unifica todo el manejo de anuncios en un único form: Anuncio.html [Inicio]
+        #return render_template('verOferta.html')
+        return render_template('Anuncio.html')
+        # 2020-03-08 (A) - Se unifica todo el manejo de anuncios en un único form: Anuncio.html [Fin]
 
 
 if __name__ == '__main__':

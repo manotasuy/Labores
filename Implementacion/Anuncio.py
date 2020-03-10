@@ -1,4 +1,7 @@
 from datetime import datetime
+# si ejecuto from Implementacion.Empleador import Empleador obtengo referencia ciclíca [Inicio]
+from Implementacion import Empleador
+# si ejecuto from Implementacion.Empleador import Empleador obtengo referencia ciclíca [Fin]
 from Implementacion.Tarea import Tarea
 from Implementacion.Disponibilidad import Disponibilidad
 
@@ -6,20 +9,22 @@ from Implementacion.Disponibilidad import Disponibilidad
 class Anuncio:
 
     def __init__(
-        self, 
-        pTitulo, 
-        pDescripcion, 
-        pFechaInicio, 
-        pFechaCierre, 
-        pEstado, 
-        pExperiencia, 
-        pPago_hora, 
-        pIdEmpleador, 
-        pCalDesde, 
-        pCalHasta, 
+        self,
+        pId,
+        pTitulo,
+        pDescripcion,
+        pFechaInicio,
+        pFechaCierre,
+        pEstado,
+        pExperiencia,
+        pPago_hora,
+        pEmpleador,
+        pCalDesde,
+        pCalHasta,
         pTieneVinculo,
-        #--------------
         pDisponibilidad,
+        pTareas,
+        # Deberían sacarse estos atributos y cargarlos dinámicamente desde la bd [Inicio]
         pHogar,
         pOficina,
         pCocinar,
@@ -30,8 +35,9 @@ class Anuncio:
         pCuidadoBebes,
         pCuidadoAdultos,
         pCuidadoMascotas
+        # Deberían sacarse estos atributos y cargarlos dinámicamente desde la bd [Fin]
         ):
-
+        self.id = pId
         self.titulo = pTitulo
         self.descripcion = pDescripcion
         self.fecha_inicio = pFechaInicio
@@ -39,11 +45,13 @@ class Anuncio:
         self.estado = pEstado
         self.experiencia = pExperiencia
         self.pago_hora = pPago_hora
-        self.id_empleador = pIdEmpleador
+        self.empleador : Empleador = pEmpleador
         self.calificacion_desde = pCalDesde
         self.calificacion_hasta = pCalHasta
         self.tiene_vinculo = pTieneVinculo
         self.disponibilidad = pDisponibilidad
+        self.tareas = pTareas
+        # Deberían sacarse estos atributos y cargarlos dinámicamente desde la bd [Inicio]
         self.hogar = pHogar
         self.oficina = pOficina
         self.cocinar = pCocinar
@@ -54,9 +62,10 @@ class Anuncio:
         self.cuidado_bebes = pCuidadoBebes
         self.cuidado_adultos = pCuidadoAdultos
         self.cuidado_mascotas = pCuidadoMascotas
+        # Deberían sacarse estos atributos y cargarlos dinámicamente desde la bd [Fin]
 
     def __str__(self):
-        return 'Título: {}, Empleador {}, Vinculo {}'.format(self.titulo, self.id_empleador, self.tiene_vinculo)
+        return 'Título: {}, Empleador {}, Vinculo {}'.format(self.titulo, self.empleador.id, self.tiene_vinculo)
 
     def __getitem__(self, item):
         return self.__dict__[item]
@@ -70,7 +79,8 @@ class Anuncio:
                         titulo,
                         descripcion,
                         fecha_inicio,
-                        estado,
+						fecha_cierre,
+						estado,
                         experiencia,
                         pago_hora,
                         id_empleador,
@@ -78,14 +88,15 @@ class Anuncio:
                         calificacion_hasta,
                         tiene_vinculo
                     )
-                VALUES ("{}","{}", "{}",{},"{}","{}","{}","{}","{}","{}")'''.format(
+                VALUES ({},{},{},{},{},{},{},{},{},{})'''.format(
                                self.titulo,
                                self.descripcion,
-                               datetime.now().date(),
+							   self.fecha_inicio,
+                               self.fecha_cierre,
                                self.estado,
                                self.experiencia,
                                self.pago_hora,
-                               self.id_empleador,
+                               self.empleador.id,
                                self.calificacion_desde,
                                self.calificacion_hasta,
                                self.tiene_vinculo
@@ -93,7 +104,7 @@ class Anuncio:
             bd.connection.commit()
             cursor.close()
             cursor = bd.connection.cursor()
-            cursor.execute('''SELECT MAX(id) FROM anuncio WHERE id_empleador = {}'''.format(self.id_empleador))
+            cursor.execute('''SELECT MAX(id) FROM anuncio WHERE id_empleador = {}'''.format(self.empleador.id))
             retorno = cursor.fetchall()
             idAnuncio = retorno[0][0]
             bd.connection.commit()
@@ -329,15 +340,15 @@ class Anuncio:
             cursor = bd.connection.cursor()
             cursor.execute('''
                 UPDATE anuncio SET
-                    titulo = "{}",
-                    descripcion = "{}",
-                    fecha_cierre = "{}",
+                    titulo = {},
+                    descripcion = {},
+                    fecha_cierre = {},
                     estado = {},
-                    experiencia = "{}",
-                    pago_hora = "{}",
-                    calificacion_desde = "{}",
-                    calificacion_hasta = "{}",
-                    tiene_vinculo = "{}"
+                    experiencia = {},
+                    pago_hora = {},
+                    calificacion_desde = {},
+                    calificacion_hasta = {},
+                    tiene_vinculo = {}
                 WHERE id = {}
                 '''.format(
                 self.titulo,
@@ -542,7 +553,7 @@ class Anuncio:
                             id_anuncio,
                             id_tarea
                         )
-                    VALUES ("{}","{}")'''.format(
+                    VALUES ({},{})'''.format(
                                 idAnuncio,
                                 9
                             ))
@@ -641,6 +652,7 @@ def getAnuncioByID(bd, id):
         else:
             bd_cuid_pet = False                                                                             
         anuncio = Anuncio(
+			retorno_anuncio[0][0],
             retorno_anuncio[0][1],
             retorno_anuncio[0][2],
             retorno_anuncio[0][3],
@@ -648,11 +660,12 @@ def getAnuncioByID(bd, id):
             retorno_anuncio[0][5],
             retorno_anuncio[0][6],
             retorno_anuncio[0][7],
-            retorno_anuncio[0][8],
+            Empleador.getEmpleadorByID(bd, retorno_anuncio[0][8]),
             retorno_anuncio[0][9],
             retorno_anuncio[0][10],
             retorno_anuncio[0][11],
             retorno_disponibilidad[0][0],
+            None,
             bd_hogar,
             bd_oficina,
             bd_cocinar,

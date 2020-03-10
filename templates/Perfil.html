@@ -15,7 +15,7 @@
       {% if session['usertype'] %}
       <h1 class="display-5 mb-5">Perfil</h1>
       {% else %}
-      <h1 class="display-5 mb-5">Registro</h1>
+      <h1 class="display-5 mb-5">Registro {{tipo}}</h1>
       {% endif %}
       <form class="needs-validation" novalidate="" action="/GuardarPerfil/{{tipo}}" method="POST">
         <div class="row">
@@ -285,8 +285,11 @@
         {% endif %}
 
         <button class="btn btn-success btn btn-block" type="submit">GUARDAR</button>
+
+        {% if session['usertype'] %}
         <a class="btn btn btn-danger btn-delete btn-block" href="" aria-label="" data-toggle="modal"
           data-target="#modal">Eliminar cuenta</a>
+        {% endif %}
 
         <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="mensaje" aria-hidden="true">
           <div class="modal-dialog" role="document">

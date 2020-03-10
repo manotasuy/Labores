@@ -47,11 +47,6 @@ class Usuario:
                 intTipo = 2
             elif self.tipo == 'Empleado':
                 intTipo = 3
-
-            print(self.usuario)
-            print(self.clave)
-            print(intTipo)
-
             cursor = bd.connection.cursor()
             cursor.execute('INSERT INTO usuario (usuario, clave, id_tipo) VALUES (%s, %s, %s)',
                            (self.usuario, self.clave, intTipo))
@@ -77,7 +72,7 @@ def getUsuarioByID(bd, id):
     try:
         cursor = bd.connection.cursor()
         cursor.execute(
-            'SELECT id, usuario, clave, tipo FROM usuario WHERE id = %s', (id))
+            'SELECT id, usuario, clave, id_tipo FROM usuario WHERE id = {}'.format(id))
         retorno = cursor.fetchall()
         bd.connection.commit()
         cursor.close()

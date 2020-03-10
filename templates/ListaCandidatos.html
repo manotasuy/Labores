@@ -12,122 +12,63 @@
 <div class="container">
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
-            <h1 class="display-5">Candidatos</h1>
-            <p class="lead">Lista de candidatos del anuncio</p>
+            <h1 class="display-5">Candidatos del anuncio</h1>
+            <p class="mt-4">
+                <h4>{{ elanuncio.titulo }} </h4>
+                {{ elanuncio.descripcion }} <br>
+                Publicado el {{ elanuncio.fecha_inicio }}
+            </p>
         </div>
     </div>
 
-    <!--<h1>Candidatos POSTA</h1>
-    {# for postulacion in data #}
-    <div class="card-columns bg-light mt-5 mb-3">
-        <div class="row no-gutters">
-            <div class="col-md-4">
-                <img src="{{ url_for('static', filename='images/CandidataC.png')}}" class="card-img" alt="...">
-            </div>
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h5 class="card-title">{#postulacion.empleado.nombre#}</h5>
-                    <p class="card-text">Información personal<br>del candidato<br>Lo que consideremos importante</p>
-                    <a class="btn btn-sm btn-success" href="" aria-label="">Ir al Perfil</a>
-                </div>
-            </div>
-        </div>
-        <div class="row no-gutters">
-            <div class="col-md-4">
-                <img src="{{ url_for('static', filename='images/CandidataC.png')}}" class="card-img" alt="...">
-            </div>
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h5 class="card-title">Candidato 2</h5>
-                    <p class="card-text">Información personal<br>del candidato<br>Lo que consideremos importante</p>
-                    <a class="btn btn-sm btn-success" href="" aria-label="">Ir al Perfil</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    {# endfor #}-->
+    <div class="container mb-5">
+        {% for postulacion in elemPares %}
 
-    <h1><!--Candidatos HARDCORE--></h1>
+        {% set item_pares = elemPares[loop.index-1] %}
+        {% set item_impares = elemImpares[loop.index-1] %}
 
-    <div class="card-columns bg-light mt-5 mb-3">
-        <div class="row no-gutters">
-            <div class="col-md-4">
-                <img src="{{ url_for('static', filename='images/CandidataC.png')}}" class="card-img" alt="...">
-            </div>
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h5 class="card-title">Candidato 1</h5>
-                    <p class="card-text">Información personal<br>del candidato<br>Lo que consideremos importante</p>
-                    <a class="btn btn-sm btn-success" href="" aria-label="">Ir al Perfil</a>
+        <div class="row">
+            <div class="card ml-5 mr-3 mb-3" style="max-width: 500px; min-width: 500px;">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        <img src="{{ url_for('static', filename=item_pares.empleado.foto)}}" class="card-img" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{item_pares.empleado.nombre}} {{item_pares.empleado.apellido}}</h5>
+                            <p class="card-text">
+                                Meses de experiencia: {{item_pares.experiencia_meses}}<br>
+                                Promedio de calificación: {{item_pares.promedioCalificacion}}
+                            </p>
+                            <a class="btn btn-sm btn-success float-right" href="#/Perfil/Empleado/item_pares.empleado.id" aria-label="">Ir al Perfil</a>
+                            <p class="card-text"><small class="text-muted">Su postulación fue en: {{item_pares.fecha}}</small></p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row no-gutters">
-            <div class="col-md-4">
-                <img src="{{ url_for('static', filename='images/CandidataC.png')}}" class="card-img" alt="...">
-            </div>
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h5 class="card-title">Candidato 2</h5>
-                    <p class="card-text">Información personal<br>del candidato<br>Lo que consideremos importante</p>
-                    <a class="btn btn-sm btn-success" href="" aria-label="">Ir al Perfil</a>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="card-columns bg-light mt-5 mb-3">
-        <div class="row no-gutters">
-            <div class="col-md-4">
-                <img src="{{ url_for('static', filename='images/CandidataC.png')}}" class="card-img" alt="...">
-            </div>
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h5 class="card-title">Candidato 3</h5>
-                    <p class="card-text">Información personal<br>del candidato<br>Lo que consideremos importante</p>
-                    <a class="btn btn-sm btn-success" href="" aria-label="">Ir al Perfil</a>
+            {% if item_impares %}
+            <div class="card mb-3" style="max-width: 500px;">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        <img src="{{ url_for('static', filename=item_impares.empleado.foto)}}" class="card-img" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{item_impares.empleado.nombre}} {{item_impares.empleado.apellido}}</h5>
+                            <p class="card-text">
+                                Meses de experiencia: {{item_impares.experiencia_meses}}<br>
+                                Promedio de calificación: {{item_impares.promedioCalificacion}}
+                            </p>
+                            <a class="btn btn-sm btn-success float-right" href="#/Perfil/Empleado/item_impares.empleado.id" aria-label="">Ir al Perfil</a>
+                            <p class="card-text"><small class="text-muted">Su postulación fue en: {{item_impares.fecha}}</small></p>
+                        </div>
+                    </div>
                 </div>
             </div>
+            {% endif %}
         </div>
-        <div class="row no-gutters">
-            <div class="col-md-4">
-                <img src="{{ url_for('static', filename='images/CandidataC.png')}}" class="card-img" alt="...">
-            </div>
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h5 class="card-title">Candidato 4</h5>
-                    <p class="card-text">Información personal<br>del candidato<br>Lo que consideremos importante</p>
-                    <a class="btn btn-sm btn-success" href="" aria-label="">Ir al Perfil</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card-columns bg-light mt-5 mb-3">
-        <div class="row no-gutters">
-            <div class="col-md-4">
-                <img src="{{ url_for('static', filename='images/CandidataC.png')}}" class="card-img" alt="...">
-            </div>
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h5 class="card-title">Candidato 5</h5>
-                    <p class="card-text">Información personal<br>del candidato<br>Lo que consideremos importante</p>
-                    <a class="btn btn-sm btn-success" href="" aria-label="">Ir al Perfil</a>
-                </div>
-            </div>
-        </div>
-        <div class="row no-gutters">
-            <div class="col-md-4">
-                <img src="{{ url_for('static', filename='images/CandidataC.png')}}" class="card-img" alt="...">
-            </div>
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h5 class="card-title">Candidato 6</h5>
-                    <p class="card-text">Información personal<br>del candidato<br>Lo que consideremos importante</p>
-                    <a class="btn btn-sm btn-success" href="" aria-label="">Ir al Perfil</a>
-                </div>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}

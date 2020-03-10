@@ -8,8 +8,8 @@ class Postulacion:
 
     def __init__(self, pId=None, pEmpleado=None, pAnuncio=None, pfecha='', pGeneraVinculo=''):
         self.id = pId
-        self.empleado = pEmpleado
-        self.anuncio = pAnuncio
+        self.empleado : Empleado = pEmpleado
+        self.anuncio : Anuncio = pAnuncio
         self.fecha = pfecha
         self.genera_vinculo = pGeneraVinculo
 
@@ -35,10 +35,9 @@ def getPostulacionesAnuncio(bd, idAnuncio):
         retorno = cursor.fetchall()
         bd.connection.commit()
         cursor.close()
-        print('Retorno: ', retorno)
 
         # desde el retorno debo generar los objetos Postulacion
-        postulaciones = Postulacion().__dict__
+        postulaciones = list()
         for tuplaPostulacion in retorno:
             postulacion = Postulacion(
                 tuplaPostulacion[0],
@@ -46,9 +45,8 @@ def getPostulacionesAnuncio(bd, idAnuncio):
                 getAnuncioByID(bd, tuplaPostulacion[2]),
                 tuplaPostulacion[3],
                 tuplaPostulacion[4])
-            print('Postulación: ', postulacion)
-            postulaciones[len(postulaciones) - 1] = postulacion
-        print('Postulaciones desde Postulacion: ', postulaciones)
+            postulaciones.append(postulacion)
+        #print('Postulaciones desde Postulacion: ', postulaciones)
         return postulaciones
     except Exception as e:
         print('Error en getPostulacionesAnuncio ', e)
@@ -71,7 +69,7 @@ def getPostulacionesEmpleado(bd, idEmpleado):
         cursor.close()
 
         # desde el retorno debo generar los objetos Postulacion
-        postulaciones = Postulacion().__dict__
+        postulaciones = list()
         for tuplaPostulacion in retorno:
             postulacion = Postulacion(
                 tuplaPostulacion[0],
@@ -79,7 +77,8 @@ def getPostulacionesEmpleado(bd, idEmpleado):
                 getAnuncioByID(bd, tuplaPostulacion[2]),
                 tuplaPostulacion[3],
                 tuplaPostulacion[4])
-            postulaciones[len(postulaciones) - 1] = postulacion
+            postulaciones.append(postulacion)
+        #print('Postulaciones desde Postulacion: ', postulaciones)
         return postulaciones
     except Exception as e:
         print('Error en getPostulacionesEmpleado ', e)

@@ -9,3 +9,19 @@ class Tarea:
 
     def __str__(self):
         return 'Descripción: {}'.format(self.descripcion)
+		
+		
+def getTareasRegistradas(bd):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('SELECT id, descripcion FROM tarea')
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+        tareas = list()
+        for tuplaTarea in retorno:
+            tarea = Tarea(tuplaTarea[0], tuplaTarea[1])
+            tareas.append(tarea)
+        return tareas
+    except Exception as e:
+        print("Error en getTareasRegistradas ", e)
