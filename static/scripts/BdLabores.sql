@@ -1,6 +1,16 @@
 -- DROP SCHEMA bdLabores;
-CREATE SCHEMA IF NOT EXISTS bdlabores DEFAULT CHARACTER SET utf8mb4;
-USE bdlabores;
+-- CREATE SCHEMA IF NOT EXISTS bdlabores DEFAULT CHARACTER SET utf8mb4;
+
+-- Si se usa CloudAccess
+-- USE amqtvopx;
+
+-- Si se usa RemoteMySQL
+-- USE LvP2Ka0CsK;
+
+-- Si se usa AWS o localhost
+-- USE bdlabores;
+
+USE amqtvopx;
 
 DROP TABLE IF EXISTS vinculo;
 DROP TABLE IF EXISTS mensaje;
@@ -66,8 +76,8 @@ CREATE TABLE IF NOT EXISTS empleador (
 	cedula varchar(20) NOT NULL,
 	nombre varchar(50) NOT NULL,
 	apellido varchar(50) NOT NULL,
-	fecha_nacimiento date DEFAULT NULL,
-	genero bit(1) DEFAULT NULL, -- 0:Femenino, 1:Masculino
+	fecha_nacimiento date NULL,
+	genero bit(1) NULL, -- 0:Femenino, 1:Masculino
 	domicilio varchar(50) DEFAULT NULL,
 	nacionalidad varchar(50) DEFAULT NULL,
 	email varchar(50) DEFAULT NULL,
@@ -88,8 +98,8 @@ CREATE TABLE IF NOT EXISTS empleado (
 	cedula varchar(20) NOT NULL,
 	nombre varchar(50) NOT NULL,
 	apellido varchar(50) NOT NULL,
-	fecha_nacimiento date DEFAULT NULL,
-	genero bit(1) DEFAULT NULL, -- 0:Femenino, 1:Masculino
+	fecha_nacimiento date NULL,
+	genero bit(1) NOT NULL, -- F:Femenino, M:Masculino
 	domicilio varchar(50) DEFAULT NULL,
 	nacionalidad varchar(50) DEFAULT NULL,
 	email varchar(50) DEFAULT NULL,
@@ -132,7 +142,7 @@ CREATE TABLE IF NOT EXISTS referencia (
 	nombre varchar(50) NOT NULL,
 	telefono varchar(20) NOT NULL,
 	fecha_desde date NOT NULL,
-	fecha_hasta date DEFAULT NULL,
+	fecha_hasta date NULL,
 	CONSTRAINT PK_referencia PRIMARY KEY (id),
 	CONSTRAINT FK_referencia_empleado FOREIGN KEY (id_empleado) REFERENCES empleado (id)
 );
@@ -144,13 +154,13 @@ CREATE TABLE IF NOT EXISTS anuncio (
 	titulo varchar(100) NOT NULL,
 	descripcion text,
 	fecha_inicio date NOT NULL,
-	fecha_cierre date DEFAULT NULL,
+	fecha_cierre date NULL,
 	estado bit(1) NOT NULL, -- 0:Inactivo, 1:Activo
-	experiencia bit(1) NOT NULL, -- 0:Con Experiencia, 1:Sin Experiencia
-	pago_hora int DEFAULT NULL,
+	experiencia boolean NOT NULL, -- 0:Con Experiencia, 1:Sin Experiencia
+	pago_hora int NULL,
 	id_empleador int NOT NULL,
-	calificacion_desde double DEFAULT NULL,
-	calificacion_hasta double DEFAULT NULL,
+	calificacion_desde double NULL,
+	calificacion_hasta double NULL,
 	tiene_vinculo boolean NULL,
 	CONSTRAINT PK_anuncio PRIMARY KEY (id),
 	CONSTRAINT FK_anuncio_empleador FOREIGN KEY (id_empleador) REFERENCES empleador (id)
@@ -182,7 +192,7 @@ CREATE TABLE IF NOT EXISTS postulacion (
 	id int NOT NULL AUTO_INCREMENT,
 	id_empleado int NOT NULL,
 	id_anuncio int NOT NULL,
-	fecha date DEFAULT NULL,
+	fecha date NULL,
 	genera_vinculo boolean NULL,
 	CONSTRAINT PK_postulacion PRIMARY KEY (id),
 	CONSTRAINT FK_postulacion_empleado FOREIGN KEY (id_empleado) REFERENCES empleado(id),
@@ -196,8 +206,8 @@ CREATE TABLE IF NOT EXISTS vinculo (
 	id_empleado int NOT NULL,
 	id_empleador int NOT NULL,
 	id_anuncio int NOT NULL,
-	fecha_inicio date DEFAULT NULL,
-	fecha_fin date DEFAULT NULL,
+	fecha_inicio date NULL,
+	fecha_fin date NULL,
 	motivo_fin text,
 	descripcion text DEFAULT NULL,
 	calificacion_empleado double DEFAULT NULL,
@@ -238,9 +248,13 @@ VALUES ('Empleado');
 INSERT INTO usuario (usuario, clave, id_tipo) 
 VALUES ('admin', 'admin', 1);
 INSERT INTO usuario (usuario, clave, id_tipo) 
-VALUES ('jefe', 'jefe', 2);
+VALUES ('11111111', '1', 2);
 INSERT INTO usuario (usuario, clave, id_tipo) 
-VALUES ('peon', 'peon', 3);
+VALUES ('22222222', '2', 3);
+INSERT INTO usuario (usuario, clave, id_tipo) 
+VALUES ('38628415', 'prueba', 2);
+INSERT INTO usuario (usuario, clave, id_tipo) 
+VALUES ('23562363', 'prueba', 2);
 
 -- En tabla "disponibilidad"
 INSERT INTO disponibilidad (descripcion) 
@@ -276,7 +290,7 @@ VALUES ('Cuidado de Mascotas');
 
 -- En tabla "empleado"
 INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
-VALUES (1234567-8, 'el peoncito', 'jodido', '1982-03-12', 1, 'Ejido 1857', 'Uruguayo', 'peoncito@gmail.com', '099987654', 0, '', '', 0, 3);
+VALUES (22222222, 'Ramón', 'Santos', '1982-03-12', 1, 'Ejido 1857', 'Uruguayo', 'rsantos@gmail.com', '099987654', 0, '', '', 0, 3);
 INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
 VALUES (1, 4);
 INSERT INTO empleado_tarea (id_empleado, id_tarea)
@@ -290,7 +304,31 @@ VALUES (1, 6);
 INSERT INTO empleado_tarea (id_empleado, id_tarea)
 VALUES (1, 7);
 INSERT INTO empleado_tarea (id_empleado, id_tarea)
-VALUES (1, 10);
+VALUES (1, 9);
+INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
+VALUES (38628415, 'Juana', 'Perez', '1975-01-23', 0, 'Rodeau 1411', 'Uruguayo', 'jperez@gmail.com', '091030215', 0, '', '', 0, 4);
+INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
+VALUES (2, 1);
+INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
+VALUES (2, 4);
+INSERT INTO empleado_tarea (id_empleado, id_tarea)
+VALUES (2, 3);
+INSERT INTO empleado_tarea (id_empleado, id_tarea)
+VALUES (2, 4);
+INSERT INTO empleado_tarea (id_empleado, id_tarea)
+VALUES (2, 5);
+INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
+VALUES (23562363, 'Maria', 'Gutierrez', '1977-04-02', 0, 'Yi 2110', 'Uruguayo', 'mguti@gmail.com', '095251600', 0, '', '', 0, 5);
+INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
+VALUES (3, 1);
+INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
+VALUES (3, 4);
+INSERT INTO empleado_tarea (id_empleado, id_tarea)
+VALUES (3, 3);
+INSERT INTO empleado_tarea (id_empleado, id_tarea)
+VALUES (3, 4);
+INSERT INTO empleado_tarea (id_empleado, id_tarea)
+VALUES (3, 5);
 
 -- En tabla "referencia"
 INSERT INTO referencia (id_empleado, nombre, telefono, fecha_desde, fecha_hasta)
@@ -300,11 +338,11 @@ VALUES (1, 'Leopoldo Garcia', '096524741', '2017-06-21', '2019-11-05');
 
 -- En tabla "empleador"
 INSERT INTO empleador (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, registro_bps, foto, promedio_calificacion, id_usuario)
-VALUES (1234567-8, 'la jefecita', 'ma mejor', '1975-05-22', 0, 'Yi 1234', 'Uruguayo', 'jefecita@gmail.com', '099123456', 0, '', 0, 2);
+VALUES (11111111, 'Luisa', 'Ramos', '1975-05-22', 0, 'Yi 1234', 'Uruguayo', 'lramos@gmail.com', '099123456', 0, '', 0, 2);
 
 -- En tabla "anuncio"
 INSERT INTO anuncio (titulo, descripcion, fecha_inicio, fecha_cierre, estado, experiencia, pago_hora, id_empleador, calificacion_desde, calificacion_hasta, tiene_vinculo)
-VALUES ('Necesito limpiar mi casa', 'Lo del título', '2020-02-20', NULL, 1, 1, 120, 1, NULL, NULL, false);
+VALUES ('Necesito limpiar mi casa', 'Casa grande, 3 dormitorios, cocina, living y 2 baños', '2020-02-20', NULL, true, 1, 120, 1, NULL, NULL, false);
 INSERT INTO anuncio_disponibilidad (id_anuncio, id_disponibilidad)
 VALUES (1, 4);
 INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
@@ -314,29 +352,31 @@ VALUES (1, 5);
 INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
 VALUES (1, 6);
 INSERT INTO anuncio (titulo, descripcion, fecha_inicio, fecha_cierre, estado, experiencia, pago_hora, id_empleador, calificacion_desde, calificacion_hasta, tiene_vinculo)
-VALUES ('Cuidado de niños', 'Uno tiene 6, fatal!!!, el otro tiene 16, buenísimo pero fume porro', '2020-02-25', NULL, 1, 1, 200, 1, NULL, NULL, false);
+VALUES ('Cuidado de niños', 'Uno tiene 6, fatal!!!, el otro tiene 16, buenísimo pero fuma porro', '2020-02-25', NULL, true, 1, 200, 1, NULL, NULL, false);
 INSERT INTO anuncio_disponibilidad (id_anuncio, id_disponibilidad)
 VALUES (2, 2);
 INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
 VALUES (2, 7);
 INSERT INTO anuncio (titulo, descripcion, fecha_inicio, fecha_cierre, estado, experiencia, pago_hora, id_empleador, calificacion_desde, calificacion_hasta, tiene_vinculo)
-VALUES ('Limpieza de oficina', 'Es una oficina chica, en 2 horitas debería quedar pronta', '2020-02-26', NULL, 1, 1, 180, 1, NULL, NULL, false);
+VALUES ('Limpieza de oficina', 'Es una oficina chica, en 2 horitas debería quedar pronta', '2020-02-26', NULL, true, 1, 180, 1, NULL, NULL, false);
 INSERT INTO anuncio_disponibilidad (id_anuncio, id_disponibilidad)
 VALUES (3, 3);
 INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
 VALUES (3, 2);
 
 -- En tabla "postulacion"
-INSERT INTO postulacion (id_empleado, id_anuncio, fecha, mensaje, genera_vinculo)
+INSERT INTO postulacion (id_empleado, id_anuncio, fecha, genera_vinculo)
 VALUES (1, 1, '2020-02-20', false);
-INSERT INTO postulacion (id_empleado, id_anuncio, fecha, mensaje, genera_vinculo)
+INSERT INTO postulacion (id_empleado, id_anuncio, fecha, genera_vinculo)
 VALUES (1, 3, '2020-02-28', false);
-INSERT INTO postulacion (id_empleado, id_anuncio, fecha, mensaje, genera_vinculo)
+INSERT INTO postulacion (id_empleado, id_anuncio, fecha, genera_vinculo)
 VALUES (2, 1, '2020-02-21', false);
-INSERT INTO postulacion (id_empleado, id_anuncio, fecha, mensaje, genera_vinculo)
+INSERT INTO postulacion (id_empleado, id_anuncio, fecha, genera_vinculo)
 VALUES (2, 2, '2020-02-29', false);
-INSERT INTO postulacion (id_empleado, id_anuncio, fecha, mensaje, genera_vinculo)
+INSERT INTO postulacion (id_empleado, id_anuncio, fecha, genera_vinculo)
 VALUES (2, 3, '2020-03-05', false);
+INSERT INTO postulacion (id_empleado, id_anuncio, fecha, genera_vinculo)
+VALUES (3, 1, '2020-03-06', false);
 
 -- En tabla "mensaje"
 INSERT INTO mensaje (id_empleado, id_empleador, id_anuncio, fecha, mensaje)
