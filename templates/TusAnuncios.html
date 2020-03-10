@@ -46,10 +46,10 @@
 												<p>Inactiva</p>
 												{% endif %}
 											<td>
-												<a href="/actualizandoAnuncio/{{ anuncio.0 }}" class="btn btn-primary">Editar</a>
+												<!--<a href="/actualizandoAnuncio/{{ anuncio.0 }}" class="btn btn-primary">Editar</a>-->
 												<a href="/Anuncio/Edicion{{ anuncio.0 }}" class="btn btn-sm btn-primary btn-block">Editar</a>
    
-												<a href="/Candidatos" class="btn btn-sm btn-success btn-block">Candidatos</a>
+												<a href="/Candidatos/{{ anuncio.0 }}" class="btn btn-sm btn-success btn-block">Candidatos</a>
 											</td>
 										</tr>
 										{% endfor %}
