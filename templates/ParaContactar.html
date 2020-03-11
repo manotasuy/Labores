@@ -1,0 +1,107 @@
+{% extends 'page_layout.html' %}
+
+{% block referencias %}
+{% endblock %}
+
+{% block estilo %}
+{% endblock %}
+
+{% block titulo %}Labores - Perfil{% endblock %}
+
+{% block contenido %}
+<div class="container">
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+
+      <div class="text-center mb-5 in-line">
+
+        <!--<h1 class="display-5 mb-5">Perfil</h1>-->
+        <a class="my-0 mr-md-auto" href="" aria-label="Home">
+          <img class="mb-4" src="{{ url_for('static', filename=data.foto)}}" alt="" width="125" height="125">
+        </a>
+      </div>
+
+      <form id="VistaPerfil" class="needs-validation" novalidate="" action="" method="">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="name">Nombre</label>
+            <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre"
+              value="{{data.nombre}}" required="" readonly>
+            <div class="invalid-feedback">
+              Se requiere un Nombre válido.
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="lastName">Apellido</label>
+            <input type="text" class="form-control" name="apellido" id="apelido" placeholder="Apellido"
+              value="{{data.apellido}}" required="" readonly>
+            <div class="invalid-feedback">
+              Se requiere un Apellido válido.
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="phone">Teléfono</label>
+            <input type="text" class="form-control" name="tel" id="tel" placeholder="23655544" required=""
+              value="{{data.telefono}}" readonly>
+            <div class="invalid-feedback">
+              Por favor seleccione un Teléfono válido.
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="domicilio">Domicilio</label>
+          <input type="text" class="form-control" name="domicilio" id="domicilio" placeholder="18 de Julio 1234"
+            required="" value="{{data.domicilio}}" readonly>
+          <div class="invalid-feedback">
+            Debe ingresar su domicilio.
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="email">Email </label>
+          <input type="email" class="form-control" name="email" id="email" placeholder="nombre@gmail.com" required=""
+            value="{{data.email}}" readonly>
+          <div class="invalid-feedback">
+            Se requiere un Email válido.
+          </div>
+        </div>
+
+        <hr class="mt-5 mb-5">
+
+        <p>Referencias</p>
+        <div class="mt-4 mb-3">
+          <label for="nombreEmp">Nombre del empleador</label>
+          <input type="text" class="form-control col-sm-10" name="refNombreEmp" id="nombreEmp" placeholder="Nombre"
+            value="" readonly>
+        </div>
+        <div class="mb-3">
+          <label for="telefonoEmp">Teléfono del empleador</label>
+          <input type="text" class="form-control col-sm-5" name="refTelefonoEmp" id="telefonoEmp" placeholder="Teléfono"
+            value="" readonly>
+        </div>
+
+        <div class="mb-3">
+          <label for="refTrabDesde">Trabaje desde</label>
+          <input type="date" class="form-control col-sm-3" name="refTrabDesde" id="refTrabDesde" value="" required="" readonly>
+        </div>
+        <div class="mb-3">
+          <label for="refTrabDesde">Trabaje hasta</label>
+          <input type="date" class="form-control col-sm-3" name="refTrabDesde" id="refTrabHasta" value="" required="" readonly>
+        </div>
+        <hr class="mt-5 mb-5">
+
+        {% if session['usertype'] == 'Empleador' %}
+        <a class="btn btn-bg btn-success btn-delete btn-block" href="/Contratar" aria-label="">Contratar</a>
+        {% endif %}
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

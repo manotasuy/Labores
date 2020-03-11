@@ -116,6 +116,8 @@ def vista_perfil(opcion, id):
         return redirect(url_for('logueo'))
     elif session.get('usertype') == 'Administrador':
         return redirect(url_for('administrar'))
+    elif session.get('usertype') == 'Empleado':
+        return redirect(url_for('inicio_empleados'))
     else:
         objeto = None
         if opcion == 'Empleado':
@@ -621,6 +623,50 @@ def chat():
         return redirect(url_for('administrar'))
     else:
         return render_template('chat.html')
+
+
+@app.route('/Contactar/<opcion>/<id>')
+def contactar(opcion, id):
+    if session.get('usertype') == None:
+        return redirect(url_for('logueo'))
+    elif session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    elif session.get('usertype') == 'Empleado':
+        return redirect(url_for('inicio_empleados'))
+    else:
+        objeto = None
+        if opcion == 'Empleado':
+            objeto = getEmpleadoByID(baseDatos, id)
+            tareas = getTareasEmpleado(baseDatos, objeto.id)
+            objeto.cargarTareas(tareas)
+            referencias = getReferenciasEmpleado(baseDatos, objeto.id)
+            objeto.cargarReferencias(referencias)
+            disponibilidad = getDisponibilidadEmpleado(baseDatos, objeto.id)
+            objeto.cargarDisponibilidad(disponibilidad)
+
+        elif opcion == 'Empleador':
+            objeto = getEmpleadorByID(baseDatos, id)
+        
+        # Se debe notificar al empleado mediante mensaje de que el empleador "X" lo contactó
+        return render_template('ParaContactar.html', tipo=opcion, data=objeto)
+            
+
+
+@app.route('/Contratar/')
+def contratar():
+    if session.get('usertype') == None:
+        return redirect(url_for('logueo'))
+    elif session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    elif session.get('usertype') == 'Empleado':
+        return redirect(url_for('inicio_empleados'))
+    else:
+        # Se debe notificar al empleado mediante mensaje de que el empleador "X" lo contrató
+        # Se debe actualizar la postulación a genera_vinculo = true
+        # Se debe generar el vínculo
+        # El anuncio debe quedar inactivo
+        flash('Empleado Contratado!')
+        return redirect(url_for('tus_anuncios'))
 
 
 @app.route('/verOferta/')
