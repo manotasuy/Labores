@@ -1,7 +1,7 @@
 from datetime import datetime
-# si ejecuto from Implementacion.Empleador import Empleador obtengo referencia ciclíca [Inicio]
+# si establezco from modulo import clase obtengo referencia ciclíca [Inicio]
 from Implementacion import Empleador
-# si ejecuto from Implementacion.Empleador import Empleador obtengo referencia ciclíca [Fin]
+# si establezco from modulo import clase obtengo referencia ciclíca [Fin]
 from Implementacion.Tarea import Tarea
 from Implementacion.Disponibilidad import Disponibilidad
 
@@ -579,6 +579,23 @@ class Anuncio:
             print('Anuncio Actualizado')
         except Exception as e:
             print("Error en updateAnuncio ", e)
+
+    def setEstadoAnuncio(self, bd, estado):
+        try:
+            cursor = bd.connection.cursor()
+            cursor.execute('''
+                UPDATE anuncio SET
+                    estado = %s
+                WHERE id = %s''',
+                           (
+                               estado,
+                               self.id
+                           ))
+            bd.connection.commit()
+            cursor.close()
+            print('Estado del Anuncio actualizado')
+        except Exception as e:
+            print("Error en setEstadoAnuncio ", e)
 
 
 def getAnuncioByID(bd, id):

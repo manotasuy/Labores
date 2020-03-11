@@ -51,10 +51,10 @@
             </div>
           </div>
           <div class="col-md-6 mb-3">
-          <label for="nacionalidad">Nacionalidad</label>
-          <input type="text" class="form-control" name="nacionalidad" id="nacionalidad" placeholder="Uruguayo"
-            value="{{data.nacionalidad}}" readonly>
-        </div>
+            <label for="nacionalidad">Nacionalidad</label>
+            <input type="text" class="form-control" name="nacionalidad" id="nacionalidad" placeholder="Uruguayo"
+              value="{{data.nacionalidad}}" readonly>
+          </div>
         </div>
 
         <div class="d-block my-3">
@@ -200,12 +200,27 @@
         <hr class="mt-5 mb-5">
         {% endif %}
 
-        {% if session['usertype'] == 'Empleador' %}
-        <a class="btn btn btn-primary btn-delete btn-block" href="/Mensajes" aria-label="">Enviar Mensaje</a>
-        <a class="btn btn btn-success btn-block" href="/Contactar/Empleado/{{data.id}}" aria-label="">Contactar</a>
-        {% elif session['usertype'] == 'Empleado' %}
-
-        {% endif %}
+        <div class="card mb-5" style="min-width: 500px;">
+          <div class="row no-gutters">
+            <div class="col-md-15">
+              <div class="card-body">
+                <a class="btn btn btn-primary float-left mr-3" href="/Mensajes" aria-label="">Enviar Mensaje</a>
+                <p class="card-text">
+                  <small class="text-muted">
+                    Si lo deseas, puedes enviar mensaje a <strong><i>{{data.nombre}} {{data.apellido}}</i></strong>
+                    para hacerle algunas especificaciones del empleo, para evacuar dudas sobre días,
+                    horarios o cualquier aspecto relacionado con las tareas a desarrollar. <br>
+                    <strong><i>{{data.nombre}}</i></strong> podrá responderte y serás notificado en tu área personal de
+                    mensajes.
+                  </small>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="mt-5 pb-5"><a class="btn btn-lg btn-success float-right" href="/Contratar/{{data.id}}"
+            aria-label="">Realizar
+            Contratación</a></p>
       </form>
     </div>
   </div>

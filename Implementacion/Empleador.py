@@ -37,7 +37,7 @@ class Empleador:
                 intGenero = 1
             #fechaFormateada = self.nacimiento.strftime('%Y-%m-%d')
             if self.foto is None or self.foto == '':
-                self.foto = 'images/NoImage.png'
+                self.foto = 'images/Perfiles/NoImage.png'
 
             cursor = bd.connection.cursor()
             cursor.execute('''
@@ -84,7 +84,7 @@ class Empleador:
         try:
             # print('Self: ', self)
             if self.foto is None or self.foto == '':
-                self.foto = 'images/NoImage.png'
+                self.foto = 'images/Perfiles/NoImage.png'
 
             cursor = bd.connection.cursor()
             cursor.execute('''
@@ -187,30 +187,30 @@ class Empleador:
             print("Error en crearAnuncio ", e)
 
     def actualizarAnuncio(
-        self,
-        bd,
-        elAnuncio,
-        Titulo,
-        Descripcion,
-        FechaInicio,
-        FechaCierre,
-        Estado,
-        Experiencia,
-        Pago_hora,
-        CalEmpleado,
-        CalEmpleador,
-        TieneVinculo,
-        Disponibilidad,
-        Hogar,
-        Oficina,
-        Cocinar,
-        LimpBanios,
-        LimpCocinas,
-        LimpDormitorios,
-        CuidadoNinios,
-        CuidadoBebes,
-        CuidadoAdultos,
-        CuidadoMascotas):
+            self,
+            bd,
+            elAnuncio,
+            Titulo,
+            Descripcion,
+            FechaInicio,
+            FechaCierre,
+            Estado,
+            Experiencia,
+            Pago_hora,
+            CalEmpleado,
+            CalEmpleador,
+            TieneVinculo,
+            Disponibilidad,
+            Hogar,
+            Oficina,
+            Cocinar,
+            LimpBanios,
+            LimpCocinas,
+            LimpDormitorios,
+            CuidadoNinios,
+            CuidadoBebes,
+            CuidadoAdultos,
+            CuidadoMascotas):
         try:
             newAnuncio = Anuncio(
                 elAnuncio.id,
@@ -244,30 +244,30 @@ class Empleador:
             print("Error en actualizarAnuncio ", e)
 
     def borrarAnuncio(
-        self,
-        bd,
-        elAnuncio,
-        Titulo,
-        Descripcion,
-        FechaInicio,
-        FechaCierre,
-        Estado,
-        Experiencia,
-        Pago_hora,
-        CalEmpleado,
-        CalEmpleador,
-        TieneVinculo,
-        Disponibilidad,
-        Hogar,
-        Oficina,
-        Cocinar,
-        LimpBanios,
-        LimpCocinas,
-        LimpDormitorios,
-        CuidadoNinios,
-        CuidadoBebes,
-        CuidadoAdultos,
-        CuidadoMascotas):
+            self,
+            bd,
+            elAnuncio,
+            Titulo,
+            Descripcion,
+            FechaInicio,
+            FechaCierre,
+            Estado,
+            Experiencia,
+            Pago_hora,
+            CalEmpleado,
+            CalEmpleador,
+            TieneVinculo,
+            Disponibilidad,
+            Hogar,
+            Oficina,
+            Cocinar,
+            LimpBanios,
+            LimpCocinas,
+            LimpDormitorios,
+            CuidadoNinios,
+            CuidadoBebes,
+            CuidadoAdultos,
+            CuidadoMascotas):
         try:
             delAnuncio = Anuncio(
                 elAnuncio.id,

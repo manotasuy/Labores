@@ -86,16 +86,18 @@
 
         <div class="mb-3">
           <label for="refTrabDesde">Trabaje desde</label>
-          <input type="date" class="form-control col-sm-3" name="refTrabDesde" id="refTrabDesde" value="" required="" readonly>
+          <input type="date" class="form-control col-sm-3" name="refTrabDesde" id="refTrabDesde" value="" required=""
+            readonly>
         </div>
         <div class="mb-3">
           <label for="refTrabDesde">Trabaje hasta</label>
-          <input type="date" class="form-control col-sm-3" name="refTrabDesde" id="refTrabHasta" value="" required="" readonly>
+          <input type="date" class="form-control col-sm-3" name="refTrabDesde" id="refTrabHasta" value="" required=""
+            readonly>
         </div>
         <hr class="mt-5 mb-5">
 
         {% if session['usertype'] == 'Empleador' %}
-        <a class="btn btn-bg btn-success btn-delete btn-block" href="/Contratar" aria-label="">Contratar</a>
+        <a class="btn btn-bg btn-primary btn-delete btn-block" href="/HomeEmpleadores" aria-label="">Volver</a>
         {% endif %}
       </form>
     </div>

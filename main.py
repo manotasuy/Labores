@@ -10,9 +10,11 @@ from Implementacion.Usuario import Usuario
 from Implementacion.Empleado import Empleado
 from Implementacion.Empleador import Empleador
 from Implementacion.Anuncio import Anuncio
-from Implementacion.Postulación import Postulacion
+from Implementacion.Postulacion import Postulacion
 from Implementacion.Tarea import Tarea
 from Implementacion.Disponibilidad import Disponibilidad
+from Implementacion.Vinculo import Vinculo
+from Implementacion.Mensaje import Mensaje
 
 from Implementacion.Usuario import getUsuarioByID
 from Implementacion.Empleador import getEmpleadorByID
@@ -23,8 +25,10 @@ from Implementacion.Empleado import getTareasEmpleado
 from Implementacion.Empleado import getReferenciasEmpleado
 from Implementacion.Empleado import getDisponibilidadEmpleado
 from Implementacion.Anuncio import getAnuncioByID
-from Implementacion.Postulación import getPostulacionesAnuncio
-from Implementacion.Postulación import getPostulacionesEmpleado
+from Implementacion.Vinculo import getVinculoByID
+from Implementacion.Postulacion import getPostulacionesAnuncio
+from Implementacion.Postulacion import getPostulacionesEmpleado
+from Implementacion.Postulacion import getPostulacionEmpleadoAnuncio
 from Implementacion.Tarea import getTareasRegistradas
 from Implementacion.Disponibilidad import getDisponibilidadesRegistradas
 
@@ -373,6 +377,19 @@ def publicar_anuncio():
             return redirect(url_for('tus_anuncios'))
 
 
+@app.route('/verOferta/')
+def verOferta():
+    if session.get('usertype') == None:
+        return redirect(url_for('logueo'))
+    elif session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    else:
+        # 2020-03-08 (A) - Se unifica todo el manejo de anuncios en un único form: Anuncio.html [Inicio]
+        # return render_template('verOferta.html')
+        return render_template('Anuncio.html')
+        # 2020-03-08 (A) - Se unifica todo el manejo de anuncios en un único form: Anuncio.html [Fin]
+
+
 @app.route('/listandoMisAnuncios/')
 def listandoMisAnuncios():
     if session.get('usertype') == None:
@@ -607,6 +624,8 @@ def listar_candidatos(id_anuncio):
     elif session.get('usertype') == 'Empleado':
         return redirect(url_for('inicio_empleados'))
     else:
+        # guardo el id del anuncio en la sesion ya que lo preciso más adelante a la hora de contactar y eventualmente contratar
+        session['id_anuncio'] = id_anuncio
         # Obtengo la lista de postulaciones para el anuncio dado
         anuncio = getAnuncioByID(baseDatos, id_anuncio)
         postulaciones = getPostulacionesAnuncio(baseDatos, id_anuncio)
@@ -625,8 +644,8 @@ def chat():
         return render_template('chat.html')
 
 
-@app.route('/Contactar/<opcion>/<id>')
-def contactar(opcion, id):
+@app.route('/Contratar/<idEmpleado>')
+def contactar(idEmpleado):
     if session.get('usertype') == None:
         return redirect(url_for('logueo'))
     elif session.get('usertype') == 'Administrador':
@@ -634,52 +653,62 @@ def contactar(opcion, id):
     elif session.get('usertype') == 'Empleado':
         return redirect(url_for('inicio_empleados'))
     else:
-        objeto = None
-        if opcion == 'Empleado':
-            objeto = getEmpleadoByID(baseDatos, id)
-            tareas = getTareasEmpleado(baseDatos, objeto.id)
-            objeto.cargarTareas(tareas)
-            referencias = getReferenciasEmpleado(baseDatos, objeto.id)
-            objeto.cargarReferencias(referencias)
-            disponibilidad = getDisponibilidadEmpleado(baseDatos, objeto.id)
-            objeto.cargarDisponibilidad(disponibilidad)
+        empleado = getEmpleadoByID(baseDatos, idEmpleado)
+        tareas = getTareasEmpleado(baseDatos, empleado.id)
+        empleado.cargarTareas(tareas)
+        referencias = getReferenciasEmpleado(baseDatos, empleado.id)
+        empleado.cargarReferencias(referencias)
+        disponibilidad = getDisponibilidadEmpleado(baseDatos, empleado.id)
+        empleado.cargarDisponibilidad(disponibilidad)
 
-        elif opcion == 'Empleador':
-            objeto = getEmpleadorByID(baseDatos, id)
-        
-        # Se debe notificar al empleado mediante mensaje de que el empleador "X" lo contactó
-        return render_template('ParaContactar.html', tipo=opcion, data=objeto)
-            
+        empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
+        anuncio = getAnuncioByID(baseDatos, session['id_anuncio'])
 
-
-@app.route('/Contratar/')
-def contratar():
-    if session.get('usertype') == None:
-        return redirect(url_for('logueo'))
-    elif session.get('usertype') == 'Administrador':
-        return redirect(url_for('administrar'))
-    elif session.get('usertype') == 'Empleado':
-        return redirect(url_for('inicio_empleados'))
-    else:
-        # Se debe notificar al empleado mediante mensaje de que el empleador "X" lo contrató
-        # Se debe actualizar la postulación a genera_vinculo = true
         # Se debe generar el vínculo
+        vinculo = Vinculo(0, empleado, empleador, anuncio,
+                          datetime.now(), None, None, '', None, None)
+        vinculo.crearVinculo(baseDatos)
+
         # El anuncio debe quedar inactivo
+        anuncio.setEstadoAnuncio(baseDatos, False)
+
+        # Se debe actualizar la postulación a genera_vinculo = true
+        postulacion: Postulacion = getPostulacionEmpleadoAnuncio(
+            baseDatos, empleado.id, anuncio.id)
+        postulacion.generarVinculoEnPostulacion(baseDatos)
+
+        # Se debe notificar al empleado mediante mensaje de que el empleador "X" lo contrató
+        mensajeEmpleado = Mensaje(
+            0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has sido contratado por: {} {}, les deseamos un buen vínculo laboral.'.format(empleador.nombre, empleador.apellido))
+        mensajeEmpleado.crearMensaje(baseDatos)
+
+        # Se debe notificar al empleador mediante mensaje de que contrató al empleador "X"
+        mensajeEmpleador = Mensaje(
+            0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has contratado a: {} {}, les deseamos un buen vínculo laboral.'.format(empleado.nombre, empleado.apellido))
+        mensajeEmpleador.crearMensaje(baseDatos)
+
         flash('Empleado Contratado!')
-        return redirect(url_for('tus_anuncios'))
+        return render_template('contactoEmpleado.html', data=empleado)
 
 
-@app.route('/verOferta/')
-def verOferta():
-    if session.get('usertype') == None:
-        return redirect(url_for('logueo'))
-    elif session.get('usertype') == 'Administrador':
-        return redirect(url_for('administrar'))
-    else:
-        # 2020-03-08 (A) - Se unifica todo el manejo de anuncios en un único form: Anuncio.html [Inicio]
-        # return render_template('verOferta.html')
-        return render_template('Anuncio.html')
-        # 2020-03-08 (A) - Se unifica todo el manejo de anuncios en un único form: Anuncio.html [Fin]
+# ***** Pendientes ***********
+
+
+@app.route('/BuscarAnuncio')
+def buscar_anuncio():
+    return 'Está pendiente'
+
+
+@app.route('/MisPostulaciones')
+def mis_postulaciones():
+    return 'Está pendiente'
+
+
+@app.route('/MisVinculos')
+def mis_vinculos():
+    return 'Está pendiente'
+
+# ****************************
 
 
 if __name__ == '__main__':

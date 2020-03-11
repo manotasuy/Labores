@@ -62,7 +62,7 @@ class Empleado:
             # print(self.usuario.clave)
 
             if self.foto is None or self.foto == '':
-                self.foto = 'images/NoImage.png'
+                self.foto = 'images/Pefiles/NoImage.png'
 
             cursor = bd.connection.cursor()
             cursor.execute('''
@@ -88,7 +88,7 @@ class Empleado:
                                self.cedula,
                                self.nombre,
                                self.apellido,
-                               #fechaFormateada,
+                               # fechaFormateada,
                                self.nacimiento,
                                intGenero,
                                self.domicilio,
@@ -110,7 +110,7 @@ class Empleado:
     def modificarEmpleado(self, bd):
         try:
             if self.foto is None or self.foto == '':
-                self.foto = 'images/NoImage.png'
+                self.foto = 'images/Perfiles/NoImage.png'
 
             cursor = bd.connection.cursor()
             cursor.execute('''
@@ -187,15 +187,13 @@ class Empleado:
         except Exception as e:
             print("Error al listar los empleados ", e)
 
-    def postularseParaAnuncio(self, bd):
+    def postularseParaAnuncio(self, bd, anuncio, fecha):
         try:
-            cursor = bd.connection.cursor()
-            cursor.execute('SELECT * FROM empleado...')
-            bd.connection.commit()
-            cursor.close()
+            postulacion = Postulación.Postulacion(0, self, anuncio, fecha)
+            postulacion.crearPostulacion(bd)
             print('Postulado para empleo')
         except Exception as e:
-            print('Error en postulación ', e)
+            print('Error en postularseParaAnuncio ', e)
 
 
 class Referencia:

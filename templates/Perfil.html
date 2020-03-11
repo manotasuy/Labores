@@ -41,7 +41,7 @@
           <div class="col-md-6 mb-3">
             <label for="ci">Cédula de identidad</label>
             <input type="text" class="form-control" name="cedula" id="cedula" placeholder="50726621" required=""
-              value="{{data.cedula}}">
+              value="{{data.cedula}}" {% if session['usertype'] %} disabled {% endif %}>
             <div class="invalid-feedback">
               Por favor seleccione una CI válida.
             </div>
