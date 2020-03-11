@@ -281,11 +281,12 @@
         <hr class="mt-5 mb-5">
         {% endif %}
 
-        <button class="btn btn-success btn btn-block" type="submit">GUARDAR</button>
-
         {% if session['usertype'] %}
+        <button class="btn btn-success btn btn-block" type="submit">Guardar</button>
         <a class="btn btn btn-danger btn-delete btn-block" href="" aria-label="" data-toggle="modal"
           data-target="#modal">Eliminar cuenta</a>
+        {% else %}
+        <button class="btn btn-success btn btn-block" type="submit">Crear Cuenta</button>
         {% endif %}
 
         <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="mensaje" aria-hidden="true">
