@@ -1,6 +1,7 @@
 from datetime import datetime
 from Implementacion.Usuario import getUsuarioByID
 from Implementacion.Anuncio import Anuncio
+from Implementacion.Usuario import Usuario
 
 
 class Empleador:
@@ -209,8 +210,7 @@ class Empleador:
         CuidadoNinios,
         CuidadoBebes,
         CuidadoAdultos,
-        CuidadoMascotas
-    ):
+        CuidadoMascotas):
         try:
             newAnuncio = Anuncio(
                 elAnuncio.id,
@@ -267,8 +267,7 @@ class Empleador:
         CuidadoNinios,
         CuidadoBebes,
         CuidadoAdultos,
-        CuidadoMascotas
-    ):
+        CuidadoMascotas):
         try:
             delAnuncio = Anuncio(
                 elAnuncio.id,

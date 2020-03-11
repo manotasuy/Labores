@@ -110,14 +110,35 @@ def opcion_registrarse():
     return render_template('OpcionRegistro.html')
 
 
-@app.route('/Perfil/<opcion>/<id>', methods=['POST', 'GET'])
-def perfil(opcion, id):
+@app.route('/VistaPerfil/<opcion>/<id>', methods=['POST', 'GET'])
+def vista_perfil(opcion, id):
+    if session.get('usertype') == None:
+        return redirect(url_for('logueo'))
+    elif session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    else:
+        objeto = None
+        if opcion == 'Empleado':
+            objeto = getEmpleadoByID(baseDatos, id)
+            tareas = getTareasEmpleado(baseDatos, objeto.id)
+            objeto.cargarTareas(tareas)
+            referencias = getReferenciasEmpleado(baseDatos, objeto.id)
+            objeto.cargarReferencias(referencias)
+            disponibilidad = getDisponibilidadEmpleado(baseDatos, objeto.id)
+            objeto.cargarDisponibilidad(disponibilidad)
+
+        elif opcion == 'Empleador':
+            objeto = getEmpleadorByID(baseDatos, id)
+
+        return render_template('VistaPerfil.html', tipo=opcion, data=objeto)
+
+
+@app.route('/Perfil/<opcion>', methods=['POST', 'GET'])
+def perfil(opcion):
     if session.get('usertype') == 'Administrador':
         return redirect(url_for('administrar'))
     else:
         logueado = session.get('usertype') is not None
-        if session.get('id_empleado') is None:
-            session['id_empleado'] = id
 
         # Debo traer las tareas y disponibilidades para cargarlas dinámicamente
         tareasTodas = getTareasRegistradas(baseDatos)
@@ -137,7 +158,7 @@ def perfil(opcion, id):
                 disponibilidad = getDisponibilidadEmpleado(
                     baseDatos, objeto.id)
                 objeto.cargarDisponibilidad(disponibilidad)
-            return render_template('Perfil.html', tipo=opcion, sujeto=id, data=objeto)
+            return render_template('Perfil.html', tipo=opcion, data=objeto)
 
         elif opcion == 'Empleador':
             objeto = Empleador()
@@ -223,14 +244,19 @@ def guardar_perfil(tipo):
 # Se deja standby porque requiere desactivar un montón de cosas y no era parte de las funcionalidades planteadas
 @app.route('/EliminarCuenta/', methods=['POST'])
 def cancelar_cuenta():
-    usuarioLogueado = session.get('usertype')
-    if usuarioLogueado == 'Empleado':
-        idEmpleado = session['id_empleado']
-        objeto = getEmpleadoByID(baseDatos, idEmpleado)
+    if session.get('usertype') == None:
+        return redirect(url_for('logueo'))
+    elif session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
     else:
-        idEmpleador = session['id_empleador']
-        objeto = getEmpleadorByID(baseDatos, idEmpleador)
-    return 'Hola!'
+        usuarioLogueado = session.get('usertype')
+        if usuarioLogueado == 'Empleado':
+            idEmpleado = session['id_empleado']
+            objeto = getEmpleadoByID(baseDatos, idEmpleado)
+        else:
+            idEmpleador = session['id_empleador']
+            objeto = getEmpleadorByID(baseDatos, idEmpleador)
+        return 'No implementada'
 
 
 @app.route('/HomeEmpleados/')
@@ -490,9 +516,9 @@ def editandoAnuncio(idAnuncio):
                 new_estado = 0
             new_experiencia = request.form.get('radioExperiencia')
             new_pago_hora = request.form['pagoPorHora']
-            new_cal_desde = None  # esto no va?
-            new_cal_hasta = None  # esto no va?
-            new_vinculo = None  # esto hay que ver como lo hacemos
+            new_cal_desde = None  # por ahora no se maneja a nivel de anuncio
+            new_cal_hasta = None  # por ahora no se maneja a nivel de anuncio
+            new_vinculo = None  # cuando se crea no hay vínculo
             anuncio = getAnuncioByID(baseDatos, idAnuncio)
             empleador.actualizarAnuncio(
                 baseDatos,

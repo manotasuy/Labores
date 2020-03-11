@@ -1,6 +1,7 @@
 from datetime import datetime
 from Implementacion.Usuario import getUsuarioByID
 from Implementacion.Tarea import Tarea
+from Implementacion.Usuario import Usuario
 from Implementacion.Disponibilidad import Disponibilidad
 
 
@@ -41,7 +42,7 @@ class Empleado:
             else:
                 intGenero = 1
             # print(self.nacimiento)
-            fechaFormateada = self.nacimiento.strftime('%Y-%m-%d')
+            #fechaFormateada = self.nacimiento.strftime('%Y-%m-%d')
 
             # print(self.cedula)
             # print(self.nombre)
@@ -87,7 +88,8 @@ class Empleado:
                                self.cedula,
                                self.nombre,
                                self.apellido,
-                               fechaFormateada,
+                               #fechaFormateada,
+                               self.nacimiento,
                                intGenero,
                                self.domicilio,
                                self.nacionalidad,
