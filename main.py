@@ -34,9 +34,9 @@ from Implementacion.Disponibilidad import getDisponibilidadesRegistradas
 
 app = Flask(__name__)
 
-#baseDatos = connectionDb(app, 'local')
+baseDatos = connectionDb(app, 'local')
 #baseDatos = connectionDb(app, 'remotemysql.com')
-baseDatos = connectionDb(app, 'CloudAccess')
+#baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'aws')
 
 
@@ -675,19 +675,57 @@ def listar_anuncios():
                     tareasAnuncio.append(9)
                 if elAnuncio[1].cuidado_mascotas == True:
                     tareasAnuncio.append(10)
-            
+             
                 anun.append(idAnuncio)
                 anun.append(disponibilidadAnuncio)
                 anun.append(experienciaAnuncio)
                 anun.append(set(tareasAnuncio))
                 listaDeAnuncios.append(anun)
-        print(listaDeAnuncios)
         listaMatcheo = []
         for a in listaDeAnuncios:
             if a[1] in empl[2] and empl[0] >= a[2] and a[3] & empl[1] == a[3]:
                 listaMatcheo.append(getAnuncioByID(baseDatos, a[0]))
 
+        print(listaMatcheo)
+
         return render_template('ListaAnuncios.html', anuncios = listaMatcheo)
+
+
+@app.route('/verAnuncio/<idAnuncio>')
+def ver_anuncio(idAnuncio):
+    if session.get('usertype') == None:
+        return redirect(url_for('logueo'))
+    elif session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    elif session.get('usertype') == 'Empleador':
+        return redirect(url_for('inicio_empleadores'))
+    else:
+        empleado = getEmpleadoByID(baseDatos, session['id_empleado']),
+        anuncio = getAnuncioByID(baseDatos, idAnuncio),
+        empleador = getEmpleadorByID(baseDatos, anuncio[0].empleador.id)
+        context = {
+            'empleado' : empleado,
+            'anuncio' : anuncio,
+            'empleador' : empleador
+        }
+
+        return render_template('verOferta.html', **context)
+
+
+@app.route('/postularse/<idAnuncio>')
+def postularse(idAnuncio):
+    if session.get('usertype') == None:
+        return redirect(url_for('logueo'))
+    elif session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    elif session.get('usertype') == 'Empleador':
+        return redirect(url_for('inicio_empleadores'))
+    else:
+        empleado = getEmpleadoByID(baseDatos, session['id_empleado']),
+        anuncio = getAnuncioByID(baseDatos, idAnuncio),
+        new_postulacion = Postulacion(None, empleado, anuncio, datetime.now(), None)
+        new_postulacion.crearPostulacion(baseDatos)
+        return redirect(url_for('ver_anuncio'))
 
 
 @app.route('/Candidatos/<id_anuncio>', methods=['POST', 'GET'])
