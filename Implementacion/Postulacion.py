@@ -34,8 +34,8 @@ class Postulacion:
                     )
                 VALUES (%s,%s,%s,%s)''',
                            (
-                               self.empleado[0].id,
-                               self.anuncio[0].id,
+                               self.empleado.id,
+                               self.anuncio.id,
                                self.fecha,
                                self.genera_vinculo
                            ))
