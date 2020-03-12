@@ -686,7 +686,7 @@ def listar_anuncios():
  
 
 
-    return render_template('ListaAnunciosVALE.html', anuncios = listaMatcheo)
+    return render_template('ListaAnuncios.html', anuncios = listaMatcheo)
 
 
 @app.route('/verAnuncio/<idAnuncio>')
@@ -698,14 +698,55 @@ def ver_anuncio(idAnuncio):
     elif session.get('usertype') == 'Empleador':
         return redirect(url_for('inicio_empleadores'))
     else:
-        empleado = getEmpleadoByID(baseDatos, session['id_empleado']),
-        anuncio = getAnuncioByID(baseDatos, idAnuncio),
-        empleador = getEmpleadorByID(baseDatos, anuncio[0].empleador.id)
+        elAnuncio = getAnuncioByID(baseDatos, idAnuncio),
+        empleador = elAnuncio[0].empleador
+        listaEmpleador = [
+            empleador.nombre,
+            empleador.apellido,
+            empleador.foto,
+            empleador.registroBps
+        ]
+        tareasAnuncio = []
+        if elAnuncio[0].hogar == True:
+            tareasAnuncio.append(1)
+        if elAnuncio[0].oficina == True:
+            tareasAnuncio.append(2)
+        if elAnuncio[0].cocinar == True:
+            tareasAnuncio.append(3)   
+        if elAnuncio[0].limp_banios == True:
+            tareasAnuncio.append(4)
+        if elAnuncio[0].limp_cocinas == True:
+            tareasAnuncio.append(5)
+        if elAnuncio[0].limp_dormitorios == True:
+            tareasAnuncio.append(6)
+        if elAnuncio[0].cuidado_ninios == True:
+            tareasAnuncio.append(7)
+        if elAnuncio[0].cuidado_bebes == True:
+            tareasAnuncio.append(8)
+        if elAnuncio[0].cuidado_adultos == True:
+            tareasAnuncio.append(9)
+        if elAnuncio[0].cuidado_mascotas == True:
+            tareasAnuncio.append(10)
+        if elAnuncio[0].experiencia == b'\x00':
+            experienciaAnuncio = 0
+        else:
+            experienciaAnuncio = 1
+        
+        listaAnuncio = [
+            elAnuncio[0].titulo,
+            elAnuncio[0].descripcion,
+            elAnuncio[0].disponibilidad,
+            tareasAnuncio,
+            elAnuncio[0].pago_hora,
+            experienciaAnuncio
+        ]
         context = {
-            'empleado' : empleado,
-            'anuncio' : anuncio,
-            'empleador' : empleador
+            'empleador' : listaEmpleador,
+            'anuncio' : listaAnuncio
         }
+        # el desempaquetado tendrá 2 claves, 'empleador' y 'anuncio', cuyos valores serán listas
+        # 'empleador' : [nombre, apellido, foto, registroBps]
+        # 'anuncio' : [titulo, descripcion, disponibilidad, [tareas], pago_hora, experiencia]
 
         return render_template('verOferta.html', **context)
 

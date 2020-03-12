@@ -16,16 +16,16 @@
         <div class="form-group row">
           <label class="col-sm-3 col-form-label">Título de la oferta</label>
           <div class="col-sm-5">
-            <input class="form-control" type="text" placeholder="" name="verOfertaTit" readonly>
+            <label class="col-sm-3 col-form-label">{{anuncio[0]}}</label>
           </div>
         </div>
         <div class="form-group row">
             <label class="col-sm-3 col-form-label">Descripción</label>
             <div class="col-sm-5">
-                <textarea class="form-control" type="text" placeholder="" rows="5" name="verOfertaDesc" readonly ></textarea>
+                <textarea class="form-control" type="text" placeholder="" rows="5" name="verOfertaDesc" readonly >{{anuncio[1]}}</textarea>
             </div>
         </div>
-
+ 
         <div class="d-block my-3">
             <p>Tipo de trabajo</p>
             <div class="custom-control custom-radio">
