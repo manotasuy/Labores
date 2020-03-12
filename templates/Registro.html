@@ -13,18 +13,18 @@
   <div class="jumbotron jumbotron-fluid">
     <div class="container">
       <h1 class="display-5 mb-5">Registro {{session['useroption']}}</h1>
-      <form class="needs-validation" novalidate action="/Registrar/{{session['useroption']}}/" method="POST">
+      <form class="needs-validation" novalidate="" action="/Registrar/{{session['useroption']}}" method="POST">
         <div class="row">
           <div class="col-md-6 mb-3">
             <label for="name">Nombre</label>
-            <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre" value="" required>
+            <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre" value="" required="">
             <div class="invalid-feedback">
               Se requiere un Nombre válido.
             </div>
           </div>
           <div class="col-md-6 mb-3">
             <label for="lastName">Apellido</label>
-            <input type="text" class="form-control" name="apellido" id="apellido" placeholder="Apellido" value="" required="">
+            <input type="text" class="form-control" name="apellido" id="apelido" placeholder="Apellido" value="" required="">
             <div class="invalid-feedback">
               Se requiere un Apellido válido.
             </div>
@@ -47,15 +47,6 @@
             </div>
           </div>
         </div>
-
-        <!--<div class="mb-3">
-          <form>
-            <div class="form-group">
-              <label for="exampleFormControlFile1">Example file input</label>
-              <input type="file" class="form-control-file" id="exampleFormControlFile1">
-            </div>
-          </form>
-        </div>-->
 
         <!--<div class="row">
           <div class="col-md-3 mb-3">
@@ -105,9 +96,6 @@
           <div class="custom-control custom-radio">
             <input id="genderM" name="genero" type="radio" class="custom-control-input" required="">
             <label class="custom-control-label" for="genderM">Masculino</label>
-            <div class="invalid-feedback">
-              Seleccione uno por favor.
-            </div>
           </div>
         </div>
 
@@ -129,10 +117,7 @@
 
         <div class="mb-3">
           <label for="nacionalidad">Nacionalidad</label>
-          <input type="text" class="form-control col-sm-5" name="nacionalidad" id="nacionalidad" placeholder="Uruguayo" required="">
-          <div class="invalid-feedback">
-            Debe ingresar su Nacionalidad.
-          </div>
+          <input type="text" class="form-control col-sm-5" name="nacionalidad" id="nacionalidad" placeholder="Uruguayo">
         </div>
 
         <div class="mb-3">
@@ -151,11 +136,8 @@
           </div>
         </div>
 
-
           <div class="row mb-5">
           <div class="col-md-6 mt-5 mb-3">
-
-              
             <label for="password">Contraseña</label>
             <input type="password" class="form-control" name="password" id="password" placeholder="" required="">
             <small class="text-muted">Debe contener al menos 8 caracteres</small>
@@ -173,7 +155,8 @@
           </div>
         </div>
 
-        
+        <button class="btn btn btn-success btn-block" type="submit" name="btnRegistrar">REGISTRARSE</button>
+
         {% with message = get_flashed_messages() %}
 				{% if messages %}
 				{% for message in messages %}
