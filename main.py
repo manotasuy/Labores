@@ -34,9 +34,9 @@ from Implementacion.Disponibilidad import getDisponibilidadesRegistradas
 
 app = Flask(__name__)
 
-baseDatos = connectionDb(app, 'local')
+#baseDatos = connectionDb(app, 'local')
 #baseDatos = connectionDb(app, 'remotemysql.com')
-#baseDatos = connectionDb(app, 'CloudAccess')
+baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'aws')
 
 
@@ -686,7 +686,7 @@ def listar_anuncios():
  
 
 
-    return render_template('ListaAnuncios.html', anuncios = listaMatcheo)
+    return render_template('ListaAnunciosVALE.html', anuncios = listaMatcheo)
 
 
 @app.route('/verAnuncio/<idAnuncio>')
@@ -808,7 +808,7 @@ def contactar(idEmpleado):
 @app.route('/BuscarAnuncio')
 def buscar_anuncio():
     return 'Está pendiente'
-
+ 
 
 @app.route('/MisPostulaciones')
 def mis_postulaciones():
