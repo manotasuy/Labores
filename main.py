@@ -605,90 +605,88 @@ def tus_anuncios():
 
 @app.route('/Anuncios/')
 def listar_anuncios():
-    if session.get('usertype') == None:
-        return redirect(url_for('logueo'))
-    elif session.get('usertype') == 'Administrador':
-        return redirect(url_for('administrar'))
-    elif session.get('usertype') == 'Empleador':
-        return redirect(url_for('inicio_empleadores'))
+    idEmpleado = session['id_empleado']
+    empleado = getEmpleadoByID(baseDatos, idEmpleado)
+    tareas = []
+    disponibilidades = []
+    if empleado.experiencia_meses == None:
+        experiencia = 0
+    elif empleado.experiencia_meses == 0:
+        experiencia = 0
     else:
-        idEmpleado = session['id_empleado']
-        empleado = getEmpleadoByID(baseDatos, idEmpleado)
-        tareas = []
-        disponibilidades = []
-        if empleado.experiencia_meses == None:
-            experiencia = 0
-        elif empleado.experiencia_meses == 0:
-            experiencia = 0
+        experiencia = 1
+    for tarea in getTareasEmpleado(baseDatos, idEmpleado):
+        tareas.append(tarea.id)
+    for disponibilidad in getDisponibilidadEmpleado(baseDatos, idEmpleado):
+        disponibilidades.append(disponibilidad.id)
+    empl = [
+        experiencia,
+        set(tareas),
+        disponibilidades
+    ]
+    cur = baseDatos.connection.cursor()
+    cur.execute('SELECT * FROM anuncio')
+    retornoAnuncios = cur.fetchall()
+    cur.close()
+    listaAnuncios = []
+    for anuncio in retornoAnuncios:
+        anuncioConID = [anuncio[0]]
+        anuncioConID.append(getAnuncioByID(baseDatos, anuncio[0]))
+        listaAnuncios.append(anuncioConID)
+    listaDeAnuncios = []
+    for elAnuncio in listaAnuncios:
+        anun = []
+
+        idAnuncio = elAnuncio[0]
+        disponibilidadAnuncio = elAnuncio[1].disponibilidad
+        experienciaAnuncio = None 
+        if elAnuncio[1].experiencia == b'\x00':
+            experienciaAnuncio = 0
         else:
-            experiencia = 1
-        for tarea in getTareasEmpleado(baseDatos, idEmpleado):
-            tareas.append(tarea.id)
-        for disponibilidad in getDisponibilidadEmpleado(baseDatos, idEmpleado):
-            disponibilidades.append(disponibilidad.id)
-        empl = [
-            experiencia,
-            set(tareas),
-            disponibilidades
-        ]
-        cur = baseDatos.connection.cursor()
-        cur.execute('SELECT * FROM anuncio')
-        retornoAnuncios = cur.fetchall()
-        cur.close()
-        listaAnuncios = []
-        for anuncio in retornoAnuncios:
-            anuncioConID = [anuncio[0]]
-            anuncioConID.append(getAnuncioByID(baseDatos, anuncio[0]))
-            listaAnuncios.append(anuncioConID)
-        listaDeAnuncios = []
-        for elAnuncio in listaAnuncios:
-            anun = []
+            experienciaAnuncio = 1
+        tareasAnuncio = []
 
-            idAnuncio = elAnuncio[0]
-            disponibilidadAnuncio = elAnuncio[1].disponibilidad
-            experienciaAnuncio = None 
-            if elAnuncio[1].experiencia == b'\x00':
-                experienciaAnuncio = 0
-            else:
-                experienciaAnuncio = 1
-            tareasAnuncio = []
+        if elAnuncio[1].estado == b'\x01':
 
-            if elAnuncio[1].estado == b'\x01':
+            if elAnuncio[1].hogar == True:
+                tareasAnuncio.append(1)
+            if elAnuncio[1].oficina == True:
+                tareasAnuncio.append(2)
+            if elAnuncio[1].cocinar == True:
+                tareasAnuncio.append(3)   
+            if elAnuncio[1].limp_banios == True:
+                tareasAnuncio.append(4)
+            if elAnuncio[1].limp_cocinas == True:
+                tareasAnuncio.append(5)
+            if elAnuncio[1].limp_dormitorios == True:
+                tareasAnuncio.append(6)
+            if elAnuncio[1].cuidado_ninios == True:
+                tareasAnuncio.append(7)
+            if elAnuncio[1].cuidado_bebes == True:
+                tareasAnuncio.append(8)
+            if elAnuncio[1].cuidado_adultos == True:
+                tareasAnuncio.append(9)
+            if elAnuncio[1].cuidado_mascotas == True:
+                tareasAnuncio.append(10)
+            
+            anun.append(idAnuncio)
+            anun.append(disponibilidadAnuncio)
+            anun.append(experienciaAnuncio)
+            anun.append(set(tareasAnuncio))
+            listaDeAnuncios.append(anun)       
 
-                if elAnuncio[1].hogar == True:
-                    tareasAnuncio.append(1)
-                if elAnuncio[1].oficina == True:
-                    tareasAnuncio.append(2)
-                if elAnuncio[1].cocinar == True:
-                    tareasAnuncio.append(3)   
-                if elAnuncio[1].limp_banios == True:
-                    tareasAnuncio.append(4)
-                if elAnuncio[1].limp_cocinas == True:
-                    tareasAnuncio.append(5)
-                if elAnuncio[1].limp_dormitorios == True:
-                    tareasAnuncio.append(6)
-                if elAnuncio[1].cuidado_ninios == True:
-                    tareasAnuncio.append(7)
-                if elAnuncio[1].cuidado_bebes == True:
-                    tareasAnuncio.append(8)
-                if elAnuncio[1].cuidado_adultos == True:
-                    tareasAnuncio.append(9)
-                if elAnuncio[1].cuidado_mascotas == True:
-                    tareasAnuncio.append(10)
-             
-                anun.append(idAnuncio)
-                anun.append(disponibilidadAnuncio)
-                anun.append(experienciaAnuncio)
-                anun.append(set(tareasAnuncio))
-                listaDeAnuncios.append(anun)
-        listaMatcheo = []
-        for a in listaDeAnuncios:
-            if a[1] in empl[2] and empl[0] >= a[2] and a[3] & empl[1] == a[3]:
-                listaMatcheo.append(getAnuncioByID(baseDatos, a[0]))
+    listaMatcheo = []
+    for a in listaDeAnuncios:
+        if a[1] in empl[2] and empl[0] >= a[2] and a[3] & empl[1] == a[3]:
+            unAnuncio = [
+                a[0],
+                getAnuncioByID(baseDatos, a[0])
+                ]
+            listaMatcheo.append(unAnuncio)
+ 
 
-        print(listaMatcheo)
 
-        return render_template('ListaAnuncios.html', anuncios = listaMatcheo)
+    return render_template('ListaAnuncios.html', anuncios = listaMatcheo)
 
 
 @app.route('/verAnuncio/<idAnuncio>')
