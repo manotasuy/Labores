@@ -35,14 +35,20 @@
                 <p class="media-body pb-3 mb-0 small lh-125">
                     <strong class="d-block text-gray-dark" style="font-size: large;"> {{ anuncio[1].titulo }} </strong>
                     Publicación: <strong>{{ anuncio[1].fecha_inicio }}</strong> <br>
-                    Pago por hora: <strong>${{ anuncio[1].pago_hora }}</strong> <br> <br>
+                    Pago por hora: <strong>${{ anuncio[1].pago_hora }}</strong> <br>
+<br>
                     {{ anuncio[1].descripcion }} <br> 
                      
 
                 </p>
             </div>
-            <a class="btn btn-sm btn-success ml-5 mb-4" href="/verAnuncio/{{ anuncio.0 }}" aria-label="">Ir al
+            <a class="btn btn-sm btn-success ml-5 mb-4" href="/verAnuncio/{{ anuncio.0 }}/{{ anuncio.2 }}" aria-label="">Ir al
                 Anuncio</a>
+                <p class="media-body pb-3 mb-0 small lh-125">
+                {% if anuncio.2 == 1 %} 
+                Estás postulad@ a este anuncio. <br>
+                {% endif %}
+            </p>
         </div>
 
     {% endfor %}

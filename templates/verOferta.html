@@ -183,7 +183,11 @@
             </div>
         </div>
         <br>
+        {% if postulacion == '0' %}
         <a href="/postularse/{{ anuncio.6 }}" type="button" class="btn btn-warning float-right">Me interesa. ¡Contactar!</a>
+        {% else %}
+        <text href="" type="button" class="btn btn-primary float-right">Ya estás postulado a este anuncio</text>
+        {% endif %}
         <a href="/Anuncios" type="button" class="btn btn-primary">Volver a las ofertas</a>
    
       </form>

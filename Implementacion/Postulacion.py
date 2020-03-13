@@ -120,6 +120,37 @@ def getPostulacionesEmpleado(bd, idEmpleado):
         print('Error en getPostulacionesEmpleado ', e)
 
 
+def getPostulacionesEmpleadoIDs(bd, idEmpleado):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('''
+            SELECT
+                id,
+                id_empleado,
+                id_anuncio,
+                fecha, 
+                genera_vinculo
+            FROM postulacion 
+            WHERE id_empleado = {}''' .format(idEmpleado))
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+
+        # desde el retorno debo generar los objetos Postulacion
+        postulaciones = list()
+        for tuplaPostulacion in retorno:
+            postulacion = Postulacion(
+                tuplaPostulacion[0],
+                tuplaPostulacion[1],
+                tuplaPostulacion[2],
+                tuplaPostulacion[3],
+                tuplaPostulacion[4])
+            postulaciones.append(postulacion)
+        return postulaciones
+    except Exception as e:
+        print('Error en getPostulacionesEmpleado ', e)
+
+
 def getPostulacionEmpleadoAnuncio(bd, idEmpleado, idAnuncio):
     try:
         cursor = bd.connection.cursor()

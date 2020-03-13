@@ -30,6 +30,7 @@ from Implementacion.Vinculo import getVinculoByID
 from Implementacion.Postulacion import getPostulacionesAnuncio
 from Implementacion.Postulacion import getPostulacionesEmpleado
 from Implementacion.Postulacion import getPostulacionEmpleadoAnuncio
+from Implementacion.Postulacion import getPostulacionesEmpleadoIDs
 from Implementacion.Tarea import getTareasRegistradas
 from Implementacion.Disponibilidad import getDisponibilidadesRegistradas
 from Implementacion.Referencia import getReferenciaByID
@@ -38,9 +39,9 @@ from Implementacion.Referencia import getReferenciasEmpleado
 
 app = Flask(__name__)
 
-#baseDatos = connectionDb(app, 'local')
+baseDatos = connectionDb(app, 'local')
 #baseDatos = connectionDb(app, 'remotemysql.com')
-baseDatos = connectionDb(app, 'CloudAccess')
+#baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'aws')
 
 
@@ -664,10 +665,6 @@ def listar_anuncios():
             set(tareas),
             disponibilidades
         ]
-        #cur = baseDatos.connection.cursor()
-        #cur.execute('SELECT * FROM anuncio')
-        #retornoAnuncios = cur.fetchall()
-        #cur.close()
         retornoAnuncios = getAllAnuncios(baseDatos)
         listaAnuncios = []
         for anuncio in retornoAnuncios:
@@ -724,12 +721,23 @@ def listar_anuncios():
                     getAnuncioByID(baseDatos, a[0])
                 ]
                 listaMatcheo.append(unAnuncio)
+        
+        misPostulaciones = getPostulacionesEmpleadoIDs(baseDatos, idEmpleado)
+        listaIdsMisAnunciosPostulados = []
+        for miPostulacion in misPostulaciones:
+            listaIdsMisAnunciosPostulados.append(miPostulacion.anuncio)
+        for k in listaMatcheo:
+            if k[0] in listaIdsMisAnunciosPostulados:
+                k.append(1)
+            else:
+                k.append(0)
+
 
         return render_template('ListaAnuncios.html', anuncios=listaMatcheo)
 
 
-@app.route('/verAnuncio/<idAnuncio>')
-def ver_anuncio(idAnuncio):
+@app.route('/verAnuncio/<idAnuncio>/<postulacion>')
+def ver_anuncio(idAnuncio, postulacion):
     if session.get('usertype') == None:
         return redirect(url_for('logueo'))
     elif session.get('usertype') == 'Administrador':
@@ -782,12 +790,13 @@ def ver_anuncio(idAnuncio):
         ]
         context = {
             'empleador': listaEmpleador,
-            'anuncio': listaAnuncio
+            'anuncio': listaAnuncio,
+            'postulacion': postulacion
         }
-        # el desempaquetado tendrá 2 claves, 'empleador' y 'anuncio', cuyos valores serán listas
+        # el desempaquetado tendrá 3 claves, 'empleador', 'anuncio' y psotulacion
         # 'empleador' : [nombre, apellido, foto, registroBps]
         # 'anuncio' : [titulo, descripcion, disponibilidad, [tareas], pago_hora, experiencia, idAnuncio]
-
+        # 'postulación': contiene 1 si el usuario está postulado al anuncio, y 0 si no lo está
         return render_template('verOferta.html', **context)
 
 
