@@ -115,7 +115,6 @@ def getPostulacionesEmpleado(bd, idEmpleado):
                 tuplaPostulacion[3],
                 tuplaPostulacion[4])
             postulaciones.append(postulacion)
-        #print('Postulaciones desde Postulacion: ', postulaciones)
         return postulaciones
     except Exception as e:
         print('Error en getPostulacionesEmpleado ', e)

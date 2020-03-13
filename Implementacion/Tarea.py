@@ -9,8 +9,8 @@ class Tarea:
 
     def __str__(self):
         return 'Descripción: {}'.format(self.descripcion)
-		
-		
+
+
 def getTareasRegistradas(bd):
     try:
         cursor = bd.connection.cursor()

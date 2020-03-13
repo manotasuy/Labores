@@ -1,6 +1,8 @@
 from datetime import datetime
 from Implementacion.Usuario import getUsuarioByID
 from Implementacion.Tarea import Tarea
+from Implementacion.DTOAuxEmpleado import TareaSeleccion
+from Implementacion.DTOAuxEmpleado import DisponibilidadSeleccion
 from Implementacion.Usuario import Usuario
 from Implementacion.Disponibilidad import Disponibilidad
 
@@ -36,30 +38,10 @@ class Empleado:
     def crearEmpleado(self, bd):
         try:
             intGenero: int
-            # print(self.genero)
             if self.genero == 'Femenino':
                 intGenero = 0
             else:
                 intGenero = 1
-            # print(self.nacimiento)
-            #fechaFormateada = self.nacimiento.strftime('%Y-%m-%d')
-
-            # print(self.cedula)
-            # print(self.nombre)
-            # print(self.apellido)
-            # print(fechaFormateada)
-            # print(intGenero)
-            # print(self.domicilio)
-            # print(self.nacionalidad)
-            # print(self.email)
-            # print(self.telefono)
-            # print(self.experiencia_meses)
-            # print(self.descripcion)
-            # print(self.foto)
-            # print(self.promedioCalificacion)
-            # print(self.usuario.id)
-            # print(self.usuario.usuario)
-            # print(self.usuario.clave)
 
             if self.foto is None or self.foto == '':
                 self.foto = 'images/Pefiles/NoImage.png'
@@ -88,7 +70,6 @@ class Empleado:
                                self.cedula,
                                self.nombre,
                                self.apellido,
-                               # fechaFormateada,
                                self.nacimiento,
                                intGenero,
                                self.domicilio,
@@ -189,27 +170,57 @@ class Empleado:
 
     def postularseParaAnuncio(self, bd, anuncio, fecha):
         try:
-            postulacion = Postulación.Postulacion(0, self, anuncio, fecha)
+            postulacion = Postulacion.Postulacion(0, self, anuncio, fecha)
             postulacion.crearPostulacion(bd)
             print('Postulado para empleo')
         except Exception as e:
             print('Error en postularseParaAnuncio ', e)
 
+    def getTareasSeleccionadas(self, bd):
+        try:
+            cursor = bd.connection.cursor()
+            cursor.execute('''
+                    SELECT 
+                    id, 
+                    descripcion, 
+                    IF((SELECT id_tarea 
+                    FROM empleado_tarea 
+                    WHERE id_empleado = {} AND id_tarea = id),1,0) AS seleccionada FROM tarea'''.format(self.id))
+            retorno = cursor.fetchall()
+            bd.connection.commit()
+            cursor.close()
+            # desde el retorno debo generar los objetos Tarea
+            tareas = list()
+            for tuplaTarea in retorno:
+                tarea = TareaSeleccion(
+                    tuplaTarea[0], tuplaTarea[1], tuplaTarea[2])
+                tareas.append(tarea)
+            return tareas
+        except Exception as e:
+            print("Error en getTareasSeleccionadasEmpleado ", e)
 
-class Referencia:
-    def __init__(self, pId=None, pEmpleado=None, pNombre=None, pTelefono=None, pFechaDesde=None, pFechaHasta=None):
-        self.id = pId
-        self.empleado = pEmpleado
-        self.nombre = pNombre
-        self.telefono = pTelefono
-        self.fechaDesde = pFechaDesde
-        self.fechaHasta = pFechaHasta
-
-    def __getitem__(self, item):
-        return self.__dict__[item]
-
-    def __str__(self):
-        return 'Nombre empleado: {}, Nombre Referencia: {}, Telefono: {}, Fecha desde: {}, Fecha hasta: {}'.format(self.empleado.id, self.nombre, self.telefono, self.fechaDesde, self.fechaHasta)
+    def getDisponibilidadSeleccionadas(self, bd):
+        try:
+            cursor = bd.connection.cursor()
+            cursor.execute('''
+                    SELECT 
+                    id, 
+                    descripcion, 
+                    IF((SELECT id_disponibilidad 
+                    FROM empleado_disponibilidad 
+                    WHERE id_empleado = {} AND id_disponibilidad = id),1,0) AS seleccionada FROM disponibilidad'''.format(self.id))
+            retorno = cursor.fetchall()
+            bd.connection.commit()
+            cursor.close()
+            # desde el retono debo generar los objetos Disponibilidad
+            disponibilidades = list()
+            for tuplaDisponibilidad in retorno:
+                disponibilidad = DisponibilidadSeleccion(
+                    tuplaDisponibilidad[0], tuplaDisponibilidad[1], tuplaDisponibilidad[2])
+                disponibilidades.append(disponibilidad)
+            return disponibilidades
+        except Exception as e:
+            print("Error en getDisponibilidadSeleccionadasEmpleado ", e)
 
 
 def getEmpleadoByID(bd, id):
@@ -350,28 +361,3 @@ def getDisponibilidadEmpleado(bd, idEmpleado):
         return disponibilidades
     except Exception as e:
         print("Error en getDisponibilidadEmpleado ", e)
-
-
-def getReferenciasEmpleado(bd, idEmpleado):
-    try:
-        cursor = bd.connection.cursor()
-        cursor.execute('''
-                SELECT
-                    id,
-                    nombre,
-                    telefono,
-                    fecha_desde,
-                    fecha_hasta
-                FROM referencia WHERE id_empleado = {}'''.format(idEmpleado))
-        retorno = cursor.fetchall()
-        bd.connection.commit()
-        cursor.close()
-        # desde el retono debo generar los objetos Referencia
-        referencias = list()
-        for tuplaReferencia in retorno:
-            referencia = Referencia(tuplaReferencia[0], getEmpleadoByID(bd, idEmpleado), tuplaReferencia[1],
-                                    tuplaReferencia[2], tuplaReferencia[3], tuplaReferencia[4])
-            referencias.append(referencia)
-        return referencias
-    except Exception as e:
-        print("Error en getReferenciasEmpleado ", e)
