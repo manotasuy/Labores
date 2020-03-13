@@ -700,3 +700,11 @@ def getAnuncioByID(bd, id):
         return anuncio
     except Exception as e:
         print("Error en getAnuncioByID ", e)
+
+
+def getAllAnuncios(bd):
+        cur = bd.connection.cursor()
+        cur.execute('SELECT * FROM anuncio')
+        retornoAnuncios = cur.fetchall()
+        cur.close()
+        return retornoAnuncios

@@ -9,7 +9,7 @@ from Implementacion.Conexion import connectionDb
 from Implementacion.Usuario import Usuario
 from Implementacion.Empleado import Empleado
 from Implementacion.Empleador import Empleador
-from Implementacion.Anuncio import Anuncio
+from Implementacion.Anuncio import Anuncio, getAllAnuncios
 from Implementacion.Postulacion import Postulacion
 from Implementacion.Tarea import Tarea
 from Implementacion.Disponibilidad import Disponibilidad
@@ -664,10 +664,11 @@ def listar_anuncios():
             set(tareas),
             disponibilidades
         ]
-        cur = baseDatos.connection.cursor()
-        cur.execute('SELECT * FROM anuncio')
-        retornoAnuncios = cur.fetchall()
-        cur.close()
+        #cur = baseDatos.connection.cursor()
+        #cur.execute('SELECT * FROM anuncio')
+        #retornoAnuncios = cur.fetchall()
+        #cur.close()
+        retornoAnuncios = getAllAnuncios(baseDatos)
         listaAnuncios = []
         for anuncio in retornoAnuncios:
             anuncioConID = [anuncio[0]]

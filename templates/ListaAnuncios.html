@@ -18,7 +18,9 @@
     </div>
 
     <div class="my-3 p-3 bg-white rounded shadow-sm">
-
+        {% if not anuncios %}
+        <p>No hay anuncios disponibles para tu peril.</p>
+        {% else %}
         {% for anuncio in anuncios %}
 
         <div class="container border-top border-bottom border-dark bg-light">
@@ -33,7 +35,7 @@
                 <p class="media-body pb-3 mb-0 small lh-125">
                     <strong class="d-block text-gray-dark" style="font-size: large;"> {{ anuncio[1].titulo }} </strong>
                     Publicación: <strong>{{ anuncio[1].fecha_inicio }}</strong> <br>
-                    Pago por hora: <strong>{{ anuncio[1].pago_hora }}</strong> <br> <br>
+                    Pago por hora: <strong>${{ anuncio[1].pago_hora }}</strong> <br> <br>
                     {{ anuncio[1].descripcion }} <br> 
                      
 
@@ -44,6 +46,7 @@
         </div>
 
     {% endfor %}
+    {% endif %}
         
         
         <!--<small class="d-block text-right mt-3">
