@@ -38,10 +38,10 @@ from Implementacion.Referencia import getReferenciasEmpleado
 
 app = Flask(__name__)
 
-# baseDatos = connectionDb(app, 'local')
-# baseDatos = connectionDb(app, 'remotemysql.com')
+#baseDatos = connectionDb(app, 'local')
+#baseDatos = connectionDb(app, 'remotemysql.com')
 baseDatos = connectionDb(app, 'CloudAccess')
-# baseDatos = connectionDb(app, 'aws')
+#baseDatos = connectionDb(app, 'aws')
 
 
 # session
@@ -776,7 +776,8 @@ def ver_anuncio(idAnuncio):
             elAnuncio[0].disponibilidad,
             tareasAnuncio,
             elAnuncio[0].pago_hora,
-            experienciaAnuncio
+            experienciaAnuncio,
+            idAnuncio
         ]
         context = {
             'empleador': listaEmpleador,
@@ -784,7 +785,7 @@ def ver_anuncio(idAnuncio):
         }
         # el desempaquetado tendrá 2 claves, 'empleador' y 'anuncio', cuyos valores serán listas
         # 'empleador' : [nombre, apellido, foto, registroBps]
-        # 'anuncio' : [titulo, descripcion, disponibilidad, [tareas], pago_hora, experiencia]
+        # 'anuncio' : [titulo, descripcion, disponibilidad, [tareas], pago_hora, experiencia, idAnuncio]
 
         return render_template('verOferta.html', **context)
 
@@ -803,7 +804,7 @@ def postularse(idAnuncio):
         new_postulacion = Postulacion(
             None, empleado, anuncio, datetime.now(), None)
         new_postulacion.crearPostulacion(baseDatos)
-        #return redirect(url_for('ver_anuncio'))
+        flash('Postulación enviada!')
         return redirect(url_for('listar_anuncios'))
 
 

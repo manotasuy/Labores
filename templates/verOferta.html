@@ -6,7 +6,7 @@
 {% block estilo %}
 {% endblock %}
 
-{% block titulo %}<title>Labores - Plantilla</title>{% endblock %}
+{% block titulo %}Labores - Ver anuncio{% endblock %}
 
 {% block contenido %}
 <div class="container">
@@ -16,7 +16,7 @@
         <div class="form-group row">
           <label class="col-sm-3 col-form-label">Título de la oferta</label>
           <div class="col-sm-5">
-            <label class="col-sm-3 col-form-label">{{anuncio[0]}}</label>
+            <label class="col-form-label">{{anuncio[0]}}</label>
           </div>
         </div>
         <div class="form-group row">
@@ -29,19 +29,39 @@
         <div class="d-block my-3">
             <p>Tipo de trabajo</p>
             <div class="custom-control custom-radio">
-              <input id="dispHora" name="disponibilidad" type="radio" class="custom-control-input" required="" disabled>
+              <input id="dispHora" name="disponibilidad" type="radio" class="custom-control-input" required="" 
+              {% if anuncio.2 == 1%}
+               checked="" 
+               {%else%}
+               disabled
+               {% endif %}>
               <label class="custom-control-label" for="dispHora">Por hora</label>
             </div>
             <div class="custom-control custom-radio">
-              <input  id="dispJorn" name="disponibilidad" type="radio" class="custom-control-input" required="" disabled>
+              <input  id="dispJorn" name="disponibilidad" type="radio" class="custom-control-input" required="" 
+              {% if anuncio.2 == 2%}
+               checked="" 
+               {%else%}
+               disabled
+               {% endif %}>
               <label class="custom-control-label" for="dispJorn">Por jornada</label>
             </div>
             <div class="custom-control custom-radio">
-              <input id="dispTarea" name="disponibilidad" type="radio" class="custom-control-input" required="" checked="">
+              <input id="dispTarea" name="disponibilidad" type="radio" class="custom-control-input" required="" 
+              {% if anuncio.2 == 3%}
+               checked="" 
+               {%else%}
+               disabled
+               {% endif %}>
               <label class="custom-control-label" for="dispTarea">Por tarea puntual</label>
             </div>
             <div class="custom-control custom-radio">
-              <input id="dispMes" name="disponibilidad" type="radio" class="custom-control-input" required="" disabled>
+              <input id="dispMes" name="disponibilidad" type="radio" class="custom-control-input" required="" 
+              {% if anuncio.2 == 4%}
+               checked="" 
+               {%else%}
+               disabled
+               {% endif %}>
               <label class="custom-control-label" for="dispMes">Por mes</label>
             </div>
           </div>
@@ -49,51 +69,106 @@
           <div class="d-block my-3">
             <p>Tareas que realizas:</p>
             <div class="custom-control">
-              <input id="tareaHogar" name="tareaHogar" type="checkbox" class="custom-control-input" disabled>
+              <input id="tareaHogar" name="tareaHogar" type="checkbox" class="custom-control-input" 
+              {% if 1 in anuncio.3 %}
+              checked=""
+              {% else %}
+              disabled
+              {% endif %}>
               <label class="custom-control-label" for="tareaHogar">Hogar</label>
             </div>
             <div class="custom-control">
-              <input id="tareaOficina" name="tareaOficina" type="checkbox" class="custom-control-input" checked="">
+              <input id="tareaOficina" name="tareaOficina" type="checkbox" class="custom-control-input" 
+              {% if 2 in anuncio.3 %}
+              checked=""
+              {% else %}
+              disabled
+              {% endif %}>
               <label class="custom-control-label" for="tareaOficina">Oficina</label>
             </div>
             <div class="custom-control">
-              <input id="tareaCocina" name="tareaCocina" type="checkbox" class="custom-control-input" disabled>
+              <input id="tareaCocina" name="tareaCocina" type="checkbox" class="custom-control-input" 
+              {% if 3 in anuncio.3 %}
+              checked=""
+              {% else %}
+              disabled
+              {% endif %}>
               <label class="custom-control-label" for="tareaCocina">Cocinar</label>
             </div>
             <div class="custom-control">
-              <input id="tareaLimpBañ" name="tareaLimpBañ" type="checkbox" class="custom-control-input"disabled>
+              <input id="tareaLimpBañ" name="tareaLimpBañ" type="checkbox" class="custom-control-input"
+              {% if 4 in anuncio.3 %}
+              checked=""
+              {% else %}
+              disabled
+              {% endif %}>
               <label class="custom-control-label" for="tareaLimpBañ">Limpieza de baños</label>
             </div>
             <div class="custom-control">
-              <input id="tareaLimpCoc" name="tareaLimpCoc" type="checkbox" class="custom-control-input" checked="">
+              <input id="tareaLimpCoc" name="tareaLimpCoc" type="checkbox" class="custom-control-input" 
+              {% if 5 in anuncio.3 %}
+              checked=""
+              {% else %}
+              disabled
+              {% endif %}>
               <label class="custom-control-label" for="tareaLimpCoc">Limpieza de cocina</label>
             </div>
             <div class="custom-control">
-              <input id="tareaLimpDor" name="tareaLimpDor" type="checkbox" class="custom-control-input" checked="">
+              <input id="tareaLimpDor" name="tareaLimpDor" type="checkbox" class="custom-control-input" 
+              {% if 6 in anuncio.3 %}
+              checked=""
+              {% else %}
+              disabled
+              {% endif %}>
               <label class="custom-control-label" for="tareaLimpDor">Limpieza de dormitorio</label>
             </div>
             <div class="custom-control">
-              <input id="tareaCuidNiño" name="tareaCuidNiño" type="checkbox" class="custom-control-input" disabled>
+              <input id="tareaCuidNiño" name="tareaCuidNiño" type="checkbox" class="custom-control-input" 
+              {% if 7 in anuncio.3 %}
+              checked=""
+              {% else %}
+              disabled
+              {% endif %}>
               <label class="custom-control-label" for="tareaCuidNiño">Cuidado de niños</label>
             </div>
             <div class="custom-control">
-              <input id="tareaCuidBebe" name="tareaCuidBebe" type="checkbox" class="custom-control-input" checked="">
+              <input id="tareaCuidBebe" name="tareaCuidBebe" type="checkbox" class="custom-control-input" 
+              {% if 8 in anuncio.3 %}
+              checked=""
+              {% else %}
+              disabled
+              {% endif %}>
               <label class="custom-control-label" for="tareaCuidBebe">Cuidado de bebes</label>
             </div>
             <div class="custom-control">
-              <input id="tareaCuidAdulto" name="tareaCuidAdulto" type="checkbox" class="custom-control-input" checked="">
+              <input id="tareaCuidAdulto" name="tareaCuidAdulto" type="checkbox" class="custom-control-input" 
+              {% if 9 in anuncio.3 %}
+              checked=""
+              {% else %}
+              disabled
+              {% endif %}>
               <label class="custom-control-label" for="tareaCuidAdulto">Adultos mayores</label>
             </div>
             <div class="custom-control">
-              <input id="tareaCuidMasc" name="tareaCuidMasc" type="checkbox" class="custom-control-input"disabled >
+              <input id="tareaCuidMasc" name="tareaCuidMasc" type="checkbox" class="custom-control-input"
+              {% if 10 in anuncio.3 %}
+              checked=""
+              {% else %}
+              disabled
+              {% endif %}>
               <label class="custom-control-label" for="tareaCuidMasc">Cuidado de mascotas</label>
             </div>
           </div>
 
         <div class="form-group row">
-            <label for="staticEmail" class="col-sm-3 col-form-label">Experiencia previa</label>
+            <label for="staticEmail" class="col-sm-3 col-form-label">Experiencia previa requerida:</label>
             <div class="col-sm-1">
-              <input class="form-control" type="text" placeholder="" name="verOfertaExperiencia" readonly>
+              <input class="form-control" type="text" name="verOfertaExperiencia" readonly
+              {% if anuncio.5 == 1 %}
+              placeholder="SI"
+              {% else %}
+              placeholder="NO"
+              {% endif %}>
             </div>
         </div>
         <div class="form-group row">
@@ -103,16 +178,49 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text">$</span>
                     </div>
-                    <input class="form-control" type="text" placeholder="" name="verOfertaPaga" readonly>
+                    <input class="form-control" type="text" placeholder={{anuncio.4}} name="verOfertaPaga" readonly>
                 </div>  
             </div>
         </div>
-        <button type="submit" class="btn btn-warning float-right">Me interesa. ¡Contactar!</button>
+        <br>
+        <a href="/postularse/{{ anuncio.6 }}" type="button" class="btn btn-warning float-right">Me interesa. ¡Contactar!</a>
         <a href="/Anuncios" type="button" class="btn btn-primary">Volver a las ofertas</a>
+   
       </form>
+      <br>
 
       <hr class="mb-4">
+      <h2>Datos del empleador:</h2><br>
+      <form>
+        <div class="form-group row">
 
+          <img class="mb-4" src="{{ url_for('static', filename=empleador[2])}}" alt="foto de contacto" width="125"
+          height="125">
+
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Nombre: </label>
+        <div class="col-sm-5">
+          <label class="col-form-label"><strong>{{empleador[0]}} {{empleador[1]}}</strong></label>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Empleador registrado en el BPS: </label>
+        <div class="col-sm-5">
+          <label class=" col-form-label">
+            <strong>
+            {% if empleador.3 == 1 %}
+            Si
+            {% else %}
+            No
+            {% endif %}
+          </strong>
+          </label>
+        </div>
+      </div>
+
+
+      <hr class="mb-4">
 </div>
 {% endblock %}
 
