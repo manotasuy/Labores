@@ -39,8 +39,8 @@ from Implementacion.Referencia import getReferenciasEmpleado
 
 app = Flask(__name__)
 
-baseDatos = connectionDb(app, 'local')
-#baseDatos = connectionDb(app, 'remotemysql.com')
+#baseDatos = connectionDb(app, 'local')
+baseDatos = connectionDb(app, 'remotemysql.com')
 #baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'aws')
 
@@ -817,6 +817,33 @@ def postularse(idAnuncio):
         flash('Postulación enviada!')
         return redirect(url_for('listar_anuncios'))
 
+@app.route('/MisPostulaciones/')
+def mis_postulaciones():
+    if session.get('usertype') == None:
+        return redirect(url_for('logueo'))
+    elif session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    elif session.get('usertype') == 'Empleador':
+        return redirect(url_for('inicio_empleadores'))
+    else:
+        idEmpleado = session['id_empleado']
+        postulaciones = getPostulacionesEmpleadoIDs(baseDatos, idEmpleado)
+        misPostulaciones = []
+        for postulacion in postulaciones:
+            lista = []
+            lista.append(postulacion.anuncio)
+            lista.append(getAnuncioByID(baseDatos, postulacion.anuncio))
+            lista.append(getPostulacionEmpleadoAnuncio(baseDatos, idEmpleado, postulacion.anuncio))
+            misPostulaciones.append(lista)
+
+        for post in misPostulaciones:
+            if post[1].estado == b'\x01':
+                post.append(1)
+            else:
+                post.append(0)
+
+        return render_template('TusPostulaciones.html', postulaciones = misPostulaciones)
+
 
 @app.route('/Candidatos/<id_anuncio>', methods=['POST', 'GET'])
 def listar_candidatos(id_anuncio):
@@ -946,11 +973,6 @@ def borrar_referencia(id_referencia):
 # ***** Pendientes ***********
 @app.route('/BuscarAnuncio')
 def buscar_anuncio():
-    return 'Está pendiente'
-
-
-@app.route('/MisPostulaciones')
-def mis_postulaciones():
     return 'Está pendiente'
 
 
