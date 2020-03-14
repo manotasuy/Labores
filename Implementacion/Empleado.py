@@ -15,7 +15,7 @@ from Implementacion.Usuario import Usuario
 
 class Empleado:
 
-    def __init__(self, pId=0, pCedula='', pNombre='', pApellido='', pNacimiento='', pGenero='', pDom='', pNacional='', pEmail='', pTel='', pExp='', pFoto='', pDesc='None', pCalif='', pUsuario=None, pRefer=None, pTareas=None, pDispon=None):
+    def __init__(self, pId=0, pCedula='', pNombre='', pApellido='', pNacimiento='', pGenero='', pDom='', pNacional='', pEmail='', pTel='', pExp='', pDesc='None', pFoto='', pCalif='', pUsuario=None, pRefer=None, pTareas=None, pDispon=None):
         self.id = pId
         self.cedula = pCedula
         self.nombre = pNombre
@@ -26,9 +26,9 @@ class Empleado:
         self.nacionalidad = pNacional
         self.email = pEmail
         self.telefono = pTel
-        self.experiencia_meses = pExp
-        self.foto = pFoto
+        self.experiencia_meses = pExp        
         self.descripcion = pDesc
+        self.foto = pFoto
         self.promedioCalificacion = pCalif
         self.usuario: Usuario = pUsuario
         self.referencias = pRefer
@@ -148,7 +148,7 @@ class Empleado:
             # Primero debo borrar las tareas y disponibilidad que tenga asignadas el empleado
             quitarTodasLasTareasDelEmpleado(bd, self.id)
             quitarTodaLaDisponibilidadDelEmpleado(bd, self.id)
-            
+
             # Luego registro las tareas y disponibilidad que del empleado que quiero modificar
             if self.tareas is not None:
                 for tarea in self.tareas:
@@ -271,8 +271,8 @@ def getEmpleadoByID(bd, id):
                 email,
                 telefono,
                 experiencia_meses,
-                foto,
                 descripcion,
+                foto,
                 promedio_calificacion,
                 id_usuario
             FROM empleado WHERE id = {}'''.format(id))
@@ -320,8 +320,8 @@ def getEmpleadoByUsuarioID(bd, idUsuario):
                 e.email,
                 e.telefono,
                 e.experiencia_meses,
-                e.foto,
                 e.descripcion,
+                e.foto,
                 e.promedio_calificacion,
                 e.id_usuario
             FROM empleado e INNER JOIN usuario u ON e.id_usuario = u.id WHERE u.id = {}'''.format(idUsuario))

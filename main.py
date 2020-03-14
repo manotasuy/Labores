@@ -41,10 +41,10 @@ from Implementacion.Referencia import getReferenciasEmpleado
 
 app = Flask(__name__)
 
-#baseDatos = connectionDb(app, 'local')
 #baseDatos = connectionDb(app, 'remotemysql.com')
-baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'aws')
+baseDatos = connectionDb(app, 'CloudAccess')
+#baseDatos = connectionDb(app, 'local')
 
 
 # session
