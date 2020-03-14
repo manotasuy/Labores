@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS tipo_usuario
 CREATE TABLE IF NOT EXISTS usuario
 (
 	id int NOT NULL AUTO_INCREMENT,
-	usuario VARCHAR(50) NULL,
+	usuario VARCHAR(50) NOT NULL,
 	clave VARCHAR(50) NOT NULL,
 	id_tipo int NOT NULL,
     CONSTRAINT PK_usuario PRIMARY KEY (id),
@@ -304,7 +304,7 @@ VALUES (1, 7);
 INSERT INTO empleado_tarea (id_empleado, id_tarea)
 VALUES (1, 9);
 INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
-VALUES (38628415, 'Juana', 'Perez', '1975-01-23', 0, 'Rodeau 1411', 'Uruguayo', 'jperez@gmail.com', '091030215', 0, '', 'images/Perfiles/JPerez.png', 0, 4);
+VALUES (38628415, 'Juana', 'Perez', '1975-01-23', 0, 'Rodeau 1411', 'Uruguayo', 'jperez@gmail.com', '091030215', 25, '', 'images/Perfiles/JPerez.png', 0, 4);
 INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
 VALUES (2, 1);
 INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
@@ -316,7 +316,7 @@ VALUES (2, 4);
 INSERT INTO empleado_tarea (id_empleado, id_tarea)
 VALUES (2, 5);
 INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
-VALUES (23562363, 'Maria', 'Gutierrez', '1977-04-02', 0, 'Yi 2110', 'Uruguayo', 'mguti@gmail.com', '095251600', 0, '', 'images/Perfiles/MGutierrez.png', 0, 5);
+VALUES (23562363, 'Maria', 'Gutierrez', '1977-04-02', 0, 'Yi 2110', 'Uruguayo', 'mguti@gmail.com', '095251600', 38, '', 'images/Perfiles/MGutierrez.png', 0, 5);
 INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
 VALUES (3, 1);
 INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)

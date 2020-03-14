@@ -56,17 +56,17 @@
               value="{{data.nacionalidad}}" readonly>
           </div>
         </div>
-
+        
         <div class="d-block my-3">
-          <p>Género</p>
-          <div class="custom-control custom-radio">
-            <input id="genderF" name="genero" type="radio" class="custom-control-input" checked="" required="" disabled>
-            <label class="custom-control-label" for="genderF">Femenino</label>
-          </div>
-          <div class="custom-control custom-radio">
-            <input id="genderM" name="genero" type="radio" class="custom-control-input" required="" disabled>
-            <label class="custom-control-label" for="genderM">Masculino</label>
-          </div>
+            <p>Género</p>
+            <div class="custom-control custom-radio">
+                <input id="genderF" name="genero" type="radio" class="custom-control-input" required="" disabled value="0" {% if data.genero == 0 %} checked {% endif %}>
+                <label class="custom-control-label" for="genderF">Femenino</label>
+            </div>
+            <div class="custom-control custom-radio">
+                <input id="genderM" name="genero" type="radio" class="custom-control-input" required="" disabled value="1" {% if data.genero == 1 %} checked {% endif %}>
+                <label class="custom-control-label" for="genderM">Masculino</label>
+            </div>
         </div>
 
         <div class="mb-3">
@@ -81,97 +81,55 @@
         {% if tipo == 'Empleado' %}
         <hr class="mt-5 mb-5">
         <div class="d-block my-3">
-          <p>¿Tiene experiencia en el rubro?</p>
-          {% if data.experiencia_meses is none or data.experiencia_meses == 0 %}
-          <div class="custom-control custom-radio">
-            <input name="experiencia" type="radio" class="custom-control-input" required="" disabled>
-            <label class="custom-control-label" for="experienciaSi">Si</label>
-          </div>
-          <div class="custom-control custom-radio">
-            <input name="experiencia" type="radio" class="custom-control-input" checked="" required="" disabled>
-            <label class="custom-control-label" for="experienciaNo">No</label>
-          </div>
-          {% else %}
-          <div class="custom-control custom-radio">
-            <input name="experiencia" type="radio" class="custom-control-input" checked="" required="" disabled>
-            <label class="custom-control-label" for="experienciaSi">Si</label>
-          </div>
-          <div class="custom-control custom-radio">
-            <input name="experiencia" type="radio" class="custom-control-input" required="" disabled>
-            <label class="custom-control-label" for="experienciaNo">No</label>
-          </div>
-          {% endif %}
+            <p>¿Tiene experiencia en el rubro?</p>
+
+            <div class="custom-control custom-radio">
+                <input id="experienciaSi" name="experiencia" type="radio" class="custom-control-input" disabled required="" value="1" {% if data.experiencia_meses is not none or data.experiencia_meses != 0 %} checked {% endif %}>
+                <label class="custom-control-label" for="experienciaSi">Si</label>
+            </div>
+            <div class="custom-control custom-radio">
+                <input id="experienciaNo" name="experiencia" type="radio" class="custom-control-input" disabled required="" value="0" {% if data.experiencia_meses is none or data.experiencia_meses == 0 %} checked {% endif %}>
+                <label class="custom-control-label" for="experienciaNo">No</label>
+            </div>
+
+        </div>
+
+        <div class="mb-3">
+            <label for="mesesExperiencia">Meses de experiencia</label>
+            <input type="text" class="form-control col-sm-2" name="mesesExperiencia" id="mesesExperiencia"
+                    placeholder="0" disabled value="{{data.experiencia_meses}}">
+            <div class="invalid-feedback">
+                Por favor seleccione una cantidad de meses válida.
+            </div>
         </div>
 
         <div class="d-block my-3">
-          <p>Disponibilidad</p>
-          <div class="custom-control custom-checkbox">
-            <input id="dispHora" name="tareaHogar" type="checkbox" class="custom-control-input" disabled>
-            <label class="custom-control-label" for="dispHora">Por hora</label>
-          </div>
-          <div class="custom-control custom-checkbox">
-            <input id="dispJorn" name="tareaOficina" type="checkbox" class="custom-control-input" disabled>
-            <label class="custom-control-label" for="dispJorn">Por jornada</label>
-          </div>
-          <div class="custom-control custom-checkbox">
-            <input id="dispTarea" name="tareaCocina" type="checkbox" class="custom-control-input" disabled>
-            <label class="custom-control-label" for="dispTarea">Por tarea puntual</label>
-          </div>
-          <div class="custom-control custom-checkbox">
-            <input id="dispMes" name="tareaLimpBañ" type="checkbox" class="custom-control-input" disabled>
-            <label class="custom-control-label" for="dispMes">Por mes</label>
-          </div>
+            <p>Disponibilidad</p>
+            {% for disp in aux.disponibilidad %}
+            <div class="custom-control custom-checkbox">
+                <input id="disp{{ disp.id}}" name="disp{{ disp.id }}" type="checkbox"
+                        class="custom-control-input" disabled {% if disp.seleccionada == 1 %} checked {% endif %}>
+                <label class="custom-control-label" for="disp{{ disp.id }}">{{ disp.descripcion }}</label>
+            </div>
+            {% endfor %}
         </div>
 
         <div class="d-block my-3">
-          <p>Tareas que realizas</p>
-          <div class="custom-control custom-checkbox">
-            <input id="tareaHogar" name="tareaHogar" type="checkbox" class="custom-control-input" disabled>
-            <label class="custom-control-label" for="tareaHogar">Hogar</label>
-          </div>
-          <div class="custom-control custom-checkbox">
-            <input id="tareaOficina" name="tareaOficina" type="checkbox" class="custom-control-input" disabled>
-            <label class="custom-control-label" for="tareaOficina">Oficina</label>
-          </div>
-          <div class="custom-control custom-checkbox">
-            <input id="tareaCocina" name="tareaCocina" type="checkbox" class="custom-control-input" disabled>
-            <label class="custom-control-label" for="tareaCocina">Cocinar</label>
-          </div>
-          <div class="custom-control custom-checkbox">
-            <input id="tareaLimpBañ" name="tareaLimpBañ" type="checkbox" class="custom-control-input" disabled>
-            <label class="custom-control-label" for="tareaLimpBañ">Limpieza de baños</label>
-          </div>
-          <div class="custom-control custom-checkbox">
-            <input id="tareaLimpCoc" name="tareaLimpCoc" type="checkbox" class="custom-control-input" disabled>
-            <label class="custom-control-label" for="tareaLimpCoc">Limpieza de cocina</label>
-          </div>
-          <div class="custom-control custom-checkbox">
-            <input id="tareaLimpDor" name="tareaLimpDor" type="checkbox" class="custom-control-input" disabled>
-            <label class="custom-control-label" for="tareaLimpDor">Limpieza de dormitorio</label>
-          </div>
-          <div class="custom-control custom-checkbox">
-            <input id="tareaCuidNiño" name="tareaCuidNiño" type="checkbox" class="custom-control-input" disabled>
-            <label class="custom-control-label" for="tareaCuidNiño">Cuidado de niños</label>
-          </div>
-          <div class="custom-control custom-checkbox">
-            <input id="tareaCuidBebe" name="tareaCuidBebe" type="checkbox" class="custom-control-input" disabled>
-            <label class="custom-control-label" for="tareaCuidBebe">Cuidado de bebes</label>
-          </div>
-          <div class="custom-control custom-checkbox">
-            <input id="tareaCuidAdulto" name="tareaCuidAdulto" type="checkbox" class="custom-control-input" disabled>
-            <label class="custom-control-label" for="tareaCuidAdulto">Adultos mayores</label>
-          </div>
-          <div class="custom-control custom-checkbox">
-            <input id="tareaCuidMasc" name="tareaCuidMasc" type="checkbox" class="custom-control-input" disabled>
-            <label class="custom-control-label" for="tareaCuidMasc">Cuidado de mascotas</label>
-          </div>
+            <p>Tareas que realizas</p>
+            {% for tarea in aux.tareas %}
+            <div class="custom-control custom-checkbox">
+                <input id="tarea{{ tarea.id }}" name="tarea{{ tarea.id }}" type="checkbox"
+                        class="custom-control-input" disabled {% if tarea.seleccionada == 1 %} checked {% endif %}>
+                <label class="custom-control-label" for="tarea{{ tarea.id }}">{{ tarea.descripcion }}</label>
+            </div>
+            {% endfor %}
         </div>
 
         <hr class="mt-5 mb-5">
 
         <h5>Los empleadores te invitarán a pasar a su casa <br>
           ¡cuentales algo sobre tí, así comienzan a conocerte!</h5>
-        <textarea name="presentacion" rows="10" cols="65" placeholder="Escribe aqui..." disabled></textarea>
+        <textarea name="presentacion" rows="10" cols="65" placeholder="" disabled>{{data.descripcion}}</textarea>
 
         <hr class="mt-5 mb-5">
 

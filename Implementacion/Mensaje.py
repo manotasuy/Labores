@@ -116,3 +116,31 @@ def getMensajeByID(bd, id):
         return mensaje
     except Exception as e:
         print("Error en getMensajeByID ", e)
+
+
+def getMensajesPersonalesPorRemitente(bd, id_persona):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('''
+            SELECT
+                id,
+                id_empleado,
+                id_empleador,
+                id_anuncio,
+                fecha,
+                mensaje
+            FROM mensaje WHERE id = {}'''.format(id))
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+        mensaje = Mensaje(
+            retorno[0][0],
+            getEmpleadoByID(bd, retorno[0][1]),
+            getEmpleadorByID(bd, retorno[0][2]),
+            getAnuncioByID(bd, retorno[0][3]),
+            retorno[0][4],
+            retorno[0][5]
+        )
+        return mensaje
+    except Exception as e:
+        print("Error en getMensajeByID ", e)

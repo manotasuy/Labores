@@ -70,6 +70,11 @@ def ayuda():
 def login(user, password):
     usuario = Usuario(0, user, password, '')
     retorno = usuario.loginUsuario(baseDatos)
+    tipo_usuario = retorno[0][0]
+    id_usuario = retorno[0][1]
+    print('Valores en LOGIN')
+    print('Tipo de Usuario: ', tipo_usuario)
+    print('ID Usuario: ', id_usuario)
     # Si no existe el usuario debo alertar
     if retorno == ():
         print('No existe el usuario!')
@@ -77,17 +82,17 @@ def login(user, password):
         return redirect(url_for('logueo'))
     else:
         session['username'] = user
-        session['usertype'] = retorno[0][0]
-        session['id_usuario'] = retorno[0][1]
+        session['usertype'] = tipo_usuario
+        session['id_usuario'] = id_usuario
 
         if session['usertype'] == 'Empleador':
             # debo obtener el empleador y guardar su id en la sesion
-            empleador = getEmpleadorByUsuarioID(baseDatos, retorno[0][1])
+            empleador = getEmpleadorByUsuarioID(baseDatos, id_usuario)
             session['id_empleador'] = empleador.id
             return redirect(url_for('inicio_empleadores'))
         elif session['usertype'] == 'Empleado':
             # debo obtener el empleado y guardar su id en la sesion
-            empleado = getEmpleadoByUsuarioID(baseDatos, retorno[0][1])
+            empleado = getEmpleadoByUsuarioID(baseDatos, id_usuario)
             session['id_empleado'] = empleado.id
             return redirect(url_for('inicio_empleados'))
         else:
@@ -133,20 +138,28 @@ def vista_perfil(opcion, id):
     elif session.get('usertype') == 'Empleado':
         return redirect(url_for('inicio_empleados'))
     else:
-        objeto = None
+        #objeto = None
         if opcion == 'Empleado':
             objeto = getEmpleadoByID(baseDatos, id)
+            dtoAuxEmpleado: DTOAuxEmpleado = DTOAuxEmpleado()
+            # Debo traer las tareas y disponibilidades (estableciendo las seleccionadas por el empleado) para cargarlas dinámicamente
+            tareasSeleccion = objeto.getTareasSeleccionadas(baseDatos)
+            disponibilidadSeleccion = objeto.getDisponibilidadSeleccionadas(baseDatos)
             tareas = getTareasEmpleado(baseDatos, objeto.id)
             objeto.cargarTareas(tareas)
             referencias = getReferenciasEmpleado(baseDatos, objeto.id)
             objeto.cargarReferencias(referencias)
             disponibilidad = getDisponibilidadEmpleado(baseDatos, objeto.id)
             objeto.cargarDisponibilidad(disponibilidad)
+            # convierto byte a entero, el atributo "género" en mysql es de tipo bit
+            generoInt = int.from_bytes(objeto.genero, "big")
+            objeto.genero = generoInt
+            dtoAuxEmpleado = DTOAuxEmpleado(tareasSeleccion, disponibilidadSeleccion)
+            return render_template('VistaPerfil.html', tipo=opcion, data=objeto, aux=dtoAuxEmpleado)
 
         elif opcion == 'Empleador':
             objeto = getEmpleadorByID(baseDatos, id)
-
-        return render_template('VistaPerfil.html', tipo=opcion, data=objeto)
+            return render_template('VistaPerfil.html', tipo=opcion, data=objeto)
 
 
 @app.route('/Perfil/<opcion>', methods=['POST', 'GET'])
@@ -216,12 +229,18 @@ def guardar_perfil(tipo):
             telefono = parametros['tel']
             password = parametros['password']
 
+            # Debo controlar si la cédula está en los parámetros, porque cuando se deshabilita 
+            # en la edición del perfil la cédula no viene en la lista de parámetros y explota, OJO!
+            if 'cedula' in parametros:
+                cedula = parametros['cedula']
+            else:
+                cedula = None
+
             logueado = session.get('usertype') is not None
             usuario = None
 
             if not logueado:
                 # debo crear primero el usuario ya que se trata de un registro (alta) ya que no está logueado
-                cedula = parametros['cedula']
                 usuario = Usuario(0, cedula, password, tipo)
                 usuario.crearUsuario(baseDatos)
                 usuario.getIdUsuario(baseDatos)
@@ -229,7 +248,7 @@ def guardar_perfil(tipo):
             # chequear el tipo para realizar las operaciones en empleado o empleador
             if tipo == 'Empleado':
                 # debo crear un empleado
-                empleado = Empleado(0, None, nombre, apellido, nacimiento, genero, domicilio,
+                empleado = Empleado(0, cedula, nombre, apellido, nacimiento, genero, domicilio,
                                     nacionalidad, mail, telefono, 0, '', 'images/NoImage.png', 0, usuario, None, None, None)
 
                 # como es edición de perfil debo modificar la contraseña y el empleado
@@ -274,7 +293,6 @@ def guardar_perfil(tipo):
                     empleado.modificarEmpleado(baseDatos)
 
                     if request.form.get('btnAgregarReferencia'):
-                        print('Estoy agregando una referencia')
                         # Agregar referencia que se visualizará en la grilla al recargar el template
                         empleado = getEmpleadoByID(baseDatos, empleado.id)
                         nombre = request.form['refNombreEmp']
@@ -296,7 +314,7 @@ def guardar_perfil(tipo):
 
             elif tipo == 'Empleador':
                 # debo crear un empleador
-                empleador = Empleador(0, None, nombre, apellido, nacimiento,
+                empleador = Empleador(0, cedula, nombre, apellido, nacimiento,
                                       genero, domicilio, nacionalidad, mail, telefono, 0, 'images/NoImage.png', 0, usuario)
 
                 # como es edición de perfil debo modificar la contraseña y el empleador
@@ -905,13 +923,22 @@ def listar_candidatos(id_anuncio):
 
 
 @app.route('/Mensajes/')
-def chat():
+def mensajes():
     if session.get('usertype') == None:
         return redirect(url_for('logueo'))
     elif session.get('usertype') == 'Administrador':
         return redirect(url_for('administrar'))
     else:
-        return render_template('chat.html')
+        id_persona = 0
+        if session.get('usertype') == 'Empleado':
+            id_persona = session['id_empleado']
+            persona : Empleado = getEmpleadoByID(baseDatos, id_persona)
+        elif session.get('usertype') == 'Empleador':
+            id_persona = session['id_empleador']
+            persona : Empleador = getEmpleadorByID(baseDatos, id_persona)
+
+        # persona
+        return render_template('Mensajes.html', )
 
 
 @app.route('/Contratar/<idEmpleado>')
