@@ -60,7 +60,7 @@
                     <div class="form-group">
                         <label for="exampleFormControlFile1">Fotografía</label>
                         <input type="file" class="form-control-file" id="exampleFormControlFile1" name="fotoPerfil"
-                               value="{{data.foto}}">
+                               value="{{data.foto}}>
                     </div>
                 </div>
 
@@ -199,11 +199,17 @@
 
                 <hr class="mt-5 mb-5">
 
+                {% if not data.referencias %}
+                <div class="row mb-5 ml-4">
+                    <button type="button" style="max-width: 560px; min-width: 560px;" class="btn btn-secondary" disabled><h5>No tiene ninguna referencia registrada hasta el momento</h5></button>
+                </div>     
+                {% else %}
                 <div class="mt-5 mb-5">
                     <table class="table table-bordered table bg-white">
                         <thead>
                             <tr>
                                 <td>Nombre</td>
+                                <td>Apellido</td>
                                 <td>Teléfono</td>
                                 <td>Desde</td>
                                 <td>Hasta</td>
@@ -214,61 +220,71 @@
                             {% for referencia in data.referencias %}
                             <tr>
                                 <td>{{referencia.nombre}}</td>
+                                <td>{{referencia.apellido}}</td>
                                 <td>{{referencia.telefono}}</td>
                                 <td>{{referencia.fechaDesde}}</td>
                                 <td>{{referencia.fechaHasta}}</td>
                                 <td>
-                                    <a href="/EditarReferencia/{{referencia.id}}"
-                                       class="btn btn-sm btn-primary btn-block" data-toggle="modal"
-                                       data-target="#modal">Editar</a>
-                                    <a href="/BorrarReferencia/{{referencia.id}}"
-                                       class="btn btn-sm btn-danger btn-block" data-toggle="modal"
-                                       data-target="#modal">Borrar</a>
+                                    <button class="btn btn-sm btn-primary btn btn-block" name="btnEditarReferencia" 
+                                    value={{referencia.id}}>Editar</button>
+                                    <button class="btn btn-sm btn-danger btn btn-block" name="btnBorrarReferencia" 
+                                    value={{referencia.id}}>Borrar</button>
                                 </td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
+                {% endif %}
 
+                <a id="anclaReferencias"></a>
                 <p>¿Tienes referencias de empleos anteriores? Agregalas aquí</p>
-                <div class="mt-4 mb-3">
-                    <label for="nombreEmp">Nombre del empleador</label>
-                    <input type="text" class="form-control" name="refNombreEmp" id="nombreEmp" placeholder="Nombre"
-                           value="">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="mt-4 mb-3">
+                            <label for="nombreEmp">Nombre del empleador</label>
+                            <input type="text" class="form-control" name="refNombreEmp" id="nombreEmp" placeholder="Nombre"
+                                value={% if refer is not none %}{{ refer.nombre }}{% endif %}>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="mt-4 mb-3">
+                            <label for="apellidoEmp">Apellido del empleador</label>
+                            <input type="text" class="form-control" name="refApellidoEmp" id="apellidoEmp" placeholder="Apellido"
+                                value={% if refer is not none %}{{ refer.apellido }}{% endif %}>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <div class="mb-3">
                             <label for="refTrabDesde">Trabaje desde</label>
-                            <input type="date" class="form-control" name="refTrabDesde" id="refTrabDesde" value="">
+                            <input type="date" class="form-control" name="refTrabDesde" id="refTrabDesde" 
+                            value={% if refer is not none %}{{refer.fechaDesde}}{% endif %}>
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
                         <div class="mb-3">
                             <label for="refTrabHasta">Trabaje hasta</label>
-                            <input type="date" class="form-control" name="refTrabHasta" id="refTrabHasta" value="">
+                            <input type="date" class="form-control" name="refTrabHasta" id="refTrabHasta" 
+                            value={% if refer is not none %}{{refer.fechaHasta}}{% endif %}>
                         </div>
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="telefonoEmp">Teléfono del empleador</label>
                             <input type="text" class="form-control" name="refTelefonoEmp" id="telefonoEmp"
-                                   placeholder="Teléfono" value="">
+                                   placeholder="Teléfono" value={% if refer is not none %}{{refer.telefono}}{% endif %}>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="btnReferencia"></label>
-                            <button class="btn btn-primary btn btn-block mt-2" name="btnAgregarReferencia"
-                                    value="AgregarReferencia" data-toggle="modal" data-target="#modal">
-                                Agregar
-                                Referencia
-                            </button>
+                            <button class="btn btn-primary btn btn-block mt-2" name="btnGuardarReferencia" 
+                            value="GuardarReferencia">Guardar Referencia</button>
                         </div>
                     </div>
                 </div>

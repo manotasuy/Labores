@@ -1,5 +1,6 @@
 import json
-from flask import Flask, request, render_template, url_for, redirect, flash, session
+from flask import Flask, request, Response, render_template, url_for, redirect, flash, session, send_from_directory
+from werkzeug.utils import secure_filename
 from flask_mysqldb import MySQL
 from datetime import datetime
 from enum import Enum
@@ -38,6 +39,7 @@ from Implementacion.Disponibilidad import getDisponibilidadesRegistradas
 from Implementacion.Referencia import getReferenciaByID
 from Implementacion.Referencia import getReferenciasEmpleado
 
+ALLOWED_EXTENSIONS = set(['jpg', 'png', 'jpeg', 'bmp'])
 
 app = Flask(__name__)
 
@@ -50,6 +52,9 @@ baseDatos = connectionDb(app, 'CloudAccess')
 # session
 app.secret_key = "session"
 
+def allowed_file(filename):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/')
 @app.route('/Inicio/')
@@ -171,6 +176,7 @@ def perfil(opcion):
         empleado: Empleado = Empleado()
         dtoAuxEmpleado: DTOAuxEmpleado = DTOAuxEmpleado()
         empleador: Empleador = Empleador()
+        referenciaParaEditar = None
 
         if opcion == 'Empleado':
             if logueado:
@@ -195,7 +201,10 @@ def perfil(opcion):
 
                 dtoAuxEmpleado = DTOAuxEmpleado(
                     tareasSeleccion, disponibilidadSeleccion)
-            return render_template('Perfil.html', tipo=opcion, data=empleado, aux=dtoAuxEmpleado)
+                if 'id_refer' in session:
+                    referenciaParaEditar = getReferenciaByID(baseDatos, session['id_refer'])
+                    
+            return render_template('Perfil.html', tipo=opcion, data=empleado, aux=dtoAuxEmpleado, refer=referenciaParaEditar)
 
         elif opcion == 'Empleador':
             if logueado:
@@ -208,7 +217,7 @@ def perfil(opcion):
             return render_template('Perfil.html', tipo=opcion, data=empleador)
 
 
-@app.route('/GuardarPerfil/<tipo>', methods=['POST'])
+@app.route('/GuardarPerfil/<tipo>', methods=['GET', 'POST'])
 def guardar_perfil(tipo):
     if session.get('usertype') == 'Administrador':
         return redirect(url_for('administrar'))
@@ -218,125 +227,154 @@ def guardar_perfil(tipo):
 
             #for param in parametros:
                 #print('Parámetro: ', param)
-                
-            nombre = parametros['nombre']
-            apellido = parametros['apellido']
-            nacimiento = parametros['cumple']
-            genero = int(parametros['genero'])
-            domicilio = parametros['domicilio']
-            nacionalidad = parametros['nacionalidad']
-            mail = parametros['email']
-            telefono = parametros['tel']
-            password = parametros['password']
 
-            # Debo controlar si la cédula está en los parámetros, porque cuando se deshabilita 
-            # en la edición del perfil la cédula no viene en la lista de parámetros y explota, OJO!
-            if 'cedula' in parametros:
-                cedula = parametros['cedula']
+            if request.form.get('btnGuardarReferencia'):
+                if not 'id_refer' in session:
+                    empleado = getEmpleadoByID(baseDatos, session['id_empleado'])
+                    nombre = request.form['refNombreEmp']
+                    apellido = request.form['refApellidoEmp']
+                    telefono = request.form['refTelefonoEmp']
+                    trabaja_desde = request.form['refTrabDesde']
+                    trabaja_hasta = request.form['refTrabDesde']
+                    referencia = Referencia(0, empleado, nombre, apellido, telefono, trabaja_desde, trabaja_hasta)
+                    referencia.crearReferencia(baseDatos)
+                    print('Referencia creada')
+                else:
+                    referencia = getReferenciaByID(baseDatos, session['id_refer'])
+                    referencia.nombre = request.form['refNombreEmp']
+                    referencia.apellido = request.form['refApellidoEmp']
+                    referencia.telefono = request.form['refTelefonoEmp']
+                    referencia.trabaja_desde = request.form['refTrabDesde']
+                    referencia.trabaja_hasta = request.form['refTrabDesde']
+                    referencia.actualizarReferencia(baseDatos)
+                    print('Referencia actualizada')
+                    session.pop('id_refer')
+                return redirect(url_for('refresh_referencia'))
+
+            elif request.form.get('btnEditarReferencia'):
+                id_referencia = int(parametros['btnEditarReferencia'])
+                session['id_refer'] = id_referencia
+                return redirect(url_for('refresh_referencia'))
+
+            elif request.form.get('btnBorrarReferencia'):
+                id_referencia = int(parametros['btnBorrarReferencia'])
+                referencia = getReferenciaByID(baseDatos, id_referencia)
+                referencia.borrarReferencia(baseDatos)
+                return redirect(url_for('refresh_referencia'))
+
             else:
-                cedula = None
+                nombre = parametros['nombre']
+                apellido = parametros['apellido']
+                nacimiento = parametros['cumple']
+                genero = int(parametros['genero'])
+                domicilio = parametros['domicilio']
+                nacionalidad = parametros['nacionalidad']
+                mail = parametros['email']
+                telefono = parametros['tel']
+                password = parametros['password']
 
-            logueado = session.get('usertype') is not None
-            usuario = None
+                # Debo controlar si la cédula está en los parámetros, porque cuando se deshabilita 
+                # en la edición del perfil la cédula no viene en la lista de parámetros y explota, OJO!
+                if 'cedula' in parametros:
+                    cedula = parametros['cedula']
+                else:
+                    cedula = None
 
-            if not logueado:
-                # debo crear primero el usuario ya que se trata de un registro (alta) ya que no está logueado
-                usuario = Usuario(0, cedula, password, tipo)
-                usuario.crearUsuario(baseDatos)
-                usuario.getIdUsuario(baseDatos)
+                logueado = session.get('usertype') is not None
+                usuario = None
 
-            # chequear el tipo para realizar las operaciones en empleado o empleador
-            if tipo == 'Empleado':
-                # debo crear un empleado
-                empleado = Empleado(0, cedula, nombre, apellido, nacimiento, genero, domicilio,
-                                    nacionalidad, mail, telefono, 0, '', 'images/NoImage.png', 0, usuario, None, None, None)
+                if not logueado:
+                    # debo crear primero el usuario ya que se trata de un registro (alta) ya que no está logueado
+                    usuario = Usuario(0, cedula, password, tipo)
+                    usuario.crearUsuario(baseDatos)
+                    usuario.getIdUsuario(baseDatos)
 
-                # como es edición de perfil debo modificar la contraseña y el empleado
-                if logueado:
-                    # modificar contraseña?
+                # chequear el tipo para realizar las operaciones en empleado o empleador
+                if tipo == 'Empleado':
+                    # debo crear un empleado
+                    empleado = Empleado(0, cedula, nombre, apellido, nacimiento, genero, domicilio,
+                                        nacionalidad, mail, telefono, 0, '', 'images/NoImage.png', 0, usuario, None, None, None)
 
-                    # recorrer la disponibilidad seleccionada y cargarsela al empleado
-                    disponibilidad = list()
-                    disponibilidadesRegistradas = getDisponibilidadesRegistradas(baseDatos)
-                    for disp in disponibilidadesRegistradas:
-                        indice = str(disponibilidadesRegistradas.index(disp)+1)
-                        if 'disp'+indice in parametros:
-                            #print('**** Debería cargar esta disponibilidad: ID=', disp.id, ', DESC=', disp.descripcion)
-                            d = Disponibilidad(disp.id, disp.descripcion)
-                            disponibilidad.append(d)
-                    empleado.cargarDisponibilidad(disponibilidad)
+                    # como es edición de perfil debo modificar la contraseña y el empleado
+                    if logueado:
+                        # modificar contraseña?
 
-                    # recorrer las tareas seleccionadas y cargarselas al empleado
-                    tareas = list()
-                    tareasRegistradas = getTareasRegistradas(baseDatos)
-                    for tarea in tareasRegistradas:
-                        indice = str(tareasRegistradas.index(tarea)+1)
-                        if 'tarea'+indice in parametros:
-                            #print('**** Debería cargar esta tarea: ID=', tarea.id, ', DESC=', tarea.descripcion)
-                            t = Tarea(tarea.id, tarea.descripcion)
-                            tareas.append(t)
-                    empleado.cargarTareas(tareas)
+                        # recorrer la disponibilidad seleccionada y cargarsela al empleado
+                        disponibilidad = list()
+                        disponibilidadesRegistradas = getDisponibilidadesRegistradas(baseDatos)
+                        for disp in disponibilidadesRegistradas:
+                            indice = str(disponibilidadesRegistradas.index(disp)+1)
+                            if 'disp'+indice in parametros:
+                                #print('**** Debería cargar esta disponibilidad: ID=', disp.id, ', DESC=', disp.descripcion)
+                                d = Disponibilidad(disp.id, disp.descripcion)
+                                disponibilidad.append(d)
+                        empleado.cargarDisponibilidad(disponibilidad)
 
-                    tiene_experiencia = parametros['experiencia']
-                    if tiene_experiencia == '1':
-                        experiencia = parametros['mesesExperiencia']
-                    else:
-                        experiencia = 0
+                        # recorrer las tareas seleccionadas y cargarselas al empleado
+                        tareas = list()
+                        tareasRegistradas = getTareasRegistradas(baseDatos)
+                        for tarea in tareasRegistradas:
+                            indice = str(tareasRegistradas.index(tarea)+1)
+                            if 'tarea'+indice in parametros:
+                                #print('**** Debería cargar esta tarea: ID=', tarea.id, ', DESC=', tarea.descripcion)
+                                t = Tarea(tarea.id, tarea.descripcion)
+                                tareas.append(t)
+                        empleado.cargarTareas(tareas)
 
-                    descripcion = parametros['presentacion']
-                    foto = parametros['fotoPerfil']
-                    empleado.id = session['id_empleado']
-                    empleado.experiencia_meses = experiencia
-                    empleado.descripcion = descripcion
-                    if foto != '':
-                        empleado.foto = foto
-                    empleado.modificarEmpleado(baseDatos)
+                        tiene_experiencia = parametros['experiencia']
+                        if tiene_experiencia == '1':
+                            experiencia = parametros['mesesExperiencia']
+                        else:
+                            experiencia = 0
 
-                    if request.form.get('btnAgregarReferencia'):
-                        # Agregar referencia que se visualizará en la grilla al recargar el template
-                        empleado = getEmpleadoByID(baseDatos, empleado.id)
-                        nombre = request.form['refNombreEmp']
-                        telefono = request.form['refTelefonoEmp']
-                        trabaja_desde = request.form['refTrabDesde']
-                        trabaja_hasta = request.form['refTrabDesde']
-                        referencia = Referencia(0, empleado, nombre, telefono,
-                                                trabaja_desde, trabaja_hasta)
-                        referencia.crearReferencia(baseDatos)
-                        # El retorno debe ser el propio form pero da error
-                    else:
+                        descripcion = parametros['presentacion']
+                        foto = parametros['fotoPerfil']
+                        empleado.id = session['id_empleado']
+                        empleado.experiencia_meses = experiencia
+                        empleado.descripcion = descripcion
+                        if foto != '':
+                            foto = 'images/Perfiles/' + foto
+                            empleado.foto = foto
+                        empleado.modificarEmpleado(baseDatos)
                         return redirect(url_for('inicio_empleados'))
 
-                # como es registro (alta) debo crear el empleado
-                else:
-                    empleado.crearEmpleado(baseDatos)
-                    login(cedula, password)
-                    return redirect(url_for('inicio_empleados'))
-
-            elif tipo == 'Empleador':
-                # debo crear un empleador
-                empleador = Empleador(0, cedula, nombre, apellido, nacimiento,
-                                      genero, domicilio, nacionalidad, mail, telefono, 0, 'images/NoImage.png', 0, usuario)
-
-                # como es edición de perfil debo modificar la contraseña y el empleador
-                if logueado:
-                    # modificar contraseña?
-                    tiene_bps = parametros['bps']
-                    if tiene_bps == '1':
-                        regBPS = parametros['empleadorNumRegBPS']
+                    # como es registro (alta) debo crear el empleado
                     else:
-                        regBPS = '0'
+                        empleado.crearEmpleado(baseDatos)
+                        login(cedula, password)
+                        return redirect(url_for('inicio_empleados'))
 
-                    foto = parametros['fotoPerfil']
-                    empleador.registroBps = regBPS
-                    if foto != '':
-                        empleador.foto = foto
-                    empleador.id = session['id_empleador']
-                    empleador.modificarEmpleador(baseDatos)
-                # como es registro (alta) debo crear el empleado
-                else:
-                    empleador.crearEmpleador(baseDatos)
-                    login(cedula, password)
-                return redirect(url_for('inicio_empleadores'))
+                elif tipo == 'Empleador':
+                    # debo crear un empleador
+                    empleador = Empleador(0, cedula, nombre, apellido, nacimiento,
+                                        genero, domicilio, nacionalidad, mail, telefono, 0, 'images/NoImage.png', 0, usuario)
+
+                    # como es edición de perfil debo modificar la contraseña y el empleador
+                    if logueado:
+                        # modificar contraseña?
+                        tiene_bps = parametros['bps']
+                        if tiene_bps == '1':
+                            regBPS = parametros['empleadorNumRegBPS']
+                        else:
+                            regBPS = '0'
+
+                        foto = parametros['fotoPerfil']
+                        empleador.registroBps = regBPS
+                        if foto != '':
+                            foto = 'images/Perfiles/' + foto
+                            empleador.foto = foto
+                        empleador.id = session['id_empleador']
+                        empleador.modificarEmpleador(baseDatos)
+                    # como es registro (alta) debo crear el empleado
+                    else:
+                        empleador.crearEmpleador(baseDatos)
+                        login(cedula, password)
+                    return redirect(url_for('inicio_empleadores'))
+
+
+@app.route('/RefreshReferencia/', methods=['POST','GET'])
+def refresh_referencia():
+    return redirect(url_for('perfil', opcion='Empleado') + '#anclaReferencias')
 
 
 # Se deja standby porque requiere desactivar un montón de cosas y no era parte de las funcionalidades planteadas
@@ -986,55 +1024,6 @@ def contactar(idEmpleado):
 
         flash('Empleado Contratado!')
         return render_template('contactoEmpleado.html', data=empleado)
-
-
-@app.route('/AgregarReferencia/<id_empleado>', methods=['POST', 'GET'])
-def agregar_referencia(id_empleado):
-    if request.method == 'POST':
-        # Agregar referencia que se visualizará en la grilla al recargar el template
-        opcion = 'Empleado'
-        empleado = getEmpleadoByID(baseDatos, id_empleado)
-        nombre = request.form['refNombreEmp']
-        telefono = request.form['refTelefonoEmp']
-        trabaja_desde = request.form['refTrabDesde']
-        trabaja_hasta = request.form['refTrabDesde']
-        referencia = Referencia(0, empleado, nombre, telefono,
-                                trabaja_desde, trabaja_hasta)
-        referencia.crearReferencia(baseDatos)
-        flash('Referencia agregada')
-        # return redirect(url_for('/Perfil/Empleado'))
-        return render_template('Perfil.html', tipo=opcion, data=empleado)
-
-
-@app.route('/EditarReferencia/<id_referencia>', methods=['POST'])
-def editar_referencia(id_referencia):
-    if request.method == 'POST':
-        # Debería cargar en el form de referencia los datos de la referencia a editar
-        # El botón debería cambiar de "Agregar Referencia" a "Actualizar Referencia"
-        return 'No implementada'
-
-
-@app.route('/ActualizarReferencia/<id_referencia>', methods=['POST'])
-def actualizar_referencia(id_referencia):
-    if request.method == 'POST':
-        # Actualizar la referencia que se visualizará en la grilla al recargar el template
-        nombre = request.form['refNombreEmp']
-        telefono = request.form['refTelefonoEmp']
-        trabaja_desde = request.form['refTrabDesde']
-        trabaja_hasta = request.form['refTrabDesde']
-        referencia = Referencia(id_referencia, None, nombre, telefono,
-                                trabaja_desde, trabaja_hasta)
-        referencia.actualizarReferencia(baseDatos)
-        flash('Referencia actualizada')
-        return redirect(url_for('/Perfil/Empleado'))
-
-
-@app.route('/BorrarReferencia/<id_referencia>', methods=['POST', 'GET'])
-def borrar_referencia(id_referencia):
-    referencia = getReferenciaByID(baseDatos, id_referencia)
-    referencia.borrarReferencia(baseDatos)
-    flash('Referencia Borrada')
-    return 'No implementada'
 
 
 # ***** Pendientes ***********

@@ -2,10 +2,11 @@ from Implementacion.Empleado import getEmpleadoByID
 
 
 class Referencia:
-    def __init__(self, pId=None, pEmpleado=None, pNombre=None, pTelefono=None, pFechaDesde=None, pFechaHasta=None):
+    def __init__(self, pId=None, pEmpleado=None, pNombre=None, pApellido=None, pTelefono=None, pFechaDesde=None, pFechaHasta=None):
         self.id = pId
         self.empleado = pEmpleado
         self.nombre = pNombre
+        self.apellido = pApellido
         self.telefono = pTelefono
         self.fechaDesde = pFechaDesde
         self.fechaHasta = pFechaHasta
@@ -14,7 +15,7 @@ class Referencia:
         return self.__dict__[item]
 
     def __str__(self):
-        return 'Nombre empleado: {}, Nombre Referencia: {}, Telefono: {}, Fecha desde: {}, Fecha hasta: {}'.format(self.empleado.id, self.nombre, self.telefono, self.fechaDesde, self.fechaHasta)
+        return 'Nombre empleado: {}, Nombre Referencia: {}, Telefono: {}, Fecha desde: {}, Fecha hasta: {}'.format(self.empleado.nombre, self.nombre, self.telefono, self.fechaDesde, self.fechaHasta)
 
     def crearReferencia(self, bd):
         try:
@@ -24,14 +25,16 @@ class Referencia:
                     (
                         id_empleado,
                         nombre,
+                        apellido,
                         telefono,
                         fecha_desde,
                         fecha_hasta
                     )
-                VALUES (%s,%s,%s,%s,%s)''',
+                VALUES (%s,%s,%s,%s,%s,%s)''',
                            (
                                self.empleado.id,
                                self.nombre,
+                               self.apellido,
                                self.telefono,
                                self.fechaDesde,
                                self.fechaHasta
@@ -60,12 +63,14 @@ class Referencia:
             cursor.execute('''
                 UPDATE referencia SET
                     nombre = %s,
+                    apellido = %s,
                     telefono = %s,
                     fecha_desde = %s,
                     fecha_hasta = %s
                 WHERE id = %s''',
                            (
                                self.nombre,
+                               self.apellido,
                                self.telefono,
                                self.fechaDesde,
                                self.fechaHasta,
@@ -87,6 +92,7 @@ def getReferenciaByID(bd, id):
                 id,
                 id_empleado,
                 nombre,
+                apellido,
                 telefono,
                 fecha_desde,
                 fecha_hasta
@@ -97,12 +103,14 @@ def getReferenciaByID(bd, id):
         referencia = Referencia(
             retorno[0][0],
             getEmpleadoByID(bd, retorno[0][1]),
+            retorno[0][2],
+            retorno[0][3],
             retorno[0][4],
             retorno[0][5],
-            retorno[0][6],
-            retorno[0][7]
+            retorno[0][6]
         )
         return referencia
+        print('Nombre en getReferenciaByID: ', referencia.nombre)
     except Exception as e:
         print("Error en getReferenciaByID ", e)
 
@@ -114,6 +122,7 @@ def getReferenciasEmpleado(bd, idEmpleado):
                 SELECT
                     id,
                     nombre,
+                    apellido,
                     telefono,
                     fecha_desde,
                     fecha_hasta
@@ -125,7 +134,7 @@ def getReferenciasEmpleado(bd, idEmpleado):
         referencias = list()
         for tuplaReferencia in retorno:
             referencia = Referencia(tuplaReferencia[0], getEmpleadoByID(bd, idEmpleado), tuplaReferencia[1],
-                                    tuplaReferencia[2], tuplaReferencia[3], tuplaReferencia[4])
+                                    tuplaReferencia[2], tuplaReferencia[3], tuplaReferencia[4], tuplaReferencia[5])
             referencias.append(referencia)
         return referencias
     except Exception as e:

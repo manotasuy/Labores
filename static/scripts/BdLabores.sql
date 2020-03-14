@@ -138,6 +138,7 @@ CREATE TABLE IF NOT EXISTS referencia (
 	id int NOT NULL AUTO_INCREMENT,
 	id_empleado int NOT NULL,
 	nombre varchar(50) NOT NULL,
+    apellido varchar(50) NOT NULL,
 	telefono varchar(20) NOT NULL,
 	fecha_desde date NOT NULL,
 	fecha_hasta date NULL,
@@ -329,10 +330,10 @@ INSERT INTO empleado_tarea (id_empleado, id_tarea)
 VALUES (3, 5);
 
 -- En tabla "referencia"
-INSERT INTO referencia (id_empleado, nombre, telefono, fecha_desde, fecha_hasta)
-VALUES (1, 'Susana Riux', '091115028', '2015-02-23', '2017-04-22');
-INSERT INTO referencia (id_empleado, nombre, telefono, fecha_desde, fecha_hasta)
-VALUES (1, 'Leopoldo Garcia', '096524741', '2017-06-21', '2019-11-05');
+INSERT INTO referencia (id_empleado, nombre, apellido, telefono, fecha_desde, fecha_hasta)
+VALUES (1, 'Susana', 'Riux', '091115028', '2015-02-23', '2017-04-22');
+INSERT INTO referencia (id_empleado, nombre, apellido, telefono, fecha_desde, fecha_hasta)
+VALUES (1, 'Leopoldo', 'Garcia', '096524741', '2017-06-21', '2019-11-05');
 
 -- En tabla "empleador"
 INSERT INTO empleador (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, registro_bps, foto, promedio_calificacion, id_usuario)

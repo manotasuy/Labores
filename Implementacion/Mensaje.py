@@ -118,7 +118,7 @@ def getMensajeByID(bd, id):
         print("Error en getMensajeByID ", e)
 
 
-def getMensajesPersonalesPorRemitente(bd, id_persona):
+def getMensajesEmpleadosParaEmpleador(bd, id_empleador, id_empleado):
     try:
         cursor = bd.connection.cursor()
         cursor.execute('''
