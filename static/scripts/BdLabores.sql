@@ -155,7 +155,7 @@ CREATE TABLE IF NOT EXISTS anuncio (
 	fecha_inicio date NOT NULL,
 	fecha_cierre date NULL,
 	estado bit(1) NOT NULL, -- 0:Inactivo, 1:Activo
-	experiencia boolean NOT NULL, -- 0:Con Experiencia, 1:Sin Experiencia
+	experiencia boolean NOT NULL, -- 0:Sin Experiencia, 1:Con Experiencia
 	pago_hora int NULL,
 	id_empleador int NOT NULL,
 	calificacion_desde double NULL,
@@ -316,10 +316,16 @@ INSERT INTO empleado_tarea (id_empleado, id_tarea)
 VALUES (2, 4);
 INSERT INTO empleado_tarea (id_empleado, id_tarea)
 VALUES (2, 5);
+INSERT INTO empleado_tarea (id_empleado, id_tarea)
+VALUES (2, 6);
 INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
 VALUES (23562363, 'Maria', 'Gutierrez', '1977-04-02', 0, 'Yi 2110', 'Uruguayo', 'mguti@gmail.com', '095251600', 38, '', 'images/Perfiles/MGutierrez.png', 0, 5);
 INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
 VALUES (3, 1);
+INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
+VALUES (3, 2);
+INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
+VALUES (3, 3);
 INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
 VALUES (3, 4);
 INSERT INTO empleado_tarea (id_empleado, id_tarea)
@@ -328,6 +334,10 @@ INSERT INTO empleado_tarea (id_empleado, id_tarea)
 VALUES (3, 4);
 INSERT INTO empleado_tarea (id_empleado, id_tarea)
 VALUES (3, 5);
+INSERT INTO empleado_tarea (id_empleado, id_tarea)
+VALUES (3, 6);
+INSERT INTO empleado_tarea (id_empleado, id_tarea)
+VALUES (3, 7);
 
 -- En tabla "referencia"
 INSERT INTO referencia (id_empleado, nombre, apellido, telefono, fecha_desde, fecha_hasta)

@@ -38,6 +38,8 @@ from Implementacion.Tarea import getTareasRegistradas
 from Implementacion.Disponibilidad import getDisponibilidadesRegistradas
 from Implementacion.Referencia import getReferenciaByID
 from Implementacion.Referencia import getReferenciasEmpleado
+from Implementacion.Mensaje import getMensajesParaEmpleado
+from Implementacion.Mensaje import getMensajesParaEmpleador
 
 ALLOWED_EXTENSIONS = set(['jpg', 'png', 'jpeg', 'bmp'])
 
@@ -45,8 +47,8 @@ app = Flask(__name__)
 
 #baseDatos = connectionDb(app, 'remotemysql.com')
 #baseDatos = connectionDb(app, 'aws')
-#baseDatos = connectionDb(app, 'CloudAccess')
-baseDatos = connectionDb(app, 'local')
+baseDatos = connectionDb(app, 'CloudAccess')
+#baseDatos = connectionDb(app, 'local')
 
 
 # session
@@ -395,7 +397,7 @@ def cancelar_cuenta():
         return 'No implementada'
 
 
-@app.route('/HomeEmpleados/')
+@app.route('/HomeEmpleados/', methods=['POST','GET'])
 def inicio_empleados():
     if session.get('usertype') == None:
         return redirect(url_for('logueo'))
@@ -408,7 +410,7 @@ def inicio_empleados():
         return render_template('HomeEmpleados.html', sujeto=empleado)
 
 
-@app.route('/HomeEmpleadores/')
+@app.route('/HomeEmpleadores/', methods=['POST','GET'])
 def inicio_empleadores():
     if session.get('usertype') == None:
         return redirect(url_for('logueo'))
@@ -969,7 +971,6 @@ def mis_postulaciones():
         return render_template('TusPostulaciones.html', postulaciones = misPostulaciones)
 
 
-
 @app.route('/MisVinculos')
 def mis_vinculos():
     if session.get('usertype') == None:
@@ -1011,7 +1012,6 @@ def ver_vinculos(idVinculo):
             return redirect(url_for('logueo'))
 
 
-
 @app.route('/Candidatos/<id_anuncio>', methods=['POST', 'GET'])
 def listar_candidatos(id_anuncio):
     if session.get('usertype') == None:
@@ -1031,23 +1031,44 @@ def listar_candidatos(id_anuncio):
         return render_template('ListaCandidatos.html', elemPares=pares, elemImpares=impares, elanuncio=anuncio)
 
 
-@app.route('/Mensajes/')
-def mensajes():
+@app.route('/MensajesEmpleado/<idEmpleado>/<idEmpleador>', methods=['POST', 'GET'])
+def mensajes_empleado(idEmpleado, idEmpleador):
     if session.get('usertype') == None:
         return redirect(url_for('logueo'))
     elif session.get('usertype') == 'Administrador':
         return redirect(url_for('administrar'))
+    elif session.get('usertype') == 'Empleador':
+        return redirect(url_for('inicio_empleadores'))
     else:
-        id_persona = 0
-        if session.get('usertype') == 'Empleado':
-            id_persona = session['id_empleado']
-            persona : Empleado = getEmpleadoByID(baseDatos, id_persona)
-        elif session.get('usertype') == 'Empleador':
-            id_persona = session['id_empleador']
-            persona : Empleador = getEmpleadorByID(baseDatos, id_persona)
+        diccMensajes = getMensajesParaEmpleado(baseDatos, idEmpleado)
+        if idEmpleador == 0:
+            # carga inicial del form, no hay remitente seleccionado, 
+            # solo se va a cargar la lista de remitentes con panel de mensajes vacío
+            elEmpleador = None
+        else:
+            elEmpleador = getEmpleadorByID(baseDatos, idEmpleador)
+        empleado : Empleado = getEmpleadoByID(baseDatos, idEmpleado)
+        return render_template('Mensajes.html', mensajes=diccMensajes, remitente=elEmpleador)
 
-        # persona
-        return render_template('Mensajes.html', )
+
+@app.route('/MensajesEmpleador/<idEmpleador>/<idEmpleado>', methods=['POST', 'GET'])
+def mensajes_empleador(idEmpleador, idEmpleado):
+    if session.get('usertype') == None:
+        return redirect(url_for('logueo'))
+    elif session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    elif session.get('usertype') == 'Empleado':
+        return redirect(url_for('inicio_empleados'))
+    else:
+        diccMensajes = getMensajesParaEmpleador(baseDatos, idEmpleador)
+        if idEmpleado == 0:
+            # carga inicial del form, no hay remitente seleccionado, 
+            # solo se va a cargar la lista de remitentes con panel de mensajes vacío
+            elEmpleado = None
+        else:
+            elEmpleado = getEmpleadoByID(baseDatos, idEmpleado)
+        empleador : Empleador = getEmpleadorByID(baseDatos, idEmpleador)
+        return render_template('Mensajes.html', mensajes=diccMensajes, remitente=elEmpleado)
 
 
 @app.route('/Contratar/<idEmpleado>')
@@ -1095,11 +1116,6 @@ def contactar(idEmpleado):
 
         flash('Empleado Contratado!')
         return render_template('contactoEmpleado.html', data=empleado)
-
-
-# ***** Pendientes ***********
-
-# ****************************
 
 
 if __name__ == '__main__':

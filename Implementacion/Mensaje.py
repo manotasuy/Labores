@@ -1,4 +1,5 @@
 from datetime import datetime
+from collections import defaultdict
 # si establezco from modulo import clase obtengo referencia ciclíca [Inicio]
 from Implementacion import Empleador
 from Implementacion import Empleado
@@ -20,8 +21,8 @@ class Mensaje:
             pFecha,
             pMensaje):
         self.id = pId
-        self.empleado = pEmpleado
-        self.empleador = pEmpleador
+        self.empleado : Empleado = pEmpleado
+        self.empleador : Empleador = pEmpleador
         self.anuncio = pAnuncio
         self.fecha = pFecha
         self.mensaje = pMensaje
@@ -118,7 +119,7 @@ def getMensajeByID(bd, id):
         print("Error en getMensajeByID ", e)
 
 
-def getMensajesEmpleadosParaEmpleador(bd, id_empleador, id_empleado):
+def getMensajesParaEmpleado(bd, id_empleado):
     try:
         cursor = bd.connection.cursor()
         cursor.execute('''
@@ -129,18 +130,74 @@ def getMensajesEmpleadosParaEmpleador(bd, id_empleador, id_empleado):
                 id_anuncio,
                 fecha,
                 mensaje
-            FROM mensaje WHERE id = {}'''.format(id))
+            FROM mensaje WHERE id_empleado = {}'''.format(id_empleado))
         retorno = cursor.fetchall()
         bd.connection.commit()
         cursor.close()
-        mensaje = Mensaje(
-            retorno[0][0],
-            getEmpleadoByID(bd, retorno[0][1]),
-            getEmpleadorByID(bd, retorno[0][2]),
-            getAnuncioByID(bd, retorno[0][3]),
-            retorno[0][4],
-            retorno[0][5]
-        )
-        return mensaje
+
+        diccRetorno = defaultdict(list)
+        listaMensaje = list()
+
+        # debo devolver un dicc con clave:valor id_empleador:lista de mensajes del empleador
+        # entonces al consultar clave obtengo la lista de mensajes con ese empleador
+        
+        for registro in retorno:
+            mensaje = Mensaje(
+                retorno[0][0],
+                getEmpleadoByID(bd, id_empleado),
+                getEmpleadorByID(bd, retorno[0][2]),
+                getAnuncioByID(bd, retorno[0][3]),
+                retorno[0][4],
+                retorno[0][5]
+            )
+            clave = mensaje.empleador.id
+            if clave not in diccRetorno:
+                diccRetorno[clave] = list().append(mensaje)
+            else:
+                diccRetorno[clave].append(mensaje)
+
+        return diccRetorno
     except Exception as e:
-        print("Error en getMensajeByID ", e)
+        print("Error en getMensajesParaEmpleado ", e)
+
+
+def getMensajesParaEmpleador(bd, id_empleador):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('''
+            SELECT
+                id,
+                id_empleado,
+                id_empleador,
+                id_anuncio,
+                fecha,
+                mensaje
+            FROM mensaje WHERE id_empleador = {}'''.format(id_empleador))
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+
+        diccRetorno = defaultdict(list)
+        listaMensaje = list()
+
+        # debo devolver un dicc con clave:valor id_empleado:lista de mensajes del empleado
+        # entonces al consultar clave obtengo la lista de mensajes con ese empleado
+        
+        for registro in retorno:
+            mensaje = Mensaje(
+                retorno[0][0],
+                getEmpleadoByID(bd, retorno[0][1]),
+                getEmpleadorByID(bd, id_empleador),
+                getAnuncioByID(bd, retorno[0][3]),
+                retorno[0][4],
+                retorno[0][5]
+            )
+            clave = mensaje.empleado.id
+            if clave not in diccRetorno:
+                diccRetorno[clave] = list().append(mensaje)
+            else:
+                diccRetorno[clave].append(mensaje)
+
+        return diccRetorno
+    except Exception as e:
+        print("Error en getMensajesParaEmpleador ", e)
