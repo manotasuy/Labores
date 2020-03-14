@@ -26,3 +26,36 @@ def getDisponibilidadesRegistradas(bd):
         return disponibilidades
     except Exception as e:
         print("Error en getDisponibilidadesRegistradas ", e)
+
+
+def agregarDisponibilidadEmpleado(bd, id_disponibilidad, id_empleado):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad) VALUES ({}, {})'.format(id_empleado, id_disponibilidad))
+        bd.connection.commit()
+        cursor.close()
+        #print('Disponibilidad "', id_disponibilidad, '" agregada en el empleado')
+    except Exception as e:
+        print("Error en agregarDisponibilidadEmpleado ", e)
+
+
+def quitarDisponibilidadEmpleado(bd, id_disponibilidad, id_empleado):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('DELETE FROM empleado_disponibilidad WHERE id_empleado = {} AND id_disponibilidad = {}'.format(id_empleado, id_disponibilidad))
+        bd.connection.commit()
+        cursor.close()
+        #print('Disponibilidad quitada del empleado')
+    except Exception as e:
+        print("Error en quitarDisponibilidadEmpleado ", e)
+
+
+def quitarTodaLaDisponibilidadDelEmpleado(bd, id_empleado):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('DELETE FROM empleado_disponibilidad WHERE id_empleado = {}'.format(id_empleado))
+        bd.connection.commit()
+        cursor.close()
+        #print('Toda disponibilidad quitada del empleado')
+    except Exception as e:
+        print("Error en quitarTodaLaDisponibilidadDelEmpleado ", e)

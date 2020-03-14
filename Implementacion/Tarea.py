@@ -25,3 +25,36 @@ def getTareasRegistradas(bd):
         return tareas
     except Exception as e:
         print("Error en getTareasRegistradas ", e)
+
+
+def agregarTareaEmpleado(bd, id_tarea, id_empleado):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('INSERT INTO empleado_tarea (id_empleado, id_tarea) VALUES ({}, {})'.format(id_empleado, id_tarea))
+        bd.connection.commit()
+        cursor.close()
+        #print('Tarea "', id_tarea, '" agregada en el empleado')
+    except Exception as e:
+        print("Error en agregarTareaEmpleado ", e)
+
+
+def quitarTareaEmpleado(bd, id_tarea, id_empleado):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('DELETE FROM empleado_tarea WHERE id_empleado = {} AND id_tarea = {}'.format(id_empleado, id_tarea))
+        bd.connection.commit()
+        cursor.close()
+        #print('Tarea quitada del empleado')
+    except Exception as e:
+        print("Error en quitarTareaEmpleado ", e)
+
+
+def quitarTodasLasTareasDelEmpleado(bd, id_empleado):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('DELETE FROM empleado_tarea WHERE id_empleado = {}'.format(id_empleado))
+        bd.connection.commit()
+        cursor.close()
+        #print('Todas las tareas quitadas del empleado')
+    except Exception as e:
+        print("Error en quitarTodasLasTareasDelEmpleado ", e)

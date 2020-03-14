@@ -8,9 +8,7 @@
 -- USE LvP2Ka0CsK;
 
 -- Si se usa AWS o localhost
--- USE bdlabores;
-
-USE amqtvopx;
+ USE bdlabores;
 
 DROP TABLE IF EXISTS vinculo;
 DROP TABLE IF EXISTS mensaje;
@@ -99,7 +97,7 @@ CREATE TABLE IF NOT EXISTS empleado (
 	nombre varchar(50) NOT NULL,
 	apellido varchar(50) NOT NULL,
 	fecha_nacimiento date NULL,
-	genero bit(1) NOT NULL, -- F:Femenino, M:Masculino
+	genero bit(1) NOT NULL, -- 0:Femenino, 1:Masculino
 	domicilio varchar(50) DEFAULT NULL,
 	nacionalidad varchar(50) DEFAULT NULL,
 	email varchar(50) DEFAULT NULL,
@@ -252,9 +250,9 @@ VALUES ('11111111', '1', 2);
 INSERT INTO usuario (usuario, clave, id_tipo) 
 VALUES ('22222222', '2', 3);
 INSERT INTO usuario (usuario, clave, id_tipo) 
-VALUES ('38628415', 'prueba', 2);
+VALUES ('38628415', 'prueba', 3);
 INSERT INTO usuario (usuario, clave, id_tipo) 
-VALUES ('23562363', 'prueba', 2);
+VALUES ('23562363', 'prueba', 3);
 
 -- En tabla "disponibilidad"
 INSERT INTO disponibilidad (descripcion) 
@@ -338,7 +336,7 @@ VALUES (1, 'Leopoldo Garcia', '096524741', '2017-06-21', '2019-11-05');
 
 -- En tabla "empleador"
 INSERT INTO empleador (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, registro_bps, foto, promedio_calificacion, id_usuario)
-VALUES (11111111, 'Luisa', 'Ramos', '1975-05-22', 0, 'Yi 1234', 'Uruguayo', 'lramos@gmail.com', '099123456', 0, 'images/Perfiles/LRamos.png', 0, 2);
+VALUES (11111111, 'Luisa', 'Ramos', '1975-05-22', 0, 'Yi 1234', 'Uruguayo', 'lramos@gmail.com', '099123456', '', 'images/Perfiles/LRamos.png', 0, 2);
 
 -- En tabla "anuncio"
 INSERT INTO anuncio (titulo, descripcion, fecha_inicio, fecha_cierre, estado, experiencia, pago_hora, id_empleador, calificacion_desde, calificacion_hasta, tiene_vinculo)

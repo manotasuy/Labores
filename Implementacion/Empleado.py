@@ -1,10 +1,16 @@
 from datetime import datetime
 from Implementacion.Usuario import getUsuarioByID
 from Implementacion.Tarea import Tarea
+from Implementacion.Tarea import agregarTareaEmpleado
+from Implementacion.Tarea import quitarTareaEmpleado
+from Implementacion.Tarea import quitarTodasLasTareasDelEmpleado
+from Implementacion.Disponibilidad import Disponibilidad
+from Implementacion.Disponibilidad import agregarDisponibilidadEmpleado
+from Implementacion.Disponibilidad import quitarDisponibilidadEmpleado
+from Implementacion.Disponibilidad import quitarTodaLaDisponibilidadDelEmpleado
 from Implementacion.DTOAuxEmpleado import TareaSeleccion
 from Implementacion.DTOAuxEmpleado import DisponibilidadSeleccion
 from Implementacion.Usuario import Usuario
-from Implementacion.Disponibilidad import Disponibilidad
 
 
 class Empleado:
@@ -37,12 +43,6 @@ class Empleado:
 
     def crearEmpleado(self, bd):
         try:
-            intGenero: int
-            if self.genero == 'Femenino':
-                intGenero = 0
-            else:
-                intGenero = 1
-
             if self.foto is None or self.foto == '':
                 self.foto = 'images/Pefiles/NoImage.png'
 
@@ -71,7 +71,7 @@ class Empleado:
                                self.nombre,
                                self.apellido,
                                self.nacimiento,
-                               intGenero,
+                               self.genero,
                                self.domicilio,
                                self.nacionalidad,
                                self.email,
@@ -84,12 +84,30 @@ class Empleado:
                            ))
             bd.connection.commit()
             cursor.close()
+            cursor = bd.connection.cursor()
+            cursor.execute('SELECT MAX(id) FROM empleado')
+            retorno = cursor.fetchall()
+            idEmpleado = retorno[0][0]
+            bd.connection.commit()
+            cursor.close()
+
+            # Tengo que recorrer las tareas del empleado y grabarlas en la BD
+            if self.tareas is not None:
+                for tarea in self.tareas:
+                    agregarTareaEmpleado(bd, tarea.id, self.id)
+            
+            # Tengo que recorrer la disponibilidad del empleado y grabarlas en la BD
+            if self.disponibilidad is not None:
+                for dispo in self.disponibilidad:
+                    agregarDisponibilidadEmpleado(bd, dispo.id, self.id)
+
             print('Empleado Creado')
         except Exception as e:
             print("Error en creación del empleado ", e)
 
     def modificarEmpleado(self, bd):
         try:
+
             if self.foto is None or self.foto == '':
                 self.foto = 'images/Perfiles/NoImage.png'
 
@@ -126,6 +144,20 @@ class Empleado:
                            ))
             bd.connection.commit()
             cursor.close()
+
+            # Primero debo borrar las tareas y disponibilidad que tenga asignadas el empleado
+            quitarTodasLasTareasDelEmpleado(bd, self.id)
+            quitarTodaLaDisponibilidadDelEmpleado(bd, self.id)
+            
+            # Luego registro las tareas y disponibilidad que del empleado que quiero modificar
+            if self.tareas is not None:
+                for tarea in self.tareas:
+                    agregarTareaEmpleado(bd, tarea.id, self.id)
+            
+            if self.disponibilidad is not None:
+                for dispo in self.disponibilidad:
+                    agregarDisponibilidadEmpleado(bd, dispo.id, self.id)
+
             print('Empleado modificado')
         except Exception as e:
             print("Error en edición de empleado ", e)

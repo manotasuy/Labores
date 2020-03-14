@@ -30,12 +30,6 @@ class Empleador:
 
     def crearEmpleador(self, bd):
         try:
-            intGenero: int
-            if self.genero == 'Femenino':
-                intGenero = 0
-            else:
-                intGenero = 1
-            #fechaFormateada = self.nacimiento.strftime('%Y-%m-%d')
             if self.foto is None or self.foto == '':
                 self.foto = 'images/Perfiles/NoImage.png'
 
@@ -62,9 +56,8 @@ class Empleador:
                                self.cedula,
                                self.nombre,
                                self.apellido,
-                               # fechaFormateada,
                                self.nacimiento,
-                               intGenero,
+                               self.genero,
                                self.domicilio,
                                self.nacionalidad,
                                self.email,
@@ -82,7 +75,6 @@ class Empleador:
 
     def modificarEmpleador(self, bd):
         try:
-            # print('Self: ', self)
             if self.foto is None or self.foto == '':
                 self.foto = 'images/Perfiles/NoImage.png'
 

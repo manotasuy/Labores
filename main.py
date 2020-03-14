@@ -16,6 +16,8 @@ from Implementacion.Disponibilidad import Disponibilidad
 from Implementacion.Vinculo import Vinculo
 from Implementacion.Mensaje import Mensaje
 from Implementacion.DTOAuxEmpleado import DTOAuxEmpleado
+from Implementacion.DTOAuxEmpleado import TareaSeleccion
+from Implementacion.DTOAuxEmpleado import DisponibilidadSeleccion
 from Implementacion.Referencia import Referencia
 
 from Implementacion.Usuario import getUsuarioByID
@@ -40,8 +42,8 @@ from Implementacion.Referencia import getReferenciasEmpleado
 app = Flask(__name__)
 
 #baseDatos = connectionDb(app, 'local')
-baseDatos = connectionDb(app, 'remotemysql.com')
-#baseDatos = connectionDb(app, 'CloudAccess')
+#baseDatos = connectionDb(app, 'remotemysql.com')
+baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'aws')
 
 
@@ -180,7 +182,6 @@ def perfil(opcion):
 
                 dtoAuxEmpleado = DTOAuxEmpleado(
                     tareasSeleccion, disponibilidadSeleccion)
-                print('Empleado: ', empleado)
             return render_template('Perfil.html', tipo=opcion, data=empleado, aux=dtoAuxEmpleado)
 
         elif opcion == 'Empleador':
@@ -188,6 +189,9 @@ def perfil(opcion):
                 # obtengo los datos del empleador
                 idEmpleador = session['id_empleador']
                 empleador = getEmpleadorByID(baseDatos, idEmpleador)
+                # convierto byte a entero, el atributo "género" en mysql es de tipo bit
+                generoInt = int.from_bytes(empleador.genero, "big")
+                empleador.genero = generoInt
             return render_template('Perfil.html', tipo=opcion, data=empleador)
 
 
@@ -198,10 +202,14 @@ def guardar_perfil(tipo):
     else:
         if request.method == 'POST':
             parametros = request.form
+
+            #for param in parametros:
+                #print('Parámetro: ', param)
+                
             nombre = parametros['nombre']
             apellido = parametros['apellido']
             nacimiento = parametros['cumple']
-            genero = 'Masculino'
+            genero = int(parametros['genero'])
             domicilio = parametros['domicilio']
             nacionalidad = parametros['nacionalidad']
             mail = parametros['email']
@@ -227,8 +235,35 @@ def guardar_perfil(tipo):
                 # como es edición de perfil debo modificar la contraseña y el empleado
                 if logueado:
                     # modificar contraseña?
-                    # experiencia = request.form.get('experiencia')
-                    experiencia = parametros['experiencia']
+
+                    # recorrer la disponibilidad seleccionada y cargarsela al empleado
+                    disponibilidad = list()
+                    disponibilidadesRegistradas = getDisponibilidadesRegistradas(baseDatos)
+                    for disp in disponibilidadesRegistradas:
+                        indice = str(disponibilidadesRegistradas.index(disp)+1)
+                        if 'disp'+indice in parametros:
+                            #print('**** Debería cargar esta disponibilidad: ID=', disp.id, ', DESC=', disp.descripcion)
+                            d = Disponibilidad(disp.id, disp.descripcion)
+                            disponibilidad.append(d)
+                    empleado.cargarDisponibilidad(disponibilidad)
+
+                    # recorrer las tareas seleccionadas y cargarselas al empleado
+                    tareas = list()
+                    tareasRegistradas = getTareasRegistradas(baseDatos)
+                    for tarea in tareasRegistradas:
+                        indice = str(tareasRegistradas.index(tarea)+1)
+                        if 'tarea'+indice in parametros:
+                            #print('**** Debería cargar esta tarea: ID=', tarea.id, ', DESC=', tarea.descripcion)
+                            t = Tarea(tarea.id, tarea.descripcion)
+                            tareas.append(t)
+                    empleado.cargarTareas(tareas)
+
+                    tiene_experiencia = parametros['experiencia']
+                    if tiene_experiencia == '1':
+                        experiencia = parametros['mesesExperiencia']
+                    else:
+                        experiencia = 0
+
                     descripcion = parametros['presentacion']
                     foto = parametros['fotoPerfil']
                     empleado.id = session['id_empleado']
@@ -267,7 +302,12 @@ def guardar_perfil(tipo):
                 # como es edición de perfil debo modificar la contraseña y el empleador
                 if logueado:
                     # modificar contraseña?
-                    regBPS = parametros['empleadorNumRegBPS']
+                    tiene_bps = parametros['bps']
+                    if tiene_bps == '1':
+                        regBPS = parametros['empleadorNumRegBPS']
+                    else:
+                        regBPS = '0'
+
                     foto = parametros['fotoPerfil']
                     empleador.registroBps = regBPS
                     if foto != '':
@@ -721,7 +761,7 @@ def listar_anuncios():
                     getAnuncioByID(baseDatos, a[0])
                 ]
                 listaMatcheo.append(unAnuncio)
-        
+                
         misPostulaciones = getPostulacionesEmpleadoIDs(baseDatos, idEmpleado)
         listaIdsMisAnunciosPostulados = []
         for miPostulacion in misPostulaciones:
@@ -796,7 +836,7 @@ def ver_anuncio(idAnuncio, postulacion):
         # el desempaquetado tendrá 3 claves, 'empleador', 'anuncio' y psotulacion
         # 'empleador' : [nombre, apellido, foto, registroBps]
         # 'anuncio' : [titulo, descripcion, disponibilidad, [tareas], pago_hora, experiencia, idAnuncio]
-        # 'postulación': contiene 1 si el usuario está postulado al anuncio, y 0 si no lo está
+		# 'postulación': contiene 1 si el usuario está postulado al anuncio, y 0 si no lo está
         return render_template('verOferta.html', **context)
 
 
@@ -971,10 +1011,6 @@ def borrar_referencia(id_referencia):
 
 
 # ***** Pendientes ***********
-@app.route('/BuscarAnuncio')
-def buscar_anuncio():
-    return 'Está pendiente'
-
 
 @app.route('/MisVinculos')
 def mis_vinculos():
