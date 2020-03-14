@@ -475,8 +475,13 @@ def publicar_anuncio():
             # else:
             # nestado = 0
             # En el alta el anuncio queda activo, si quiere desactivar debe modificarlo [Fin]
-            nexperiencia = request.form.get('radioExperiencia')
+            if request.form['radioExperiencia'] == 'experienciaSi':
+                nexperiencia = 1
+            else:
+                nexperiencia = 0
+            print("request.form.get('radioExperiencia'):", request.form.get('radioExperiencia'))
             npago_hora = request.form['pagoPorHora']
+            print('nexperiencia: ',nexperiencia)
             ncal_desde = None  # por ahora no se maneja a nivel de anuncio
             ncal_hasta = None  # por ahora no se maneja a nivel de anuncio
             nvinculo = False  # cuando se crea no hay vínculo
@@ -610,6 +615,10 @@ def actualizandoAnuncio(idAnuncio):
             estado = 1
         else:
             estado = 0
+        if anuncio.experiencia == b'\x01':
+            experiencia = 1
+        else:
+            experiencia = 0
         lista = [
             idAnuncio,
             anuncio.titulo,
@@ -625,10 +634,11 @@ def actualizandoAnuncio(idAnuncio):
             anuncio.cuidado_bebes,
             anuncio.cuidado_adultos,
             anuncio.cuidado_mascotas,
-            anuncio.experiencia,
+            experiencia,
             anuncio.pago_hora,
             estado
         ]
+        print(lista[14])
         return render_template('editarAnuncio.html', anuncio=lista)
 
 
@@ -663,7 +673,10 @@ def editandoAnuncio(idAnuncio):
                 new_estado = 1
             elif request.form.get('radioEstado') == '0':
                 new_estado = 0
-            new_experiencia = request.form.get('radioExperiencia')
+            if request.form.get('radioExperiencia') == '1':
+                new_experiencia = 1
+            elif request.form.get('radioExperiencia') == '0':
+                new_experiencia = 0
             new_pago_hora = request.form['pagoPorHora']
             new_cal_desde = None  # por ahora no se maneja a nivel de anuncio
             new_cal_hasta = None  # por ahora no se maneja a nivel de anuncio
@@ -941,6 +954,49 @@ def mis_postulaciones():
         return render_template('TusPostulaciones.html', postulaciones = misPostulaciones)
 
 
+
+@app.route('/MisVinculos')
+def mis_vinculos():
+    if session.get('usertype') == None:
+        return redirect(url_for('logueo'))
+    elif session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    else:
+        if session.get('usertype') == 'Empleado':
+            empleado = getEmpleadoByID(baseDatos, session['id_empleado'])
+            context = {
+                'vinculos': getVinculoByEmpleado(baseDatos, empleado),
+                'sesion': session.get('usertype')
+            }
+            return render_template('MisVinculos.html', **context)
+        elif session.get('usertype') == 'Empleador':
+            empleador = getEmpleadoByID(baseDatos, session['id_empleador'])
+            context = {
+                'vinculos': getVinculoByEmpleador(baseDatos, empleador),
+                'sesion': session.get('usertype')
+            }
+            return render_template('MisVinculos.html', **context)
+        else:
+            return redirect(url_for('logueo'))
+
+@app.route('/verVinculo/<idVinculo>')
+def ver_vinculos(idVinculo):
+    if session.get('usertype') == None:
+        return redirect(url_for('logueo'))
+    elif session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    else:
+        if session.get('usertype') == 'Empleado':
+
+            return 'en desarrollo'
+        elif session.get('usertype') == 'Empleador':
+
+            return 'en desarrollo'
+        else:
+            return redirect(url_for('logueo'))
+
+
+
 @app.route('/Candidatos/<id_anuncio>', methods=['POST', 'GET'])
 def listar_candidatos(id_anuncio):
     if session.get('usertype') == None:
@@ -1027,10 +1083,6 @@ def contactar(idEmpleado):
 
 
 # ***** Pendientes ***********
-
-@app.route('/MisVinculos')
-def mis_vinculos():
-    return 'Está pendiente'
 
 # ****************************
 

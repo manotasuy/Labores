@@ -147,3 +147,83 @@ def getVinculoByID(bd, id):
         return vinculo
     except Exception as e:
         print("Error en getVinculoByID ", e)
+
+
+def getVinculoByEmpleado(bd, empleado):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('''
+            SELECT
+                id,
+                id_empleado,
+                id_empleador,
+                id_anuncio,
+                fecha_inicio,
+                fecha_fin,
+                motivo_fin,
+                descripcion,
+                calificacion_empleado,
+                calificacion_empleador
+            FROM vinculo WHERE id_empleado = {}'''.format(empleado.id))
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+        vinculos = []
+        for v in retorno:
+            vinculo = Vinculo(
+                v[0],
+                getEmpleadoByID(bd, v[1]),
+                getEmpleadorByID(bd, v[2]),
+                getAnuncioByID(bd, v[3]),
+                v[4],
+                v[5],
+                v[6],
+                v[7],
+                v[8],
+                v[9]
+            )
+            vinculos.append(vinculo)
+        return vinculos
+    except Exception as e:
+        print("Error en getVinculoByEmpleado ", e)
+
+
+def getVinculoByEmpleador(bd, empleador):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('''
+            SELECT
+                id,
+                id_empleado,
+                id_empleador,
+                id_anuncio,
+                fecha_inicio,
+                fecha_fin,
+                motivo_fin,
+                descripcion,
+                calificacion_empleado,
+                calificacion_empleador
+            FROM vinculo WHERE id_empleado = {}'''.format(empleador.id))
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+        vinculos = []
+        for v in retorno:
+            vinculo = Vinculo(
+                v[0],
+                getEmpleadoByID(bd, v[1]),
+                getEmpleadorByID(bd, v[2]),
+                getAnuncioByID(bd, v[3]),
+                v[4],
+                v[5],
+                v[6],
+                v[7],
+                v[8],
+                v[9]
+            )
+            vinculos.append(vinculo)
+        return vinculos
+    except Exception as e:
+        print("Error en getVinculoByEmpleado ", e)
+
+

@@ -122,16 +122,21 @@
 						</div>
 					</div>
 				</div>
+				<!--	<input id="hora" name="radioDisponibilidad" value="hora" type="radio"
+							class="custom-control-input" checked="" required=""
+							{% if session['usertype'] == 'Empleado' %} disabled {% endif %}>
+						<label class="custom-control-label" for="hora">Por hora</label>
+					-->
 
 				<div class="d-block my-3 mb-4">
 					<p class="mb-3">Búscas a alguien con experiencia?</p>
 					<div class="custom-control custom-radio ml-5">
 						<input id="experienciaSi" name="radioExperiencia" type="radio" class="custom-control-input"
-							checked="" required="" {% if session['usertype'] == 'Empleado' %} disabled {% endif %}>
+							checked="" value="experienciaSi" required="" {% if session['usertype'] == 'Empleado' %} disabled {% endif %}>
 						<label class="custom-control-label" for="experienciaSi">Si</label>
 					</div>
 					<div class="custom-control custom-radio ml-5">
-						<input id="experienciaNo" name="radioExperiencia" type="radio" class="custom-control-input"
+						<input id="experienciaNo" value="experienciaNo" name="radioExperiencia" type="radio" class="custom-control-input"
 							required="" {% if session['usertype'] == 'Empleado' %} disabled {% endif %}>
 						<label class="custom-control-label" for="experienciaNo">No es necesario</label>
 					</div>
