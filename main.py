@@ -29,7 +29,7 @@ from Implementacion.Empleado import getEmpleadoByUsuarioID
 from Implementacion.Empleado import getTareasEmpleado
 from Implementacion.Empleado import getDisponibilidadEmpleado
 from Implementacion.Anuncio import getAnuncioByID
-from Implementacion.Vinculo import getVinculoByID
+from Implementacion.Vinculo import getVinculoByID, getVinculoByEmpleado, getVinculoByEmpleador
 from Implementacion.Postulacion import getPostulacionesAnuncio
 from Implementacion.Postulacion import getPostulacionesEmpleado
 from Implementacion.Postulacion import getPostulacionEmpleadoAnuncio
@@ -45,8 +45,8 @@ app = Flask(__name__)
 
 #baseDatos = connectionDb(app, 'remotemysql.com')
 #baseDatos = connectionDb(app, 'aws')
-baseDatos = connectionDb(app, 'CloudAccess')
-#baseDatos = connectionDb(app, 'local')
+#baseDatos = connectionDb(app, 'CloudAccess')
+baseDatos = connectionDb(app, 'local')
 
 
 # session
@@ -611,11 +611,16 @@ def actualizandoAnuncio(idAnuncio):
     else:
         anuncio = getAnuncioByID(baseDatos, idAnuncio)
         print(anuncio)
-        if anuncio.estado == b'\x01':
+        
+        estadoInt = int.from_bytes(anuncio.estado, "big")
+        anuncio.estado = estadoInt
+
+
+        if anuncio.estado == 1:
             estado = 1
         else:
             estado = 0
-        if anuncio.experiencia == b'\x01':
+        if anuncio.experiencia == 1:
             experiencia = 1
         else:
             experiencia = 0
@@ -786,11 +791,12 @@ def listar_anuncios():
 
             idAnuncio = elAnuncio[0]
             disponibilidadAnuncio = elAnuncio[1].disponibilidad
-            experienciaAnuncio = None
-            if elAnuncio[1].experiencia == b'\x00':
-                experienciaAnuncio = 0
-            else:
-                experienciaAnuncio = 1
+            experienciaAnuncio = elAnuncio[1].experiencia
+            print('la experiencia que VIENE de la BASE es: ', experienciaAnuncio)
+            #if elAnuncio[1].experiencia == 0:
+            #    experienciaAnuncio = 0
+            #else:
+            #    experienciaAnuncio = 1
             tareasAnuncio = []
 
             if elAnuncio[1].estado == b'\x01':
@@ -823,8 +829,17 @@ def listar_anuncios():
                 listaDeAnuncios.append(anun)
 
         listaMatcheo = []
+        print('Lista de anuncios: ', listaAnuncios)
         for a in listaDeAnuncios:
-            if a[1] in empl[2] and empl[0] >= a[2] and a[3] & empl[1] == a[3]:
+            print('disponibilidad anuncio: ',a[1])
+            print('disponibilidad émpleado: ',empl[2])
+            print('------------------------')
+            print('Experiencia del empleado: ', empl[0])
+            print('Experiencia del anuncio: ', a[2])
+            print('---------------------------')
+            print('tareas anuncio: ', a[3])
+            print('tareas empleado: ',empl[1])
+            if   a[3] & empl[1] == a[3] and a[1] in empl[2] and empl[0] >= a[2]:
                 unAnuncio = [
                     a[0],
                     getAnuncioByID(baseDatos, a[0])
@@ -883,7 +898,7 @@ def ver_anuncio(idAnuncio, postulacion):
             tareasAnuncio.append(9)
         if elAnuncio[0].cuidado_mascotas == True:
             tareasAnuncio.append(10)
-        if elAnuncio[0].experiencia == b'\x00':
+        if elAnuncio[0].experiencia == 0:
             experienciaAnuncio = 0
         else:
             experienciaAnuncio = 1
