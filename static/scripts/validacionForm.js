@@ -1,3 +1,5 @@
+/* <form ... method="POST" onsubmit="return validarReg();">*/
+
 /* Validacion para campos de registro de usuario*/
 function validarReg() {
     var nombre, apellido, ci, tel, cumple, domicilio, nacionalidad, email, password, repassword, expresion;
@@ -91,4 +93,43 @@ function validarAnuncio(){
         alert("El precio por hora debe de ser correcto");
         return false;
     }
+}
+
+/*
+
+Validacion extencion imagen
+
+<form method="POST" onchange="return validarExt()" > 
+    <input type="file" id="archivoInput">
+    <div id="muestraImg">
+
+    </div>
+*/ 
+
+
+function validarExt() {
+    var archivoInput, archivoRuta, extPermitidas;
+
+    archivoInput = document.getElementById("archivoInput");
+    archivoRuta = archivoInput.value;
+    extPermitidas = /(.IMG|.JPG|.PNG)$/i;
+
+    if(!extPermitidas.exec(archivoRuta)) 
+    {
+        alert("Asegurate haber seleccionado correctamente una imagen (.img, .jpg o .png)");
+        archivoInput.value="";
+        return false;
+    }
+    else {
+        if (archivoInput.files && archivoInput.files[0]) 
+        {
+            var visor = new FileReader();
+            visor.onload=function(e)
+            {
+                document.getElementById('muestraImg').innerHTML='<embed src="'+e.target.result+'" width="120" heigth="120">';
+            };
+            visor.readAsDataURL(archivoInput.files[0]);
+        }
+    }
+
 }
