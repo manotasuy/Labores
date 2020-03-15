@@ -29,7 +29,7 @@ from Implementacion.Empleado import getEmpleadoByUsuarioID
 from Implementacion.Empleado import getTareasEmpleado
 from Implementacion.Empleado import getDisponibilidadEmpleado
 from Implementacion.Anuncio import getAnuncioByID
-from Implementacion.Vinculo import getVinculoByID, getVinculoByEmpleado, getVinculoByEmpleador
+from Implementacion.Vinculo import getVinculoByID, getVinculoByEmpleado, getVinculoByEmpleador, getVinculoIDs
 from Implementacion.Postulacion import getPostulacionesAnuncio
 from Implementacion.Postulacion import getPostulacionesEmpleado
 from Implementacion.Postulacion import getPostulacionEmpleadoAnuncio
@@ -45,9 +45,9 @@ ALLOWED_EXTENSIONS = set(['jpg', 'png', 'jpeg', 'bmp'])
 
 app = Flask(__name__)
 
-#baseDatos = connectionDb(app, 'remotemysql.com')
+baseDatos = connectionDb(app, 'remotemysql.com')
 #baseDatos = connectionDb(app, 'aws')
-baseDatos = connectionDb(app, 'CloudAccess')
+#baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'local')
 
 
@@ -986,7 +986,8 @@ def mis_vinculos():
             }
             return render_template('MisVinculos.html', **context)
         elif session.get('usertype') == 'Empleador':
-            empleador = getEmpleadoByID(baseDatos, session['id_empleador'])
+            empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
+            
             context = {
                 'vinculos': getVinculoByEmpleador(baseDatos, empleador),
                 'sesion': session.get('usertype')
@@ -995,6 +996,8 @@ def mis_vinculos():
         else:
             return redirect(url_for('logueo'))
 
+
+
 @app.route('/verVinculo/<idVinculo>')
 def ver_vinculos(idVinculo):
     if session.get('usertype') == None:
@@ -1002,14 +1005,20 @@ def ver_vinculos(idVinculo):
     elif session.get('usertype') == 'Administrador':
         return redirect(url_for('administrar'))
     else:
-        if session.get('usertype') == 'Empleado':
+        vinculo = getVinculoIDs(baseDatos, idVinculo)
+        empleador = getEmpleadorByID(baseDatos, vinculo.empleador)
+        empleado = getEmpleadoByID(baseDatos, vinculo.empleado)
+        anuncio = getAnuncioByID(baseDatos, vinculo.anuncio)
+        print(anuncio.cuidado_ninios)
+        context = {
+            'vinculo' : vinculo,
+            'anuncio' : anuncio,
+            'empleado' : empleado,
+            'empleador' : empleador,
+            'user' : session.get('usertype')
+        }
+        return render_template('verVinculo.html', **context)
 
-            return 'en desarrollo'
-        elif session.get('usertype') == 'Empleador':
-
-            return 'en desarrollo'
-        else:
-            return redirect(url_for('logueo'))
 
 
 @app.route('/Candidatos/<id_anuncio>', methods=['POST', 'GET'])

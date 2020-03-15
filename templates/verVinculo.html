@@ -1,0 +1,236 @@
+{% extends 'page_layout.html' %}
+
+{% block referencias %}
+{% endblock %}
+
+{% block estilo %}
+{% endblock %}
+
+{% block titulo %}Labores - Ver anuncio{% endblock %}
+
+{% block contenido %}
+<div class="container">
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-5 mb-5">Vínculo</h1>
+
+            <form>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Inicio del vínculo:</label>
+                    <div class="col-sm-5">
+                        <label class="col-form-label">{{vinculo.fecha_inicio}}</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Fin del vínculo:</label>
+                    <div class="col-sm-5">
+                        <label class="col-form-label">
+                            {% if vinculo.fecha_fin == None %}
+                            Vínculo actualmente activo
+                            {% else %}
+                            {{vinculo.fecha_fin}}
+                            {% endif %}
+                        </label>
+                    </div>
+                </div>
+                {% if vinculo.motivo_fin != None %}
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Motivo de finalización:</label>
+                    <div class="col-sm-9">
+                        <textarea class="form-control" type="text" placeholder={{vinculo.motivo_fin}} rows="10" cols="20" rows="10" name="verOfertaDesc" readonly>{{anuncio[1]}}</textarea>
+                    </div>
+                </div>
+                {% endif %}
+
+                <hr class="mt-5 mb-5">
+        
+                <div class="d-block my-3 mt-5">
+                    <p>Tipo trabajo</p>
+                    <div class="custom-control custom-radio">
+                        <input id="dispHora" name="disponibilidad" type="radio" class="custom-control-input" required=""
+                               {% if anuncio.disponibilidad == 1%}
+                               checked=""
+                               {%else%}
+                               disabled
+                               {% endif %}>
+                        <label class="custom-control-label" for="dispHora">Por hora</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input id="dispJorn" name="disponibilidad" type="radio" class="custom-control-input" required=""
+                               {% if anuncio.disponibilidad == 2%}
+                               checked=""
+                               {%else%}
+                               disabled
+                               {% endif %}>
+                        <label class="custom-control-label" for="dispJorn">Por jornada</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input id="dispTarea" name="disponibilidad" type="radio" class="custom-control-input" required=""
+                               {% if anuncio.disponibilidad == 3%}
+                               checked=""
+                               {%else%}
+                               disabled
+                               {% endif %}>
+                        <label class="custom-control-label" for="dispTarea">Por tarea puntual</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input id="dispMes" name="disponibilidad" type="radio" class="custom-control-input" required=""
+                               {% if  anuncio.disponibilidad == 4%}
+                               checked=""
+                               {%else%}
+                               disabled
+                               {% endif %}>
+                        <label class="custom-control-label" for="dispMes">Por mes</label>
+                    </div>
+                </div>
+
+                <div class="d-block my-3 mt-5">
+                    <p>Tareas realizadas:</p>
+                    <div class="custom-control">
+                        <input id="tareaHogar" name="tareaHogar" type="checkbox" class="custom-control-input"
+                               {% if anuncio.hogar == True %}
+                               checked=""
+                               {% else %}
+                               disabled
+                               {% endif %}>
+                        <label class="custom-control-label" for="tareaHogar">Hogar</label>
+                    </div>
+                    <div class="custom-control">
+                        <input id="tareaOficina" name="tareaOficina" type="checkbox" class="custom-control-input"
+                               {% if anuncio.oficina == True %}
+                               checked=""
+                               {% else %}
+                               disabled
+                               {% endif %}>
+                        <label class="custom-control-label" for="tareaOficina">Oficina</label>
+                    </div>
+                    <div class="custom-control">
+                        <input id="tareaCocina" name="tareaCocina" type="checkbox" class="custom-control-input"
+                               {% if anuncio.cocinar == True %}
+                               checked=""
+                               {% else %}
+                               disabled
+                               {% endif %}>
+                        <label class="custom-control-label" for="tareaCocina">Cocinar</label>
+                    </div>
+                    <div class="custom-control">
+                        <input id="tareaLimpBañ" name="tareaLimpBañ" type="checkbox" class="custom-control-input"
+                               {% if anuncio.limp_banios == True %}
+                               checked=""
+                               {% else %}
+                               disabled
+                               {% endif %}>
+                        <label class="custom-control-label" for="tareaLimpBañ">Limpieza de baños</label>
+                    </div>
+                    <div class="custom-control">
+                        <input id="tareaLimpCoc" name="tareaLimpCoc" type="checkbox" class="custom-control-input"
+                               {% if anuncio.limp_cocinas == True %}
+                               checked=""
+                               {% else %}
+                               disabled
+                               {% endif %}>
+                        <label class="custom-control-label" for="tareaLimpCoc">Limpieza de cocina</label>
+                    </div>
+                    <div class="custom-control">
+                        <input id="tareaLimpDor" name="tareaLimpDor" type="checkbox" class="custom-control-input"
+                               {% if anuncio.limp_dormitorios == True %}
+                               checked=""
+                               {% else %}
+                               disabled
+                               {% endif %}>
+                        <label class="custom-control-label" for="tareaLimpDor">Limpieza de dormitorio</label>
+                    </div>
+                    <div class="custom-control">
+                        <input id="tareaCuidNiño" name="tareaCuidNiño" type="checkbox" class="custom-control-input"
+                               {% if anuncio.cuidado_ninios == True %}
+                               checked=""
+                               {% else %}
+                               disabled
+                               {% endif %}>
+                        <label class="custom-control-label" for="tareaCuidNiño">Cuidado de niños</label>
+                    </div>
+                    <div class="custom-control">
+                        <input id="tareaCuidBebe" name="tareaCuidBebe" type="checkbox" class="custom-control-input"
+                               {% if anuncio.cuidado_bebes == True %}
+                               checked=""
+                               {% else %}
+                               disabled
+                               {% endif %}>
+                        <label class="custom-control-label" for="tareaCuidBebe">Cuidado de bebes</label>
+                    </div>
+                    <div class="custom-control">
+                        <input id="tareaCuidAdulto" name="tareaCuidAdulto" type="checkbox" class="custom-control-input"
+                               {% if anuncio.cuidado_adultos == True %}
+                               checked=""
+                               {% else %}
+                               disabled
+                               {% endif %}>
+                        <label class="custom-control-label" for="tareaCuidAdulto">Adultos mayores</label>
+                    </div>
+                    <div class="custom-control">
+                        <input id="tareaCuidMasc" name="tareaCuidMasc" type="checkbox" class="custom-control-input"
+                               {% if anuncio.cuidado_mascotas == True %}
+                               checked=""
+                               {% else %}
+                               disabled
+                               {% endif %}>
+                        <label class="custom-control-label" for="tareaCuidMasc">Cuidado de mascotas</label>
+                    </div>
+                </div>
+
+                <hr class="mt-5 mb-5">
+                
+                <h1 class="display-6 mb-5">
+                    {% if user == 'Empleador' %}
+                    Datos del empleado:
+                    {% else %}
+                    Datos del empleador:
+                    {% endif %}
+                </h1>
+                <div class="row mb-5">
+                    <div class="card ml-5 mr-3 mb-3" style="max-width: 550px; min-width: 550px;">
+                        <div class="row no-gutters">
+                            <div class="form-group row ml-4 mt-2 mr-3">
+                                <img class="mb-4" 
+                                {% if user == 'Empleador' %}
+                                src="{{ url_for('static', filename=empleado.foto)}}" 
+                                {% else %}
+                                src="{{ url_for('static', filename=empleador.foto)}}" 
+                                {% endif %}
+                                alt="foto de contacto" width="125"
+                                     height="125">
+
+                            </div>
+                            <div class="col-md-8 mt-2">
+                                <div class="card-body">
+                                    <p class="card-text">
+                                        Nombre:<br>
+                                        <strong>
+                                        {% if user == 'Empleador' %}
+                                        {{empleado.nombre}} {{empleado.apellido}}
+                                        {% else %}
+                                        {{empleador.nombre}} {{empleador.apellido}}
+                                        {% endif %}
+                                        </strong>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+<!--
+                {% if postulacion == '0' %}
+                <a href="" type="button" class="btn btn-warning float-right">Terminar vínculo</a>
+                {% else %}
+                <button type="button" class="btn btn-success float-right" disabled></button>
+                {% endif %}    -->
+                <button type="button" class="btn btn-primary" onClick="history.go(-1)">Volver</button>
+             
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

@@ -49,9 +49,10 @@
 											<td>
 												<a href="/actualizandoAnuncio/{{ anuncio.0 }}"
 													class="btn btn-sm btn-primary btn-block">Editar</a>
-
+												{% if anuncio.5 == 1 %}
 												<a href="/Candidatos/{{ anuncio.0 }}"
 													class="btn btn-sm btn-success btn-block">Candidatos</a>
+												{% endif %}
 											</td>
 										</tr>
 										{% endfor %}

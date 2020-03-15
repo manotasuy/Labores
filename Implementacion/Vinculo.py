@@ -224,6 +224,40 @@ def getVinculoByEmpleador(bd, empleador):
             vinculos.append(vinculo)
         return vinculos
     except Exception as e:
-        print("Error en getVinculoByEmpleado ", e)
+        print("Error en getVinculoByEmpleador ", e)
 
+def getVinculoIDs(bd, id):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('''
+            SELECT
+                id,
+                id_empleado,
+                id_empleador,
+                id_anuncio,
+                fecha_inicio,
+                fecha_fin,
+                motivo_fin,
+                descripcion,
+                calificacion_empleado,
+                calificacion_empleador
+            FROM vinculo WHERE id = {}'''.format(id))
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+        vinculo = Vinculo(
+            retorno[0][0],
+            retorno[0][1],
+            retorno[0][2],
+            retorno[0][3],
+            retorno[0][4],
+            retorno[0][5],
+            retorno[0][6],
+            retorno[0][7],
+            retorno[0][8],
+            retorno[0][9]
+        )
+        return vinculo
+    except Exception as e:
+        print("Error en getVinculoIDs ", e)
 
