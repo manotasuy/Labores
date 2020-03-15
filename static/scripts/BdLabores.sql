@@ -310,7 +310,7 @@ VALUES ('Cuidado de Mascotas');
 
 -- En tabla "empleado"
 INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
-VALUES (22222222, 'Ramón', 'Santos', '1982-03-12', 1, 'Ejido 1857', 'Uruguayo', 'rsantos@gmail.com', '099987654', 0, '', 'images/Perfiles/RSantos.png', 0, 3);
+VALUES (22222222, 'Ramón', 'Santos', '1982-03-12', 1, 'Ejido 1857', 'Uruguayo', 'rsantos@gmail.com', '099987654', 0, 'Muy ordenado', 'images/Perfiles/RSantos.png', 0, 3);
 INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
 VALUES (1, 4);
 INSERT INTO empleado_tarea (id_empleado, id_tarea)
@@ -326,7 +326,7 @@ VALUES (1, 7);
 INSERT INTO empleado_tarea (id_empleado, id_tarea)
 VALUES (1, 9);
 INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
-VALUES (38628415, 'Juana', 'Perez', '1975-01-23', 0, 'Rodeau 1411', 'Uruguayo', 'jperez@gmail.com', '091030215', 25, '', 'images/Perfiles/JPerez.png', 0, 4);
+VALUES (38628415, 'Juana', 'Perez', '1975-01-23', 0, 'Rodeau 1411', 'Uruguayo', 'jperez@gmail.com', '091030215', 25, 'Proactiva', 'images/Perfiles/JPerez.png', 0, 4);
 INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
 VALUES (2, 1);
 INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)

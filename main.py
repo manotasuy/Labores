@@ -161,6 +161,7 @@ def vista_perfil(opcion, id):
             # convierto byte a entero, el atributo "género" en mysql es de tipo bit
             generoInt = int.from_bytes(objeto.genero, "big")
             objeto.genero = generoInt
+
             dtoAuxEmpleado = DTOAuxEmpleado(tareasSeleccion, disponibilidadSeleccion)
             return render_template('VistaPerfil.html', tipo=opcion, data=objeto, aux=dtoAuxEmpleado)
 
@@ -168,6 +169,39 @@ def vista_perfil(opcion, id):
             objeto = getEmpleadorByID(baseDatos, id)
             return render_template('VistaPerfil.html', tipo=opcion, data=objeto)
 
+
+@app.route('/VistaPerfilContratado/<opcion>/<id>', methods=['POST', 'GET'])
+def vista_perfil_contratado(opcion, id):
+    if session.get('usertype') == None:
+        return redirect(url_for('logueo'))
+    elif session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    elif session.get('usertype') == 'Empleado':
+        return redirect(url_for('inicio_empleados'))
+    else:
+        #objeto = None
+        if opcion == 'Empleado':
+            objeto = getEmpleadoByID(baseDatos, id)
+            dtoAuxEmpleado: DTOAuxEmpleado = DTOAuxEmpleado()
+            # Debo traer las tareas y disponibilidades (estableciendo las seleccionadas por el empleado) para cargarlas dinámicamente
+            tareasSeleccion = objeto.getTareasSeleccionadas(baseDatos)
+            disponibilidadSeleccion = objeto.getDisponibilidadSeleccionadas(baseDatos)
+            tareas = getTareasEmpleado(baseDatos, objeto.id)
+            objeto.cargarTareas(tareas)
+            referencias = getReferenciasEmpleado(baseDatos, objeto.id)
+            objeto.cargarReferencias(referencias)
+            disponibilidad = getDisponibilidadEmpleado(baseDatos, objeto.id)
+            objeto.cargarDisponibilidad(disponibilidad)
+            # convierto byte a entero, el atributo "género" en mysql es de tipo bit
+            generoInt = int.from_bytes(objeto.genero, "big")
+            objeto.genero = generoInt
+
+            dtoAuxEmpleado = DTOAuxEmpleado(tareasSeleccion, disponibilidadSeleccion)
+            return render_template('VistaPerfilContratado.html', tipo=opcion, data=objeto, aux=dtoAuxEmpleado)
+
+        elif opcion == 'Empleador':
+            objeto = getEmpleadorByID(baseDatos, id)
+            return render_template('VistaPerfil.html', tipo=opcion, data=objeto)
 
 @app.route('/Perfil/<opcion>', methods=['POST', 'GET'])
 def perfil(opcion):
@@ -1057,7 +1091,7 @@ def mensajes_empleado(idEmpleado, idEmpleador):
     else:
         diccMensajes = getMensajesParaEmpleado(baseDatos, idEmpleado)
         objeto = getEmpleadoByID(baseDatos, idEmpleado)
-        if idEmpleador == '0':
+        if int(idEmpleador) == 0:
             # carga inicial del form, no hay remitente seleccionado, 
             # solo se va a cargar la lista de remitentes con panel de mensajes vacío
             elEmpleador = None
@@ -1080,14 +1114,12 @@ def mensajes_empleador(idEmpleador, idEmpleado):
     else:
         diccMensajes = getMensajesParaEmpleador(baseDatos, idEmpleador)
         objeto = getEmpleadorByID(baseDatos, idEmpleador)
-        if idEmpleado == '0':
+        if int(idEmpleado) == 0:
             # carga inicial del form, no hay remitente seleccionado, 
             # solo se va a cargar la lista de remitentes con panel de mensajes vacío
             elEmpleado = None
-            #print('No hay empleado')
         else:
             elEmpleado = getEmpleadoByID(baseDatos, idEmpleado)
-            #print('elEmpleado: ', elEmpleado)
 
         return render_template('Mensajes.html', diccmensajes=diccMensajes, actor=objeto, interactuanteseleccionado=elEmpleado)
 
@@ -1103,8 +1135,7 @@ def agregar_mensaje(idDestinatario, idAnuncio):
     else:
         if request.method == 'POST':
             mensaje = request.form['cajaMensaje']
-            print('Mensaje desde el chat: ', mensaje)
-            if idAnuncio == 0:
+            if int(idAnuncio) == 0:
                 anuncio = None
             else:
                 anuncio = getAnuncioByID(baseDatos, idAnuncio)
@@ -1114,7 +1145,6 @@ def agregar_mensaje(idDestinatario, idAnuncio):
                 empleador = getEmpleadorByID(baseDatos, idDestinatario)
                 mensajeEmpleado = Mensaje(0, empleado, empleador, anuncio, datetime.now(), mensaje, 1, 2)
                 mensajeEmpleado.crearMensaje(baseDatos)
-                #return redirect(url_for('mensajes_empleado'), empleado.id, empleador.id)
                 return redirect(url_for('mensajes_empleador', idEmpleado=empleado.id, idEmpleador=empleador.id))
 
             elif session['usertype'] == 'Empleador':
@@ -1122,9 +1152,7 @@ def agregar_mensaje(idDestinatario, idAnuncio):
                 empleado = getEmpleadoByID(baseDatos, idDestinatario)
                 mensajeEmpleador = Mensaje(0, empleado, empleador, anuncio, datetime.now(), mensaje, 2, 1)
                 mensajeEmpleador.crearMensaje(baseDatos)
-                #return redirect(url_for('mensajes_empleador'), empleador.id, empleado.id)
                 return redirect(url_for('mensajes_empleador', idEmpleador=empleador.id, idEmpleado=empleado.id))
-        
 
 
 @app.route('/Contratar/<idEmpleado>')

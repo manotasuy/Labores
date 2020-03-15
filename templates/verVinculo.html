@@ -190,31 +190,37 @@
                 <div class="row mb-5">
                     <div class="card ml-5 mr-3 mb-3" style="max-width: 550px; min-width: 550px;">
                         <div class="row no-gutters">
-                            <div class="form-group row ml-4 mt-2 mr-3">
-                                <img class="mb-4" 
-                                {% if user == 'Empleador' %}
-                                src="{{ url_for('static', filename=empleado.foto)}}" 
-                                {% else %}
-                                src="{{ url_for('static', filename=empleador.foto)}}" 
-                                {% endif %}
-                                alt="foto de contacto" width="125"
-                                     height="125">
 
+                            {% if user == 'Empleado' %}
+                            <div class="col-md-4">
+                                <img src="{{ url_for('static', filename=empleador.foto)}}" class="card-img" alt="...">
                             </div>
-                            <div class="col-md-8 mt-2">
+                            <div class="col-md-8">
                                 <div class="card-body">
+                                    <br>
+                                    <h5 class="card-title">{{empleador.nombre}} {{empleador.apellido}}</h5>
                                     <p class="card-text">
-                                        Nombre:<br>
-                                        <strong>
-                                        {% if user == 'Empleador' %}
-                                        {{empleado.nombre}} {{empleado.apellido}}
-                                        {% else %}
-                                        {{empleador.nombre}} {{empleador.apellido}}
-                                        {% endif %}
-                                        </strong>
+
                                     </p>
                                 </div>
                             </div>
+                            {% elif user == 'Empleador' %}
+                            <div class="col-md-4">
+                                <img src="{{ url_for('static', filename=empleado.foto)}}" class="card-img" alt="...">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{empleado.nombre}} {{empleado.apellido}}</h5>
+                                    <p class="card-text">
+                                        Meses de experiencia: {{empleado.experiencia_meses}}<br>
+                                        Promedio de calificación: {{empleado.promedioCalificacion}}
+                                    </p>
+                                    <a class="btn btn-sm btn-success float-right"
+                                        href="/VistaPerfilContratado/Empleado/{{empleado.id}}" aria-label="">Ir al Perfil</a>
+                                </div>
+                            </div>
+                            {% endif %}
+
                         </div>
                     </div>
                 </div>
@@ -224,7 +230,7 @@
                 {% else %}
                 <button type="button" class="btn btn-success float-right" disabled></button>
                 {% endif %}    -->
-                <button type="button" class="btn btn-primary" onClick="history.go(-1)">Volver</button>
+                <button type="button" class="btn btn-primary btn-block" onClick="history.go(-1)">Volver</button>
              
             </form>
         </div>

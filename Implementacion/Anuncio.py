@@ -600,6 +600,8 @@ class Anuncio:
 
 def getAnuncioByID(bd, id):
     try:
+        if id == None or id == 0:
+            return None
         cursor = bd.connection.cursor()
         cursor.execute('''
             SELECT

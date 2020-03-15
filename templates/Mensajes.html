@@ -213,11 +213,11 @@
                     </div>
                     <div class="bg-gray px-4 py-2 bg-light">
                         <!-- Area de mensaje para escribir -->
-                        <form action="#/AgregarMensaje/{{interactuanteseleccionado.id}}/0" class="bg-light" name="mensajeChat">
+                        <form action="/AgregarMensaje/{{interactuanteseleccionado.id}}/0" method="POST" class="bg-light" name="mensajeChat">
                             <div class="input-group">
                                 <input name="cajaMensaje" type="text" placeholder="Escriba aqui..." aria-describedby="button-addon2" class="form-control rounded-0 border-0 py-4 bg-white">
                                 <div class="input-group-append">
-                                    <button type="submit" class="btn btn-success" {% if interactuanteseleccionado is none %} disabled {% endif %}>Enviar</button>
+                                    <button name="btnEnviarMensaje" type="submit" class="btn btn-success" {% if interactuanteseleccionado is none %} disabled {% endif %}>Enviar</button>
                                 </div>
                             </div>
                         </form>
