@@ -45,9 +45,9 @@ ALLOWED_EXTENSIONS = set(['jpg', 'png', 'jpeg', 'bmp'])
 
 app = Flask(__name__)
 
-baseDatos = connectionDb(app, 'remotemysql.com')
+#baseDatos = connectionDb(app, 'remotemysql.com')
 #baseDatos = connectionDb(app, 'aws')
-#baseDatos = connectionDb(app, 'CloudAccess')
+baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'local')
 
 
@@ -940,6 +940,12 @@ def postularse(idAnuncio):
         new_postulacion = Postulacion(
             None, empleado, anuncio, datetime.now(), None)
         new_postulacion.crearPostulacion(baseDatos)
+
+        # Se debe notificar al empleador mediante mensaje de que te has postulado
+        mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(), 
+        'Buenas noticias!!! {} {}, se ha postulado a tu anuncio: "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2)
+        mensajeEmpleador.crearMensaje(baseDatos)
+
         flash('Postulación enviada!')
         return redirect(url_for('listar_anuncios'))
 
@@ -992,12 +998,13 @@ def mis_vinculos():
                 'vinculos': getVinculoByEmpleador(baseDatos, empleador),
                 'sesion': session.get('usertype')
             }
+            #print('idEmpleador: ', empleador.id)
+            #print('Contexto: ', context)
             return render_template('MisVinculos.html', **context)
         else:
             return redirect(url_for('logueo'))
-
-
-
+			
+						
 @app.route('/verVinculo/<idVinculo>')
 def ver_vinculos(idVinculo):
     if session.get('usertype') == None:
@@ -1018,7 +1025,6 @@ def ver_vinculos(idVinculo):
             'user' : session.get('usertype')
         }
         return render_template('verVinculo.html', **context)
-
 
 
 @app.route('/Candidatos/<id_anuncio>', methods=['POST', 'GET'])
@@ -1050,14 +1056,17 @@ def mensajes_empleado(idEmpleado, idEmpleador):
         return redirect(url_for('inicio_empleadores'))
     else:
         diccMensajes = getMensajesParaEmpleado(baseDatos, idEmpleado)
-        if idEmpleador == 0:
+        objeto = getEmpleadoByID(baseDatos, idEmpleado)
+        if idEmpleador == '0':
             # carga inicial del form, no hay remitente seleccionado, 
             # solo se va a cargar la lista de remitentes con panel de mensajes vacío
             elEmpleador = None
+            #print('No hay empleador')
         else:
             elEmpleador = getEmpleadorByID(baseDatos, idEmpleador)
-        empleado : Empleado = getEmpleadoByID(baseDatos, idEmpleado)
-        return render_template('Mensajes.html', mensajes=diccMensajes, remitente=elEmpleador)
+            #print('elEmpleador: ', elEmpleador)
+
+        return render_template('Mensajes.html', diccmensajes=diccMensajes, actor=objeto, interactuanteseleccionado=elEmpleador)
 
 
 @app.route('/MensajesEmpleador/<idEmpleador>/<idEmpleado>', methods=['POST', 'GET'])
@@ -1070,14 +1079,52 @@ def mensajes_empleador(idEmpleador, idEmpleado):
         return redirect(url_for('inicio_empleados'))
     else:
         diccMensajes = getMensajesParaEmpleador(baseDatos, idEmpleador)
-        if idEmpleado == 0:
+        objeto = getEmpleadorByID(baseDatos, idEmpleador)
+        if idEmpleado == '0':
             # carga inicial del form, no hay remitente seleccionado, 
             # solo se va a cargar la lista de remitentes con panel de mensajes vacío
             elEmpleado = None
+            #print('No hay empleado')
         else:
             elEmpleado = getEmpleadoByID(baseDatos, idEmpleado)
-        empleador : Empleador = getEmpleadorByID(baseDatos, idEmpleador)
-        return render_template('Mensajes.html', mensajes=diccMensajes, remitente=elEmpleado)
+            #print('elEmpleado: ', elEmpleado)
+
+        return render_template('Mensajes.html', diccmensajes=diccMensajes, actor=objeto, interactuanteseleccionado=elEmpleado)
+
+
+@app.route('/AgregarMensaje/<idDestinatario>/<idAnuncio>', methods=['POST', 'GET'])
+def agregar_mensaje(idDestinatario, idAnuncio):
+    if session.get('usertype') == None:
+        return redirect(url_for('logueo'))
+    elif session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    elif session.get('usertype') == 'Empleado':
+        return redirect(url_for('inicio_empleados'))
+    else:
+        if request.method == 'POST':
+            mensaje = request.form['cajaMensaje']
+            print('Mensaje desde el chat: ', mensaje)
+            if idAnuncio == 0:
+                anuncio = None
+            else:
+                anuncio = getAnuncioByID(baseDatos, idAnuncio)
+            
+            if session['usertype'] == 'Empleado':
+                empleado = getEmpleadoByID(baseDatos, session['id_empleado'])
+                empleador = getEmpleadorByID(baseDatos, idDestinatario)
+                mensajeEmpleado = Mensaje(0, empleado, empleador, anuncio, datetime.now(), mensaje, 1, 2)
+                mensajeEmpleado.crearMensaje(baseDatos)
+                #return redirect(url_for('mensajes_empleado'), empleado.id, empleador.id)
+                return redirect(url_for('mensajes_empleador', idEmpleado=empleado.id, idEmpleador=empleador.id))
+
+            elif session['usertype'] == 'Empleador':
+                empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
+                empleado = getEmpleadoByID(baseDatos, idDestinatario)
+                mensajeEmpleador = Mensaje(0, empleado, empleador, anuncio, datetime.now(), mensaje, 2, 1)
+                mensajeEmpleador.crearMensaje(baseDatos)
+                #return redirect(url_for('mensajes_empleador'), empleador.id, empleado.id)
+                return redirect(url_for('mensajes_empleador', idEmpleador=empleador.id, idEmpleado=empleado.id))
+        
 
 
 @app.route('/Contratar/<idEmpleado>')
@@ -1115,12 +1162,12 @@ def contactar(idEmpleado):
 
         # Se debe notificar al empleado mediante mensaje de que el empleador "X" lo contrató
         mensajeEmpleado = Mensaje(
-            0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has sido contratado por: {} {}, les deseamos un buen vínculo laboral.'.format(empleador.nombre, empleador.apellido))
+            0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has sido contratado por: {} {}, les deseamos un buen vínculo laboral.'.format(empleador.nombre, empleador.apellido), 3, 1)
         mensajeEmpleado.crearMensaje(baseDatos)
 
         # Se debe notificar al empleador mediante mensaje de que contrató al empleador "X"
         mensajeEmpleador = Mensaje(
-            0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has contratado a: {} {}, les deseamos un buen vínculo laboral.'.format(empleado.nombre, empleado.apellido))
+            0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has contratado a: {} {}, les deseamos un buen vínculo laboral.'.format(empleado.nombre, empleado.apellido), 3, 2)
         mensajeEmpleador.crearMensaje(baseDatos)
 
         flash('Empleado Contratado!')

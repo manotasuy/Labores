@@ -182,6 +182,7 @@ def getVinculoByEmpleado(bd, empleado):
                 v[8],
                 v[9]
             )
+            #print('Vínculo: ', vinculo)
             vinculos.append(vinculo)
         return vinculos
     except Exception as e:
@@ -203,7 +204,7 @@ def getVinculoByEmpleador(bd, empleador):
                 descripcion,
                 calificacion_empleado,
                 calificacion_empleador
-            FROM vinculo WHERE id_empleado = {}'''.format(empleador.id))
+            FROM vinculo WHERE id_empleador = {}'''.format(empleador.id))
         retorno = cursor.fetchall()
         bd.connection.commit()
         cursor.close()
@@ -221,6 +222,7 @@ def getVinculoByEmpleador(bd, empleador):
                 v[8],
                 v[9]
             )
+            #print('Vínculo: ', vinculo)
             vinculos.append(vinculo)
         return vinculos
     except Exception as e:

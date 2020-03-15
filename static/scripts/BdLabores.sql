@@ -8,10 +8,11 @@
 -- USE LvP2Ka0CsK;
 
 -- Si se usa AWS o localhost
- USE bdlabores;
+-- USE bdlabores;
 
 DROP TABLE IF EXISTS vinculo;
 DROP TABLE IF EXISTS mensaje;
+DROP TABLE IF EXISTS tipo_emisor_receptor_mensaje;
 DROP TABLE IF EXISTS postulacion;
 DROP TABLE IF EXISTS anuncio_disponibilidad;
 DROP TABLE IF EXISTS anuncio_tarea;
@@ -218,18 +219,30 @@ CREATE TABLE IF NOT EXISTS vinculo (
 );
 
 
+-- Tabla: Tipo de Emisor/Receptor de Mensaje
+CREATE TABLE IF NOT EXISTS tipo_emisor_receptor_mensaje
+(
+	id int NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(50) NOT NULL,
+    CONSTRAINT PK_tipo_emisor_mensaje PRIMARY KEY (id),
+    CONSTRAINT UK_tipo_emisor_mensaje UNIQUE (nombre)
+);
+
 -- Tabla: mensaje
 CREATE TABLE IF NOT EXISTS mensaje (
 	id int NOT NULL AUTO_INCREMENT,
 	id_empleado int NOT NULL,
 	id_empleador int NOT NULL,
-	id_anuncio int NOT NULL,
-	fecha date NULL,
+	id_anuncio int NULL, -- Puede ser vacío
+	fecha timestamp NULL,
 	mensaje text NULL,
+    id_tipo_emisor int NOT NULL,
+    id_tipo_receptor int NOT NULL,
 	CONSTRAINT PK_mensaje PRIMARY KEY (id),
-	CONSTRAINT FK_mensaje_anuncio FOREIGN KEY (id_anuncio) REFERENCES anuncio (id),
 	CONSTRAINT FK_mensaje_empleado FOREIGN KEY (id_empleado) REFERENCES empleado (id),
-	CONSTRAINT FK_mensaje_empleador FOREIGN KEY (id_empleador) REFERENCES empleador (id)
+	CONSTRAINT FK_mensaje_empleador FOREIGN KEY (id_empleador) REFERENCES empleador (id),
+    CONSTRAINT FK_mensaje_tipo_emisor FOREIGN KEY (id_tipo_emisor) REFERENCES tipo_emisor_receptor_mensaje (id),
+    CONSTRAINT FK_mensaje_tipo_receptor FOREIGN KEY (id_tipo_receptor) REFERENCES tipo_emisor_receptor_mensaje (id)
 );
 
 
@@ -242,6 +255,14 @@ INSERT INTO tipo_usuario (nombre)
 VALUES ('Empleador');
 INSERT INTO tipo_usuario (nombre) 
 VALUES ('Empleado');
+
+-- En tabla "tipo_emisor_receptor_mensaje"
+INSERT INTO tipo_emisor_receptor_mensaje (nombre) 
+VALUES ('Empleado');
+INSERT INTO tipo_emisor_receptor_mensaje (nombre) 
+VALUES ('Empleador');
+INSERT INTO tipo_emisor_receptor_mensaje (nombre) 
+VALUES ('Sistema');
 
 -- En tabla "usuario"
 INSERT INTO usuario (usuario, clave, id_tipo) 
@@ -388,15 +409,35 @@ INSERT INTO postulacion (id_empleado, id_anuncio, fecha, genera_vinculo)
 VALUES (3, 1, '2020-03-06', false);
 
 -- En tabla "mensaje"
-INSERT INTO mensaje (id_empleado, id_empleador, id_anuncio, fecha, mensaje)
-VALUES (1, 1, 1, '2020-02-20', 'Estoy interesada en el anuncio, tengo buenas referencias');
-INSERT INTO mensaje (id_empleado, id_empleador, id_anuncio, fecha, mensaje)
-VALUES (1, 1, 3, '2020-02-20', 'Quisiera postularme para el empleo, aguardo respuesta');
-INSERT INTO mensaje (id_empleado, id_empleador, id_anuncio, fecha, mensaje)
-VALUES (2, 1, 1, '2020-02-20', 'Lo quiero... al empleo, no a ud.');
-INSERT INTO mensaje (id_empleado, id_empleador, id_anuncio, fecha, mensaje)
-VALUES (2, 1, 2, '2020-02-20',  'Me encanta el empleo');
-INSERT INTO mensaje (id_empleado, id_empleador, id_anuncio, fecha, mensaje)
-VALUES (2, 1, 3, '2020-02-20', 'Tengo gran experiencia en limpieza de oficinas');
+INSERT INTO mensaje (id_empleado, id_empleador, id_anuncio, fecha, mensaje, id_tipo_emisor, id_tipo_receptor)
+VALUES (1, 1, 1, '2019-11-28 11:20:05', 'Estoy interesado en el anuncio, tengo buenas referencias', 1, 2);
+INSERT INTO mensaje (id_empleado, id_empleador, id_anuncio, fecha, mensaje, id_tipo_emisor, id_tipo_receptor)
+VALUES (1, 1, 1, '2019-11-29 14:32:18', 'Vi tus referencias, me generan dudas', 2, 1);
+INSERT INTO mensaje (id_empleado, id_empleador, id_anuncio, fecha, mensaje, id_tipo_emisor, id_tipo_receptor)
+VALUES (1, 1, 3, '2020-02-20 08:25:16', 'Quisiera postularme para el empleo, aguardo respuesta', 1, 2);
+INSERT INTO mensaje (id_empleado, id_empleador, id_anuncio, fecha, mensaje, id_tipo_emisor, id_tipo_receptor)
+VALUES (1, 1, 3, '2020-02-21 10:12:35', 'Estoy evaluando candidatos', 2, 1);
+INSERT INTO mensaje (id_empleado, id_empleador, id_anuncio, fecha, mensaje, id_tipo_emisor, id_tipo_receptor)
+VALUES (1, 1, 3, '2020-02-22 13:25:14', 'Bueno, muchas gracias!', 1, 2);
+INSERT INTO mensaje (id_empleado, id_empleador, id_anuncio, fecha, mensaje, id_tipo_emisor, id_tipo_receptor)
+VALUES (2, 1, 1, '2019-10-14 10:02:58', 'Lo quiero... al empleo, no a ud.', 1, 2);
+INSERT INTO mensaje (id_empleado, id_empleador, id_anuncio, fecha, mensaje, id_tipo_emisor, id_tipo_receptor)
+VALUES (2, 1, 1, '2019-10-14 11:15:09', 'Que lastima, me había ilusionado', 2, 1);
+INSERT INTO mensaje (id_empleado, id_empleador, id_anuncio, fecha, mensaje, id_tipo_emisor, id_tipo_receptor)
+VALUES (2, 1, 1, '2019-10-14 11:30:06', 'Bueno, quizás un poco a los 2', 1, 2);
+INSERT INTO mensaje (id_empleado, id_empleador, id_anuncio, fecha, mensaje, id_tipo_emisor, id_tipo_receptor)
+VALUES (2, 1, 1, '2019-10-16 18:23:47', 'Ni que fuera Tinder esto', 2, 1);
+INSERT INTO mensaje (id_empleado, id_empleador, id_anuncio, fecha, mensaje, id_tipo_emisor, id_tipo_receptor)
+VALUES (2, 1, 1, '2019-10-16 20:23:19', 'Perdón', 1, 2);
+INSERT INTO mensaje (id_empleado, id_empleador, id_anuncio, fecha, mensaje, id_tipo_emisor, id_tipo_receptor)
+VALUES (2, 1, 1, '2019-10-16 20:23:50', 'Mala mía!', 1, 2);
+INSERT INTO mensaje (id_empleado, id_empleador, id_anuncio, fecha, mensaje, id_tipo_emisor, id_tipo_receptor)
+VALUES (2, 1, 2, '2019-12-22 13:52:03',  'Me encanta el empleo', 1, 2);
+INSERT INTO mensaje (id_empleado, id_empleador, id_anuncio, fecha, mensaje, id_tipo_emisor, id_tipo_receptor)
+VALUES (2, 1, 2, '2019-12-26 09:02:36',  'La tendré en cuenta', 2, 1);
+INSERT INTO mensaje (id_empleado, id_empleador, id_anuncio, fecha, mensaje, id_tipo_emisor, id_tipo_receptor)
+VALUES (2, 1, 3, '2020-01-18 11:11:28', 'Tengo gran experiencia en limpieza de oficinas', 1, 2);
+INSERT INTO mensaje (id_empleado, id_empleador, id_anuncio, fecha, mensaje, id_tipo_emisor, id_tipo_receptor)
+VALUES (2, 1, 3, '2020-01-22 15:36:01', 'Interesante', 2, 1);
 
 -- En tabla "vinculo"

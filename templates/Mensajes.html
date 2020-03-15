@@ -10,138 +10,223 @@
 
 {% block contenido %}
 <div class="container">
-    <div class="container py-5 px-4">      
-        <div class="row rounded-lg overflow-hidden shadow">
-          <!-- Cuadro de usuarios-->
-          <div class="col-5 px-0">
-            <div class="bg-white">
-      
-              <div class="bg-gray px-4 py-2 bg-light">
-                <p class="h5 mb-0 py-1">Mensajes</p>
-              </div>
-      
-              <div class="messages-box">
-                <div class="list-group rounded-0">
-                  <a class="list-group-item list-group-item-action active text-white rounded-0">
-                    <div class="media"><img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="50" class="rounded-circle">
-                      <div class="media-body ml-4">
-                        <div class="d-flex align-items-center justify-content-between mb-1">
-                          <h6 class="mb-0">José Carlos</h6><small class="small font-weight-bold">25 Dic</small>
-                        </div>
-                        <p class="font-italic mb-0 text-small">Mensaje texto mensaje texto texto mensaje texto texto mensaje texto texto mensaje texto.</p>
-                      </div>
-                    </div>
-                  </a>
-      
-                  <a href="#" class="list-group-item list-group-item-action list-group-item-light rounded-0">
-                    <div class="media"><img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="50" class="rounded-circle">
-                      <div class="media-body ml-4">
-                        <div class="d-flex align-items-center justify-content-between mb-1">
-                          <h6 class="mb-0">Maria Perez</h6><small class="small font-weight-bold">14 Dec</small>
-                        </div>
-                        <p class="font-italic text-muted mb-0 text-small">Lorem ipsum dolor sit amet, consectetur. incididunt ut labore.</p>
-                      </div>
-                    </div>
-                  </a>
-      
-                  <a href="#" class="list-group-item list-group-item-action list-group-item-light rounded-0">
-                    <div class="media"><img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="50" class="rounded-circle">
-                      <div class="media-body ml-4">
-                        <div class="d-flex align-items-center justify-content-between mb-1">
-                          <h6 class="mb-0">Pedro Perez</h6><small class="small font-weight-bold">9 Nov</small>
-                        </div>
-                        <p class="font-italic text-muted mb-0 text-small">Mensaje texto mensaje texto texto mensaje texto texto mensaje.</p>
-                      </div>
-                    </div>
-                  </a>
-      
-                  <a href="#" class="list-group-item list-group-item-action list-group-item-light rounded-0">
-                    <div class="media"><img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="50" class="rounded-circle">
-                      <div class="media-body ml-4">
-                        <div class="d-flex align-items-center justify-content-between mb-1">
-                          <h6 class="mb-0">Renato Garcia</h6><small class="small font-weight-bold">18 Oct</small>
-                        </div>
-                        <p class="font-italic text-muted mb-0 text-small">Mensaje texto mensaje texto texto mensaje texto texto mensaje texto texto mensaje texto.</p>
-                      </div>
-                    </div>
-                  </a>
-      
-                  <a href="#" class="list-group-item list-group-item-action list-group-item-light rounded-0">
-                    <div class="media"><img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="50" class="rounded-circle">
-                      <div class="media-body ml-4">
-                        <div class="d-flex align-items-center justify-content-between mb-1">
-                          <h6 class="mb-0">Jason Doe</h6><small class="small font-weight-bold">17 Oct</small>
-                        </div>
-                        <p class="font-italic text-muted mb-0 text-small">Mensaje texto mensaje texto texto mensaje texto texto mensaje texto texto mensaje texto. Mensaje texto mensaje texto texto mensaje texto texto mensaje texto texto mensaje texto.</p>
-                      </div>
-                    </div>
-                  </a>
-      
+    <div class="container">
+        <div class="container py-5 px-4">
+            <div class="jumbotron jumbotron-fluid">
+                <div class="container">
+                    <h1 class="display-5">Mensajes</h1>
                 </div>
-              </div>
             </div>
-          </div>
-          <!-- Ventana de chat-->
-          <div class="col-7 px-0">
-            <div class="px-4 py-5 chat-box bg-white">
-              <!-- Mensaje del remitente-->
-              <div class="media w-50 mb-3"><img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="50" class="rounded-circle">
-                <div class="media-body ml-3">
-                  <div class="bg-light rounded py-2 px-3 mb-2">
-                    <p class="text-small mb-0 text-muted">Estoy interesada en la Oferta laboral</p>
-                  </div>
-                  <p class="small text-muted">12:00 PM | Agost 13</p>
-                </div>
-              </div>
-      
-              <!-- Mensaje del emisor-->
-              <div class="media w-50 ml-auto mb-3">
-                <div class="media-body">
-                  <div class="bg-primary rounded py-2 px-3 mb-2">
-                    <p class="text-small mb-0 text-white">Muchas gracias por su postulación</p>
-                  </div>
-                  <p class="small text-muted">12:00 PM | Agost 13</p>
-                </div>
-              </div>
-      
-              <!-- Mendaje del remitente-->
-              <div class="media w-50 mb-3"><img src="https://res.cloudinary.com/mhmd/image/upload/v1564960395/avatar_usae7z.svg" alt="user" width="50" class="rounded-circle">
-                <div class="media-body ml-3">
-                  <div class="bg-light rounded py-2 px-3 mb-2">
-                    <p class="text-small mb-0 text-muted">Texto texto texto texto texto texto texto</p>
-                  </div>
-                  <p class="small text-muted">12:00 PM | Agost 13</p>
-                </div>
-              </div>
-      
-              <!-- Mensaje del emisor-->
-              <div class="media w-50 ml-auto mb-3">
-                <div class="media-body">
-                  <div class="bg-primary rounded py-2 px-3 mb-2">
-                    <p class="text-small mb-0 text-white">Texto texto texto texto texto texto texto</p>
-                  </div>
-                  <p class="small text-muted">12:00 PM | Agost 13</p>
-                </div>
-              </div>
-      
-      
-            </div>
-      
-            <!-- Area de mensaje para escribir -->
-            <form action="#" class="bg-light" name="mensajeChat">
-              <div class="input-group">
-                <input type="text" placeholder="Escriba aqui..." aria-describedby="button-addon2" class="form-control rounded-0 border-0 py-4 bg-light">
-                <div class="input-group-append">
-                    <button type="submit" class="btn btn-success">Enviar</button>
-                </div>
-              </div>
-            </form>
-      
-          </div>
-        </div>
-      </div>
-         
+            <div class="row rounded-lg overflow-hidden shadow">
+                <!-- Cuadro de remitentes -->
+                <div class="col-5 px-0">
+                    <div class="bg-white">
+                        <div class="messages-box">
+                            <div class="list-group rounded-0">
 
+                                {% if session['usertype'] == 'Empleado' %}
+                                {% for interactuante in diccmensajes %}
+                                {% if interactuanteseleccionado is not none and interactuanteseleccionado.id == interactuante %}
+                                <a class="list-group-item list-group-item-action active text-white rounded-0">
+                                    <div class="media">
+                                        <img src="{{ url_for('static', filename=diccmensajes[interactuante][0].empleador.foto)}}" alt="user" width="100" class="rounded-circle">
+                                        <div class="media-body ml-4">
+                                            <div class="d-flex align-items-center float-right justify-content-between mb-1">
+                                                <small class="small">{{diccmensajes[interactuante][0].fecha}}</small>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-between mb-1">
+                                                <h6 class="mb-0 font-weight-bold"><br>{{diccmensajes[interactuante][0].empleado.nombre}}</h6>
+                                            </div>
+                                            <p class="font-italic mb-0 text-small">{{diccmensajes[interactuante][0].mensaje}}</p>
+                                        </div>
+                                    </div>
+                                </a>
+                                {% else %}
+                                <a href="/MensajesEmpleado/{{session['id_empleado']}}/{{diccmensajes[interactuante][0].empleador.id}}" class="list-group-item list-group-item-action list-group-item-light rounded-0">
+                                    <div class="media">
+                                        <img src="{{ url_for('static', filename=diccmensajes[interactuante][0].empleador.foto)}}" alt="user" width="100" class="rounded-circle">
+                                        <div class="media-body ml-4">
+                                            <div class="d-flex align-items-center float-right justify-content-between mb-1">
+                                                <small class="small">{{diccmensajes[interactuante][0].fecha}}</small>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-between mb-1">
+                                                <h6 class="mb-0 font-weight-bold"><br>{{diccmensajes[interactuante][0].empleado.nombre}}</h6>
+                                            </div>
+                                            <p class="font-italic mb-0 text-small">{{diccmensajes[interactuante][0].mensaje}}</p>
+                                        </div>
+                                    </div>
+                                </a>
+                                {% endif %}
+                                {% endfor %}
+                                {% elif session['usertype'] == 'Empleador' %}
+                                {% for interactuante in diccmensajes %}
+                                {% if interactuanteseleccionado is not none and interactuanteseleccionado.id == interactuante %}
+                                <a class="list-group-item list-group-item-action active text-white rounded-0">
+                                    <div class="media">
+                                        <img src="{{ url_for('static', filename=diccmensajes[interactuante][0].empleado.foto)}}" alt="user" width="100" class="rounded-circle">
+                                        <div class="media-body ml-4">
+                                            <div class="d-flex align-items-center float-right justify-content-between mb-1">
+                                                <small class="small">{{diccmensajes[interactuante][0].fecha}}</small>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-between mb-1">
+                                                <h6 class="mb-0 font-weight-bold"><br>{{diccmensajes[interactuante][0].empleado.nombre}}</h6>
+                                            </div>
+                                            <p class="font-italic mb-0 text-small">{{diccmensajes[interactuante][0].mensaje}}</p>
+                                        </div>
+                                    </div>
+                                </a>
+                                {% else %}
+                                <a href="/MensajesEmpleador/{{session['id_empleador']}}/{{diccmensajes[interactuante][0].empleado.id}}" class="list-group-item list-group-item-action list-group-item-light rounded-0">
+                                    <div class="media">
+                                        <img src="{{ url_for('static', filename=diccmensajes[interactuante][0].empleado.foto)}}" alt="user" width="100" class="rounded-circle">
+                                        <div class="media-body ml-4">
+                                            <div class="d-flex align-items-center float-right justify-content-between mb-1">
+                                                <small class="small">{{diccmensajes[interactuante][0].fecha}}</small>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-between mb-1">
+                                                <h6 class="mb-0 font-weight-bold"><br>{{diccmensajes[interactuante][0].empleado.nombre}}</h6>
+                                            </div>
+                                            <p class="font-italic mb-0 text-small">{{diccmensajes[interactuante][0].mensaje}}</p>
+                                        </div>
+                                    </div>
+                                </a>
+                                {% endif %}
+                                {% endfor %}
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ventana de mensajes -->
+                <div class="col-7 px-0">
+                    <div class="px-4 py-5 chat-box bg-white">
+
+                        {% if session['usertype'] == 'Empleado' %}
+                        <!-- si fue seleccionado algún chat -->
+                        {% if interactuanteseleccionado is not none %}
+                        <!-- recorro clave/valor del dicconario de mensajes -->
+                        {% for interactuante, mensajes in diccmensajes.items() %}
+                        <!-- si coincide el intereactuante de los mensajes con el seleccionado -->
+                        {% if interactuanteseleccionado.id == interactuante %}
+                        <!-- recorro cada mensaje de la lista de mensajes -->
+                        {% for mensaje in mensajes %}
+                        <!-- debo discriminar que mensaje fue escrito por cada uno para posicionarlo en el chat -->
+                        {% if mensaje.tipoEmisor == 1 %}
+                        <!-- Mensaje del empleado -->
+                        <div class="media w-150 ml-auto mb-3">
+                            <div class="media-body mr-3">
+                                <div class="bg-primary rounded py-2 px-3 mb-2">
+                                    <p class="text-small mb-0 text-white">{% if mensaje.anuncio is not none %} Anuncio: {{mensaje.anuncio.titulo}} {% endif %}</p>
+                                    <p class="text-small mb-0 text-white font-weight-bold">{{mensaje.mensaje}}</p>
+                                </div>
+                                <p class="small text-muted">{{mensaje.fecha}}</p>
+                            </div>
+                            <img src={{ url_for('static', filename=actor.foto)}} alt="user" width="50" class="rounded-circle">
+                        </div>
+                        {% elif mensaje.tipoEmisor == 2 %}
+                        <!-- Mensaje del empleador -->
+                        <div class="media w-150 mb-3">
+                            <img src={{ url_for('static', filename=mensaje.empleador.foto)}} alt="user" width="50" class="rounded-circle">
+                            <div class="media-body ml-3">
+                                <div class="bg-light rounded py-2 px-3 mb-2">
+                                    <p class="text-small mb-0">{% if mensaje.anuncio is not none %} Anuncio: {{mensaje.anuncio.titulo}} {% endif %}</p>
+                                    <p class="text-small mb-0 font-weight-bold">{{mensaje.mensaje}}</p>
+                                </div>
+                                <p class="small text-muted float-right">{{mensaje.fecha}}</p>
+                            </div>
+                        </div>
+                        {% elif mensaje.tipoEmisor == 3 and mensaje.tipoReceptor == 1 %}
+                        <!-- Mensaje del sistema (Labores) -->
+                        <div class="media w-150 mb-3">
+                            <img src="{{ url_for('static', filename='images/Logo.png')}}" alt="user" width="50" class="rounded-circle">
+                            <div class="media-body ml-3">
+                                <div class="bg-light rounded py-2 px-3 mb-2">
+                                    <p class="text-small mb-0 font-weight-bold">NOTIFICACIÓN</p>
+                                    <p class="text-small mb-0">{{mensaje.mensaje}}</p>
+                                </div>
+                                <p class="small text-muted">{{mensaje.fecha}}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+
+                        {% elif session['usertype'] == 'Empleador' %}
+                        <!-- si fue seleccionado algún chat -->
+                        {% if interactuanteseleccionado is not none %}
+                        <!-- recorro clave/valor del dicconario de mensajes -->
+                        {% for interactuante, mensajes in diccmensajes.items() %}
+                        <!-- si coincide el intereactuante de los mensajes con el seleccionado -->
+                        {% if interactuanteseleccionado.id == interactuante %}
+                        <!-- recorro cada mensaje de la lista de mensajes -->
+                        {% for mensaje in mensajes %}
+                        <!-- debo discriminar que mensaje fue escrito por cada uno para posicionarlo en el chat -->
+                        {% if mensaje.tipoEmisor == 2 %}
+                        <!-- Mensaje del empleador -->
+                        <div class="media w-150 ml-auto mb-3">
+                            <div class="media-body mr-3">
+                                <div class="bg-primary rounded py-2 px-3 mb-2">
+                                    <p class="text-small mb-0 text-white">{% if mensaje.anuncio is not none %} Anuncio: {{mensaje.anuncio.titulo}} {% endif %}</p>
+                                    <p class="text-small mb-0 text-white font-weight-bold">{{mensaje.mensaje}}</p>
+                                </div>
+                                <p class="small text-muted">{{mensaje.fecha}}</p>
+                            </div>
+                            <img src={{ url_for('static', filename=actor.foto)}} alt="user" width="50" class="rounded-circle">
+                        </div>
+                        {% elif mensaje.tipoEmisor == 1 %}
+                        <!-- Mensaje del empleado -->
+                        <div class="media w-150 mb-3">
+                            <img src={{ url_for('static', filename=mensaje.empleado.foto)}} alt="user" width="50" class="rounded-circle">
+                            <div class="media-body ml-3">
+                                <div class="bg-light rounded py-2 px-3 mb-2">
+                                    <p class="text-small mb-0">{% if mensaje.anuncio is not none %} Anuncio: {{mensaje.anuncio.titulo}} {% endif %}</p>
+                                    <p class="text-small mb-0 font-weight-bold">{{mensaje.mensaje}}</p>
+                                </div>
+                                <p class="small text-muted float-right">{{mensaje.fecha}}</p>
+                            </div>
+                        </div>
+                        {% elif mensaje.tipoEmisor == 3 and mensaje.tipoReceptor == 2 %}
+                        <!-- Mensaje del sistema (Labores) -->
+                        <div class="media w-150 mb-3">
+                            <img src="{{ url_for('static', filename='images/Logo.png')}}" alt="user" width="50" class="rounded-circle">
+                            <div class="media-body ml-3">
+                                <div class="bg-light rounded py-2 px-3 mb-2">
+                                    <p class="text-small mb-0 font-weight-bold">NOTIFICACIÓN</p>
+                                    <p class="text-small mb-0">{{mensaje.mensaje}}</p>
+                                </div>
+                                <p class="small text-muted">{{mensaje.fecha}}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                        {% else %}
+                        <p class="small text-muted">Qué está pasando?</p>
+                        {% endif %}
+
+                    </div>
+                    <div class="bg-gray px-4 py-2 bg-light">
+                        <!-- Area de mensaje para escribir -->
+                        <form action="#/AgregarMensaje/{{interactuanteseleccionado.id}}/0" class="bg-light" name="mensajeChat">
+                            <div class="input-group">
+                                <input name="cajaMensaje" type="text" placeholder="Escriba aqui..." aria-describedby="button-addon2" class="form-control rounded-0 border-0 py-4 bg-white">
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-success" {% if interactuanteseleccionado is none %} disabled {% endif %}>Enviar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <a id="anclaMensajes"></a>
+        </div>
+    </div>
 </div>
 {% endblock %}
 
