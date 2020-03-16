@@ -169,7 +169,7 @@
                 <div class="d-block my-3">
                     <p>Disponibilidad</p>
                     {% for disp in aux.disponibilidad %}
-                    <div class="custom-control">
+                    <div class="custom-control custom-checkbox ">
                         <input id="disp{{ disp.id}}" name="disp{{ disp.id }}" type="checkbox"
                                class="custom-control-input" {% if disp.seleccionada == 1 %} checked {% endif %}>
                         <label class="custom-control-label" for="disp{{ disp.id }}">{{ disp.descripcion }}</label>
@@ -180,7 +180,7 @@
                 <div class="d-block my-3">
                     <p>Tareas que realizas</p>
                     {% for tarea in aux.tareas %}
-                    <div class="custom-control">
+                    <div class="custom-control custom-checkbox ">
                         <input id="tarea{{ tarea.id }}" name="tarea{{ tarea.id }}" type="checkbox"
                                class="custom-control-input" {% if tarea.seleccionada == 1 %} checked {% endif %}>
                         <label class="custom-control-label" for="tarea{{ tarea.id }}">{{ tarea.descripcion }}</label>
