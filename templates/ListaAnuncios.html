@@ -19,42 +19,45 @@
 
     <div class="my-3 p-3 bg-white rounded shadow-sm pl-5">
         {% if not anuncios %}
-        <p><h5>No hay anuncios disponibles para tu perfil.</h5></p>       
+        <p>
+            <h5>No hay anuncios disponibles para tu perfil.</h5>
+        </p>
         {% else %}
         {% for anuncio in anuncios %}
 
         <div class="container border-top border-bottom border-dark bg-light">
             <div class="media text-muted pt-3">
                 <svg class="bd-placeholder-img mr-2 rounded" width="16" height="16" xmlns="http://www.w3.org/2000/svg"
-                    preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32">
+                    preserveaspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32">
                     <title>Placeholder</title>
                     <rect width="100%" height="100%" fill="#007bff" /><text x="50%" y="50%" fill="#007bff"
                         dy=".3em">32x32</text>
                 </svg>
-                
+
                 <p class="media-body pb-3 mb-0 small lh-125">
                     <strong class="d-block text-gray-dark" style="font-size: large;"> {{ anuncio[1].titulo }} </strong>
                     Publicación: <strong>{{ anuncio[1].fecha_inicio }}</strong> <br>
                     Pago por hora: <strong>${{ anuncio[1].pago_hora }}</strong> <br>
-<br>
-                    {{ anuncio[1].descripcion }} <br> 
-                     
+                    <br>
+                    {{ anuncio[1].descripcion }} <br>
+
 
                 </p>
             </div>
-            <a class="btn btn-sm btn-success ml-5 mb-4" href="/verAnuncio/{{ anuncio.0 }}/{{ anuncio.2 }}" aria-label="">Ir al
+            <a class="btn btn-sm btn-success ml-5 mb-4" href="/verAnuncio/{{ anuncio.0 }}/{{ anuncio.2 }}"
+                aria-label="">Ir al
                 Anuncio</a>
-                <p class="media-body pb-3 mb-0 small lh-125">
-                {% if anuncio.2 == 1 %} 
+            <p class="media-body pb-3 mb-0 small lh-125">
+                {% if anuncio.2 == 1 %}
                 Estás postulad@ a este anuncio. <br>
                 {% endif %}
             </p>
         </div>
 
-    {% endfor %}
-    {% endif %}
-        
-        
+        {% endfor %}
+        {% endif %}
+
+
         <!--<small class="d-block text-right mt-3">
             <a href="#">Actualizar</a>
         </small>-->

@@ -9,42 +9,73 @@
 {% block titulo_page %}Labores - Ingresar{% endblock %}
 
 {% block contenido_page %}
-<form class="form-signin" action="/Ingresar" method="POST">
-  <div class="text-center mb-1">
+<form class="form-signin needs-validation" action="/Ingresar" method="POST">
+  <div class="text-center mb-3">
     <a class="my-0 mr-md-auto" href="/Inicio" aria-label="Home">
-      <img class="mb-1" src="{{ url_for('static', filename='images/Labores2.png')}}" alt="" width="320" height="270">
+      <img class="mb-1" src="{{ url_for('static', filename='images/Logos/Labores.png')}}" alt="" width="320"
+        height="270">
     </a>
   </div>
 
-  <!--<div class="alert alert-dark alert-dismissible fade show" role="alert">
-    <p>Error!</p>
+  {% with messages = get_flashed_messages()  %}
+  {% if messages %}
+  {% for message in messages %}
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ message }}
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
-  </div>-->
+  </div>
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
 
   <div class="form-label-group">
-    <input type="text" id="inputUser" name="user" class="form-control" placeholder="CI (Sin puntos ni guiones)" required="" autofocus="">
+    <input type="text" id="inputUser" name="user" class="form-control" placeholder="" required="" autofocus="">
     <label for="inputUser">CI (Sin puntos ni guiones)</label>
   </div>
 
   <div class="form-label-group">
-    <input type="password" id="inputPassword" name="pass" class="form-control" placeholder="Contraseña" required="">
+    <input type="password" id="inputPassword" name="pass" class="form-control" placeholder="" required="">
     <label for="inputPassword">Contraseña</label>
   </div>
 
-  <div class="checkbox mb-3">
-    <label>
-      <input type="checkbox" name="recordar" value="remember-me"> Recordarme
-    </label>
-  </div>
-  <button class="btn btn btn-primary btn-block" type="submit" name="btnIngresar">Ingresar</button>
+  <!--<div class="checkbox mb-3">
+      <label>
+        <input type="checkbox" id="recordar" name="recordar" value="remember-me">
+        <label for="recordar">Recordarme</label>
+      </label>
+    </div>-->
+  <button class="btn btn btn-primary btn-block" type="submit" name="btnIngresar">
+    Ingresar
+  </button>
   <a class="btn btn btn-success btn-block" href="/SignUp" aria-label="">Registrarse</a>
   <p class="mt-3 mb-1 text-center">
-    <a class="my-0 mr-md-auto text-center" href="/RecuperarPass" aria-label="">Olvidé mi contraseña</a>
+    <a class="my-0 mr-md-auto text-center" href="/RecuperarPass" aria-label="" aria-label="" data-toggle="modal"
+      data-target="#modal">Olvidé mi contraseña</a>
   </p>
 
   <p class="mt-5 mb-3 text-muted text-center">© Los b_ITless 2020</p>
+
+  <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="mensaje" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6 class="modal-title" id="exampleModalLabel">Mensaje</h6>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h4>Funcionalidad no implementada</h4>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </form>
 {% endblock %}
 

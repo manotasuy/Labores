@@ -83,8 +83,8 @@ def cuentasCerradasEmpleadores(bd):
         # hay que agregar una columna de estado 0:Inactivo, 1:Activo
         #cursor.execute('SELECT COUNT(*) FROM empleador WHERE estado = 0')
         #retorno = cursor.fetchall()
-        #bd.connection.commit()
-        #cursor.close()
+        # bd.connection.commit()
+        # cursor.close()
         #cant = int(retorno[0][0])
         cant = 0
         return cant
@@ -98,8 +98,8 @@ def cuentasCerradasEmpleados(bd):
         # hay que agregar una columna de estado 0:Inactivo, 1:Activo
         #cursor.execute('SELECT COUNT(*) FROM empleado WHERE estado = 0')
         #retorno = cursor.fetchall()
-        #bd.connection.commit()
-        #cursor.close()
+        # bd.connection.commit()
+        # cursor.close()
         #cant = int(retorno[0][0])
         cant = 0
         return cant

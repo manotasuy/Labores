@@ -17,8 +17,8 @@
     <div class="container">
         <div class="d-flex flex-column flex-md-row align-items-center p-3 mb-3 bg-white">
             <a class="my-0 mr-md-auto" href="/Inicio" aria-label="Home">
-                <img class="mb-4" src="{{ url_for('static', filename='images/LaboresLargeAj.png')}}" alt="" width="365"
-                    height="120">
+                <img class="mb-4" src="{{ url_for('static', filename='images/Logos/LaboresLargeAj.png')}}" alt=""
+                    width="365" height="120">
             </a>
             <nav class="my-2 my-md-0 mr-md-3">
                 <a class="p-2 text-dark" href="/Inicio">Inicio</a>
@@ -36,11 +36,11 @@
                 <a class="p-2 text-dark" href="/HomeEmpleadores">Principal</a>
                 {% endif %}
             </nav>
-            
+
 
             {% if session['usertype'] %}
             <h3>{{session['nombre']}}</h3>
-			<div class="">				  
+            <div class="">
                 <a class="btn btn-outline-primary ml-3" href="/LogOut">Salir</a>
                 {% else %}
                 <a class="btn btn-outline-primary" href="/LogIn">Ingresar</a>

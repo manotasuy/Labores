@@ -208,7 +208,6 @@ CREATE TABLE IF NOT EXISTS vinculo (
 	id_anuncio int NOT NULL,
 	fecha_inicio date NULL,
 	fecha_fin date NULL,
-	motivo_fin text,
 	descripcion text DEFAULT NULL,
 	calificacion_empleado double DEFAULT NULL,
 	calificacion_empleador double DEFAULT NULL,

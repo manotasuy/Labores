@@ -19,7 +19,9 @@
 
     <div class="my-3 p-3 bg-white rounded shadow-sm pl-5">
         {% if not vinculos %}
-        <p><h5>Aún no tienes vínculos.</h5></p>       
+        <p>
+            <h5>Aún no tienes vínculos.</h5>
+        </p>
         {% else %}
         {% for vinculo in vinculos %}
 
@@ -31,23 +33,25 @@
                     <rect width="100%" height="100%" fill="#007bff" /><text x="50%" y="50%" fill="#007bff"
                         dy=".3em">32x32</text>
                 </svg>
-                
+
                 <p class="media-body pb-3 mb-0 small lh-125">
                     {% if sesion == 'Empleado' %}
                     <text class="d-block text-gray-dark" style="font-size: medium;">Empleador: </text>
-                    <strong class="d-block text-gray-dark" style="font-size: medium;">{{vinculo.empleador.apellido}}, {{vinculo.empleador.nombre}}</strong>
+                    <strong class="d-block text-gray-dark" style="font-size: medium;">{{vinculo.empleador.apellido}},
+                        {{vinculo.empleador.nombre}}</strong>
                     {% else %}
                     <text class="d-block text-gray-dark" style="font-size: medium;">Empleado: </text>
-                    <strong class="d-block text-gray-dark" style="font-size: medium;">{{vinculo.empleado.apellido}}, {{vinculo.empleado.nombre}}</strong>
+                    <strong class="d-block text-gray-dark" style="font-size: medium;">{{vinculo.empleado.apellido}},
+                        {{vinculo.empleado.nombre}}</strong>
                     {% endif %}
                     Inicio del vínculo: <strong>{{ vinculo.fecha_inicio }}</strong> <br>
                     {% if vinculo.fecha_fin == None %}
                     Fin del vínculo: <strong>Vínculo activo</strong> <br>
                     {% else %}
-                    Fin del vínculo:    <strong>{{ vinculo.fecha_fin }}</strong> <br>
+                    Fin del vínculo: <strong>{{ vinculo.fecha_fin }}</strong> <br>
                     {% endif %}
-<br>
-                     
+                    <br>
+
 
                 </p>
             </div>
@@ -56,15 +60,15 @@
             </p>
         </div>
 
-    {% endfor %}
-    {% endif %}
-        
-        
+        {% endfor %}
+        {% endif %}
+
+
         <!--<small class="d-block text-right mt-3">
             <a href="#">Actualizar</a>
         </small>-->
     </div>
-
+    <button type="button" class="btn btn-primary mt-4" onClick="history.go(-1)">Volver</button>
 </div>
 {% endblock %}
 

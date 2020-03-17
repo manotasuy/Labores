@@ -19,7 +19,6 @@ class Vinculo:
             pAnuncio,
             pFechaInicio,
             pFechaFin,
-            pMotivoFin,
             pDescripcion,
             pCalifEmpleado,
             pCalifEmpleador):
@@ -29,13 +28,12 @@ class Vinculo:
         self.anuncio: Anuncio = pAnuncio
         self.fecha_inicio = pFechaInicio
         self.fecha_fin = pFechaFin
-        self.motivo_fin = pMotivoFin
         self.descripcion = pDescripcion
         self.calif_empleado = pCalifEmpleado
         self.calif_empleador = pCalifEmpleador
 
     def __str__(self):
-        return 'Id: {}, Empleado: {}, Empleador: {}, Anuncio: {}, Fecha Inicio: {}, Fecha Fin: {}, Motivo Fin: {}, Descripcion: {}, Calificacion Empleado: {}, Calificacion Empleado: {}'.format(self.id, self.empleado.id, self.empleador.id, self.anuncio.id, self.fecha_inicio, self.fecha_fin, self.motivo_fin, self.descripcion, self.calif_empleado, self.calif_empleador)
+        return 'Id: {}, Empleado: {}, Empleador: {}, Anuncio: {}, Fecha Inicio: {}, Fecha Fin: {}, Descripcion: {}, Calificacion Empleado: {}, Calificacion Empleado: {}'.format(self.id, self.empleado.id, self.empleador.id, self.anuncio.id, self.fecha_inicio, self.fecha_fin, self.descripcion, self.calif_empleado, self.calif_empleador)
 
     def __getitem__(self, item):
         return self.__dict__[item]
@@ -51,19 +49,17 @@ class Vinculo:
                         id_anuncio,
                         fecha_inicio,
                         fecha_fin,
-                        motivo_fin,
                         descripcion,
                         calificacion_empleado,
                         calificacion_empleador
                     )
-                VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)''',
+                VALUES (%s,%s,%s,%s,%s,%s,%s,%s)''',
                            (
                                self.empleado.id,
                                self.empleador.id,
                                self.anuncio.id,
                                self.fecha_inicio,
                                self.fecha_fin,
-                               self.motivo_fin,
                                self.descripcion,
                                self.calif_empleado,
                                self.calif_empleador
@@ -92,14 +88,12 @@ class Vinculo:
             cursor.execute('''
                 UPDATE vinculo SET
                     fecha_fin = %s,
-                    motivo_fin = %s,
                     descripcion = %s,
                     calificacion_empleado = %s,
                     calificacion_empleador = %s
                 WHERE id = %s''',
                            (
                                self.fecha_fin,
-                               self.motivo_fin,
                                self.descripcion,
                                self.calif_empleado,
                                self.calif_empleador,
@@ -124,7 +118,6 @@ def getVinculoByID(bd, id):
                 id_anuncio,
                 fecha_inicio,
                 fecha_fin,
-                motivo_fin,
                 descripcion,
                 calificacion_empleado,
                 calificacion_empleador
@@ -141,8 +134,7 @@ def getVinculoByID(bd, id):
             retorno[0][5],
             retorno[0][6],
             retorno[0][7],
-            retorno[0][8],
-            retorno[0][9]
+            retorno[0][8]
         )
         return vinculo
     except Exception as e:
@@ -160,7 +152,6 @@ def getVinculoByEmpleado(bd, empleado):
                 id_anuncio,
                 fecha_inicio,
                 fecha_fin,
-                motivo_fin,
                 descripcion,
                 calificacion_empleado,
                 calificacion_empleador
@@ -179,8 +170,7 @@ def getVinculoByEmpleado(bd, empleado):
                 v[5],
                 v[6],
                 v[7],
-                v[8],
-                v[9]
+                v[8]
             )
             #print('Vínculo: ', vinculo)
             vinculos.append(vinculo)
@@ -200,7 +190,6 @@ def getVinculoByEmpleador(bd, empleador):
                 id_anuncio,
                 fecha_inicio,
                 fecha_fin,
-                motivo_fin,
                 descripcion,
                 calificacion_empleado,
                 calificacion_empleador
@@ -219,14 +208,14 @@ def getVinculoByEmpleador(bd, empleador):
                 v[5],
                 v[6],
                 v[7],
-                v[8],
-                v[9]
+                v[8]
             )
             #print('Vínculo: ', vinculo)
             vinculos.append(vinculo)
         return vinculos
     except Exception as e:
         print("Error en getVinculoByEmpleador ", e)
+
 
 def getVinculoIDs(bd, id):
     try:
@@ -239,7 +228,6 @@ def getVinculoIDs(bd, id):
                 id_anuncio,
                 fecha_inicio,
                 fecha_fin,
-                motivo_fin,
                 descripcion,
                 calificacion_empleado,
                 calificacion_empleador
@@ -256,10 +244,8 @@ def getVinculoIDs(bd, id):
             retorno[0][5],
             retorno[0][6],
             retorno[0][7],
-            retorno[0][8],
-            retorno[0][9]
+            retorno[0][8]
         )
         return vinculo
     except Exception as e:
         print("Error en getVinculoIDs ", e)
-

@@ -1,10 +1,9 @@
 
 class DTOAuxEmpleado:
 
-    def __init__(self, pTareas=None, pDispon=None, pContratado=None):
+    def __init__(self, pTareas=None, pDispon=None):
         self.tareas: list() = pTareas
         self.disponibilidad: list() = pDispon
-        self.contratado =pContratado
 
     def __getitem__(self, item):
         return self.__dict__[item]

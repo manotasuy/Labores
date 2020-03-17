@@ -2,88 +2,87 @@
 <html lang="en">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Jekyll v3.8.6">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+  <meta name="generator" content="Jekyll v3.8.6">
 
-    <link href="{{ url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/base_layout.css')}}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/estilosChat.css')}}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/base_layout.css')}}" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/estilosChat.css')}}" rel="stylesheet">
 
-    <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/Logo-180x180.jpg')}}" sizes="180x180">
-    <link rel="icon" href="{{ url_for('static', filename='images/Logo-32x32.jpg')}}" sizes="32x32" type="image/png">
-    <link rel="icon" href="{{ url_for('static', filename='images/Logo-16x16.jpg')}}" sizes="16x16" type="image/png">
-    <link rel="icon" href="{{ url_for('static', filename='images/Logo.ico')}}">
-    <meta name="theme-color" content="#563d7c">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/Logos/Logo-180x180.png')}}" sizes="180x180">
+  <link rel="icon" href="{{ url_for('static', filename='images/Logos/Logo-32x32.png')}}" sizes="32x32" type="image/png">
+  <link rel="icon" href="{{ url_for('static', filename='images/Logos/Logo-16x16.png')}}" sizes="16x16" type="image/png">
+  <link rel="icon" href="{{ url_for('static', filename='images/Logos/Logo.ico')}}">
+  <meta name="theme-color" content="#563d7c">
 
-    <script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js"
-        integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0"
-        crossorigin="anonymous"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js"
+    integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0"
+    crossorigin="anonymous"></script>
 
+  <!-- DATA TABLE -->
+  <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
 
-
-    <!-- DATA TABLE -->
-    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-            //Asegurate que el id que le diste a la tabla sea igual al texto despues del simbolo #
-            $('#userList').DataTable();
-        });
-    </script>
-    <!-- REGISTRO -->
-    <script>
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
-(function () {
-  'use strict';
-
-  window.addEventListener('load', function () {
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    var forms = document.getElementsByClassName('needs-validation');
-
-    // Loop over them and prevent submission
-    var validation = Array.prototype.filter.call(forms, function (form) {
-      form.addEventListener('submit', function (event) {
-        if (form.checkValidity() === false) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
-        form.classList.add('was-validated');
-      }, false);
+  <script type="text/javascript">
+    $(document).ready(function () {
+      //Asegurate que el id que le diste a la tabla sea igual al texto despues del simbolo #
+      $('#userList').DataTable();
     });
-  }, false);
-})();
-    </script>
+  </script>
+  <!-- REGISTRO -->
+  <script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function () {
+      'use strict';
 
-    <title>{% block titulo_page %}{% endblock %}</title>
+      window.addEventListener('load', function () {
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
 
-    {% block referencias_page %}{% endblock %}
+        // Loop over them and prevent submission
+        var validation = Array.prototype.filter.call(forms, function (form) {
+          form.addEventListener('submit', function (event) {
+            if (form.checkValidity() === false) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+      }, false);
+    })();
+  </script>
 
-    {% block estilo_page %}{% endblock %}
+  <title>{% block titulo_page %}{% endblock %}</title>
+
+  {% block referencias_page %}{% endblock %}
+
+  {% block estilo_page %}{% endblock %}
 
 </head>
 
 <body>
 
-    {% block contenido_page %}
-    {% endblock %}
-    <script src="{{ url_for('static', filename='scripts/jquery-3.4.1.slim.min.js')}}"
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-        crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="{{ url_for("static", filename="scripts/jquery.slim.min.js")}}"><\/script>')</script>
-    <script src="{{ url_for('static', filename='scripts/bootstrap.bundle.min.js')}}"
-        integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm"
-        crossorigin="anonymous"></script>
+  {% block contenido_page %}
+  {% endblock %}
+
+  <script src="{{ url_for('static', filename='scripts/jquery-3.4.1.slim.min.js')}}"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+  <script>window.jQuery || document.write('<script src="{{ url_for("static", filename="scripts/jquery.slim.min.js")}}"><\/script>')</script>
+  <script src="{{ url_for('static', filename='scripts/bootstrap.bundle.min.js')}}"
+    integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm"
+    crossorigin="anonymous"></script>
   <script src="{{ url_for('static', filename='scripts/validacionForm.js')}}"></script>
 
 
-    {% block scripts_page %}{% endblock %}
+  {% block scripts_page %}{% endblock %}
 </body>
 
 </html>

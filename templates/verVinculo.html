@@ -33,53 +33,29 @@
                         </label>
                     </div>
                 </div>
-                {% if vinculo.motivo_fin != None %}
-                <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">Motivo de finalización:</label>
-                    <div class="col-sm-9">
-                        <textarea class="form-control" type="text" placeholder={{vinculo.motivo_fin}} rows="10" cols="20" rows="10" name="verOfertaDesc" readonly>{{anuncio[1]}}</textarea>
-                    </div>
-                </div>
-                {% endif %}
 
                 <hr class="mt-5 mb-5">
-        
+
                 <div class="d-block my-3 mt-5">
                     <p>Tipo trabajo</p>
                     <div class="custom-control custom-radio">
                         <input id="dispHora" name="disponibilidad" type="radio" class="custom-control-input" required=""
-                               {% if anuncio.disponibilidad == 1%}
-                               checked=""
-                               {%else%}
-                               disabled
-                               {% endif %}>
+                            {% if anuncio.disponibilidad == 1%} checked="" {%else%} disabled {% endif %}>
                         <label class="custom-control-label" for="dispHora">Por hora</label>
                     </div>
                     <div class="custom-control custom-radio">
                         <input id="dispJorn" name="disponibilidad" type="radio" class="custom-control-input" required=""
-                               {% if anuncio.disponibilidad == 2%}
-                               checked=""
-                               {%else%}
-                               disabled
-                               {% endif %}>
+                            {% if anuncio.disponibilidad == 2%} checked="" {%else%} disabled {% endif %}>
                         <label class="custom-control-label" for="dispJorn">Por jornada</label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input id="dispTarea" name="disponibilidad" type="radio" class="custom-control-input" required=""
-                               {% if anuncio.disponibilidad == 3%}
-                               checked=""
-                               {%else%}
-                               disabled
-                               {% endif %}>
+                        <input id="dispTarea" name="disponibilidad" type="radio" class="custom-control-input"
+                            required="" {% if anuncio.disponibilidad == 3%} checked="" {%else%} disabled {% endif %}>
                         <label class="custom-control-label" for="dispTarea">Por tarea puntual</label>
                     </div>
                     <div class="custom-control custom-radio">
                         <input id="dispMes" name="disponibilidad" type="radio" class="custom-control-input" required=""
-                               {% if  anuncio.disponibilidad == 4%}
-                               checked=""
-                               {%else%}
-                               disabled
-                               {% endif %}>
+                            {% if  anuncio.disponibilidad == 4%} checked="" {%else%} disabled {% endif %}>
                         <label class="custom-control-label" for="dispMes">Por mes</label>
                     </div>
                 </div>
@@ -88,98 +64,58 @@
                     <p>Tareas realizadas:</p>
                     <div class="custom-control">
                         <input id="tareaHogar" name="tareaHogar" type="checkbox" class="custom-control-input"
-                               {% if anuncio.hogar == True %}
-                               checked=""
-                               {% else %}
-                               disabled
-                               {% endif %}>
+                            {% if anuncio.hogar == True %} checked="" {% else %} disabled {% endif %}>
                         <label class="custom-control-label" for="tareaHogar">Hogar</label>
                     </div>
                     <div class="custom-control">
                         <input id="tareaOficina" name="tareaOficina" type="checkbox" class="custom-control-input"
-                               {% if anuncio.oficina == True %}
-                               checked=""
-                               {% else %}
-                               disabled
-                               {% endif %}>
+                            {% if anuncio.oficina == True %} checked="" {% else %} disabled {% endif %}>
                         <label class="custom-control-label" for="tareaOficina">Oficina</label>
                     </div>
                     <div class="custom-control">
                         <input id="tareaCocina" name="tareaCocina" type="checkbox" class="custom-control-input"
-                               {% if anuncio.cocinar == True %}
-                               checked=""
-                               {% else %}
-                               disabled
-                               {% endif %}>
+                            {% if anuncio.cocinar == True %} checked="" {% else %} disabled {% endif %}>
                         <label class="custom-control-label" for="tareaCocina">Cocinar</label>
                     </div>
                     <div class="custom-control">
                         <input id="tareaLimpBañ" name="tareaLimpBañ" type="checkbox" class="custom-control-input"
-                               {% if anuncio.limp_banios == True %}
-                               checked=""
-                               {% else %}
-                               disabled
-                               {% endif %}>
+                            {% if anuncio.limp_banios == True %} checked="" {% else %} disabled {% endif %}>
                         <label class="custom-control-label" for="tareaLimpBañ">Limpieza de baños</label>
                     </div>
                     <div class="custom-control">
                         <input id="tareaLimpCoc" name="tareaLimpCoc" type="checkbox" class="custom-control-input"
-                               {% if anuncio.limp_cocinas == True %}
-                               checked=""
-                               {% else %}
-                               disabled
-                               {% endif %}>
+                            {% if anuncio.limp_cocinas == True %} checked="" {% else %} disabled {% endif %}>
                         <label class="custom-control-label" for="tareaLimpCoc">Limpieza de cocina</label>
                     </div>
                     <div class="custom-control">
                         <input id="tareaLimpDor" name="tareaLimpDor" type="checkbox" class="custom-control-input"
-                               {% if anuncio.limp_dormitorios == True %}
-                               checked=""
-                               {% else %}
-                               disabled
-                               {% endif %}>
+                            {% if anuncio.limp_dormitorios == True %} checked="" {% else %} disabled {% endif %}>
                         <label class="custom-control-label" for="tareaLimpDor">Limpieza de dormitorio</label>
                     </div>
                     <div class="custom-control">
                         <input id="tareaCuidNiño" name="tareaCuidNiño" type="checkbox" class="custom-control-input"
-                               {% if anuncio.cuidado_ninios == True %}
-                               checked=""
-                               {% else %}
-                               disabled
-                               {% endif %}>
+                            {% if anuncio.cuidado_ninios == True %} checked="" {% else %} disabled {% endif %}>
                         <label class="custom-control-label" for="tareaCuidNiño">Cuidado de niños</label>
                     </div>
                     <div class="custom-control">
                         <input id="tareaCuidBebe" name="tareaCuidBebe" type="checkbox" class="custom-control-input"
-                               {% if anuncio.cuidado_bebes == True %}
-                               checked=""
-                               {% else %}
-                               disabled
-                               {% endif %}>
+                            {% if anuncio.cuidado_bebes == True %} checked="" {% else %} disabled {% endif %}>
                         <label class="custom-control-label" for="tareaCuidBebe">Cuidado de bebes</label>
                     </div>
                     <div class="custom-control">
                         <input id="tareaCuidAdulto" name="tareaCuidAdulto" type="checkbox" class="custom-control-input"
-                               {% if anuncio.cuidado_adultos == True %}
-                               checked=""
-                               {% else %}
-                               disabled
-                               {% endif %}>
+                            {% if anuncio.cuidado_adultos == True %} checked="" {% else %} disabled {% endif %}>
                         <label class="custom-control-label" for="tareaCuidAdulto">Adultos mayores</label>
                     </div>
                     <div class="custom-control">
                         <input id="tareaCuidMasc" name="tareaCuidMasc" type="checkbox" class="custom-control-input"
-                               {% if anuncio.cuidado_mascotas == True %}
-                               checked=""
-                               {% else %}
-                               disabled
-                               {% endif %}>
+                            {% if anuncio.cuidado_mascotas == True %} checked="" {% else %} disabled {% endif %}>
                         <label class="custom-control-label" for="tareaCuidMasc">Cuidado de mascotas</label>
                     </div>
                 </div>
 
                 <hr class="mt-5 mb-5">
-                
+
                 <h1 class="display-6 mb-5">
                     {% if user == 'Empleador' %}
                     Datos del empleado:
@@ -216,7 +152,8 @@
                                         Promedio de calificación: {{empleado.promedioCalificacion}}
                                     </p>
                                     <a class="btn btn-sm btn-success float-right"
-                                        href="/VistaPerfilContratado/Empleado/{{empleado.id}}" aria-label="">Ir al Perfil</a>
+                                        href="/VistaPerfilContratado/Empleado/{{empleado.id}}" aria-label="">Ir al
+                                        Perfil</a>
                                 </div>
                             </div>
                             {% endif %}
@@ -224,14 +161,14 @@
                         </div>
                     </div>
                 </div>
-<!--
+                <!--
                 {% if postulacion == '0' %}
                 <a href="" type="button" class="btn btn-warning float-right">Terminar vínculo</a>
                 {% else %}
                 <button type="button" class="btn btn-success float-right" disabled></button>
                 {% endif %}    -->
                 <button type="button" class="btn btn-primary btn-block" onClick="history.go(-1)">Volver</button>
-             
+
             </form>
         </div>
     </div>

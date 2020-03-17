@@ -29,30 +29,39 @@
                                 {% if interactuanteseleccionado is not none and interactuanteseleccionado.id == interactuante %}
                                 <a class="list-group-item list-group-item-action active text-white rounded-0">
                                     <div class="media">
-                                        <img src="{{ url_for('static', filename=diccmensajes[interactuante][0].empleador.foto)}}" alt="user" width="100" class="rounded-circle">
+                                        <img src="{{ url_for('static', filename=diccmensajes[interactuante][0].empleador.foto)}}"
+                                            alt="user" width="100" class="rounded-circle">
                                         <div class="media-body ml-4">
-                                            <div class="d-flex align-items-center float-right justify-content-between mb-1">
+                                            <div
+                                                class="d-flex align-items-center float-right justify-content-between mb-1">
                                                 <small class="small">{{diccmensajes[interactuante][0].fecha}}</small>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between mb-1">
-                                                <h6 class="mb-0 font-weight-bold"><br>{{diccmensajes[interactuante][0].empleado.nombre}}</h6>
+                                                <h6 class="mb-0 font-weight-bold">
+                                                    <br>{{diccmensajes[interactuante][0].empleado.nombre}}</h6>
                                             </div>
-                                            <p class="font-italic mb-0 text-small">{{diccmensajes[interactuante][0].mensaje}}</p>
+                                            <p class="font-italic mb-0 text-small">
+                                                {{diccmensajes[interactuante][0].mensaje}}</p>
                                         </div>
                                     </div>
                                 </a>
                                 {% else %}
-                                <a href="/MensajesEmpleado/{{session['id_empleado']}}/{{diccmensajes[interactuante][0].empleador.id}}" class="list-group-item list-group-item-action list-group-item-light rounded-0">
+                                <a href="/MensajesEmpleado/{{session['id_empleado']}}/{{diccmensajes[interactuante][0].empleador.id}}"
+                                    class="list-group-item list-group-item-action list-group-item-light rounded-0">
                                     <div class="media">
-                                        <img src="{{ url_for('static', filename=diccmensajes[interactuante][0].empleador.foto)}}" alt="user" width="100" class="rounded-circle">
+                                        <img src="{{ url_for('static', filename=diccmensajes[interactuante][0].empleador.foto)}}"
+                                            alt="user" width="100" class="rounded-circle">
                                         <div class="media-body ml-4">
-                                            <div class="d-flex align-items-center float-right justify-content-between mb-1">
+                                            <div
+                                                class="d-flex align-items-center float-right justify-content-between mb-1">
                                                 <small class="small">{{diccmensajes[interactuante][0].fecha}}</small>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between mb-1">
-                                                <h6 class="mb-0 font-weight-bold"><br>{{diccmensajes[interactuante][0].empleado.nombre}}</h6>
+                                                <h6 class="mb-0 font-weight-bold">
+                                                    <br>{{diccmensajes[interactuante][0].empleado.nombre}}</h6>
                                             </div>
-                                            <p class="font-italic mb-0 text-small">{{diccmensajes[interactuante][0].mensaje}}</p>
+                                            <p class="font-italic mb-0 text-small">
+                                                {{diccmensajes[interactuante][0].mensaje}}</p>
                                         </div>
                                     </div>
                                 </a>
@@ -63,30 +72,39 @@
                                 {% if interactuanteseleccionado is not none and interactuanteseleccionado.id == interactuante %}
                                 <a class="list-group-item list-group-item-action active text-white rounded-0">
                                     <div class="media">
-                                        <img src="{{ url_for('static', filename=diccmensajes[interactuante][0].empleado.foto)}}" alt="user" width="100" class="rounded-circle">
+                                        <img src="{{ url_for('static', filename=diccmensajes[interactuante][0].empleado.foto)}}"
+                                            alt="user" width="100" class="rounded-circle">
                                         <div class="media-body ml-4">
-                                            <div class="d-flex align-items-center float-right justify-content-between mb-1">
+                                            <div
+                                                class="d-flex align-items-center float-right justify-content-between mb-1">
                                                 <small class="small">{{diccmensajes[interactuante][0].fecha}}</small>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between mb-1">
-                                                <h6 class="mb-0 font-weight-bold"><br>{{diccmensajes[interactuante][0].empleado.nombre}}</h6>
+                                                <h6 class="mb-0 font-weight-bold">
+                                                    <br>{{diccmensajes[interactuante][0].empleado.nombre}}</h6>
                                             </div>
-                                            <p class="font-italic mb-0 text-small">{{diccmensajes[interactuante][0].mensaje}}</p>
+                                            <p class="font-italic mb-0 text-small">
+                                                {{diccmensajes[interactuante][0].mensaje}}</p>
                                         </div>
                                     </div>
                                 </a>
                                 {% else %}
-                                <a href="/MensajesEmpleador/{{session['id_empleador']}}/{{diccmensajes[interactuante][0].empleado.id}}" class="list-group-item list-group-item-action list-group-item-light rounded-0">
+                                <a href="/MensajesEmpleador/{{session['id_empleador']}}/{{diccmensajes[interactuante][0].empleado.id}}"
+                                    class="list-group-item list-group-item-action list-group-item-light rounded-0">
                                     <div class="media">
-                                        <img src="{{ url_for('static', filename=diccmensajes[interactuante][0].empleado.foto)}}" alt="user" width="100" class="rounded-circle">
+                                        <img src="{{ url_for('static', filename=diccmensajes[interactuante][0].empleado.foto)}}"
+                                            alt="user" width="100" class="rounded-circle">
                                         <div class="media-body ml-4">
-                                            <div class="d-flex align-items-center float-right justify-content-between mb-1">
+                                            <div
+                                                class="d-flex align-items-center float-right justify-content-between mb-1">
                                                 <small class="small">{{diccmensajes[interactuante][0].fecha}}</small>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between mb-1">
-                                                <h6 class="mb-0 font-weight-bold"><br>{{diccmensajes[interactuante][0].empleado.nombre}}</h6>
+                                                <h6 class="mb-0 font-weight-bold">
+                                                    <br>{{diccmensajes[interactuante][0].empleado.nombre}}</h6>
                                             </div>
-                                            <p class="font-italic mb-0 text-small">{{diccmensajes[interactuante][0].mensaje}}</p>
+                                            <p class="font-italic mb-0 text-small">
+                                                {{diccmensajes[interactuante][0].mensaje}}</p>
                                         </div>
                                     </div>
                                 </a>
@@ -118,20 +136,24 @@
                         <div class="media w-150 ml-auto mb-3">
                             <div class="media-body mr-3">
                                 <div class="bg-primary rounded py-2 px-3 mb-2">
-                                    <p class="text-small mb-0 text-white">{% if mensaje.anuncio is not none %} Anuncio: {{mensaje.anuncio.titulo}} {% endif %}</p>
+                                    <p class="text-small mb-0 text-white">{% if mensaje.anuncio is not none %} Anuncio:
+                                        {{mensaje.anuncio.titulo}} {% endif %}</p>
                                     <p class="text-small mb-0 text-white font-weight-bold">{{mensaje.mensaje}}</p>
                                 </div>
                                 <p class="small text-muted">{{mensaje.fecha}}</p>
                             </div>
-                            <img src={{ url_for('static', filename=actor.foto)}} alt="user" width="50" class="rounded-circle">
+                            <img src={{ url_for('static', filename=actor.foto)}} alt="user" width="50"
+                                class="rounded-circle">
                         </div>
                         {% elif mensaje.tipoEmisor == 2 %}
                         <!-- Mensaje del empleador -->
                         <div class="media w-150 mb-3">
-                            <img src={{ url_for('static', filename=mensaje.empleador.foto)}} alt="user" width="50" class="rounded-circle">
+                            <img src={{ url_for('static', filename=mensaje.empleador.foto)}} alt="user" width="50"
+                                class="rounded-circle">
                             <div class="media-body ml-3">
                                 <div class="bg-light rounded py-2 px-3 mb-2">
-                                    <p class="text-small mb-0">{% if mensaje.anuncio is not none %} Anuncio: {{mensaje.anuncio.titulo}} {% endif %}</p>
+                                    <p class="text-small mb-0">{% if mensaje.anuncio is not none %} Anuncio:
+                                        {{mensaje.anuncio.titulo}} {% endif %}</p>
                                     <p class="text-small mb-0 font-weight-bold">{{mensaje.mensaje}}</p>
                                 </div>
                                 <p class="small text-muted float-right">{{mensaje.fecha}}</p>
@@ -140,7 +162,8 @@
                         {% elif mensaje.tipoEmisor == 3 and mensaje.tipoReceptor == 1 %}
                         <!-- Mensaje del sistema (Labores) -->
                         <div class="media w-150 mb-3">
-                            <img src="{{ url_for('static', filename='images/Logo.png')}}" alt="user" width="50" class="rounded-circle">
+                            <img src="{{ url_for('static', filename='images/Logo.png')}}" alt="user" width="50"
+                                class="rounded-circle">
                             <div class="media-body ml-3">
                                 <div class="bg-light rounded py-2 px-3 mb-2">
                                     <p class="text-small mb-0 font-weight-bold">NOTIFICACIÓN</p>
@@ -170,20 +193,24 @@
                         <div class="media w-150 ml-auto mb-3">
                             <div class="media-body mr-3">
                                 <div class="bg-primary rounded py-2 px-3 mb-2">
-                                    <p class="text-small mb-0 text-white">{% if mensaje.anuncio is not none %} Anuncio: {{mensaje.anuncio.titulo}} {% endif %}</p>
+                                    <p class="text-small mb-0 text-white">{% if mensaje.anuncio is not none %} Anuncio:
+                                        {{mensaje.anuncio.titulo}} {% endif %}</p>
                                     <p class="text-small mb-0 text-white font-weight-bold">{{mensaje.mensaje}}</p>
                                 </div>
                                 <p class="small text-muted">{{mensaje.fecha}}</p>
                             </div>
-                            <img src={{ url_for('static', filename=actor.foto)}} alt="user" width="50" class="rounded-circle">
+                            <img src={{ url_for('static', filename=actor.foto)}} alt="user" width="50"
+                                class="rounded-circle">
                         </div>
                         {% elif mensaje.tipoEmisor == 1 %}
                         <!-- Mensaje del empleado -->
                         <div class="media w-150 mb-3">
-                            <img src={{ url_for('static', filename=mensaje.empleado.foto)}} alt="user" width="50" class="rounded-circle">
+                            <img src={{ url_for('static', filename=mensaje.empleado.foto)}} alt="user" width="50"
+                                class="rounded-circle">
                             <div class="media-body ml-3">
                                 <div class="bg-light rounded py-2 px-3 mb-2">
-                                    <p class="text-small mb-0">{% if mensaje.anuncio is not none %} Anuncio: {{mensaje.anuncio.titulo}} {% endif %}</p>
+                                    <p class="text-small mb-0">{% if mensaje.anuncio is not none %} Anuncio:
+                                        {{mensaje.anuncio.titulo}} {% endif %}</p>
                                     <p class="text-small mb-0 font-weight-bold">{{mensaje.mensaje}}</p>
                                 </div>
                                 <p class="small text-muted float-right">{{mensaje.fecha}}</p>
@@ -192,7 +219,8 @@
                         {% elif mensaje.tipoEmisor == 3 and mensaje.tipoReceptor == 2 %}
                         <!-- Mensaje del sistema (Labores) -->
                         <div class="media w-150 mb-3">
-                            <img src="{{ url_for('static', filename='images/Logo.png')}}" alt="user" width="50" class="rounded-circle">
+                            <img src="{{ url_for('static', filename='images/Logo.png')}}" alt="user" width="50"
+                                class="rounded-circle">
                             <div class="media-body ml-3">
                                 <div class="bg-light rounded py-2 px-3 mb-2">
                                     <p class="text-small mb-0 font-weight-bold">NOTIFICACIÓN</p>
@@ -213,11 +241,15 @@
                     </div>
                     <div class="bg-gray px-4 py-2 bg-light">
                         <!-- Area de mensaje para escribir -->
-                        <form action="/AgregarMensaje/{{interactuanteseleccionado.id}}/0" method="POST" class="bg-light" name="mensajeChat">
+                        <form action="/AgregarMensaje/{{interactuanteseleccionado.id}}/0" method="POST" class="bg-light"
+                            name="mensajeChat">
                             <div class="input-group">
-                                <input name="cajaMensaje" type="text" placeholder="Escriba aqui..." aria-describedby="button-addon2" class="form-control rounded-0 border-0 py-4 bg-white">
+                                <input name="cajaMensaje" type="text" placeholder="Escriba aqui..."
+                                    aria-describedby="button-addon2"
+                                    class="form-control rounded-0 border-0 py-4 bg-white">
                                 <div class="input-group-append">
-                                    <button name="btnEnviarMensaje" type="submit" class="btn btn-success" {% if interactuanteseleccionado is none %} disabled {% endif %}>Enviar</button>
+                                    <button name="btnEnviarMensaje" type="submit" class="btn btn-success"
+                                        {% if interactuanteseleccionado is none %} disabled {% endif %}>Enviar</button>
                                 </div>
                             </div>
                         </form>
@@ -225,6 +257,7 @@
                 </div>
             </div>
             <a id="anclaMensajes"></a>
+            <button type="button" class="btn btn-primary mt-4" onClick="history.go(-1)">Volver</button>
         </div>
     </div>
 </div>

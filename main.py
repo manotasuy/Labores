@@ -46,14 +46,17 @@ EXTENSIONES_ADMITIDAS = set(['jpg', 'png', 'jpeg', 'bmp', 'gif'])
 
 app = Flask(__name__)
 
-#baseDatos = connectionDb(app, 'remotemysql.com')
-#baseDatos = connectionDb(app, 'aws')
-#baseDatos = connectionDb(app, 'CloudAccess')
-baseDatos = connectionDb(app, 'local')
+# baseDatos = connectionDb(app, 'remotemysql.com')
+# baseDatos = connectionDb(app, 'aws')
+# baseDatos = connectionDb(app, 'CloudAccess')
+baseDatos = connectionDb(app, 'a-work')
+# baseDatos = connectionDb(app, 'a-home')
+# baseDatos = connectionDb(app, 'local')
 
 
 # session
 app.secret_key = "session"
+
 
 def archivoAdmitido(filename):
     return '.' in filename and \
@@ -63,17 +66,18 @@ def archivoAdmitido(filename):
 def login(user, password):
     usuario = Usuario(0, user, password, '')
     retorno = usuario.loginUsuario(baseDatos)
-    tipo_usuario = retorno[0][0]
-    id_usuario = retorno[0][1]
-    print('Valores en LOGIN')
-    print('Tipo de Usuario: ', tipo_usuario)
-    print('ID Usuario: ', id_usuario)
+
     # Si no existe el usuario debo alertar
     if retorno == ():
-        print('No existe el usuario!')
-        flash('No existe el usuario!')
-        return redirect(url_for('logueo'))
+        mensaje = 'La cédula o la contraseña ingresada no es correcta'
+        flash(mensaje)
+        return redirect(url_for('logueo', mensaje=mensaje))
     else:
+        tipo_usuario = retorno[0][0]
+        id_usuario = retorno[0][1]
+        print('Valores en LOGIN')
+        print('Tipo de Usuario: ', tipo_usuario)
+        print('ID Usuario: ', id_usuario)
         session['username'] = user
         session['usertype'] = tipo_usuario 
         session['id_usuario'] = id_usuario
@@ -110,8 +114,13 @@ def ayuda():
     return render_template('Ayuda.html')
 
 
-@app.route('/LogIn/')
+# @app.route("/LogIn/", methods=['GET'], defaults={'mensaje': None})
+# @app.route("/LogIn/<mensaje>", methods=['POST', 'GET'])
+# def logueo(mensaje):
+# return render_template('Login.html', mensaje=mensaje)
+@app.route("/LogIn/")
 def logueo():
+    # return render_template('Login.html', mensaje=mensaje)
     return render_template('Login.html')
 
 
@@ -149,13 +158,14 @@ def vista_perfil(opcion, id):
     elif session.get('usertype') == 'Empleado':
         return redirect(url_for('inicio_empleados'))
     else:
-        #objeto = None
+        # objeto = None
         if opcion == 'Empleado':
             objeto = getEmpleadoByID(baseDatos, id)
             dtoAuxEmpleado: DTOAuxEmpleado = DTOAuxEmpleado()
             # Debo traer las tareas y disponibilidades (estableciendo las seleccionadas por el empleado) para cargarlas dinámicamente
             tareasSeleccion = objeto.getTareasSeleccionadas(baseDatos)
-            disponibilidadSeleccion = objeto.getDisponibilidadSeleccionadas(baseDatos)
+            disponibilidadSeleccion = objeto.getDisponibilidadSeleccionadas(
+                baseDatos)
             tareas = getTareasEmpleado(baseDatos, objeto.id)
             objeto.cargarTareas(tareas)
             referencias = getReferenciasEmpleado(baseDatos, objeto.id)
@@ -166,7 +176,8 @@ def vista_perfil(opcion, id):
             generoInt = int.from_bytes(objeto.genero, "big")
             objeto.genero = generoInt
 
-            dtoAuxEmpleado = DTOAuxEmpleado(tareasSeleccion, disponibilidadSeleccion)
+            dtoAuxEmpleado = DTOAuxEmpleado(
+                tareasSeleccion, disponibilidadSeleccion)
             return render_template('VistaPerfil.html', tipo=opcion, data=objeto, aux=dtoAuxEmpleado)
 
         elif opcion == 'Empleador':
@@ -183,13 +194,14 @@ def vista_perfil_contratado(opcion, id):
     elif session.get('usertype') == 'Empleado':
         return redirect(url_for('inicio_empleados'))
     else:
-        #objeto = None
+        # objeto = None
         if opcion == 'Empleado':
             objeto = getEmpleadoByID(baseDatos, id)
             dtoAuxEmpleado: DTOAuxEmpleado = DTOAuxEmpleado()
             # Debo traer las tareas y disponibilidades (estableciendo las seleccionadas por el empleado) para cargarlas dinámicamente
             tareasSeleccion = objeto.getTareasSeleccionadas(baseDatos)
-            disponibilidadSeleccion = objeto.getDisponibilidadSeleccionadas(baseDatos)
+            disponibilidadSeleccion = objeto.getDisponibilidadSeleccionadas(
+                baseDatos)
             tareas = getTareasEmpleado(baseDatos, objeto.id)
             objeto.cargarTareas(tareas)
             referencias = getReferenciasEmpleado(baseDatos, objeto.id)
@@ -200,12 +212,14 @@ def vista_perfil_contratado(opcion, id):
             generoInt = int.from_bytes(objeto.genero, "big")
             objeto.genero = generoInt
 
-            dtoAuxEmpleado = DTOAuxEmpleado(tareasSeleccion, disponibilidadSeleccion)
+            dtoAuxEmpleado = DTOAuxEmpleado(
+                tareasSeleccion, disponibilidadSeleccion)
             return render_template('VistaPerfilContratado.html', tipo=opcion, data=objeto, aux=dtoAuxEmpleado)
 
         elif opcion == 'Empleador':
             objeto = getEmpleadorByID(baseDatos, id)
             return render_template('VistaPerfil.html', tipo=opcion, data=objeto)
+
 
 @app.route('/Perfil/<opcion>', methods=['POST', 'GET'])
 def perfil(opcion):
@@ -242,10 +256,9 @@ def perfil(opcion):
                 dtoAuxEmpleado = DTOAuxEmpleado(
                     tareasSeleccion, disponibilidadSeleccion)
                 if 'id_refer' in session:
-                    referenciaParaEditar = getReferenciaByID(baseDatos, session['id_refer'])
-                    
-            return render_template('Perfil.html', tipo=opcion, data=empleado, aux=dtoAuxEmpleado, refer=referenciaParaEditar)
-
+                    referenciaParaEditar = getReferenciaByID(
+                        baseDatos, session['id_refer'])
+                return render_template('Perfil.html', tipo=opcion, data=empleado, aux=dtoAuxEmpleado, refer=referenciaParaEditar)
         elif opcion == 'Empleador':
             if logueado:
                 # obtengo los datos del empleador
@@ -265,22 +278,22 @@ def guardar_perfil(tipo):
         if request.method == 'POST':
             parametros = request.form
 
-            #for param in parametros:
-                #print('Parámetro: ', param)
-
             if request.form.get('btnGuardarReferencia'):
                 if not 'id_refer' in session:
-                    new_empleado = getEmpleadoByID(baseDatos, session['id_empleado'])
+                    new_empleado = getEmpleadoByID(
+                        baseDatos, session['id_empleado'])
                     nombre = request.form['refNombreEmp']
                     apellido = request.form['refApellidoEmp']
                     telefono = request.form['refTelefonoEmp']
                     trabaja_desde = request.form['refTrabDesde']
                     trabaja_hasta = request.form['refTrabDesde']
-                    referencia = Referencia(0, new_empleado, nombre, apellido, telefono, trabaja_desde, trabaja_hasta)
+                    referencia = Referencia(
+                        0, new_empleado, nombre, apellido, telefono, trabaja_desde, trabaja_hasta)
                     referencia.crearReferencia(baseDatos)
                     print('Referencia creada')
                 else:
-                    referencia = getReferenciaByID(baseDatos, session['id_refer'])
+                    referencia = getReferenciaByID(
+                        baseDatos, session['id_refer'])
                     referencia.nombre = request.form['refNombreEmp']
                     referencia.apellido = request.form['refApellidoEmp']
                     referencia.telefono = request.form['refTelefonoEmp']
@@ -313,7 +326,7 @@ def guardar_perfil(tipo):
                 telefono = parametros['tel']
                 password = parametros['password']
 
-                # Debo controlar si la cédula está en los parámetros, porque cuando se deshabilita 
+                # Debo controlar si la cédula está en los parámetros, porque cuando se deshabilita
                 # en la edición del perfil la cédula no viene en la lista de parámetros y explota, OJO!
                 if 'cedula' in parametros:
                     cedula = parametros['cedula']
@@ -333,7 +346,7 @@ def guardar_perfil(tipo):
                 if tipo == 'Empleado':
                     # debo crear un empleado
                     new_empleado = Empleado(0, cedula, nombre, apellido, nacimiento, genero, domicilio,
-                                        nacionalidad, mail, telefono, 0, '', 'images/NoImage.png', 0, usuario, None, None, None)
+                                            nacionalidad, mail, telefono, 0, '', 'images/NoImage.png', 0, usuario, None, None, None)
 
                     # como es edición de perfil debo modificar la contraseña y el empleado
                     if logueado:
@@ -341,11 +354,13 @@ def guardar_perfil(tipo):
 
                         # recorrer la disponibilidad seleccionada y cargarsela al empleado
                         disponibilidad = list()
-                        disponibilidadesRegistradas = getDisponibilidadesRegistradas(baseDatos)
+                        disponibilidadesRegistradas = getDisponibilidadesRegistradas(
+                            baseDatos)
                         for disp in disponibilidadesRegistradas:
-                            indice = str(disponibilidadesRegistradas.index(disp)+1)
+                            indice = str(
+                                disponibilidadesRegistradas.index(disp)+1)
                             if 'disp'+indice in parametros:
-                                #print('**** Debería cargar esta disponibilidad: ID=', disp.id, ', DESC=', disp.descripcion)
+                                # print('**** Debería cargar esta disponibilidad: ID=', disp.id, ', DESC=', disp.descripcion)
                                 d = Disponibilidad(disp.id, disp.descripcion)
                                 disponibilidad.append(d)
                         new_empleado.cargarDisponibilidad(disponibilidad)
@@ -356,7 +371,7 @@ def guardar_perfil(tipo):
                         for tarea in tareasRegistradas:
                             indice = str(tareasRegistradas.index(tarea)+1)
                             if 'tarea'+indice in parametros:
-                                #print('**** Debería cargar esta tarea: ID=', tarea.id, ', DESC=', tarea.descripcion)
+                                # print('**** Debería cargar esta tarea: ID=', tarea.id, ', DESC=', tarea.descripcion)
                                 t = Tarea(tarea.id, tarea.descripcion)
                                 tareas.append(t)
                         new_empleado.cargarTareas(tareas)
@@ -376,12 +391,15 @@ def guardar_perfil(tipo):
                             foto = request.files["fotoPerfil"]
                             if foto.filename == '':
                                 print('No hay foto cargada, mantengo la que tenía')
-                                new_empleado.foto = getEmpleadoByID(baseDatos, session['id_empleado']).foto
+                                new_empleado.foto = getEmpleadoByID(
+                                    baseDatos, session['id_empleado']).foto
                             else:
                                 if archivoAdmitido(foto.filename):
                                     filename = secure_filename(foto.filename)
-                                    rutaFisica = os.path.join(app.config['CARPETA_FISICA_IMAGENES'], filename)
-                                    rutaCarga = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], filename)
+                                    rutaFisica = os.path.join(
+                                        app.config['CARPETA_FISICA_IMAGENES'], filename)
+                                    rutaCarga = os.path.join(
+                                        app.config['CARPETA_CARGA_IMAGENES'], filename)
                                     foto.save(rutaFisica)
                                     new_empleado.foto = rutaCarga
 
@@ -396,8 +414,8 @@ def guardar_perfil(tipo):
 
                 elif tipo == 'Empleador':
                     # debo crear un empleador
-                    new_empleador = Empleador(0, cedula, nombre, apellido, nacimiento,
-                                        genero, domicilio, nacionalidad, mail, telefono, 0, 'images/NoImage.png', 0, usuario)
+                    new_empleador = Empleador(0, cedula, nombre, apellido, nacimiento, genero,
+                                              domicilio, nacionalidad, mail, telefono, 0, 'images/NoImage.png', 0, usuario)
 
                     # como es edición de perfil debo modificar la contraseña y el empleador
                     if logueado:
@@ -412,18 +430,22 @@ def guardar_perfil(tipo):
                             foto = request.files["fotoPerfil"]
                             if foto.filename == '':
                                 print('No hay foto cargada, mantengo la que tenía')
-                                new_empleador.foto = getEmpleadorByID(baseDatos, session['id_empleador']).foto
+                                new_empleador.foto = getEmpleadorByID(
+                                    baseDatos, session['id_empleador']).foto
                             else:
                                 if archivoAdmitido(foto.filename):
                                     filename = secure_filename(foto.filename)
-                                    rutaFisica = os.path.join(app.config['CARPETA_FISICA_IMAGENES'], filename)
-                                    rutaCarga = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], filename)
+                                    rutaFisica = os.path.join(
+                                        app.config['CARPETA_FISICA_IMAGENES'], filename)
+                                    rutaCarga = os.path.join(
+                                        app.config['CARPETA_CARGA_IMAGENES'], filename)
                                     foto.save(rutaFisica)
                                     new_empleador.foto = rutaCarga
 
                         new_empleador.registroBps = regBPS
                         new_empleador.id = session['id_empleador']
                         new_empleador.modificarEmpleador(baseDatos)
+
                     # como es registro (alta) debo crear el empleado
                     else:
                         new_empleador.crearEmpleador(baseDatos)
@@ -431,7 +453,7 @@ def guardar_perfil(tipo):
                     return redirect(url_for('inicio_empleadores'))
 
 
-@app.route('/RefreshReferencia/', methods=['POST','GET'])
+@app.route('/RefreshReferencia/', methods=['POST', 'GET'])
 def refresh_referencia():
     return redirect(url_for('perfil', opcion='Empleado') + '#anclaReferencias')
 
@@ -454,7 +476,7 @@ def cancelar_cuenta():
         return 'No implementada'
 
 
-@app.route('/HomeEmpleados/', methods=['POST','GET'])
+@app.route('/HomeEmpleados/', methods=['POST', 'GET'])
 def inicio_empleados():
     if session.get('usertype') == None:
         return redirect(url_for('logueo'))
@@ -467,7 +489,7 @@ def inicio_empleados():
         return render_template('HomeEmpleados.html', sujeto=empleado)
 
 
-@app.route('/HomeEmpleadores/', methods=['POST','GET'])
+@app.route('/HomeEmpleadores/', methods=['POST', 'GET'])
 def inicio_empleadores():
     if session.get('usertype') == None:
         return redirect(url_for('logueo'))
@@ -538,9 +560,10 @@ def publicar_anuncio():
                 nexperiencia = 1
             else:
                 nexperiencia = 0
-            print("request.form.get('radioExperiencia'):", request.form.get('radioExperiencia'))
+            print("request.form.get('radioExperiencia'):",
+                  request.form.get('radioExperiencia'))
             npago_hora = request.form['pagoPorHora']
-            print('nexperiencia: ',nexperiencia)
+            print('nexperiencia: ', nexperiencia)
             ncal_desde = None  # por ahora no se maneja a nivel de anuncio
             ncal_hasta = None  # por ahora no se maneja a nivel de anuncio
             nvinculo = False  # cuando se crea no hay vínculo
@@ -670,10 +693,8 @@ def actualizandoAnuncio(idAnuncio):
     else:
         anuncio = getAnuncioByID(baseDatos, idAnuncio)
         print(anuncio)
-        
         estadoInt = int.from_bytes(anuncio.estado, "big")
         anuncio.estado = estadoInt
-
 
         if anuncio.estado == 1:
             estado = 1
@@ -852,9 +873,9 @@ def listar_anuncios():
             disponibilidadAnuncio = elAnuncio[1].disponibilidad
             experienciaAnuncio = elAnuncio[1].experiencia
             print('la experiencia que VIENE de la BASE es: ', experienciaAnuncio)
-            #if elAnuncio[1].experiencia == 0:
+            # if elAnuncio[1].experiencia == 0:
             #    experienciaAnuncio = 0
-            #else:
+            # else:
             #    experienciaAnuncio = 1
             tareasAnuncio = []
 
@@ -890,21 +911,21 @@ def listar_anuncios():
         listaMatcheo = []
         print('Lista de anuncios: ', listaAnuncios)
         for a in listaDeAnuncios:
-            print('disponibilidad anuncio: ',a[1])
-            print('disponibilidad émpleado: ',empl[2])
+            print('disponibilidad anuncio: ', a[1])
+            print('disponibilidad émpleado: ', empl[2])
             print('------------------------')
             print('Experiencia del empleado: ', empl[0])
             print('Experiencia del anuncio: ', a[2])
             print('---------------------------')
             print('tareas anuncio: ', a[3])
-            print('tareas empleado: ',empl[1])
-            if   a[3] & empl[1] == a[3] and a[1] in empl[2] and empl[0] >= a[2]:
+            print('tareas empleado: ', empl[1])
+            if a[3] & empl[1] == a[3] and a[1] in empl[2] and empl[0] >= a[2]:
                 unAnuncio = [
                     a[0],
                     getAnuncioByID(baseDatos, a[0])
                 ]
                 listaMatcheo.append(unAnuncio)
-                
+
         misPostulaciones = getPostulacionesEmpleadoIDs(baseDatos, idEmpleado)
         listaIdsMisAnunciosPostulados = []
         for miPostulacion in misPostulaciones:
@@ -914,9 +935,7 @@ def listar_anuncios():
                 k.append(1)
             else:
                 k.append(0)
-
-
-        return render_template('ListaAnuncios.html', anuncios=listaMatcheo)
+                return render_template('ListaAnuncios.html', anuncios=listaMatcheo)
 
 
 @app.route('/verAnuncio/<idAnuncio>/<postulacion>')
@@ -980,7 +999,7 @@ def ver_anuncio(idAnuncio, postulacion):
         # el desempaquetado tendrá 3 claves, 'empleador', 'anuncio' y psotulacion
         # 'empleador' : [nombre, apellido, foto, registroBps]
         # 'anuncio' : [titulo, descripcion, disponibilidad, [tareas], pago_hora, experiencia, idAnuncio]
-		# 'postulación': contiene 1 si el usuario está postulado al anuncio, y 0 si no lo está
+        # 'postulación': contiene 1 si el usuario está postulado al anuncio, y 0 si no lo está
         return render_template('verOferta.html', **context)
 
 
@@ -1000,12 +1019,13 @@ def postularse(idAnuncio):
         new_postulacion.crearPostulacion(baseDatos)
 
         # Se debe notificar al empleador mediante mensaje de que te has postulado
-        mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(), 
-        'Buenas noticias!!! {} {}, se ha postulado a tu anuncio: "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2)
+        mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
+        ), 'Buenas noticias!!! {} {}, se ha postulado a tu anuncio: "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2)
         mensajeEmpleador.crearMensaje(baseDatos)
 
         flash('Postulación enviada!')
         return redirect(url_for('listar_anuncios'))
+
 
 @app.route('/MisPostulaciones/')
 def mis_postulaciones():
@@ -1023,7 +1043,8 @@ def mis_postulaciones():
             lista = []
             lista.append(postulacion.anuncio)
             lista.append(getAnuncioByID(baseDatos, postulacion.anuncio))
-            lista.append(getPostulacionEmpleadoAnuncio(baseDatos, idEmpleado, postulacion.anuncio))
+            lista.append(getPostulacionEmpleadoAnuncio(
+                baseDatos, idEmpleado, postulacion.anuncio))
             misPostulaciones.append(lista)
 
         for post in misPostulaciones:
@@ -1032,7 +1053,7 @@ def mis_postulaciones():
             else:
                 post.append(0)
 
-        return render_template('TusPostulaciones.html', postulaciones = misPostulaciones)
+        return render_template('TusPostulaciones.html', postulaciones=misPostulaciones)
 
 
 @app.route('/MisVinculos')
@@ -1051,18 +1072,18 @@ def mis_vinculos():
             return render_template('MisVinculos.html', **context)
         elif session.get('usertype') == 'Empleador':
             empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
-            
+
             context = {
                 'vinculos': getVinculoByEmpleador(baseDatos, empleador),
                 'sesion': session.get('usertype')
             }
-            #print('idEmpleador: ', empleador.id)
-            #print('Contexto: ', context)
+            # print('idEmpleador: ', empleador.id)
+            # print('Contexto: ', context)
             return render_template('MisVinculos.html', **context)
         else:
             return redirect(url_for('logueo'))
-			
-						
+
+
 @app.route('/verVinculo/<idVinculo>')
 def ver_vinculos(idVinculo):
     if session.get('usertype') == None:
@@ -1076,11 +1097,11 @@ def ver_vinculos(idVinculo):
         anuncio = getAnuncioByID(baseDatos, vinculo.anuncio)
         print(anuncio.cuidado_ninios)
         context = {
-            'vinculo' : vinculo,
-            'anuncio' : anuncio,
-            'empleado' : empleado,
-            'empleador' : empleador,
-            'user' : session.get('usertype')
+            'vinculo': vinculo,
+            'anuncio': anuncio,
+            'empleado': empleado,
+            'empleador': empleador,
+            'user': session.get('usertype')
         }
         return render_template('verVinculo.html', **context)
 
@@ -1116,13 +1137,13 @@ def mensajes_empleado(idEmpleado, idEmpleador):
         diccMensajes = getMensajesParaEmpleado(baseDatos, idEmpleado)
         objeto = getEmpleadoByID(baseDatos, idEmpleado)
         if int(idEmpleador) == 0:
-            # carga inicial del form, no hay remitente seleccionado, 
+            # carga inicial del form, no hay remitente seleccionado,
             # solo se va a cargar la lista de remitentes con panel de mensajes vacío
             elEmpleador = None
-            #print('No hay empleador')
+            # print('No hay empleador')
         else:
             elEmpleador = getEmpleadorByID(baseDatos, idEmpleador)
-            #print('elEmpleador: ', elEmpleador)
+            # print('elEmpleador: ', elEmpleador)
 
         return render_template('Mensajes.html', diccmensajes=diccMensajes, actor=objeto, interactuanteseleccionado=elEmpleador)
 
@@ -1139,7 +1160,7 @@ def mensajes_empleador(idEmpleador, idEmpleado):
         diccMensajes = getMensajesParaEmpleador(baseDatos, idEmpleador)
         objeto = getEmpleadorByID(baseDatos, idEmpleador)
         if int(idEmpleado) == 0:
-            # carga inicial del form, no hay remitente seleccionado, 
+            # carga inicial del form, no hay remitente seleccionado,
             # solo se va a cargar la lista de remitentes con panel de mensajes vacío
             elEmpleado = None
         else:
@@ -1163,24 +1184,27 @@ def agregar_mensaje(idDestinatario, idAnuncio):
                 anuncio = None
             else:
                 anuncio = getAnuncioByID(baseDatos, idAnuncio)
-            
+
             if session['usertype'] == 'Empleado':
                 empleado = getEmpleadoByID(baseDatos, session['id_empleado'])
                 empleador = getEmpleadorByID(baseDatos, idDestinatario)
-                mensajeEmpleado = Mensaje(0, empleado, empleador, anuncio, datetime.now(), mensaje, 1, 2)
+                mensajeEmpleado = Mensaje(
+                    0, empleado, empleador, anuncio, datetime.now(), mensaje, 1, 2)
                 mensajeEmpleado.crearMensaje(baseDatos)
                 return redirect(url_for('mensajes_empleador', idEmpleado=empleado.id, idEmpleador=empleador.id))
 
             elif session['usertype'] == 'Empleador':
-                empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
+                empleador = getEmpleadorByID(
+                    baseDatos, session['id_empleador'])
                 empleado = getEmpleadoByID(baseDatos, idDestinatario)
-                mensajeEmpleador = Mensaje(0, empleado, empleador, anuncio, datetime.now(), mensaje, 2, 1)
+                mensajeEmpleador = Mensaje(
+                    0, empleado, empleador, anuncio, datetime.now(), mensaje, 2, 1)
                 mensajeEmpleador.crearMensaje(baseDatos)
                 return redirect(url_for('mensajes_empleador', idEmpleador=empleador.id, idEmpleado=empleado.id))
 
 
 @app.route('/Contratar/<idEmpleado>')
-def contactar(idEmpleado):
+def contratar(idEmpleado):
     if session.get('usertype') == None:
         return redirect(url_for('logueo'))
     elif session.get('usertype') == 'Administrador':
@@ -1201,7 +1225,7 @@ def contactar(idEmpleado):
 
         # Se debe generar el vínculo
         vinculo = Vinculo(0, empleado, empleador, anuncio,
-                          datetime.now(), None, None, '', None, None)
+                          datetime.now(), None, '', None, None)
         vinculo.crearVinculo(baseDatos)
 
         # El anuncio debe quedar inactivo
