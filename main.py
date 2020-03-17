@@ -75,7 +75,7 @@ def login(user, password):
         return redirect(url_for('logueo'))
     else:
         session['username'] = user
-        session['usertype'] = tipo_usuario
+        session['usertype'] = tipo_usuario 
         session['id_usuario'] = id_usuario
 
         if session['usertype'] == 'Empleador':
