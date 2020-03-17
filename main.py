@@ -82,11 +82,13 @@ def login(user, password):
             # debo obtener el empleador y guardar su id en la sesion
             empleador = getEmpleadorByUsuarioID(baseDatos, id_usuario)
             session['id_empleador'] = empleador.id
+            session['nombre'] = '{} {}'.format(empleador.nombre, empleador.apellido)
             return redirect(url_for('inicio_empleadores'))
         elif session['usertype'] == 'Empleado':
             # debo obtener el empleado y guardar su id en la sesion
             empleado = getEmpleadoByUsuarioID(baseDatos, id_usuario)
             session['id_empleado'] = empleado.id
+            session['nombre'] = '{} {}'.format(empleado.nombre, empleado.apellido)
             return redirect(url_for('inicio_empleados'))
         else:
             return redirect(url_for('administrar'))
