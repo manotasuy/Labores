@@ -204,7 +204,7 @@
                                     </p>
                                     <p class="card-text">
                                         Empleador registrado en el BPS:<br>
-                                        <strong>{% if empleador.3 == 1 %}Si{% else %}No{% endif %}</strong>
+                                        <strong>{% if empleador.3 == '' or empleador.3 == '0'%}No{% else %}Si{% endif %}</strong>
                                     </p>
                                 </div>
                             </div>

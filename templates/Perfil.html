@@ -297,11 +297,11 @@
                     <p>¿Estás registrad@ como empleador/a en el BPS?</p>
 
                     <div class="custom-control custom-radio">
-                        <input id="bpsSi" name="bps" type="radio" class="custom-control-input" required="" value="1" {% if data.registroBps is not none or data.registroBps != '' %} checked {% endif %}>
+                        <input id="bpsSi" name="bps" type="radio" class="custom-control-input" required="" value="1" {% if data.registroBps is not none or data.registroBps != '' or data.registroBps != '0' %} checked {% endif %}>
                         <label class="custom-control-label" for="bpsSi">Si</label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input id="bpsNo" name="bps" type="radio" class="custom-control-input" required="" value="0" {% if data.registroBps is none or data.registroBps == '' %} checked {% endif %}>
+                        <input id="bpsNo" name="bps" type="radio" class="custom-control-input" required="" value="0" {% if data.registroBps is none or data.registroBps == '' or data.registroBps == '0' %} checked {% endif %}>
                         <label class="custom-control-label" for="bpsNo">No</label>
                     </div>
 

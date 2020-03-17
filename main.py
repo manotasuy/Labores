@@ -976,6 +976,7 @@ def ver_anuncio(idAnuncio, postulacion):
             'anuncio': listaAnuncio,
             'postulacion': postulacion
         }
+        print('BPS: ', listaEmpleador[3])
         # el desempaquetado tendrá 3 claves, 'empleador', 'anuncio' y psotulacion
         # 'empleador' : [nombre, apellido, foto, registroBps]
         # 'anuncio' : [titulo, descripcion, disponibilidad, [tareas], pago_hora, experiencia, idAnuncio]
