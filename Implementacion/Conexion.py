@@ -1,6 +1,7 @@
 from flask_mysqldb import MySQL
 
-UPLOAD_FOLDER = 'images/Perfiles'
+CARPETA_FISICA_IMAGENES = "./static/images/Perfiles/"
+CARPETA_CARGA_IMAGENES = "images/Perfiles/"
 
 def connectionDb(app, servidor):
     if servidor == 'remotemysql.com':
@@ -23,5 +24,6 @@ def connectionDb(app, servidor):
         app.config['MYSQL_USER'] = 'root'
         app.config['MYSQL_PASSWORD'] = 'root'
         app.config['MYSQL_DB'] = 'bdlabores'
-    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+    app.config['CARPETA_FISICA_IMAGENES'] = CARPETA_FISICA_IMAGENES
+    app.config['CARPETA_CARGA_IMAGENES'] = CARPETA_CARGA_IMAGENES
     return MySQL(app)

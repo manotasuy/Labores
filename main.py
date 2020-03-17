@@ -1,4 +1,5 @@
 import json
+import os
 from flask import Flask, request, Response, render_template, url_for, redirect, flash, session, send_from_directory
 from werkzeug.utils import secure_filename
 from flask_mysqldb import MySQL
@@ -41,37 +42,22 @@ from Implementacion.Referencia import getReferenciasEmpleado
 from Implementacion.Mensaje import getMensajesParaEmpleado
 from Implementacion.Mensaje import getMensajesParaEmpleador
 
-ALLOWED_EXTENSIONS = set(['jpg', 'png', 'jpeg', 'bmp'])
+EXTENSIONES_ADMITIDAS = set(['jpg', 'png', 'jpeg', 'bmp', 'gif'])
 
 app = Flask(__name__)
 
 #baseDatos = connectionDb(app, 'remotemysql.com')
 #baseDatos = connectionDb(app, 'aws')
-baseDatos = connectionDb(app, 'CloudAccess')
-#baseDatos = connectionDb(app, 'local')
+#baseDatos = connectionDb(app, 'CloudAccess')
+baseDatos = connectionDb(app, 'local')
 
 
 # session
 app.secret_key = "session"
 
-def allowed_file(filename):
+def archivoAdmitido(filename):
     return '.' in filename and \
-        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-@app.route('/')
-@app.route('/Inicio/')
-def inicio():
-    return render_template('Inicio.html')
-
-
-@app.route('/Contacto/')
-def contacto():
-    return render_template('Contacto.html')
-
-
-@app.route('/Ayuda/')
-def ayuda():
-    return render_template('Ayuda.html')
+        filename.rsplit('.', 1)[1].lower() in EXTENSIONES_ADMITIDAS
 
 
 def login(user, password):
@@ -104,6 +90,22 @@ def login(user, password):
             return redirect(url_for('inicio_empleados'))
         else:
             return redirect(url_for('administrar'))
+
+
+@app.route('/')
+@app.route('/Inicio/')
+def inicio():
+    return render_template('Inicio.html')
+
+
+@app.route('/Contacto/')
+def contacto():
+    return render_template('Contacto.html')
+
+
+@app.route('/Ayuda/')
+def ayuda():
+    return render_template('Ayuda.html')
 
 
 @app.route('/LogIn/')
@@ -266,13 +268,13 @@ def guardar_perfil(tipo):
 
             if request.form.get('btnGuardarReferencia'):
                 if not 'id_refer' in session:
-                    empleado = getEmpleadoByID(baseDatos, session['id_empleado'])
+                    new_empleado = getEmpleadoByID(baseDatos, session['id_empleado'])
                     nombre = request.form['refNombreEmp']
                     apellido = request.form['refApellidoEmp']
                     telefono = request.form['refTelefonoEmp']
                     trabaja_desde = request.form['refTrabDesde']
                     trabaja_hasta = request.form['refTrabDesde']
-                    referencia = Referencia(0, empleado, nombre, apellido, telefono, trabaja_desde, trabaja_hasta)
+                    referencia = Referencia(0, new_empleado, nombre, apellido, telefono, trabaja_desde, trabaja_hasta)
                     referencia.crearReferencia(baseDatos)
                     print('Referencia creada')
                 else:
@@ -328,7 +330,7 @@ def guardar_perfil(tipo):
                 # chequear el tipo para realizar las operaciones en empleado o empleador
                 if tipo == 'Empleado':
                     # debo crear un empleado
-                    empleado = Empleado(0, cedula, nombre, apellido, nacimiento, genero, domicilio,
+                    new_empleado = Empleado(0, cedula, nombre, apellido, nacimiento, genero, domicilio,
                                         nacionalidad, mail, telefono, 0, '', 'images/NoImage.png', 0, usuario, None, None, None)
 
                     # como es edición de perfil debo modificar la contraseña y el empleado
@@ -344,7 +346,7 @@ def guardar_perfil(tipo):
                                 #print('**** Debería cargar esta disponibilidad: ID=', disp.id, ', DESC=', disp.descripcion)
                                 d = Disponibilidad(disp.id, disp.descripcion)
                                 disponibilidad.append(d)
-                        empleado.cargarDisponibilidad(disponibilidad)
+                        new_empleado.cargarDisponibilidad(disponibilidad)
 
                         # recorrer las tareas seleccionadas y cargarselas al empleado
                         tareas = list()
@@ -355,7 +357,7 @@ def guardar_perfil(tipo):
                                 #print('**** Debería cargar esta tarea: ID=', tarea.id, ', DESC=', tarea.descripcion)
                                 t = Tarea(tarea.id, tarea.descripcion)
                                 tareas.append(t)
-                        empleado.cargarTareas(tareas)
+                        new_empleado.cargarTareas(tareas)
 
                         tiene_experiencia = parametros['experiencia']
                         if tiene_experiencia == '1':
@@ -364,25 +366,35 @@ def guardar_perfil(tipo):
                             experiencia = 0
 
                         descripcion = parametros['presentacion']
-                        foto = parametros['fotoPerfil']
-                        empleado.id = session['id_empleado']
-                        empleado.experiencia_meses = experiencia
-                        empleado.descripcion = descripcion
-                        if foto != '':
-                            foto = 'images/Perfiles/' + foto
-                            empleado.foto = foto
-                        empleado.modificarEmpleado(baseDatos)
+                        new_empleado.id = session['id_empleado']
+                        new_empleado.experiencia_meses = experiencia
+                        new_empleado.descripcion = descripcion
+
+                        if request.files:
+                            foto = request.files["fotoPerfil"]
+                            if foto.filename == '':
+                                print('No hay foto cargada, mantengo la que tenía')
+                                new_empleado.foto = getEmpleadoByID(baseDatos, session['id_empleado']).foto
+                            else:
+                                if archivoAdmitido(foto.filename):
+                                    filename = secure_filename(foto.filename)
+                                    rutaFisica = os.path.join(app.config['CARPETA_FISICA_IMAGENES'], filename)
+                                    rutaCarga = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], filename)
+                                    foto.save(rutaFisica)
+                                    new_empleado.foto = rutaCarga
+
+                        new_empleado.modificarEmpleado(baseDatos)
                         return redirect(url_for('inicio_empleados'))
 
                     # como es registro (alta) debo crear el empleado
                     else:
-                        empleado.crearEmpleado(baseDatos)
+                        new_empleado.crearEmpleado(baseDatos)
                         login(cedula, password)
                         return redirect(url_for('inicio_empleados'))
 
                 elif tipo == 'Empleador':
                     # debo crear un empleador
-                    empleador = Empleador(0, cedula, nombre, apellido, nacimiento,
+                    new_empleador = Empleador(0, cedula, nombre, apellido, nacimiento,
                                         genero, domicilio, nacionalidad, mail, telefono, 0, 'images/NoImage.png', 0, usuario)
 
                     # como es edición de perfil debo modificar la contraseña y el empleador
@@ -394,16 +406,25 @@ def guardar_perfil(tipo):
                         else:
                             regBPS = '0'
 
-                        foto = parametros['fotoPerfil']
-                        empleador.registroBps = regBPS
-                        if foto != '':
-                            foto = 'images/Perfiles/' + foto
-                            empleador.foto = foto
-                        empleador.id = session['id_empleador']
-                        empleador.modificarEmpleador(baseDatos)
+                        if request.files:
+                            foto = request.files["fotoPerfil"]
+                            if foto.filename == '':
+                                print('No hay foto cargada, mantengo la que tenía')
+                                new_empleador.foto = getEmpleadorByID(baseDatos, session['id_empleador']).foto
+                            else:
+                                if archivoAdmitido(foto.filename):
+                                    filename = secure_filename(foto.filename)
+                                    rutaFisica = os.path.join(app.config['CARPETA_FISICA_IMAGENES'], filename)
+                                    rutaCarga = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], filename)
+                                    foto.save(rutaFisica)
+                                    new_empleador.foto = rutaCarga
+
+                        new_empleador.registroBps = regBPS
+                        new_empleador.id = session['id_empleador']
+                        new_empleador.modificarEmpleador(baseDatos)
                     # como es registro (alta) debo crear el empleado
                     else:
-                        empleador.crearEmpleador(baseDatos)
+                        new_empleador.crearEmpleador(baseDatos)
                         login(cedula, password)
                     return redirect(url_for('inicio_empleadores'))
 
