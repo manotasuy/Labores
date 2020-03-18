@@ -46,10 +46,10 @@ EXTENSIONES_ADMITIDAS = set(['jpg', 'png', 'jpeg', 'bmp', 'gif'])
 
 app = Flask(__name__)
 
-# baseDatos = connectionDb(app, 'remotemysql.com')
+baseDatos = connectionDb(app, 'remotemysql.com')
 # baseDatos = connectionDb(app, 'aws')
 # baseDatos = connectionDb(app, 'CloudAccess')
-baseDatos = connectionDb(app, 'a-work')
+# baseDatos = connectionDb(app, 'a-work')
 # baseDatos = connectionDb(app, 'a-home')
 # baseDatos = connectionDb(app, 'local')
 
@@ -935,7 +935,7 @@ def listar_anuncios():
                 k.append(1)
             else:
                 k.append(0)
-                return render_template('ListaAnuncios.html', anuncios=listaMatcheo)
+        return render_template('ListaAnuncios.html', anuncios=listaMatcheo)
 
 
 @app.route('/verAnuncio/<idAnuncio>/<postulacion>')
@@ -1012,18 +1012,20 @@ def postularse(idAnuncio):
     elif session.get('usertype') == 'Empleador':
         return redirect(url_for('inicio_empleadores'))
     else:
+        
         empleado = getEmpleadoByID(baseDatos, session['id_empleado'])
         anuncio = getAnuncioByID(baseDatos, idAnuncio)
         new_postulacion = Postulacion(
             None, empleado, anuncio, datetime.now(), None)
         new_postulacion.crearPostulacion(baseDatos)
-
+        
         # Se debe notificar al empleador mediante mensaje de que te has postulado
         mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
         ), 'Buenas noticias!!! {} {}, se ha postulado a tu anuncio: "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2)
         mensajeEmpleador.crearMensaje(baseDatos)
 
         flash('Postulación enviada!')
+        print('llego hasta acá 2')
         return redirect(url_for('listar_anuncios'))
 
 
