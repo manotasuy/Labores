@@ -17,12 +17,13 @@
             {% else %}
             <h1 class="display-5 mb-5">Registro {{tipo}}</h1>
             {% endif %}
-            <form class="needs-validation" novalidate="" action="/GuardarPerfil/{{tipo}}" method="POST" enctype="multipart/form-data">
+            <form class="needs-validation" novalidate="" action="/GuardarPerfil/{{tipo}}" method="POST"
+                enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="name">Nombre</label>
                         <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre"
-							value="{{data.nombre}}" required="">
+                            value="{{data.nombre}}" required="">
                         <div class="invalid-feedback">
                             Se requiere un Nombre válido.
                         </div>
@@ -30,7 +31,7 @@
                     <div class="col-md-6 mb-3">
                         <label for="lastName">Apellido</label>
                         <input type="text" class="form-control" name="apellido" id="apelido" placeholder="Apellido"
-							value="{{data.apellido}}" required="">
+                            value="{{data.apellido}}" required="">
                         <div class="invalid-feedback">
                             Se requiere un Apellido válido.
                         </div>
@@ -41,7 +42,7 @@
                     <div class="col-md-6 mb-3">
                         <label for="ci">Cédula de identidad</label>
                         <input type="text" class="form-control" name="cedula" id="cedula" placeholder="50726621"
-							required="" value="{{data.cedula}}" {% if session['usertype'] %} disabled {% endif %}>
+                            required="" value="{{data.cedula}}" {% if session['usertype'] %} disabled {% endif %}>
                         <div class="invalid-feedback">
                             Por favor seleccione una CI válida.
                         </div>
@@ -49,7 +50,7 @@
                     <div class="col-md-6 mb-3">
                         <label for="phone">Teléfono</label>
                         <input type="text" class="form-control" name="tel" id="tel" placeholder="23655544" required=""
-							value="{{data.telefono}}">
+                            value="{{data.telefono}}">
                         <div class="invalid-feedback">
                             Por favor seleccione un Teléfono válido.
                         </div>
@@ -68,11 +69,13 @@
                     <p>Género</p>
 
                     <div class="custom-control custom-radio">
-                        <input id="genderF" name="genero" type="radio" class="custom-control-input" required="" value="0" {% if data.genero == 0 %} checked {% endif %}>
+                        <input id="genderF" name="genero" type="radio" class="custom-control-input" required=""
+                            value="0" {% if data.genero == 0 %} checked {% endif %}>
                         <label class="custom-control-label" for="genderF">Femenino</label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input id="genderM" name="genero" type="radio" class="custom-control-input" required="" value="1" {% if data.genero == 1 %} checked {% endif %}>
+                        <input id="genderM" name="genero" type="radio" class="custom-control-input" required=""
+                            value="1" {% if data.genero == 1 %} checked {% endif %}>
                         <label class="custom-control-label" for="genderM">Masculino</label>
                     </div>
 
@@ -147,11 +150,16 @@
                     <p>¿Tiene experiencia en el rubro?</p>
 
                     <div class="custom-control custom-radio">
-                        <input id="experienciaSi" name="experiencia" type="radio" class="custom-control-input" required="" value="1" {% if data.experiencia_meses is not none or data.experiencia_meses != 0 %} checked {% endif %}>
+                        <input id="experienciaSi" name="experiencia" type="radio" class="custom-control-input"
+                            required="" value="1"
+                            {% if data.experiencia_meses is not none or data.experiencia_meses != 0 %} checked
+                            {% endif %}>
                         <label class="custom-control-label" for="experienciaSi">Si</label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input id="experienciaNo" name="experiencia" type="radio" class="custom-control-input" required="" value="0" {% if data.experiencia_meses is none or data.experiencia_meses == 0 %} checked {% endif %}>
+                        <input id="experienciaNo" name="experiencia" type="radio" class="custom-control-input"
+                            required="" value="0" {% if data.experiencia_meses is none or data.experiencia_meses == 0 %}
+                            checked {% endif %}>
                         <label class="custom-control-label" for="experienciaNo">No</label>
                     </div>
 
@@ -169,7 +177,7 @@
                 <div class="d-block my-3">
                     <p>Disponibilidad</p>
                     {% for disp in aux.disponibilidad %}
-                    <div class="custom-control">
+                    <div class="custom-control custom-checkbox">
                         <input id="disp{{ disp.id}}" name="disp{{ disp.id }}" type="checkbox"
                             class="custom-control-input" {% if disp.seleccionada == 1 %} checked {% endif %}>
                         <label class="custom-control-label" for="disp{{ disp.id }}">{{ disp.descripcion }}</label>
@@ -180,7 +188,7 @@
                 <div class="d-block my-3">
                     <p>Tareas que realizas</p>
                     {% for tarea in aux.tareas %}
-                    <div class="custom-control">
+                    <div class="custom-control custom-checkbox">
                         <input id="tarea{{ tarea.id }}" name="tarea{{ tarea.id }}" type="checkbox"
                             class="custom-control-input" {% if tarea.seleccionada == 1 %} checked {% endif %}>
                         <label class="custom-control-label" for="tarea{{ tarea.id }}">{{ tarea.descripcion }}</label>
@@ -201,7 +209,10 @@
 
                 {% if not data.referencias %}
                 <div class="row mb-5 ml-4">
-                    <button type="button" style="max-width: 560px; min-width: 560px;" class="btn btn-secondary" disabled> <h5>No tiene ninguna referencia registrada hasta el momento</h5></button>
+                    <button type="button" style="max-width: 560px; min-width: 560px;" class="btn btn-secondary"
+                        disabled>
+                        <h5>No tiene ninguna referencia registrada hasta el momento</h5>
+                    </button>
                 </div>
                 {% else %}
                 <div class="mt-5 mb-5">
@@ -243,8 +254,8 @@
                     <div class="col-md-6 mb-3">
                         <div class="mt-4 mb-3">
                             <label for="nombreEmp">Nombre del empleador</label>
-                            <input type="text" class="form-control" name="refNombreEmp" id="nombreEmp" placeholder="Nombre"
-								value={% if refer is not none %}{{ refer.nombre }}{% endif %}>
+                            <input type="text" class="form-control" name="refNombreEmp" id="nombreEmp"
+                                placeholder="Nombre" value={% if refer is not none %}{{ refer.nombre }}{% endif %}>
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
@@ -297,11 +308,13 @@
                     <p>¿Estás registrad@ como empleador/a en el BPS?</p>
 
                     <div class="custom-control custom-radio">
-                        <input id="bpsSi" name="bps" type="radio" class="custom-control-input" required="" value="1" {% if data.registroBps is not none or data.registroBps != '' %} checked {% endif %}>
+                        <input id="bpsSi" name="bps" type="radio" class="custom-control-input" required="" value="1"
+                            {% if data.registroBps is not none or data.registroBps != '' %} checked {% endif %}>
                         <label class="custom-control-label" for="bpsSi">Si</label>
                     </div>
                     <div class="custom-control custom-radio">
-                        <input id="bpsNo" name="bps" type="radio" class="custom-control-input" required="" value="0" {% if data.registroBps is none or data.registroBps == '' %} checked {% endif %}>
+                        <input id="bpsNo" name="bps" type="radio" class="custom-control-input" required="" value="0"
+                            {% if data.registroBps is none or data.registroBps == '' %} checked {% endif %}>
                         <label class="custom-control-label" for="bpsNo">No</label>
                     </div>
 

@@ -38,7 +38,7 @@
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between mb-1">
                                                 <h6 class="mb-0 font-weight-bold">
-                                                    <br>{{diccmensajes[interactuante][0].empleado.nombre}}</h6>
+                                                    <br>{{diccmensajes[interactuante][0].empleador.nombre}}</h6>
                                             </div>
                                             <p class="font-italic mb-0 text-small">
                                                 {{diccmensajes[interactuante][0].mensaje}}</p>
@@ -58,7 +58,7 @@
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between mb-1">
                                                 <h6 class="mb-0 font-weight-bold">
-                                                    <br>{{diccmensajes[interactuante][0].empleado.nombre}}</h6>
+                                                    <br>{{diccmensajes[interactuante][0].empleador.nombre}}</h6>
                                             </div>
                                             <p class="font-italic mb-0 text-small">
                                                 {{diccmensajes[interactuante][0].mensaje}}</p>
@@ -244,12 +244,12 @@
                         <form action="/AgregarMensaje/{{interactuanteseleccionado.id}}/0" method="POST" class="bg-light"
                             name="mensajeChat">
                             <div class="input-group">
-                                <input name="cajaMensaje" type="text" placeholder="Escriba aqui..."
-                                    aria-describedby="button-addon2"
-                                    class="form-control rounded-0 border-0 py-4 bg-white">
+                                <textarea name="cajaMensaje" type="text" placeholder="Escriba aqui..."
+                                    class="form-control rounded-0 border-0 bg-white"></textarea>
                                 <div class="input-group-append">
-                                    <button name="btnEnviarMensaje" type="submit" class="btn btn-success"
-                                        {% if interactuanteseleccionado is none %} disabled {% endif %}>Enviar</button>
+                                    <button name="btnEnviarMensaje" type="submit"
+                                        {% if interactuanteseleccionado is none %} disabled {% endif %}
+                                        class="btn btn-success">Enviar</button>
                                 </div>
                             </div>
                         </form>

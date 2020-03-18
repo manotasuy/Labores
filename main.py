@@ -75,24 +75,23 @@ def login(user, password):
     else:
         tipo_usuario = retorno[0][0]
         id_usuario = retorno[0][1]
-        print('Valores en LOGIN')
-        print('Tipo de Usuario: ', tipo_usuario)
-        print('ID Usuario: ', id_usuario)
         session['username'] = user
-        session['usertype'] = tipo_usuario 
+        session['usertype'] = tipo_usuario
         session['id_usuario'] = id_usuario
 
         if session['usertype'] == 'Empleador':
             # debo obtener el empleador y guardar su id en la sesion
             empleador = getEmpleadorByUsuarioID(baseDatos, id_usuario)
             session['id_empleador'] = empleador.id
-            session['nombre'] = '{} {}'.format(empleador.nombre, empleador.apellido)
+            session['nombre'] = '{} {}'.format(
+                empleador.nombre, empleador.apellido)
             return redirect(url_for('inicio_empleadores'))
         elif session['usertype'] == 'Empleado':
             # debo obtener el empleado y guardar su id en la sesion
             empleado = getEmpleadoByUsuarioID(baseDatos, id_usuario)
             session['id_empleado'] = empleado.id
-            session['nombre'] = '{} {}'.format(empleado.nombre, empleado.apellido)
+            session['nombre'] = '{} {}'.format(
+                empleado.nombre, empleado.apellido)
             return redirect(url_for('inicio_empleados'))
         else:
             return redirect(url_for('administrar'))
@@ -1012,13 +1011,13 @@ def postularse(idAnuncio):
     elif session.get('usertype') == 'Empleador':
         return redirect(url_for('inicio_empleadores'))
     else:
-        
+
         empleado = getEmpleadoByID(baseDatos, session['id_empleado'])
         anuncio = getAnuncioByID(baseDatos, idAnuncio)
         new_postulacion = Postulacion(
             None, empleado, anuncio, datetime.now(), None)
         new_postulacion.crearPostulacion(baseDatos)
-        
+
         # Se debe notificar al empleador mediante mensaje de que te has postulado
         mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
         ), 'Buenas noticias!!! {} {}, se ha postulado a tu anuncio: "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2)
@@ -1177,8 +1176,6 @@ def agregar_mensaje(idDestinatario, idAnuncio):
         return redirect(url_for('logueo'))
     elif session.get('usertype') == 'Administrador':
         return redirect(url_for('administrar'))
-    elif session.get('usertype') == 'Empleado':
-        return redirect(url_for('inicio_empleados'))
     else:
         if request.method == 'POST':
             mensaje = request.form['cajaMensaje']
@@ -1193,7 +1190,7 @@ def agregar_mensaje(idDestinatario, idAnuncio):
                 mensajeEmpleado = Mensaje(
                     0, empleado, empleador, anuncio, datetime.now(), mensaje, 1, 2)
                 mensajeEmpleado.crearMensaje(baseDatos)
-                return redirect(url_for('mensajes_empleador', idEmpleado=empleado.id, idEmpleador=empleador.id))
+                return redirect(url_for('mensajes_empleado', idEmpleado=empleado.id, idEmpleador=empleador.id))
 
             elif session['usertype'] == 'Empleador':
                 empleador = getEmpleadorByID(

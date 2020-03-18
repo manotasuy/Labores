@@ -306,6 +306,8 @@ INSERT INTO tarea (descripcion)
 VALUES ('Cuidado de Adultos Mayores');
 INSERT INTO tarea (descripcion) 
 VALUES ('Cuidado de Mascotas');
+INSERT INTO tarea (descripcion) 
+VALUES ('Otra');
 
 -- En tabla "empleado"
 INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
