@@ -30,7 +30,8 @@ def getTareasRegistradas(bd):
 def agregarTareaEmpleado(bd, id_tarea, id_empleado):
     try:
         cursor = bd.connection.cursor()
-        cursor.execute('INSERT INTO empleado_tarea (id_empleado, id_tarea) VALUES ({}, {})'.format(id_empleado, id_tarea))
+        cursor.execute('INSERT INTO empleado_tarea (id_empleado, id_tarea) VALUES ({}, {})'.format(
+            id_empleado, id_tarea))
         bd.connection.commit()
         cursor.close()
         #print('Tarea "', id_tarea, '" agregada en el empleado')
@@ -41,7 +42,8 @@ def agregarTareaEmpleado(bd, id_tarea, id_empleado):
 def quitarTareaEmpleado(bd, id_tarea, id_empleado):
     try:
         cursor = bd.connection.cursor()
-        cursor.execute('DELETE FROM empleado_tarea WHERE id_empleado = {} AND id_tarea = {}'.format(id_empleado, id_tarea))
+        cursor.execute('DELETE FROM empleado_tarea WHERE id_empleado = {} AND id_tarea = {}'.format(
+            id_empleado, id_tarea))
         bd.connection.commit()
         cursor.close()
         #print('Tarea quitada del empleado')
@@ -52,9 +54,46 @@ def quitarTareaEmpleado(bd, id_tarea, id_empleado):
 def quitarTodasLasTareasDelEmpleado(bd, id_empleado):
     try:
         cursor = bd.connection.cursor()
-        cursor.execute('DELETE FROM empleado_tarea WHERE id_empleado = {}'.format(id_empleado))
+        cursor.execute(
+            'DELETE FROM empleado_tarea WHERE id_empleado = {}'.format(id_empleado))
         bd.connection.commit()
         cursor.close()
         #print('Todas las tareas quitadas del empleado')
     except Exception as e:
         print("Error en quitarTodasLasTareasDelEmpleado ", e)
+
+
+def agregarTareaAnuncio(bd, id_tarea, id_anuncio):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('INSERT INTO anuncio_tarea (id_anuncio, id_tarea) VALUES ({}, {})'.format(
+            id_anuncio, id_tarea))
+        bd.connection.commit()
+        cursor.close()
+        #print('Tarea "', id_tarea, '" agregada en el anuncio')
+    except Exception as e:
+        print("Error en agregarTareaAnuncio ", e)
+
+
+def quitarTareaAnuncio(bd, id_tarea, id_anuncio):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('DELETE FROM anuncio_tarea WHERE id_anuncio = {} AND id_tarea = {}'.format(
+            id_anuncio, id_tarea))
+        bd.connection.commit()
+        cursor.close()
+        #print('Tarea quitada del anuncio')
+    except Exception as e:
+        print("Error en quitarTareaAnuncio ", e)
+
+
+def quitarTodasLasTareasDelAnuncio(bd, id_anuncio):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute(
+            'DELETE FROM anuncio_tarea WHERE id_anuncio = {}'.format(id_anuncio))
+        bd.connection.commit()
+        cursor.close()
+        #print('Todas las tareas quitadas del anuncio')
+    except Exception as e:
+        print("Error en quitarTodasLasTareasDelAnuncio ", e)

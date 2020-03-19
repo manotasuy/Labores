@@ -26,7 +26,7 @@ class Empleado:
         self.nacionalidad = pNacional
         self.email = pEmail
         self.telefono = pTel
-        self.experiencia_meses = pExp        
+        self.experiencia_meses = pExp
         self.descripcion = pDesc
         self.foto = pFoto
         self.promedioCalificacion = pCalif
@@ -95,7 +95,7 @@ class Empleado:
             if self.tareas is not None:
                 for tarea in self.tareas:
                     agregarTareaEmpleado(bd, tarea.id, self.id)
-            
+
             # Tengo que recorrer la disponibilidad del empleado y grabarlas en la BD
             if self.disponibilidad is not None:
                 for dispo in self.disponibilidad:
@@ -149,11 +149,11 @@ class Empleado:
             quitarTodasLasTareasDelEmpleado(bd, self.id)
             quitarTodaLaDisponibilidadDelEmpleado(bd, self.id)
 
-            # Luego registro las tareas y disponibilidad que del empleado que quiero modificar
+            # Luego registro las tareas y disponibilidad del empleado que quiero modificar
             if self.tareas is not None:
                 for tarea in self.tareas:
                     agregarTareaEmpleado(bd, tarea.id, self.id)
-            
+
             if self.disponibilidad is not None:
                 for dispo in self.disponibilidad:
                     agregarDisponibilidadEmpleado(bd, dispo.id, self.id)

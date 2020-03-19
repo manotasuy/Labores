@@ -31,7 +31,8 @@ def getDisponibilidadesRegistradas(bd):
 def agregarDisponibilidadEmpleado(bd, id_disponibilidad, id_empleado):
     try:
         cursor = bd.connection.cursor()
-        cursor.execute('INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad) VALUES ({}, {})'.format(id_empleado, id_disponibilidad))
+        cursor.execute('INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad) VALUES ({}, {})'.format(
+            id_empleado, id_disponibilidad))
         bd.connection.commit()
         cursor.close()
         #print('Disponibilidad "', id_disponibilidad, '" agregada en el empleado')
@@ -42,7 +43,8 @@ def agregarDisponibilidadEmpleado(bd, id_disponibilidad, id_empleado):
 def quitarDisponibilidadEmpleado(bd, id_disponibilidad, id_empleado):
     try:
         cursor = bd.connection.cursor()
-        cursor.execute('DELETE FROM empleado_disponibilidad WHERE id_empleado = {} AND id_disponibilidad = {}'.format(id_empleado, id_disponibilidad))
+        cursor.execute('DELETE FROM empleado_disponibilidad WHERE id_empleado = {} AND id_disponibilidad = {}'.format(
+            id_empleado, id_disponibilidad))
         bd.connection.commit()
         cursor.close()
         #print('Disponibilidad quitada del empleado')
@@ -53,9 +55,46 @@ def quitarDisponibilidadEmpleado(bd, id_disponibilidad, id_empleado):
 def quitarTodaLaDisponibilidadDelEmpleado(bd, id_empleado):
     try:
         cursor = bd.connection.cursor()
-        cursor.execute('DELETE FROM empleado_disponibilidad WHERE id_empleado = {}'.format(id_empleado))
+        cursor.execute(
+            'DELETE FROM empleado_disponibilidad WHERE id_empleado = {}'.format(id_empleado))
         bd.connection.commit()
         cursor.close()
         #print('Toda disponibilidad quitada del empleado')
     except Exception as e:
         print("Error en quitarTodaLaDisponibilidadDelEmpleado ", e)
+
+
+def agregarDisponibilidadAnuncio(bd, id_disponibilidad, id_anuncio):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('INSERT INTO anuncio_disponibilidad (id_anuncio, id_disponibilidad) VALUES ({}, {})'.format(
+            id_anuncio, id_disponibilidad))
+        bd.connection.commit()
+        cursor.close()
+        #print('Disponibilidad "', id_disponibilidad, '" agregada en el anuncio')
+    except Exception as e:
+        print("Error en agregarDisponibilidadAnuncio ", e)
+
+
+def quitarDisponibilidadAnuncio(bd, id_disponibilidad, id_anuncio):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('DELETE FROM anuncio_disponibilidad WHERE id_anuncio = {} AND id_disponibilidad = {}'.format(
+            id_anuncio, id_disponibilidad))
+        bd.connection.commit()
+        cursor.close()
+        #print('Disponibilidad quitada del anuncio')
+    except Exception as e:
+        print("Error en quitarDisponibilidadAnuncio ", e)
+
+
+def quitarTodaLaDisponibilidadDelAnuncio(bd, id_anuncio):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute(
+            'DELETE FROM anuncio_disponibilidad WHERE id_anuncio = {}'.format(id_anuncio))
+        bd.connection.commit()
+        cursor.close()
+        #print('Toda disponibilidad quitada del anuncio')
+    except Exception as e:
+        print("Error en quitarTodaLaDisponibilidadDelAnuncio ", e)

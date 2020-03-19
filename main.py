@@ -48,10 +48,10 @@ app = Flask(__name__)
 
 #baseDatos = connectionDb(app, 'remotemysql.com')
 #baseDatos = connectionDb(app, 'aws')
-#baseDatos = connectionDb(app, 'CloudAccess')
+baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'a-work')
 #baseDatos = connectionDb(app, 'a-home')
-baseDatos = connectionDb(app, 'local')
+#baseDatos = connectionDb(app, 'local')
 
 
 # session
@@ -257,7 +257,7 @@ def perfil(opcion):
                 if 'id_refer' in session:
                     referenciaParaEditar = getReferenciaByID(
                         baseDatos, session['id_refer'])
-                return render_template('Perfil.html', tipo=opcion, data=empleado, aux=dtoAuxEmpleado, refer=referenciaParaEditar)
+            return render_template('Perfil.html', tipo=opcion, data=empleado, aux=dtoAuxEmpleado, refer=referenciaParaEditar)
         elif opcion == 'Empleador':
             if logueado:
                 # obtengo los datos del empleador
@@ -864,11 +864,11 @@ def listar_anuncios():
         listaAnuncios = []
         for anuncio in retornoAnuncios:
             anuncioConID = [anuncio[0]]
-            
+
             anuncioConID.append(getAnuncioByID(baseDatos, anuncio[0]))
             listaAnuncios.append(anuncioConID)
         listaDeAnuncios = []
-        
+
         for elAnuncio in listaAnuncios:
             anun = []
             domicilioAnuncio = elAnuncio[1].empleador.domicilio
@@ -882,7 +882,7 @@ def listar_anuncios():
             tareasAnuncio = []
 
             if elAnuncio[1].estado == b'\x01':
-                #empleador = getEmpleadorByID(baseDatos, elAnuncio.)
+                # empleador = getEmpleadorByID(baseDatos, elAnuncio.)
                 if elAnuncio[1].hogar == True:
                     tareasAnuncio.append(1)
                 if elAnuncio[1].oficina == True:
