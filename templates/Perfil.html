@@ -95,101 +95,40 @@
                     <!--<input type="text" class="form-control" name="domicilio" id="domicilio"
                         placeholder="18 de Julio 1234" required="" value="{{data.domicilio}}">-->
                     <select id="domicilio" name="domicilio" class="form-control" required="">
-                        <option value="Montevideo"
-                        {% if data.domicilio == 'Montevideo' %}
-                        selected
-                        {% endif %}
-                        >Montevideo</option>
-                        <option value="Canelones"
-                        {% if data.domicilio == 'Canelones' %}
-                        selected
-                        {% endif %}
-                        >Canelones</option>
-                        <option value="Artigas"
-                        {% if data.domicilio == 'Artigas' %}
-                        selected
-                        {% endif %}
-                        >Artigas</option>
-                        <option value="Salto"
-                        {% if data.domicilio == 'Salto' %}
-                        selected
-                        {% endif %}
-                        >Salto</option>
-                        <option value="Paysandu"
-                        {% if data.domicilio == 'Paysandu' %}
-                        selected
-                        {% endif %}
-                        >Paysandú</option>
-                        <option value="Rivera"
-                        {% if data.domicilio == 'Rivera' %}
-                        selected
-                        {% endif %}
-                        >Rivera</option>
-                        <option value="Cerro Largo"
-                        {% if data.domicilio == 'Cerro Largo' %}
-                        selected
-                        {% endif %}
-                        >Cerro Largo</option>
-                        <option value="Tacuarembo"
-                        {% if data.domicilio == 'Tacuarembo' %}
-                        selected
-                        {% endif %}
-                        >Tacuarembó</option>
-                        <option value="Rio Negro"
-                        {% if data.domicilio == 'Rio Negro' %}
-                        selected
-                        {% endif %}
-                        >Río Negro</option>
-                        <option value="Soriano"
-                        {% if data.domicilio == 'Soriano' %}
-                        selected
-                        {% endif %}
-                        >Soriano</option>
-                        <option value="Treinta y Tres"
-                        {% if data.domicilio == 'Treinta y Tres' %}
-                        selected
-                        {% endif %}
-                        >Treinta y Tres</option>
-                        <option value="Lavalleja"
-                        {% if data.domicilio == 'Lavalleja' %}
-                        selected
-                        {% endif %}
-                        >Lavalleja</option>
-                        <option value="Rocha"
-                        {% if data.domicilio == 'Rocha' %}
-                        selected
-                        {% endif %}
-                        >Rocha</option>
-                        <option value="Soriano"
-                        {% if data.domicilio == 'Soriano' %}
-                        selected
-                        {% endif %}
-                        >Soriano</option>
-                        <option value="Colonia"
-                        {% if data.domicilio == 'Colonia' %}
-                        selected
-                        {% endif %}
-                        >Colonia</option>
-                        <option value="Flores"
-                        {% if data.domicilio == 'Flores' %}
-                        selected
-                        {% endif %}
-                        >Flores</option>
-                        <option value="Florida"
-                        {% if data.domicilio == 'Florida' %}
-                        selected
-                        {% endif %}
-                        >Florida</option>
-                        <option value="Maldonado"
-                        {% if data.domicilio == 'Maldonado' %}
-                        selected
-                        {% endif %}
-                        >Maldonado</option>
-                        <option value="San Jose"
-                        {% if data.domicilio == 'San Jose' %}
-                        selected
-                        {% endif %}
-                        >San José</option>
+                        <option value="Montevideo" {% if data.domicilio == 'Montevideo' %} selected {% endif %}>
+                            Montevideo</option>
+                        <option value="Canelones" {% if data.domicilio == 'Canelones' %} selected {% endif %}>Canelones
+                        </option>
+                        <option value="Artigas" {% if data.domicilio == 'Artigas' %} selected {% endif %}>Artigas
+                        </option>
+                        <option value="Salto" {% if data.domicilio == 'Salto' %} selected {% endif %}>Salto</option>
+                        <option value="Paysandu" {% if data.domicilio == 'Paysandu' %} selected {% endif %}>Paysandú
+                        </option>
+                        <option value="Rivera" {% if data.domicilio == 'Rivera' %} selected {% endif %}>Rivera</option>
+                        <option value="Cerro Largo" {% if data.domicilio == 'Cerro Largo' %} selected {% endif %}>Cerro
+                            Largo</option>
+                        <option value="Tacuarembo" {% if data.domicilio == 'Tacuarembo' %} selected {% endif %}>
+                            Tacuarembó</option>
+                        <option value="Rio Negro" {% if data.domicilio == 'Rio Negro' %} selected {% endif %}>Río Negro
+                        </option>
+                        <option value="Soriano" {% if data.domicilio == 'Soriano' %} selected {% endif %}>Soriano
+                        </option>
+                        <option value="Treinta y Tres" {% if data.domicilio == 'Treinta y Tres' %} selected {% endif %}>
+                            Treinta y Tres</option>
+                        <option value="Lavalleja" {% if data.domicilio == 'Lavalleja' %} selected {% endif %}>Lavalleja
+                        </option>
+                        <option value="Rocha" {% if data.domicilio == 'Rocha' %} selected {% endif %}>Rocha</option>
+                        <option value="Soriano" {% if data.domicilio == 'Soriano' %} selected {% endif %}>Soriano
+                        </option>
+                        <option value="Colonia" {% if data.domicilio == 'Colonia' %} selected {% endif %}>Colonia
+                        </option>
+                        <option value="Flores" {% if data.domicilio == 'Flores' %} selected {% endif %}>Flores</option>
+                        <option value="Florida" {% if data.domicilio == 'Florida' %} selected {% endif %}>Florida
+                        </option>
+                        <option value="Maldonado" {% if data.domicilio == 'Maldonado' %} selected {% endif %}>Maldonado
+                        </option>
+                        <option value="San Jose" {% if data.domicilio == 'San Jose' %} selected {% endif %}>San José
+                        </option>
                     </select>
                     <div class="invalid-feedback">
                         Debe ingresar su domicilio.

@@ -255,8 +255,10 @@ def perfil(opcion):
                 dtoAuxEmpleado = DTOAuxEmpleado(
                     tareasSeleccion, disponibilidadSeleccion)
                 if 'id_refer' in session:
+                    id_referencia = int(session['id_refer'])
+                    print('id_referencia en Perfil: ', id_referencia)
                     referenciaParaEditar = getReferenciaByID(
-                        baseDatos, session['id_refer'])
+                        baseDatos, id_referencia)
             return render_template('Perfil.html', tipo=opcion, data=empleado, aux=dtoAuxEmpleado, refer=referenciaParaEditar)
         elif opcion == 'Empleador':
             if logueado:
@@ -291,8 +293,9 @@ def guardar_perfil(tipo):
                     referencia.crearReferencia(baseDatos)
                     print('Referencia creada')
                 else:
-                    referencia = getReferenciaByID(
-                        baseDatos, session['id_refer'])
+                    id_referencia = int(session['id_refer'])
+                    print('id_referencia en GuardarReferencia: ', id_referencia)
+                    referencia = getReferenciaByID(baseDatos, id_referencia)
                     referencia.nombre = request.form['refNombreEmp']
                     referencia.apellido = request.form['refApellidoEmp']
                     referencia.telefono = request.form['refTelefonoEmp']
@@ -305,11 +308,13 @@ def guardar_perfil(tipo):
 
             elif request.form.get('btnEditarReferencia'):
                 id_referencia = int(parametros['btnEditarReferencia'])
+                print('id_referencia en EditarReferencia: ', id_referencia)
                 session['id_refer'] = id_referencia
                 return redirect(url_for('refresh_referencia'))
 
             elif request.form.get('btnBorrarReferencia'):
                 id_referencia = int(parametros['btnBorrarReferencia'])
+                print('id_referencia en BorrarReferencia: ', id_referencia)
                 referencia = getReferenciaByID(baseDatos, id_referencia)
                 referencia.borrarReferencia(baseDatos)
                 return redirect(url_for('refresh_referencia'))
