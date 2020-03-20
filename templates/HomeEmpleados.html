@@ -14,29 +14,24 @@
         <div class="container">
             <div class="text-center mb-4">
                 <p class="lead">
-                <a class="my-0 mr-md-auto" href="/MisVinculos" aria-label="Home">
-                    <img class="mb-4 mr-3" src="{{ url_for('static', filename='images/Alertas/Vinculo.png')}}" alt=""
-                        width="100" height="100">
-                </a>
-                {% if tieneMensajesSinLeer %}
-                <a class="my-0 mr-md-auto" href="/MensajesEmpleado/{{sujeto.id}}/0" aria-label="Home">
-                <img class="mb-4 ml-3" src="{{ url_for('static', filename='images/Alertas/Mensaje.png')}}" alt="" width="100"
-                    height="100">
-                </a>
-                {% endif %}
+                    <a class="my-0 mr-md-auto" href="/MisVinculos" aria-label="Home">
+                        <img class="mr-5" src="{{ url_for('static', filename='images/Alertas/Vinculo.png')}}" alt=""
+                            width="80" height="80">
+                    </a>
+                    {% if tieneMensajesSinLeer %}
+                    <a class="my-0 mr-md-auto" href="/MensajesEmpleado/{{sujeto.id}}/0" aria-label="Home">
+                        <img class="ml-5" src="{{ url_for('static', filename='images/Alertas/Mensaje.png')}}" alt=""
+                            width="80" height="80">
+                    </a>
+                    {% endif %}
                 </p>
-                <a class="my-0 mr-md-auto" href="" aria-label="Home">
-                    <img class="mb-4" src="{{ url_for('static', filename=sujeto.foto)}}" alt="" width="125"
-                        height="125">
-                </a>
+                <img class="mb-4" src="{{ url_for('static', filename=sujeto.foto)}}" alt="" width="125" height="125">
                 <p class="lead"><a href="/Perfil/Empleado">Editar perfil</a></p>
             </div>
 
             <div class="card-deck">
                 <div class="card">
                     <a class="btn" href="/Anuncios">
-                        <!--<img src="{{ url_for('static', filename='images/...png')}}" class="card-img-top" alt="..."
-                        width="32" height="32">-->
                         <div class="card-body">
                             <h3 class="card-title text-center">Ver Anuncios</h3>
                         </div>
@@ -44,8 +39,6 @@
                 </div>
                 <div class="card">
                     <a class="btn" href="/MisPostulaciones">
-                        <!--<img src="{{ url_for('static', filename='images/...png')}}" class="card-img-top" alt="..."
-                                    width="32" height="32">-->
                         <div class="card-body">
                             <h3 class="card-title text-center">Mis Postulaciones</h3>
                         </div>
@@ -56,8 +49,6 @@
             <div class="card-deck mt-4">
                 <div class="card">
                     <a class="btn" href="/MisVinculos">
-                        <!--<img src="{{ url_for('static', filename='images/...png')}}" class="card-img-top" alt="..."
-                        width="32" height="32">-->
                         <div class="card-body">
                             <h3 class="card-title text-center">Mis Vínculos</h3>
                         </div>
@@ -65,8 +56,6 @@
                 </div>
                 <div class="card">
                     <a class="btn" href="/MensajesEmpleado/{{sujeto.id}}/0">
-                        <!--<img src="{{ url_for('static', filename='images/...png')}}" class="card-img-top" alt="..."
-                        width="32" height="32">-->
                         <div class="card-body">
                             <h3 class="card-title text-center">Mensajes</h3>
                         </div>

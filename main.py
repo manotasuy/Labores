@@ -1028,7 +1028,7 @@ def postularse(idAnuncio):
 
         # Se debe notificar al empleado mediante mensaje de que se ha postulado
         mensajeEmpleado = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
-        ), 'Buena suerte!!! {} {}, te has postulado al anuncio: "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
+        ), 'Buena suerte!!! {} {}, te has postulado al anuncio: "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 1, False)
         mensajeEmpleado.crearMensaje(baseDatos)
 
         # Se debe notificar al empleador mediante mensaje de que se ha postulado
