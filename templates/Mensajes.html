@@ -30,7 +30,7 @@
                                 <a class="list-group-item list-group-item-action active text-white rounded-0">
                                     <div class="media">
                                         <img src="{{ url_for('static', filename=diccmensajes[interactuante][0].empleador.foto)}}"
-                                            alt="user" width="100" class="rounded-circle">
+                                            alt="" width="100" class="rounded-circle">
                                         <div class="media-body ml-4">
                                             <div
                                                 class="d-flex align-items-center float-right justify-content-between mb-1">
@@ -50,7 +50,7 @@
                                     class="list-group-item list-group-item-action list-group-item-light rounded-0">
                                     <div class="media">
                                         <img src="{{ url_for('static', filename=diccmensajes[interactuante][0].empleador.foto)}}"
-                                            alt="user" width="100" class="rounded-circle">
+                                            alt="" width="100" class="rounded-circle">
                                         <div class="media-body ml-4">
                                             <div
                                                 class="d-flex align-items-center float-right justify-content-between mb-1">
@@ -73,7 +73,7 @@
                                 <a class="list-group-item list-group-item-action active text-white rounded-0">
                                     <div class="media">
                                         <img src="{{ url_for('static', filename=diccmensajes[interactuante][0].empleado.foto)}}"
-                                            alt="user" width="100" class="rounded-circle">
+                                            alt="" width="100" class="rounded-circle">
                                         <div class="media-body ml-4">
                                             <div
                                                 class="d-flex align-items-center float-right justify-content-between mb-1">
@@ -93,7 +93,7 @@
                                     class="list-group-item list-group-item-action list-group-item-light rounded-0">
                                     <div class="media">
                                         <img src="{{ url_for('static', filename=diccmensajes[interactuante][0].empleado.foto)}}"
-                                            alt="user" width="100" class="rounded-circle">
+                                            alt="" width="100" class="rounded-circle">
                                         <div class="media-body ml-4">
                                             <div
                                                 class="d-flex align-items-center float-right justify-content-between mb-1">
@@ -142,13 +142,13 @@
                                 </div>
                                 <p class="small text-muted">{{mensaje.fecha}}</p>
                             </div>
-                            <img src={{ url_for('static', filename=actor.foto)}} alt="user" width="50"
+                            <img src={{ url_for('static', filename=actor.foto)}} alt="" width="50"
                                 class="rounded-circle">
                         </div>
                         {% elif mensaje.tipoEmisor == 2 %}
                         <!-- Mensaje del empleador -->
                         <div class="media w-150 mb-3">
-                            <img src={{ url_for('static', filename=mensaje.empleador.foto)}} alt="user" width="50"
+                            <img src={{ url_for('static', filename=mensaje.empleador.foto)}} alt="" width="50"
                                 class="rounded-circle">
                             <div class="media-body ml-3">
                                 <div class="bg-light rounded py-2 px-3 mb-2">
@@ -162,7 +162,7 @@
                         {% elif mensaje.tipoEmisor == 3 and mensaje.tipoReceptor == 1 %}
                         <!-- Mensaje del sistema (Labores) -->
                         <div class="media w-150 mb-3">
-                            <img src="{{ url_for('static', filename='images/Logos/Logo.png')}}" alt="user" width="50"
+                            <img src="{{ url_for('static', filename='images/Logos/Logo.png')}}" alt="" width="50"
                                 class="rounded-circle">
                             <div class="media-body ml-3">
                                 <div class="bg-light rounded py-2 px-3 mb-2">
@@ -199,13 +199,13 @@
                                 </div>
                                 <p class="small text-muted">{{mensaje.fecha}}</p>
                             </div>
-                            <img src={{ url_for('static', filename=actor.foto)}} alt="user" width="50"
+                            <img src={{ url_for('static', filename=actor.foto)}} alt="" width="50"
                                 class="rounded-circle">
                         </div>
                         {% elif mensaje.tipoEmisor == 1 %}
                         <!-- Mensaje del empleado -->
                         <div class="media w-150 mb-3">
-                            <img src={{ url_for('static', filename=mensaje.empleado.foto)}} alt="user" width="50"
+                            <img src={{ url_for('static', filename=mensaje.empleado.foto)}} alt="" width="50"
                                 class="rounded-circle">
                             <div class="media-body ml-3">
                                 <div class="bg-light rounded py-2 px-3 mb-2">
@@ -219,7 +219,7 @@
                         {% elif mensaje.tipoEmisor == 3 and mensaje.tipoReceptor == 2 %}
                         <!-- Mensaje del sistema (Labores) -->
                         <div class="media w-150 mb-3">
-                            <img src="{{ url_for('static', filename='images/Logos/Logo.png')}}" alt="user" width="50"
+                            <img src="{{ url_for('static', filename='images/Logos/Logo.png')}}" alt="" width="50"
                                 class="rounded-circle">
                             <div class="media-body ml-3">
                                 <div class="bg-light rounded py-2 px-3 mb-2">
