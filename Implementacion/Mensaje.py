@@ -22,7 +22,8 @@ class Mensaje:
             pFecha,
             pMensaje,
             pTipoEmisor,
-            pTipoReceptor):
+            pTipoReceptor,
+            pLeido):
         self.id = pId
         self.empleado : Empleado = pEmpleado
         self.empleador : Empleador = pEmpleador
@@ -31,6 +32,7 @@ class Mensaje:
         self.mensaje = pMensaje
         self.tipoEmisor = pTipoEmisor
         self.tipoReceptor = pTipoReceptor
+        self.leido = pLeido
 
     def __str__(self):
         return 'Id: {}, Empleado: {}, Empleador: {}, Anuncio: {}, Fecha: {}, Mensaje: {}'.format(self.id, self.empleado.id, self.empleador.id, self.anuncio.id, self.fecha, self.mensaje)
@@ -55,9 +57,10 @@ class Mensaje:
                         fecha,
                         mensaje,
                         id_tipo_emisor,
-                        id_tipo_receptor
+                        id_tipo_receptor,
+                        leido
                     )
-                VALUES (%s,%s,%s,%s,%s,%s,%s)''',
+                VALUES (%s,%s,%s,%s,%s,%s,%s,%s)''',
                            (
                                self.empleado.id,
                                self.empleador.id,
@@ -65,7 +68,8 @@ class Mensaje:
                                self.fecha,
                                self.mensaje,
                                self.tipoEmisor,
-                               self.tipoReceptor
+                               self.tipoReceptor,
+                               self.leido
                            ))
             bd.connection.commit()
             cursor.close()
@@ -91,11 +95,13 @@ class Mensaje:
             cursor.execute('''
                 UPDATE mensaje SET
                     fecha = %s,
-                    mensaje = %s
+                    mensaje = %s,
+                    leido = %s,
                 WHERE id = %s''',
                            (
                                self.fecha,
-                               self.mensaje
+                               self.mensaje,
+                               self.leido
                            ))
 
             bd.connection.commit()
@@ -103,6 +109,20 @@ class Mensaje:
             print('Mensaje Actualizado')
         except Exception as e:
             print("Error en actualizarMensaje ", e)
+
+    def marcarMensajeComoLeido(self, bd):
+        try:
+            cursor = bd.connection.cursor()
+            cursor.execute('''
+                UPDATE mensaje
+                SET leido = true
+                WHERE id = {}
+                '''.format(self.id))
+            bd.connection.commit()
+            cursor.close()
+            print('Mensaje marcado como leído')
+        except Exception as e:
+            print("Error en marcarMensajeComoLeido ", e)
 
 
 def getMensajeByID(bd, id):
@@ -117,7 +137,8 @@ def getMensajeByID(bd, id):
                 fecha,
                 mensaje,
                 id_tipo_emisor,
-                id_tipo_receptor
+                id_tipo_receptor,
+                leido
             FROM mensaje WHERE id = {}'''.format(id))
         retorno = cursor.fetchall()
         bd.connection.commit()
@@ -131,6 +152,7 @@ def getMensajeByID(bd, id):
             retorno[0][5],
             retorno[0][6],
             retorno[0][7],
+            retorno[0][8]
         )
         return mensaje
     except Exception as e:
@@ -149,7 +171,8 @@ def getMensajesParaEmpleado(bd, id_empleado):
                 fecha,
                 mensaje,
                 id_tipo_emisor,
-                id_tipo_receptor
+                id_tipo_receptor,
+                leido
             FROM mensaje WHERE id_empleado = {} AND (id_tipo_emisor = 1 OR id_tipo_receptor = 1)  ORDER BY fecha DESC'''.format(id_empleado))
         retorno = cursor.fetchall()
         bd.connection.commit()
@@ -169,7 +192,8 @@ def getMensajesParaEmpleado(bd, id_empleado):
                 registro[4],
                 registro[5],
                 registro[6],
-                registro[7]
+                registro[7],
+                registro[8]
             )
             clave = mensaje.empleador.id
             if clave in diccRetorno:
@@ -181,6 +205,19 @@ def getMensajesParaEmpleado(bd, id_empleado):
     except Exception as e:
         print("Error en getMensajesParaEmpleado ", e)
 
+
+def empleadoTieneMensajesSinLeer(bd, id_empleado):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('''
+            SELECT id FROM mensaje WHERE id_empleado = {} AND id_tipo_receptor = 1 AND leido = 0
+            '''.format(id_empleado))
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+        return len(retorno[0]) > 0
+    except Exception as e:
+        print("Error en empleadoTieneMensajesSinLeer ", e)
 
 def getMensajesParaEmpleador(bd, id_empleador):
     try:
@@ -194,7 +231,8 @@ def getMensajesParaEmpleador(bd, id_empleador):
                 fecha,
                 mensaje,
                 id_tipo_emisor,
-                id_tipo_receptor
+                id_tipo_receptor,
+                leido
             FROM mensaje WHERE id_empleador = {} AND (id_tipo_emisor = 2 OR id_tipo_receptor = 2) ORDER BY fecha DESC'''.format(id_empleador))
         retorno = cursor.fetchall()
         bd.connection.commit()
@@ -214,7 +252,8 @@ def getMensajesParaEmpleador(bd, id_empleador):
                 registro[4],
                 registro[5],
                 registro[6],
-                registro[7]
+                registro[7],
+                registro[8]
             )
             clave = mensaje.empleado.id
             if clave in diccRetorno:
@@ -225,3 +264,17 @@ def getMensajesParaEmpleador(bd, id_empleador):
         return diccRetorno
     except Exception as e:
         print("Error en getMensajesParaEmpleador ", e)
+
+
+def empleadorTieneMensajesSinLeer(bd, id_empleador):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('''
+            SELECT id FROM mensaje WHERE id_empleador = {} AND id_tipo_receptor = 2 AND leido = 0
+            '''.format(id_empleador))
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+        return len(retorno[0]) > 0
+    except Exception as e:
+        print("Error en empleadorTieneMensajesSinLeer ", e)

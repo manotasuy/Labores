@@ -13,16 +13,20 @@
   <div class="jumbotron jumbotron-fluid">
     <div class="container">
       <div class="text-center mb-5 in-line">
-        <a class="my-0 mr-md-auto" href="" aria-label="Home">
-          <img class="mb-4 mr-3" src="{{ url_for('static', filename='images/Alertas/Postulacion.png')}}" alt=""
+        <p class="lead">
+          <a class="my-0 mr-md-auto" href="" aria-label="Home">
+          <img class="" src="{{ url_for('static', filename='images/Alertas/Postulacion.png')}}" alt=""
             width="100" height="100">
-        </a>
+          </a>
+          {% if tieneMensajesSinLeer %}
+          <a class="my-0 mr-md-auto" href="/MensajesEmpleador/{{sujeto.id}}/0" aria-label="Home">
+            <img class="mb-4 ml-3" src="{{ url_for('static', filename='images/Alertas/Mensaje.png')}}" alt="" width="100"
+              height="100">
+          </a>
+        {% endif %}
+        </p>
         <a class="my-0 mr-md-auto" href="" aria-label="Home">
           <img class="mb-4" src="{{ url_for('static', filename=sujeto.foto)}}" alt="" width="125" height="125">
-        </a>
-        <a class="my-0 mr-md-auto" href="/MensajesEmpleador/{{sujeto.id}}/0" aria-label="Home">
-          <img class="mb-4 ml-3" src="{{ url_for('static', filename='images/Alertas/Mensaje.png')}}" alt="" width="100"
-            height="100">
         </a>
         <p class="lead"><a href="/Perfil/Empleador">Editar perfil</a></p>
       </div>

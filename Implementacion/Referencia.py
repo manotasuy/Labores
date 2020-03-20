@@ -5,12 +5,12 @@ class Referencia:
     def __init__(self, pId=None, pEmpleado=None, pNombre=None, pApellido=None, pTelefono=None, pFechaDesde=None, pFechaHasta=None):
         self.id = pId
         self.empleado = pEmpleado
-        self.apellido = pApellido
         self.nombre = pNombre
+        self.apellido = pApellido
         self.telefono = pTelefono
         self.fechaDesde = pFechaDesde
         self.fechaHasta = pFechaHasta
-
+       
     def __getitem__(self, item):
         return self.__dict__[item]
 

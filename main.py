@@ -40,7 +40,9 @@ from Implementacion.Disponibilidad import getDisponibilidadesRegistradas
 from Implementacion.Referencia import getReferenciaByID
 from Implementacion.Referencia import getReferenciasEmpleado
 from Implementacion.Mensaje import getMensajesParaEmpleado
+from Implementacion.Mensaje import empleadoTieneMensajesSinLeer
 from Implementacion.Mensaje import getMensajesParaEmpleador
+from Implementacion.Mensaje import empleadorTieneMensajesSinLeer
 
 EXTENSIONES_ADMITIDAS = set(['jpg', 'png', 'jpeg', 'bmp', 'gif'])
 
@@ -490,7 +492,9 @@ def inicio_empleados():
         return redirect(url_for('inicio_empleadores'))
     else:
         empleado = getEmpleadoByID(baseDatos, session['id_empleado'])
-        return render_template('HomeEmpleados.html', sujeto=empleado)
+        tiene = empleadoTieneMensajesSinLeer(baseDatos, empleado.id)
+        print('empleadoTieneMensajesSinLeer: ', tiene)
+        return render_template('HomeEmpleados.html', sujeto=empleado, tieneMensajesSinLeer=tiene)
 
 
 @app.route('/HomeEmpleadores/', methods=['POST', 'GET'])
@@ -503,7 +507,9 @@ def inicio_empleadores():
         return redirect(url_for('inicio_empleados'))
     else:
         empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
-        return render_template('HomeEmpleadores.html', sujeto=empleador)
+        tiene = empleadorTieneMensajesSinLeer(baseDatos, empleador.id)
+        print('empleadorTieneMensajesSinLeer: ', tiene)
+        return render_template('HomeEmpleadores.html', sujeto=empleador, tieneMensajesSinLeer=tiene)
 
 
 @app.route('/PanelControl/')
@@ -1020,9 +1026,14 @@ def postularse(idAnuncio):
             None, empleado, anuncio, datetime.now(), None)
         new_postulacion.crearPostulacion(baseDatos)
 
-        # Se debe notificar al empleador mediante mensaje de que te has postulado
+        # Se debe notificar al empleado mediante mensaje de que se ha postulado
+        mensajeEmpleado = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
+        ), 'Buena suerte!!! {} {}, te has postulado al anuncio: "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
+        mensajeEmpleado.crearMensaje(baseDatos)
+
+        # Se debe notificar al empleador mediante mensaje de que se ha postulado
         mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
-        ), 'Buenas noticias!!! {} {}, se ha postulado a tu anuncio: "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2)
+        ), 'Buenas noticias!!! {} {}, se ha postulado a tu anuncio: "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
         mensajeEmpleador.crearMensaje(baseDatos)
 
         flash('Postulación enviada!')
@@ -1143,10 +1154,12 @@ def mensajes_empleado(idEmpleado, idEmpleador):
             # carga inicial del form, no hay remitente seleccionado,
             # solo se va a cargar la lista de remitentes con panel de mensajes vacío
             elEmpleador = None
-            # print('No hay empleador')
         else:
-            elEmpleador = getEmpleadorByID(baseDatos, idEmpleador)
-            # print('elEmpleador: ', elEmpleador)
+            elEmpleador = getEmpleadorByID(baseDatos, int(idEmpleador))
+            # se deben marcar los mensajes como leídos
+            for mensaje in diccMensajes.get(int(idEmpleador)):
+                if mensaje.tipoReceptor == 1:
+                    mensaje.marcarMensajeComoLeido(baseDatos)
 
         return render_template('Mensajes.html', diccmensajes=diccMensajes, actor=objeto, interactuanteseleccionado=elEmpleador)
 
@@ -1167,7 +1180,11 @@ def mensajes_empleador(idEmpleador, idEmpleado):
             # solo se va a cargar la lista de remitentes con panel de mensajes vacío
             elEmpleado = None
         else:
-            elEmpleado = getEmpleadoByID(baseDatos, idEmpleado)
+            elEmpleado = getEmpleadoByID(baseDatos, int(idEmpleado))
+            # se deben marcar los mensajes como leídos
+            for mensaje in diccMensajes.get(int(idEmpleado)):
+                if mensaje.tipoReceptor == 2:
+                    mensaje.marcarMensajeComoLeido(baseDatos)
 
         return render_template('Mensajes.html', diccmensajes=diccMensajes, actor=objeto, interactuanteseleccionado=elEmpleado)
 
@@ -1190,7 +1207,7 @@ def agregar_mensaje(idDestinatario, idAnuncio):
                 empleado = getEmpleadoByID(baseDatos, session['id_empleado'])
                 empleador = getEmpleadorByID(baseDatos, idDestinatario)
                 mensajeEmpleado = Mensaje(
-                    0, empleado, empleador, anuncio, datetime.now(), mensaje, 1, 2)
+                    0, empleado, empleador, anuncio, datetime.now(), mensaje, 1, 2, False)
                 mensajeEmpleado.crearMensaje(baseDatos)
                 return redirect(url_for('mensajes_empleado', idEmpleado=empleado.id, idEmpleador=empleador.id))
 
@@ -1199,7 +1216,7 @@ def agregar_mensaje(idDestinatario, idAnuncio):
                     baseDatos, session['id_empleador'])
                 empleado = getEmpleadoByID(baseDatos, idDestinatario)
                 mensajeEmpleador = Mensaje(
-                    0, empleado, empleador, anuncio, datetime.now(), mensaje, 2, 1)
+                    0, empleado, empleador, anuncio, datetime.now(), mensaje, 2, 1, False)
                 mensajeEmpleador.crearMensaje(baseDatos)
                 return redirect(url_for('mensajes_empleador', idEmpleador=empleador.id, idEmpleado=empleado.id))
 
@@ -1239,12 +1256,12 @@ def contratar(idEmpleado):
 
         # Se debe notificar al empleado mediante mensaje de que el empleador "X" lo contrató
         mensajeEmpleado = Mensaje(
-            0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has sido contratado por: {} {}, les deseamos un buen vínculo laboral.'.format(empleador.nombre, empleador.apellido), 3, 1)
+            0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has sido contratado por: {} {}, les deseamos un buen vínculo laboral.'.format(empleador.nombre, empleador.apellido), 3, 1, False)
         mensajeEmpleado.crearMensaje(baseDatos)
 
         # Se debe notificar al empleador mediante mensaje de que contrató al empleador "X"
         mensajeEmpleador = Mensaje(
-            0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has contratado a: {} {}, les deseamos un buen vínculo laboral.'.format(empleado.nombre, empleado.apellido), 3, 2)
+            0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has contratado a: {} {}, les deseamos un buen vínculo laboral.'.format(empleado.nombre, empleado.apellido), 3, 2, False)
         mensajeEmpleador.crearMensaje(baseDatos)
 
         flash('Empleado Contratado!')
