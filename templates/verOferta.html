@@ -71,15 +71,6 @@
                 <div class="d-block my-3 mt-5">
                     <p>Tareas que realizas:</p>
                     <div class="custom-control custom-checkbox">
-                        <input id="tareaHogar" name="tareaHogar" type="checkbox" class="custom-control-input"
-                               {% if 1 in anuncio.3 %}
-                               checked=""
-                               {% else %}
-                               disabled
-                               {% endif %}>
-                        <label class="custom-control-label" for="tareaHogar">Hogar</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
                         <input id="tareaOficina" name="tareaOficina" type="checkbox" class="custom-control-input"
                                {% if 2 in anuncio.3 %}
                                checked=""
@@ -149,7 +140,7 @@
                                {% else %}
                                disabled
                                {% endif %}>
-                        <label class="custom-control-label" for="tareaCuidAdulto">Adultos mayores</label>
+                        <label class="custom-control-label" for="tareaCuidAdulto">Cuidado de adultos mayores</label>
                     </div>
                     <div class="custom-control custom-checkbox">
                         <input id="tareaCuidMasc" name="tareaCuidMasc" type="checkbox" class="custom-control-input"
@@ -159,6 +150,15 @@
                                disabled
                                {% endif %}>
                         <label class="custom-control-label" for="tareaCuidMasc">Cuidado de mascotas</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input id="tareaHogar" name="tareaHogar" type="checkbox" class="custom-control-input"
+                               {% if 1 in anuncio.3 %}
+                               checked=""
+                               {% else %}
+                               disabled
+                               {% endif %}>
+                        <label class="custom-control-label" for="tareaHogar">Otras tareas</label>
                     </div>
                 </div>
 

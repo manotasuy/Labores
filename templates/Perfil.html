@@ -226,12 +226,26 @@
                 <div class="d-block my-3">
                     <p>Tareas que realizas</p>
                     {% for tarea in aux.tareas %}
-                    <div class="custom-control custom-checkbox">
-                        <input id="tarea{{ tarea.id }}" name="tarea{{ tarea.id }}" type="checkbox"
-                            class="custom-control-input" {% if tarea.seleccionada == 1 %} checked {% endif %}>
-                        <label class="custom-control-label" for="tarea{{ tarea.id }}">{{ tarea.descripcion }}</label>
-                    </div>
+                        {% if tarea.descripcion != 'Otras tareas' %}
+                            <div class="custom-control custom-checkbox">
+                                <input id="tarea{{ tarea.id }}" name="tarea{{ tarea.id }}" type="checkbox"
+                                    class="custom-control-input" {% if tarea.seleccionada == 1 %} checked {% endif %}>
+                                <label class="custom-control-label" for="tarea{{ tarea.id }}">{{ tarea.descripcion }}</label>
+                            </div>
+                        {% endif %}
                     {% endfor %}
+                    {% for tarea in aux.tareas %}
+                    {% if tarea.descripcion == 'Otras tareas' %}
+                        <div class="custom-control custom-checkbox">
+                            <input id="tarea{{ tarea.id }}" name="tarea{{ tarea.id }}" type="checkbox"
+                                class="custom-control-input" {% if tarea.seleccionada == 1 %} checked {% endif %}>
+                            <label class="custom-control-label" for="tarea{{ tarea.id }}">{{ tarea.descripcion }}</label>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                    
+                    
                 </div>
 
                 <hr class="mt-5 mb-5">

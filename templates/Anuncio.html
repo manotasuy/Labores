@@ -70,11 +70,6 @@
 					<div class="col-form-label col-sm-10 pt-0">Tareas a realizar</div>
 					<div class="col-sm-10">
 						<div class="custom-control custom-checkbox ml-5">
-							<input type="checkbox" class="custom-control-input" id="hogar" name="chkHogar"
-								{% if session['usertype'] == 'Empleado' %} disabled {% endif %}>
-							<label class="custom-control-label" for="hogar">Hogar</label>
-						</div>
-						<div class="custom-control custom-checkbox ml-5">
 							<input type="checkbox" class="custom-control-input" id="oficina" name="chkOficina"
 								{% if session['usertype'] == 'Empleado' %} disabled {% endif %}>
 							<label class="custom-control-label" for="oficina">Oficina</label>
@@ -119,6 +114,11 @@
 							<input type="checkbox" class="custom-control-input" id="mascotas" name="chkCuidadoMascotas"
 								{% if session['usertype'] == 'Empleado' %} disabled {% endif %}>
 							<label class="custom-control-label" for="mascotas">Cuidado de mascotas</label>
+						</div>
+						<div class="custom-control custom-checkbox ml-5">
+							<input type="checkbox" class="custom-control-input" id="hogar" name="chkHogar"
+								{% if session['usertype'] == 'Empleado' %} disabled {% endif %}>
+							<label class="custom-control-label" for="hogar">Otras tareas</label>
 						</div>
 					</div>
 				</div>
