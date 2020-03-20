@@ -19,6 +19,16 @@
   <link rel="icon" href="{{ url_for('static', filename='images/Logos/Logo.ico')}}">
   <meta name="theme-color" content="#563d7c">
 
+	<script>
+  function validateForm() {
+    var x = document.forms["anuncio"]["pagoPorHora"].value;
+    if (x == "") {
+      alert("Debe introducir el pago por hora ofrecido!");
+      return false;
+    }
+  }
+  </script>
+
   <script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js"
     integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0"
     crossorigin="anonymous"></script>
