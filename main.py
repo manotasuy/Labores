@@ -1004,7 +1004,7 @@ def ver_anuncio(idAnuncio, postulacion):
             'anuncio': listaAnuncio,
             'postulacion': postulacion
         }
-        print('BPS: ', listaEmpleador[3])
+
         # el desempaquetado tendrá 3 claves, 'empleador', 'anuncio' y psotulacion
         # 'empleador' : [nombre, apellido, foto, registroBps]
         # 'anuncio' : [titulo, descripcion, disponibilidad, [tareas], pago_hora, experiencia, idAnuncio]
@@ -1101,7 +1101,7 @@ def mis_vinculos():
 
 
 @app.route('/verVinculo/<idVinculo>')
-def ver_vinculos(idVinculo):
+def ver_vinculo(idVinculo):
     if session.get('usertype') == None:
         return redirect(url_for('logueo'))
     elif session.get('usertype') == 'Administrador':
@@ -1112,7 +1112,6 @@ def ver_vinculos(idVinculo):
         empleado = getEmpleadoByID(baseDatos, vinculo.empleado)
         anuncio = getAnuncioByID(baseDatos, vinculo.anuncio)
         extension = datetime.now().date() - vinculo.fecha_inicio
-        print(extension)
         context = {
             'vinculo': vinculo,
             'anuncio': anuncio,
@@ -1136,6 +1135,53 @@ def not_vinculo(idVinculo):
         vinculo.borrarVinculo(baseDatos)
 
         return redirect(url_for('mis_vinculos'))
+
+
+@app.route('/calVinculo/<idVinculo>/', methods=['POST'])
+def cal_vinculo(idVinculo):
+    if session.get('usertype') == None:
+        return redirect(url_for('logueo'))
+    elif session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    elif session.get('usertype') == 'Empleado':    
+        if request.method == 'POST':
+            cal = request.form['cal']
+            vinculo = getVinculoByID(baseDatos, idVinculo)
+            vinculo.calif_empleador = cal
+            vinculo.actualizarVinculo(baseDatos)
+        return redirect(url_for('mis_vinculos'))
+    else:
+        if request.method == 'POST':
+            cal = request.form['cal']
+            vinculo = getVinculoByID(baseDatos, idVinculo)
+            vinculo.calif_empleado = cal
+            vinculo.actualizarVinculo(baseDatos)
+        return redirect(url_for('mis_vinculos'))
+
+
+@app.route('/endVinculo/<idVinculo>/', methods=['POST'])
+def end_vinculo(idVinculo):
+    if session.get('usertype') == None:
+        return redirect(url_for('logueo'))
+    elif session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    elif session.get('usertype') == 'Empleado':    
+        if request.method == 'POST':
+            cal = request.form['cal']
+            vinculo = getVinculoByID(baseDatos, idVinculo)
+            vinculo.calif_empleador = cal
+            vinculo.fecha_fin = datetime.now()
+            vinculo.actualizarVinculo(baseDatos)
+        return redirect(url_for('mis_vinculos'))
+    else:
+        if request.method == 'POST':
+            cal = request.form['cal']
+            vinculo = getVinculoByID(baseDatos, idVinculo)
+            vinculo.calif_empleado = cal
+            vinculo.fecha_fin = datetime.now()
+            vinculo.actualizarVinculo(baseDatos)
+        return redirect(url_for('mis_vinculos'))
+
 
 
 

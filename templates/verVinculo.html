@@ -12,13 +12,13 @@
 <div class="container">
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
-            {% if extension < 31 %}
+            {% if extension < 30 %}
             <a class="btn btn-outline-info float-right" href="/notVinculo/{{vinculo.id}}" aria-label="">¿Este vínculo no llegó <br> a concretarse?</a>
             {% endif %}
             <h1 class="display-5 mb-5">Vínculo</h1>
 
 
-            <form>
+            
                 <div class="form-group row">
                     <label class="col-sm-3 col-form-label">Inicio del vínculo:</label>
                     <div class="col-sm-5">
@@ -127,6 +127,8 @@
                     Datos del empleador:
                     {% endif %}
                 </h1>
+
+
                 <div class="row mb-5">
                     <div class="card ml-5 mr-3 mb-3" style="max-width: 550px; min-width: 550px;">
                         <div class="row no-gutters">
@@ -160,11 +162,35 @@
                                         Perfil</a>
                                 </div>
                             </div>
+
                             {% endif %}
 
                         </div>
+
                     </div>
+
                 </div>
+                
+                <hr class="mt-5 mb-5">
+                <br>
+                {% if extension > 90 %}
+                {% if user == 'Empleador'  %}
+                    <h3 class="display-6 mb-5">¿Como calificas a {{empleado.nombre}} como empleado?</h3>
+
+                {% elif user == 'Empleado' %}
+                    <h1 class="display-6 mb-5">¿Como calificas a {{empleador.nombre}} como empleador?</h1>
+                {% endif %}
+                <form action="/calVinculo/{{vinculo.id}}/" method="POST" name="cal" onsubmit="return validateForm()">
+                    <div class="form-group">
+                        <label for="titulo"></label>
+                        <input type="text" class="form-control" id="cal" name="cal">
+                    </div>
+                
+                    <button class="btn btn-success" type="submit" name="btnGuardar">Calificar</button>
+                
+                </form>
+                {% endif %}
+
                 <br>
                 <hr class="mt-5 mb-5">
                 <br>
@@ -175,13 +201,48 @@
                 <button type="button" class="btn btn-success float-right" disabled></button>
                 {% endif %}    -->
                 <button type="button" class="btn btn-primary float-left" aria-label="" onClick="history.go(-1)">Volver</button>
-                <a class="btn btn-danger float-right" href="" aria-label="">FINALIZAR VÍNCULO</a>
+                {% if not vinculo.fecha_fin %}
+                <a class="btn btn-danger float-right" href="" aria-label=""data-toggle="modal"
+                data-target="#modal">FINALIZAR VÍNCULO</a>
+                {% endif %}
+
+                <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="mensaje"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h6 class="modal-title" id="exampleModalLabel">Finalizar vínculo</h6>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                                <form action="/endVinculo/{{vinculo.id}}/" method="POST" name="cal" onsubmit="return validateForm()">
+                                    <div class="form-group">
+                                        {% if user == 'Empleador'  %}
+                                        <label for="cal">Por favor, califica tu experiencia con {{empleado.nombre}}</label>
+                                        {% elif user == 'Empleado' %}
+                                        <label for="cal">Por favor, califica tu experiencia con {{empleador.nombre}}</label>
+                                        {% endif %}
+                                        <input type="text" class="form-control" id="cal" name="cal">
+                                    </div>
+                                
+                                    <button class="btn btn-danger" type="submit" name="btnFinalizar">Finalizar vínculo</button>
+                                
+                                </form>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        </div>
                 <br>
 
-            </form>
+            
         </div>
     </div>
 </div>
+
 {% endblock %}
 
 {% block scripts %}
