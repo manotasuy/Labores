@@ -12,7 +12,11 @@
 <div class="container">
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
+            {% if extension < 31 %}
+            <a class="btn btn-outline-info float-right" href="/notVinculo/{{vinculo.id}}" aria-label="">¿Este vínculo no llegó <br> a concretarse?</a>
+            {% endif %}
             <h1 class="display-5 mb-5">Vínculo</h1>
+
 
             <form>
                 <div class="form-group row">
@@ -63,11 +67,6 @@
                 <div class="d-block my-3 mt-5">
                     <p>Tareas realizadas:</p>
                     <div class="custom-control custom-checkbox">
-                        <input id="tareaHogar" name="tareaHogar" type="checkbox" class="custom-control-input"
-                            {% if anuncio.hogar == True %} checked {% endif %} disabled>
-                        <label class="custom-control-label" for="tareaHogar">Hogar</label>
-                    </div>
-                    <div class="custom-control custom-checkbox">
                         <input id="tareaOficina" name="tareaOficina" type="checkbox" class="custom-control-input"
                             {% if anuncio.oficina == True %} checked {% endif %} disabled>
                         <label class="custom-control-label" for="tareaOficina">Oficina</label>
@@ -111,6 +110,11 @@
                         <input id="tareaCuidMasc" name="tareaCuidMasc" type="checkbox" class="custom-control-input"
                             {% if anuncio.cuidado_mascotas == True %} checked {% endif %} disabled>
                         <label class="custom-control-label" for="tareaCuidMasc">Cuidado de mascotas</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input id="tareaHogar" name="tareaHogar" type="checkbox" class="custom-control-input"
+                            {% if anuncio.hogar == True %} checked {% endif %} disabled>
+                        <label class="custom-control-label" for="tareaHogar">Otras tareas</label>
                     </div>
                 </div>
 
@@ -161,13 +165,18 @@
                         </div>
                     </div>
                 </div>
+                <br>
+                <hr class="mt-5 mb-5">
+                <br>
                 <!--
                 {% if postulacion == '0' %}
                 <a href="" type="button" class="btn btn-warning float-right">Terminar vínculo</a>
                 {% else %}
                 <button type="button" class="btn btn-success float-right" disabled></button>
                 {% endif %}    -->
-                <button type="button" class="btn btn-primary btn-block" onClick="history.go(-1)">Volver</button>
+                <button type="button" class="btn btn-primary float-left" aria-label="" onClick="history.go(-1)">Volver</button>
+                <a class="btn btn-danger float-right" href="" aria-label="">FINALIZAR VÍNCULO</a>
+                <br>
 
             </form>
         </div>

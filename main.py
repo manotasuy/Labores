@@ -6,6 +6,8 @@ from flask_mysqldb import MySQL
 from datetime import datetime
 from enum import Enum
 
+
+
 # Paquetes implementación
 from Implementacion.Conexion import connectionDb
 from Implementacion.Usuario import Usuario
@@ -50,10 +52,10 @@ app = Flask(__name__)
 
 #baseDatos = connectionDb(app, 'remotemysql.com')
 #baseDatos = connectionDb(app, 'aws')
-baseDatos = connectionDb(app, 'CloudAccess')
+#baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'a-work')
 #baseDatos = connectionDb(app, 'a-home')
-#baseDatos = connectionDb(app, 'local')
+baseDatos = connectionDb(app, 'local')
 
 
 # session
@@ -1109,15 +1111,33 @@ def ver_vinculos(idVinculo):
         empleador = getEmpleadorByID(baseDatos, vinculo.empleador)
         empleado = getEmpleadoByID(baseDatos, vinculo.empleado)
         anuncio = getAnuncioByID(baseDatos, vinculo.anuncio)
-        print(anuncio.cuidado_ninios)
+        extension = datetime.now().date() - vinculo.fecha_inicio
+        print(extension)
         context = {
             'vinculo': vinculo,
             'anuncio': anuncio,
             'empleado': empleado,
             'empleador': empleador,
-            'user': session.get('usertype')
+            'user': session.get('usertype'),
+            'extension': int(str(extension.days))
+
         }
         return render_template('verVinculo.html', **context)
+
+
+@app.route('/notVinculo/<idVinculo>')
+def not_vinculo(idVinculo):
+    if session.get('usertype') == None:
+        return redirect(url_for('logueo'))
+    elif session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    else:
+        vinculo = getVinculoByID(baseDatos, idVinculo)
+        vinculo.borrarVinculo(baseDatos)
+
+        return redirect(url_for('mis_vinculos'))
+
+
 
 
 @app.route('/Candidatos/<id_anuncio>', methods=['POST', 'GET'])
