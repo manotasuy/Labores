@@ -16,13 +16,18 @@
             <p class="mt-4">
                 <h4>{{ elanuncio.titulo }} </h4>
                 {{ elanuncio.descripcion }} <br>
-                Publicado el {{ elanuncio.fecha_inicio }}
+                Publicado el {{ elanuncio.fecha_inicio.strftime('%d/%m/%Y') }}
             </p>
             <a href="/TusAnuncios" type="button" class="btn btn-primary float-right">Volver a mis anuncios</a>
         </div>
     </div>
 
     <div class="container mb-5">
+        {% if not elemPares %}
+        <p>
+            <h5>Aún no hay candidatos.</h5>
+        </p>
+        {% else %}
         {% for postulacion in elemPares %}
 
         {% set item_pares = elemPares[loop.index-1] %}
@@ -72,7 +77,7 @@
                             <a class="btn btn-sm btn-success float-right"
                                 href="/VistaPerfil/Empleado/{{item_pares.empleado.id}}" aria-label="">Ir al Perfil</a>
                             <p class="card-text"><small class="text-muted">Su postulación fue en:
-                                    {{item_pares.fecha}}</small></p>
+                                    {{item_pares.fecha.strftime('%d/%m/%Y')}}</small></p>
                         </div>
                     </div>
                 </div>
@@ -123,7 +128,7 @@
                             <a class="btn btn-sm btn-success float-right"
                                 href="/VistaPerfil/Empleado/{{item_impares.empleado.id}}" aria-label="">Ir al Perfil</a>
                             <p class="card-text"><small class="text-muted">Su postulación fue en:
-                                    {{item_impares.fecha}}</small></p>
+                                    {{item_impares.fecha.strftime('%d/%m/%Y')}}</small></p>
                         </div>
                     </div>
                 </div>
@@ -131,6 +136,7 @@
             {% endif %}
         </div>
         {% endfor %}
+        {% endif %}
     </div>
 </div>
 {% endblock %}

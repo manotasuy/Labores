@@ -36,7 +36,7 @@
                     <p class="media-body pb-3 mb-0 small lh-125 ml-5">
                         <strong class="d-block text-gray-dark"
                             style="font-size: large;">{{ postulacion[1].titulo }}</strong><br>
-                        Postulación: <strong>{{ postulacion[2].fecha }}</strong> <br>
+                        Postulación: <strong>{{ postulacion[2].fecha.strftime('%d/%m/%Y') }}</strong> <br>
                         {{ postulacion[1].descripcion }} <br>
 
                         {% if postulacion[3] == 1 %}

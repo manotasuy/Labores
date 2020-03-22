@@ -36,7 +36,7 @@
 
                 <p class="media-body pb-3 mb-0 small lh-125">
                     <strong class="d-block text-gray-dark" style="font-size: large;"> {{ anuncio[1].titulo }} </strong>
-                    Publicación: <strong>{{ anuncio[1].fecha_inicio }}</strong> <br>
+                    Publicación: <strong>{{ anuncio[1].fecha_inicio.strftime('%d/%m/%Y') }}</strong> <br>
                     Pago por hora: <strong>${{ anuncio[1].pago_hora }}</strong> <br>
                     <br>
                     {{ anuncio[1].descripcion }} <br>

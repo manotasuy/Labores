@@ -201,8 +201,8 @@
                 <td>{{referencia.nombre}}</td>
                 <td>{{referencia.apellido}}</td>
                 <td>{{referencia.telefono}}</td>
-                <td>{{referencia.fechaDesde}}</td>
-                <td>{{referencia.fechaHasta}}</td>
+                <td>{{referencia.fechaDesde.strftime('%d/%m/%Y')}}</td>
+                <td>{{referencia.fechaHasta.strftime('%d/%m/%Y')}}</td>
               </tr>
               {% endfor %}
             </tbody>

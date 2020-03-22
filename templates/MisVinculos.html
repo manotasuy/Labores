@@ -44,11 +44,11 @@
                     <strong class="d-block text-gray-dark" style="font-size: medium;">{{vinculo.empleado.apellido}},
                         {{vinculo.empleado.nombre}}</strong>
                     {% endif %}
-                    Inicio del vínculo: <strong>{{ vinculo.fecha_inicio }}</strong> <br>
+                    Inicio del vínculo: <strong>{{ vinculo.fecha_inicio.strftime('%d/%m/%Y') }}</strong> <br>
                     {% if vinculo.fecha_fin == None %}
                     Fin del vínculo: <strong>Vínculo activo</strong> <br>
                     {% else %}
-                    Fin del vínculo: <strong>{{ vinculo.fecha_fin }}</strong> <br>
+                    Fin del vínculo: <strong>{{ vinculo.fecha_fin.strftime('%d/%m/%Y') }}</strong> <br>
                     {% endif %}
                     <br>
 

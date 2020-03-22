@@ -37,7 +37,7 @@
 									<tbody>
 										{% for anuncio in listaMisAnuncios %}
 										<tr>
-											<td>{{ anuncio.3 }}</td>
+											<td>{{ anuncio.3.strftime('%d/%m/%Y') }}</td>
 											<td>{{ anuncio.1 }}</td>
 											<td>
 												{% if anuncio.5 == 1 %}

@@ -1,3 +1,4 @@
+import Implementacion
 from datetime import datetime
 from Implementacion.Usuario import getUsuarioByID
 from Implementacion.Tarea import Tarea
@@ -200,7 +201,7 @@ class Empleado:
 
     def postularseParaAnuncio(self, bd, anuncio, fecha):
         try:
-            postulacion = Postulacion.Postulacion(0, self, anuncio, fecha)
+            postulacion = Implementacion.Postulacion.Postulacion(0, self, anuncio, fecha)
             postulacion.crearPostulacion(bd)
             print('Postulado para empleo')
         except Exception as e:

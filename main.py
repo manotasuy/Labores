@@ -52,10 +52,10 @@ app = Flask(__name__)
 
 #baseDatos = connectionDb(app, 'remotemysql.com')
 #baseDatos = connectionDb(app, 'aws')
-#baseDatos = connectionDb(app, 'CloudAccess')
+baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'a-work')
 #baseDatos = connectionDb(app, 'a-home')
-baseDatos = connectionDb(app, 'local')
+#baseDatos = connectionDb(app, 'local')
 
 
 # session
@@ -495,7 +495,7 @@ def inicio_empleados():
     else:
         empleado = getEmpleadoByID(baseDatos, session['id_empleado'])
         tiene = empleadoTieneMensajesSinLeer(baseDatos, empleado.id)
-        print('empleadoTieneMensajesSinLeer: ', tiene)
+        #print('empleadoTieneMensajesSinLeer: ', tiene)
         return render_template('HomeEmpleados.html', sujeto=empleado, tieneMensajesSinLeer=tiene)
 
 
@@ -510,7 +510,7 @@ def inicio_empleadores():
     else:
         empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
         tiene = empleadorTieneMensajesSinLeer(baseDatos, empleador.id)
-        print('empleadorTieneMensajesSinLeer: ', tiene)
+        #print('empleadorTieneMensajesSinLeer: ', tiene)
         return render_template('HomeEmpleadores.html', sujeto=empleador, tieneMensajesSinLeer=tiene)
 
 
@@ -1187,9 +1187,6 @@ def end_vinculo(idVinculo):
         return redirect(url_for('mis_vinculos'))
 
 
-
-
-
 @app.route('/Candidatos/<id_anuncio>', methods=['POST', 'GET'])
 def listar_candidatos(id_anuncio):
     if session.get('usertype') == None:
@@ -1337,6 +1334,20 @@ def contratar(idEmpleado):
         flash('Empleado Contratado!')
         return render_template('contactoEmpleado.html', data=empleado)
 
+
+# En proceso
+@app.route('/RankingPorCalificación')
+def ranking_calificaciones():
+    if session.get('usertype') == None:
+        return redirect(url_for('logueo'))
+    elif session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    else:
+        tipo = session['usertype']
+        if tipo == 'Empleado':
+            return 1
+        elif tipo == 'Empleador':
+            return 0
 
 if __name__ == '__main__':
     app.run(debug=True)

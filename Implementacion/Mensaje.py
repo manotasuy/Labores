@@ -215,9 +215,13 @@ def empleadoTieneMensajesSinLeer(bd, id_empleado):
         retorno = cursor.fetchall()
         bd.connection.commit()
         cursor.close()
-        return len(retorno[0]) > 0
+        if retorno is None or len(retorno) == 0:
+            return False
+        else:
+            return len(retorno[0]) > 0
     except Exception as e:
         print("Error en empleadoTieneMensajesSinLeer ", e)
+
 
 def getMensajesParaEmpleador(bd, id_empleador):
     try:
@@ -275,6 +279,9 @@ def empleadorTieneMensajesSinLeer(bd, id_empleador):
         retorno = cursor.fetchall()
         bd.connection.commit()
         cursor.close()
-        return len(retorno[0]) > 0
+        if retorno is None or len(retorno) == 0:
+            return False
+        else:
+            return len(retorno[0]) > 0
     except Exception as e:
         print("Error en empleadorTieneMensajesSinLeer ", e)

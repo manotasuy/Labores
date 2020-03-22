@@ -13,43 +13,36 @@
   <div class="jumbotron jumbotron-fluid">
     <div class="container">
 
-      <div class="text-center mb-5 in-line">
-
-        <!--<h1 class="display-5 mb-5">Perfil</h1>-->
-        <a class="my-0 mr-md-auto" href="" aria-label="Home">
-          <img class="mb-4" src="{{ url_for('static', filename=data.foto)}}" alt="" width="125" height="125">
-        </a>
+      <div class="mt-1 mb-5">
+        <div class="text-center mb-3">
+          <h1 for="">{{data.nombre}} {{data.apellido}}</h1>
+          <br>
+        </div>
+        <table class="table table-borderless bg-transparent">
+          <tbody>
+            <tr>
+              <td>
+                <a class="my-0 mr-md-auto" href="" aria-label="Home">
+                  <img class="mt-2 mb-2 ml-4" src="{{ url_for('static', filename=data.foto)}}" alt="" width="125"
+                    height="125">
+                </a>
+                <img class="mt-4 mb-4" src="{{ url_for('static', filename='images/Estrellas/45star.png')}}" alt=""
+                  width="188" height="41">
+              </td>
+              <td>
+                {% if tipo == 'Empleado' %}
+                <textarea
+                  class="float-right border-0 text-decoration-none bg-transparent text-small font-weight-bold font-italic ml-2 mt-2"
+                  name="presentacion" rows="10" cols="42" placeholder="" disabled>{{data.descripcion}}</textarea>
+                {% endif %}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <form class="needs-validation" novalidate="" action="" method="POST">
         <div class="row">
-          <div class="col-md-6 mb-3">
-            <label for="name">Nombre</label>
-            <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre"
-              value="{{data.nombre}}" required="" readonly>
-            <div class="invalid-feedback">
-              Se requiere un Nombre válido.
-            </div>
-          </div>
-          <div class="col-md-6 mb-3">
-            <label for="lastName">Apellido</label>
-            <input type="text" class="form-control" name="apellido" id="apelido" placeholder="Apellido"
-              value="{{data.apellido}}" required="" readonly>
-            <div class="invalid-feedback">
-              Se requiere un Apellido válido.
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-6 mb-3">
-            <label for="ci">Cédula de identidad</label>
-            <input type="text" class="form-control" name="cedula" id="cedula" placeholder="50726621" required=""
-              value="{{data.cedula}}" readonly>
-            <div class="invalid-feedback">
-              Por favor seleccione una CI válida.
-            </div>
-          </div>
           <div class="col-md-6 mb-3">
             <label for="nacionalidad">Nacionalidad</label>
             <input type="text" class="form-control" name="nacionalidad" id="nacionalidad" placeholder="Uruguayo"
@@ -127,12 +120,6 @@
 
         <hr class="mt-5 mb-5">
 
-        <h5>Los empleadores te invitarán a pasar a su casa <br>
-          ¡cuentales algo sobre tí, así comienzan a conocerte!</h5>
-        <textarea name="presentacion" rows="10" cols="65" placeholder="" disabled>{{data.descripcion}}</textarea>
-
-        <hr class="mt-5 mb-5">
-
         {% elif tipo == 'Empleador' %}
         <hr class="mt-5 mb-5">
         <div class="d-block my-3">
@@ -181,8 +168,8 @@
                         <td>{{referencia.nombre}}</td>
                         <td>{{referencia.apellido}}</td>
                         <td>{{referencia.telefono}}</td>
-                        <td>{{referencia.fechaDesde}}</td>
-                        <td>{{referencia.fechaHasta}}</td>
+                        <td>{{referencia.fechaDesde.strftime('%d/%m/%Y')}}</td>
+                        <td>{{referencia.fechaHasta.strftime('%d/%m/%Y')}}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
