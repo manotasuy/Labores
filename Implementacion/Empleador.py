@@ -356,6 +356,7 @@ def getEmpleadorByID(bd, id):
         retorno = cursor.fetchall()
         bd.connection.commit()
         cursor.close()
+
         empleador = Empleador(
             retorno[0][0],
             retorno[0][1],

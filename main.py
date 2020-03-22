@@ -32,7 +32,7 @@ from Implementacion.Empleado import getEmpleadoByUsuarioID
 from Implementacion.Empleado import getTareasEmpleado
 from Implementacion.Empleado import getDisponibilidadEmpleado
 from Implementacion.Anuncio import getAnuncioByID
-from Implementacion.Vinculo import getVinculoByID, getVinculoByEmpleado, getVinculoByEmpleador, getVinculoIDs
+from Implementacion.Vinculo import getVinculoByID, getVinculoByEmpleado, getVinculoByEmpleador, getVinculoIDs, getPromedioByEmpleadorId, getPromedioByEmpleadoId
 from Implementacion.Postulacion import getPostulacionesAnuncio
 from Implementacion.Postulacion import getPostulacionesEmpleado
 from Implementacion.Postulacion import getPostulacionEmpleadoAnuncio
@@ -924,8 +924,6 @@ def listar_anuncios():
                 anun.append(domicilioAnuncio)
                 listaDeAnuncios.append(anun)
         listaMatcheo = []
-        #a[4] = domicilioAnuncio
-        #empl[3] = domicilioEmpleado
 
         for a in listaDeAnuncios:
             if a[3] & empl[1] == a[3] and a[1] in empl[2] and a[4] == empl[3] and empl[0] >= a[2]:
@@ -1145,17 +1143,23 @@ def cal_vinculo(idVinculo):
         return redirect(url_for('administrar'))
     elif session.get('usertype') == 'Empleado':    
         if request.method == 'POST':
-            cal = request.form['cal']
+            cal = request.form.get('rating')
             vinculo = getVinculoByID(baseDatos, idVinculo)
             vinculo.calif_empleador = cal
             vinculo.actualizarVinculo(baseDatos)
+            empleado = getEmpleadoByID(baseDatos, session['id_empleado'])
+            empleado.promedioCalificacion = getPromedioByEmpleadoId(baseDatos, empleado.id)
+            empleado.modificarEmpleado(baseDatos)
         return redirect(url_for('mis_vinculos'))
     else:
         if request.method == 'POST':
-            cal = request.form['cal']
+            cal = request.form.get('rating')
             vinculo = getVinculoByID(baseDatos, idVinculo)
             vinculo.calif_empleado = cal
             vinculo.actualizarVinculo(baseDatos)
+            empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
+            empleador.promedioCalificacion = getPromedioByEmpleadorId(baseDatos, empleador.id)
+            empleador.modificarEmpleador(baseDatos)
         return redirect(url_for('mis_vinculos'))
 
 
@@ -1167,7 +1171,7 @@ def end_vinculo(idVinculo):
         return redirect(url_for('administrar'))
     elif session.get('usertype') == 'Empleado':    
         if request.method == 'POST':
-            cal = request.form['cal']
+            cal = request.form.get('rating')
             vinculo = getVinculoByID(baseDatos, idVinculo)
             vinculo.calif_empleador = cal
             vinculo.fecha_fin = datetime.now()
@@ -1175,7 +1179,7 @@ def end_vinculo(idVinculo):
         return redirect(url_for('mis_vinculos'))
     else:
         if request.method == 'POST':
-            cal = request.form['cal']
+            cal = request.form.get('rating')
             vinculo = getVinculoByID(baseDatos, idVinculo)
             vinculo.calif_empleado = cal
             vinculo.fecha_fin = datetime.now()

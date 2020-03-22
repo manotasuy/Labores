@@ -249,3 +249,57 @@ def getVinculoIDs(bd, id):
         return vinculo
     except Exception as e:
         print("Error en getVinculoIDs ", e)
+
+def getPromedioByEmpleadoId(bd, idEmpleado):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('''
+            SELECT
+                calificacion_empleado
+            FROM vinculo WHERE id_empleado = {}'''.format(idEmpleado))
+        retornoV = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+        vinculosCal = []
+        for cal in retornoV:
+            if cal[0] != None:
+                vinculosCal.append(cal[0])
+        suma = 0
+        for c in vinculosCal:
+            suma += c
+
+        promedio = 0
+        if len(vinculosCal) == 0:
+            promedio = None
+        else:
+            promedio = suma / len(vinculosCal)
+        return promedio
+    except Exception as e:
+        print("Error en getPromedioByEmpleadoId ", e)
+
+def getPromedioByEmpleadorId(bd, idEmpleador):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('''
+            SELECT
+                calificacion_empleador
+            FROM vinculo WHERE id_empleador = {}'''.format(idEmpleador))
+        retornoV = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+        vinculosCal = []
+        for cal in retornoV:
+            if cal[0] != None:
+                vinculosCal.append(cal[0])
+        suma = 0
+        for c in vinculosCal:
+            suma += c
+
+        promedio = 0
+        if len(vinculosCal) == 0:
+            promedio = None
+        else:
+            promedio = suma / len(vinculosCal)
+        return promedio
+    except Exception as e:
+        print("Error en getPromedioByEmpleadoId ", e)

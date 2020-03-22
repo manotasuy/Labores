@@ -382,3 +382,70 @@ input::placeholder {
   font-size: 0.9rem;
   color: #999;
 }
+
+
+
+/*--- calificar ---*/
+
+
+.star-rating {
+  direction: rtl;
+  display: inline-block;
+  padding: 20px
+}
+
+
+.star-rating input[type=radio] {
+  display: none
+}
+
+.star-rating label {
+  color: rgb(133, 142, 192);
+  font-size: 40px;
+  padding: 0;
+  cursor: pointer;
+  -webkit-transition: all .3s ease-in-out;
+  transition: all .3s ease-in-out  
+}
+
+
+
+
+.star-rating label:hover,
+.star-rating label:hover ~ label,
+.star-rating input[type=radio]:checked ~ label {
+  color: #ffbf00
+}
+
+
+/*calificar2 (modal) */
+
+.star-rating2 {
+  direction: rtl;
+  display: inline-block;
+  padding: 20px
+}
+
+
+.star-rating2 input[type=radio] {
+  display: none
+}
+
+.star-rating2 label {
+  color: rgb(133, 142, 192);
+  font-size: 40px;
+  padding: 0;
+  cursor: pointer;
+  -webkit-transition: all .3s ease-in-out;
+  transition: all .3s ease-in-out  
+}
+
+
+
+
+.star-rating2 label:hover,
+.star-rating2 label:hover ~ label,
+.star-rating2 input[type=radio]:checked ~ label {
+  color: #ffbf00
+}
+

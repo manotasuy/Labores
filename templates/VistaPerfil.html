@@ -26,8 +26,33 @@
                   <img class="mt-2 mb-2 ml-4" src="{{ url_for('static', filename=data.foto)}}" alt="" width="125"
                     height="125">
                 </a>
-                <img class="mt-4 mb-4" src="{{ url_for('static', filename='images/Estrellas/45star.png')}}" alt=""
-                  width="188" height="41">
+                {% if data.promedioCalificacion %}
+                  <img class="mt-4 mb-4" 
+                    {% if data.promedioCalificacion < 1 %}
+                      src="{{ url_for('static', filename='images/Estrellas/05star.png')}}"
+                    {% elif data.promedioCalificacion >= 1 and data.promedioCalificacion < 1.5 %}
+                      src="{{ url_for('static', filename='images/Estrellas/10star.png')}}"
+                    {% elif data.promedioCalificacion >= 1.5 and data.promedioCalificacion < 2 %}
+                      src="{{ url_for('static', filename='images/Estrellas/15star.png')}}"
+                    {% elif data.promedioCalificacion >= 2 and data.promedioCalificacion < 2.5 %}
+                      src="{{ url_for('static', filename='images/Estrellas/20star.png')}}"                      
+                    {% elif data.promedioCalificacion >= 2.5 and data.promedioCalificacion < 3 %}
+                      src="{{ url_for('static', filename='images/Estrellas/25star.png')}}"                      
+                    {% elif data.promedioCalificacion >= 3 and data.promedioCalificacion < 3.5 %}
+                      src="{{ url_for('static', filename='images/Estrellas/30star.png')}}"                      
+                    {% elif data.promedioCalificacion >= 3.5 and data.promedioCalificacion < 4 %}
+                      src="{{ url_for('static', filename='images/Estrellas/35star.png')}}"                      
+                    {% elif data.promedioCalificacion >= 4 and data.promedioCalificacion < 4.5 %}
+                      src="{{ url_for('static', filename='images/Estrellas/40star.png')}}"                      
+                    {% elif data.promedioCalificacion >= 4.5 and data.promedioCalificacion < 5 %}
+                      src="{{ url_for('static', filename='images/Estrellas/45star.png')}}"    
+                    {% elif data.promedioCalificacion == 5 %}
+                      src="{{ url_for('static', filename='images/Estrellas/50star.png')}}"
+                    {% endif %}
+                    alt="" width="188" height="41">
+                {% else %}
+                <p class="mt-4 mb-4">Sin calificaciones aún.</p>
+                {% endif %}
               </td>
               <td>
                 {% if tipo == 'Empleado' %}

@@ -173,22 +173,103 @@
                 
                 <hr class="mt-5 mb-5">
                 <br>
-                {% if extension > 90 %}
+                {% if extension > 90 or vinculo.fecha_fin %}
                 {% if user == 'Empleador'  %}
                     <h3 class="display-6 mb-5">¿Como calificas a {{empleado.nombre}} como empleado?</h3>
 
                 {% elif user == 'Empleado' %}
                     <h1 class="display-6 mb-5">¿Como calificas a {{empleador.nombre}} como empleador?</h1>
                 {% endif %}
+
+
+ <!------------------------------------------------------------------------------------------------------------------------------------------>
+   
                 <form action="/calVinculo/{{vinculo.id}}/" method="POST" name="cal" onsubmit="return validateForm()">
                     <div class="form-group">
-                        <label for="titulo"></label>
-                        <input type="text" class="form-control" id="cal" name="cal">
+                        <div class="star-rating">
+                            <input id="star-5" type="radio" name="rating" value="5" 
+                            {% if user == 'Empleador'  %}
+                                {% if vinculo.calif_empleado == 5 %}
+                                    checked=''
+                                {% endif %}
+                            {% elif user == 'Empleado' %}
+                                {% if vinculo.calif_empleador == 5 %}
+                                    checked=''
+                                {% endif %} 
+                            {% endif %}                               
+                             />
+                            <label for="star-5" title="5 estrellas">
+                              <i class="active fa fa-star" aria-hidden="true"></i>
+                            </label>
+                      
+                            <input id="star-4" type="radio" name="rating" value="4" 
+                            {% if user == 'Empleador'  %}
+                                {% if vinculo.calif_empleado == 4 %}
+                                    checked=''
+                                {% endif %}
+                            {% elif user == 'Empleado' %}
+                                {% if vinculo.calif_empleador == 4 %}
+                                    checked=''
+                                {% endif %} 
+                            {% endif %}                               
+                             />
+                            <label for="star-4" title="4 estrellas">
+                              <i class="active fa fa-star" aria-hidden="true"></i>
+                            </label>
+                      
+                            <input id="star-3" type="radio" name="rating" value="3" 
+                            {% if user == 'Empleador'  %}
+                                {% if vinculo.calif_empleado == 3 %}
+                                    checked=''
+                                {% endif %}
+                            {% elif user == 'Empleado' %}
+                                {% if vinculo.calif_empleador == 3 %}
+                                    checked=''
+                                {% endif %} 
+                            {% endif %}                               
+                              />
+                            <label for="star-3" title="3 estrellas">
+                              <i class="active fa fa-star" aria-hidden="true"></i>
+                            </label>
+                      
+                            <input id="star-2" type="radio" name="rating" value="2" 
+                            {% if user == 'Empleador'  %}
+                                {% if vinculo.calif_empleado == 2 %}
+                                    checked=''
+                                {% endif %}
+                            {% elif user == 'Empleado' %}
+                                {% if vinculo.calif_empleador == 2 %}
+                                    checked=''
+                                {% endif %} 
+                            {% endif %}                               
+                              />
+                            <label for="star-2" title="2 estrellas">
+                              <i class="active fa fa-star" aria-hidden="true"></i>
+                            </label>
+                      
+                            <input id="star-1" type="radio" name="rating" value="1" 
+                            {% if user == 'Empleador'  %}
+                                {% if vinculo.calif_empleado == 1 %}
+                                    checked=''
+                                {% endif %}
+                            {% elif user == 'Empleado' %}
+                                {% if vinculo.calif_empleador == 1 %}
+                                    checked=''
+                                {% endif %} 
+                            {% endif %}                               
+                               />
+                            <label for="star-1" title="1 estrellas">
+                              <i class="active fa fa-star" aria-hidden="true"></i>
+                            </label>
+
+                          </div>
+
                     </div>
                 
                     <button class="btn btn-success" type="submit" name="btnGuardar">Calificar</button>
                 
                 </form>
+<!------------------------------------------------------------------------------------------------------------------------------------------>
                 {% endif %}
 
                 <br>
@@ -218,23 +299,107 @@
                         </div>
                         <div class="modal-body">
 
-                                <form action="/endVinculo/{{vinculo.id}}/" method="POST" name="cal" onsubmit="return validateForm()">
-                                    <div class="form-group">
+                            <h2>¿Cómo califícas tu vínculo con 
+                                {% if user == 'Empleador' %}
+                                    {{empleado.nombre}}
+                                {% elif user == 'Empleado' %}
+                                    {{empleador.nombre}}
+                                {% endif %}
+                                 ?</h2>
+
+                            <!------------------------------------------------------------------------------------------------------------------------------------------>
+                            
+                            <form action="/endVinculo/{{vinculo.id}}/" method="POST" name="cal" onsubmit="return validateForm()">
+                                <div class="form-group">
+                                    <div class="star-rating2">
+                                        <input id="star-52" type="radio" name="rating" value="5" 
                                         {% if user == 'Empleador'  %}
-                                        <label for="cal">Por favor, califica tu experiencia con {{empleado.nombre}}</label>
+                                            {% if vinculo.calif_empleado == 5 %}
+                                                checked=''
+                                            {% endif %}
                                         {% elif user == 'Empleado' %}
-                                        <label for="cal">Por favor, califica tu experiencia con {{empleador.nombre}}</label>
-                                        {% endif %}
-                                        <input type="text" class="form-control" id="cal" name="cal">
+                                            {% if vinculo.calif_empleador == 5 %}
+                                                checked=''
+                                            {% endif %} 
+                                        {% endif %}                               
+                                        />
+                                        <label for="star-52" title="5 estrellas">
+                                        <i class="active fa fa-star" aria-hidden="true"></i>
+                                        </label>
+                                
+                                        <input id="star-42" type="radio" name="rating" value="4" 
+                                        {% if user == 'Empleador'  %}
+                                            {% if vinculo.calif_empleado == 4 %}
+                                                checked=''
+                                            {% endif %}
+                                        {% elif user == 'Empleado' %}
+                                            {% if vinculo.calif_empleador == 4 %}
+                                                checked=''
+                                            {% endif %} 
+                                        {% endif %}                               
+                                        />
+                                        <label for="star-42" title="4 estrellas">
+                                        <i class="active fa fa-star" aria-hidden="true"></i>
+                                        </label>
+                                
+                                        <input id="star-32" type="radio" name="rating" value="3" 
+                                        {% if user == 'Empleador'  %}
+                                            {% if vinculo.calif_empleado == 3 %}
+                                                checked=''
+                                            {% endif %}
+                                        {% elif user == 'Empleado' %}
+                                            {% if vinculo.calif_empleador == 3 %}
+                                                checked=''
+                                            {% endif %} 
+                                        {% endif %}                               
+                                        />
+                                        <label for="star-32" title="3 estrellas">
+                                        <i class="active fa fa-star" aria-hidden="true"></i>
+                                        </label>
+                                
+                                        <input id="star-22" type="radio" name="rating" value="2" 
+                                        {% if user == 'Empleador'  %}
+                                            {% if vinculo.calif_empleado == 2 %}
+                                                checked=''
+                                            {% endif %}
+                                        {% elif user == 'Empleado' %}
+                                            {% if vinculo.calif_empleador == 2 %}
+                                                checked=''
+                                            {% endif %} 
+                                        {% endif %}                               
+                                        />
+                                        <label for="star-22" title="2 estrellas">
+                                        <i class="active fa fa-star" aria-hidden="true"></i>
+                                        </label>
+                                
+                                        <input id="star-12" type="radio" name="rating" value="1" 
+                                        {% if user == 'Empleador'  %}
+                                            {% if vinculo.calif_empleado == 1 %}
+                                                checked=''
+                                            {% endif %}
+                                        {% elif user == 'Empleado' %}
+                                            {% if vinculo.calif_empleador == 1 %}
+                                                checked=''
+                                            {% endif %} 
+                                        {% endif %}                               
+                                        />
+                                        <label for="star-12" title="1 estrellas">
+                                        <i class="active fa fa-star" aria-hidden="true"></i>
+                                        </label>
+
                                     </div>
-                                
-                                    <button class="btn btn-danger" type="submit" name="btnFinalizar">Finalizar vínculo</button>
-                                
-                                </form>
+
+                                </div>
+
+
+
+                            
+                            <!------------------------------------------------------------------------------------------------------------------------------------------>
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button class="btn btn-danger float-right" type="submit" name="btnGuardar">Finalizar vínculo</button>
+                        </form>
                         </div>
                 <br>
 
@@ -242,7 +407,7 @@
         </div>
     </div>
 </div>
-
+<br><br><br>
 {% endblock %}
 
 {% block scripts %}

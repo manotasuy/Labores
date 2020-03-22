@@ -38,9 +38,37 @@
                         <div class="card-body">
                             <h5 class="card-title">{{item_pares.empleado.nombre}} {{item_pares.empleado.apellido}}</h5>
                             <p class="card-text">
-                                Meses de experiencia: {{item_pares.experiencia_meses}}<br>
-                                Promedio de calificación: {{item_pares.promedioCalificacion}}
-                            </p>
+                                Meses de experiencia: {{item_pares.empleado.experiencia_meses}} </p>
+                            <div class="card-text">
+                                {% if item_pares.empleado.promedioCalificacion %}
+                                <img class="mt-4 mb-4" 
+                                  {% if item_pares.empleado.promedioCalificacion < 1 %}
+                                    src="{{ url_for('static', filename='images/Estrellas/05star.png')}}"
+                                  {% elif item_pares.empleado.promedioCalificacion >= 1 and item_pares.empleado.promedioCalificacion < 1.5 %}
+                                    src="{{ url_for('static', filename='images/Estrellas/10star.png')}}"
+                                  {% elif item_pares.empleado.promedioCalificacion >= 1.5 and item_pares.empleado.promedioCalificacion < 2 %}
+                                    src="{{ url_for('static', filename='images/Estrellas/15star.png')}}"
+                                  {% elif item_pares.empleado.promedioCalificacion >= 2 and item_pares.empleado.promedioCalificacion < 2.5 %}
+                                    src="{{ url_for('static', filename='images/Estrellas/20star.png')}}"                      
+                                  {% elif item_pares.empleado.promedioCalificacion >= 2.5 and item_pares.empleado.promedioCalificacion < 3 %}
+                                    src="{{ url_for('static', filename='images/Estrellas/25star.png')}}"                      
+                                  {% elif item_pares.empleado.promedioCalificacion >= 3 and item_pares.empleado.promedioCalificacion < 3.5 %}
+                                    src="{{ url_for('static', filename='images/Estrellas/30star.png')}}"                      
+                                  {% elif item_pares.empleado.promedioCalificacion >= 3.5 and item_pares.empleado.promedioCalificacion < 4 %}
+                                    src="{{ url_for('static', filename='images/Estrellas/35star.png')}}"                      
+                                  {% elif item_pares.empleado.promedioCalificacion >= 4 and item_pares.empleado.promedioCalificacion < 4.5 %}
+                                    src="{{ url_for('static', filename='images/Estrellas/40star.png')}}"                      
+                                  {% elif item_pares.empleado.promedioCalificacion >= 4.5 and item_pares.empleado.promedioCalificacion < 5 %}
+                                    src="{{ url_for('static', filename='images/Estrellas/45star.png')}}"    
+                                  {% elif item_pares.empleado.promedioCalificacion == 5 %}
+                                    src="{{ url_for('static', filename='images/Estrellas/50star.png')}}"
+                                  {% endif %}
+                                  alt="" width="188" height="41">
+                              {% else %}
+                              <p class="mt-4 mb-4">Sin calificaciones aún.</p>
+                              {% endif %}
+                            </div>
+
                             <a class="btn btn-sm btn-success float-right"
                                 href="/VistaPerfil/Empleado/{{item_pares.empleado.id}}" aria-label="">Ir al Perfil</a>
                             <p class="card-text"><small class="text-muted">Su postulación fue en:
@@ -62,9 +90,36 @@
                             <h5 class="card-title">{{item_impares.empleado.nombre}} {{item_impares.empleado.apellido}}
                             </h5>
                             <p class="card-text">
-                                Meses de experiencia: {{item_impares.experiencia_meses}}<br>
-                                Promedio de calificación: {{item_impares.promedioCalificacion}}
-                            </p>
+                                Meses de experiencia: {{item_impares.experiencia_meses}}<br></p>
+                                <div class="card-text">
+                                    {% if item_impares.empleado.promedioCalificacion %}
+                                    <img class="mt-4 mb-4" 
+                                      {% if item_impares.empleado.promedioCalificacion < 1 %}
+                                        src="{{ url_for('static', filename='images/Estrellas/05star.png')}}"
+                                      {% elif item_impares.empleado.promedioCalificacion >= 1 and item_impares.empleado.promedioCalificacion < 1.5 %}
+                                        src="{{ url_for('static', filename='images/Estrellas/10star.png')}}"
+                                      {% elif item_impares.empleado.promedioCalificacion >= 1.5 and item_impares.empleado.promedioCalificacion < 2 %}
+                                        src="{{ url_for('static', filename='images/Estrellas/15star.png')}}"
+                                      {% elif item_impares.empleado.promedioCalificacion >= 2 and item_impares.empleado.promedioCalificacion < 2.5 %}
+                                        src="{{ url_for('static', filename='images/Estrellas/20star.png')}}"                      
+                                      {% elif item_impares.empleado.promedioCalificacion >= 2.5 and item_impares.empleado.promedioCalificacion < 3 %}
+                                        src="{{ url_for('static', filename='images/Estrellas/25star.png')}}"                      
+                                      {% elif item_impares.empleado.promedioCalificacion >= 3 and item_impares.empleado.promedioCalificacion < 3.5 %}
+                                        src="{{ url_for('static', filename='images/Estrellas/30star.png')}}"                      
+                                      {% elif item_impares.empleado.promedioCalificacion >= 3.5 and item_impares.empleado.promedioCalificacion < 4 %}
+                                        src="{{ url_for('static', filename='images/Estrellas/35star.png')}}"                      
+                                      {% elif item_impares.empleado.promedioCalificacion >= 4 and item_impares.empleado.promedioCalificacion < 4.5 %}
+                                        src="{{ url_for('static', filename='images/Estrellas/40star.png')}}"                      
+                                      {% elif item_impares.empleado.promedioCalificacion >= 4.5 and item_impares.empleado.promedioCalificacion < 5 %}
+                                        src="{{ url_for('static', filename='images/Estrellas/45star.png')}}"    
+                                      {% elif item_impares.empleado.promedioCalificacion == 5 %}
+                                        src="{{ url_for('static', filename='images/Estrellas/50star.png')}}"
+                                      {% endif %}
+                                      alt="" width="188" height="41">
+                                  {% else %}
+                                  <p class="mt-4 mb-4">Sin calificaciones aún.</p>
+                                  {% endif %}
+                                </div>
                             <a class="btn btn-sm btn-success float-right"
                                 href="/VistaPerfil/Empleado/{{item_impares.empleado.id}}" aria-label="">Ir al Perfil</a>
                             <p class="card-text"><small class="text-muted">Su postulación fue en:
