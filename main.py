@@ -54,10 +54,10 @@ app = Flask(__name__)
 
 #baseDatos = connectionDb(app, 'remotemysql.com')
 #baseDatos = connectionDb(app, 'aws')
-baseDatos = connectionDb(app, 'CloudAccess')
+#baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'a-work')
 #baseDatos = connectionDb(app, 'a-home')
-#baseDatos = connectionDb(app, 'local')
+baseDatos = connectionDb(app, 'local')
 
 
 # session
@@ -183,7 +183,9 @@ def vista_perfil(opcion, id):
 
             dtoAuxEmpleado = DTOAuxEmpleado(
                 tareasSeleccion, disponibilidadSeleccion)
-            return render_template('VistaPerfil.html', tipo=opcion, data=objeto, aux=dtoAuxEmpleado)
+
+            cal = getPromedioByEmpleadoId(baseDatos, objeto.id)            
+            return render_template('VistaPerfil.html', tipo=opcion, data=objeto, aux=dtoAuxEmpleado, cal=cal)
 
         elif opcion == 'Empleador':
             objeto = getEmpleadorByID(baseDatos, id)
@@ -513,7 +515,8 @@ def inicio_empleadores():
         empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
         tiene = empleadorTieneMensajesSinLeer(baseDatos, empleador.id)
         #print('empleadorTieneMensajesSinLeer: ', tiene)
-        return render_template('HomeEmpleadores.html', sujeto=empleador, tieneMensajesSinLeer=tiene)
+        cal = getPromedioByEmpleadorId(baseDatos, empleador.id)
+        return render_template('HomeEmpleadores.html', sujeto=empleador, tieneMensajesSinLeer=tiene, cal=cal)
 
 
 @app.route('/PanelControl/')
@@ -1112,13 +1115,17 @@ def ver_vinculo(idVinculo):
         empleado = getEmpleadoByID(baseDatos, vinculo.empleado)
         anuncio = getAnuncioByID(baseDatos, vinculo.anuncio)
         extension = datetime.now().date() - vinculo.fecha_inicio
+        calempleado = getPromedioByEmpleadoId(baseDatos, empleado.id)
+        calempleador = getPromedioByEmpleadorId(baseDatos, empleador.id)
         context = {
             'vinculo': vinculo,
             'anuncio': anuncio,
             'empleado': empleado,
             'empleador': empleador,
             'user': session.get('usertype'),
-            'extension': int(str(extension.days))
+            'extension': int(str(extension.days)),
+            'calEmpleado': calempleado,
+            'calEmpleador': calempleador
 
         }
         return render_template('verVinculo.html', **context)
@@ -1179,7 +1186,7 @@ def end_vinculo(idVinculo):
             vinculo.fecha_fin = datetime.now()
             vinculo.actualizarVinculo(baseDatos)
             empleador = vinculo.empleador
-            empleador.promedioCalificacion = getPromedioByEmpleadorId(baseDatos, empleador.id)
+            empleador.promedioCalificacion = getPromedioByEmpleadorId(baseDatos, empleador.id)['promedio']
             empleador.modificarEmpleador(baseDatos)
             
         return redirect(url_for('mis_vinculos'))
@@ -1191,7 +1198,7 @@ def end_vinculo(idVinculo):
             vinculo.fecha_fin = datetime.now()
             vinculo.actualizarVinculo(baseDatos)
             empleado = vinculo.empleado
-            empleado.promedioCalificacion = getPromedioByEmpleadoId(baseDatos, empleado.id)
+            empleado.promedioCalificacion = getPromedioByEmpleadoId(baseDatos, empleado.id)['promedio']
             empleado.modificarEmpleado(baseDatos)
         return redirect(url_for('mis_vinculos'))
 

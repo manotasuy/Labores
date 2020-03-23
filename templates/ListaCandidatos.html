@@ -46,7 +46,7 @@
                                 Meses de experiencia: {{item_pares[0][0].empleado.experiencia_meses}} </p>
                             <div class="card-text">
                                 {% if item_pares[0][0].empleado.promedioCalificacion %}
-                                <img class="mt-4 mb-4" 
+                                <img class="mt-4 mb-4" style="margin-bottom: 0.3rem !important;"
                                   {% if item_pares[0][0].empleado.promedioCalificacion < 1 %}
                                     src="{{ url_for('static', filename='images/Estrellas/05star.png')}}"
                                   {% elif item_pares[0][0].empleado.promedioCalificacion >= 1 and item_pares[0][0].empleado.promedioCalificacion < 1.5 %}
@@ -69,7 +69,7 @@
                                     src="{{ url_for('static', filename='images/Estrellas/50star.png')}}"
                                   {% endif %}
                                   alt="" width="188" height="41">
-                                  <p>
+                                  <p style="font-size: 0.8em important; text-align: center important;">
                                     De {{item_pares[1]['cantEmpleadores']}}
                                     {% if item_pares[1]['cantEmpleadores'] == 1 %}
                                     calificante

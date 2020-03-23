@@ -25,7 +25,48 @@
           </a>
           {% endif %}
         </p>
-        <img class="mb-4" src="{{ url_for('static', filename=sujeto.foto)}}" alt="" width="125" height="125">
+        <img class="mb-4" src="{{ url_for('static', filename=sujeto.foto)}}" alt="" width="125" height="125"><br>
+        {% if cal['promedio'] %}
+        <img class="mt-4 mb-4" style="margin-bottom: 0.3rem !important; margin: 0.3em !important;"
+          {% if cal['promedio'] < 1 %}
+            src="{{ url_for('static', filename='images/Estrellas/05star.png')}}"
+          {% elif cal['promedio'] >= 1 and cal['promedio'] < 1.5 %}
+            src="{{ url_for('static', filename='images/Estrellas/10star.png')}}"
+          {% elif cal['promedio'] >= 1.5 and cal['promedio'] < 2 %}
+            src="{{ url_for('static', filename='images/Estrellas/15star.png')}}"
+          {% elif cal['promedio'] >= 2 and cal['promedio'] < 2.5 %}
+            src="{{ url_for('static', filename='images/Estrellas/20star.png')}}"                      
+          {% elif cal['promedio'] >= 2.5 and cal['promedio'] < 3 %}
+            src="{{ url_for('static', filename='images/Estrellas/25star.png')}}"                      
+          {% elif cal['promedio'] >= 3 and cal['promedio'] < 3.5 %}
+            src="{{ url_for('static', filename='images/Estrellas/30star.png')}}"                      
+          {% elif cal['promedio'] >= 3.5 and cal['promedio'] < 4 %}
+            src="{{ url_for('static', filename='images/Estrellas/35star.png')}}"                      
+          {% elif cal['promedio'] >= 4 and cal['promedio'] < 4.5 %}
+            src="{{ url_for('static', filename='images/Estrellas/40star.png')}}"                      
+          {% elif cal['promedio'] >= 4.5 and cal['promedio'] < 5 %}
+            src="{{ url_for('static', filename='images/Estrellas/45star.png')}}"    
+          {% elif cal['promedio'] == 5 %}
+            src="{{ url_for('static', filename='images/Estrellas/50star.png')}}"
+          {% endif %}
+          alt="" width="188" height="41">
+          <p style="font-size: 0.8em important; text-align: center important;">
+            De {{cal['cantEmpleados']}}
+            {% if cal['cantEmpleados'] == 1 %}
+            calificante
+            {% else %}
+            calificantes
+            {% endif %}
+            por {{cal['cantVinculos']}} 
+            {% if cal['cantVinculos'] == 1 %}
+            vínculo
+            {% else %}
+            vínculos
+            {% endif %}
+          </p>
+      {% else %}
+      <p class="mt-4 mb-4">Sin calificaciones aún.</p>
+      {% endif %}
         <p class="lead"><a href="/Perfil/Empleador">Editar perfil</a></p>
       </div>
       <div class="card-deck">
