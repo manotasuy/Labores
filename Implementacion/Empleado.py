@@ -126,6 +126,7 @@ class Empleado:
                     experiencia_meses = %s,
                     descripcion = %s,
                     foto = %s,
+                    promedio_calificacion = %s
                 WHERE id = %s''',
                            (
                                self.nombre,
@@ -139,6 +140,7 @@ class Empleado:
                                self.experiencia_meses,
                                self.descripcion,
                                self.foto,
+                               self.promedioCalificacion,
                                self.id
                            ))
             bd.connection.commit()
@@ -278,7 +280,6 @@ def getEmpleadoByID(bd, id):
         retorno = cursor.fetchall()
         bd.connection.commit()
         cursor.close()
-
         empleado = Empleado(
             retorno[0][0],
             retorno[0][1],
