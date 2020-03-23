@@ -1148,7 +1148,7 @@ def cal_vinculo(idVinculo):
             vinculo.calif_empleador = cal
             vinculo.actualizarVinculo(baseDatos)
             empleador = vinculo.empleador
-            empleador.promedioCalificacion = getPromedioByEmpleadorId(baseDatos, empleador.id)
+            empleador.promedioCalificacion = getPromedioByEmpleadorId(baseDatos, empleador.id)['promedio']
             empleador.modificarEmpleador(baseDatos)
         return redirect(url_for('mis_vinculos'))
     else:
@@ -1158,7 +1158,7 @@ def cal_vinculo(idVinculo):
             vinculo.calif_empleado = cal
             vinculo.actualizarVinculo(baseDatos)
             empleado = vinculo.empleado
-            empleado.promedioCalificacion = getPromedioByEmpleadoId(baseDatos, empleado.id)
+            empleado.promedioCalificacion = getPromedioByEmpleadoId(baseDatos, empleado.id)['promedio']
             empleado.modificarEmpleado(baseDatos)
         return redirect(url_for('mis_vinculos'))
 
@@ -1208,8 +1208,19 @@ def listar_candidatos(id_anuncio):
         # Obtengo la lista de postulaciones para el anuncio dado
         anuncio = getAnuncioByID(baseDatos, id_anuncio)
         postulaciones = getPostulacionesAnuncio(baseDatos, id_anuncio)
-        pares = postulaciones[0:][::2]
-        impares = postulaciones[1:][::2]
+        postulacioneS = []
+        for postulacion in postulaciones:
+            post = []
+            cal = getPromedioByEmpleadoId(baseDatos, postulacion.empleado.id)
+            l = [postulacion]
+            post.append(l)
+            post.append(cal)
+            postulacioneS.append(post)
+
+        pares = postulacioneS[0:][::2]
+        impares = postulacioneS[1:][::2]
+
+
         return render_template('ListaCandidatos.html', elemPares=pares, elemImpares=impares, elanuncio=anuncio)
 
 

@@ -255,25 +255,46 @@ def getPromedioByEmpleadoId(bd, idEmpleado):
         cursor = bd.connection.cursor()
         cursor.execute('''
             SELECT
+                id_empleador,
                 calificacion_empleado
             FROM vinculo WHERE id_empleado = {}'''.format(idEmpleado))
         retornoV = cursor.fetchall()
         bd.connection.commit()
         cursor.close()
         vinculosCal = []
-        for cal in retornoV:
-            if cal[0] != None:
-                vinculosCal.append(cal[0])
-        suma = 0
-        for c in vinculosCal:
-            suma += c
+        for vin in retornoV:
+            if vin[1] != None:
+                vinculosCal.append(vin)
 
-        promedio = 0
-        if len(vinculosCal) == 0:
+        suma = 0 #contiene la suma de todas las calificaciones del empleado
+        for c in vinculosCal:
+            suma += c[1]
+
+        cantVinculos = len(vinculosCal) #contiene la cantidad de vinculos calificados
+
+        promedio = 0 #contiene el promedio de las calificaciones
+        
+        if cantVinculos == 0:
             promedio = None
         else:
-            promedio = suma / len(vinculosCal)
-        return promedio
+            promedio = suma / cantVinculos
+
+        listaEmpleadoresRep = []
+        for v in retornoV:
+            listaEmpleadoresRep.append(v[0])
+
+        listaEmpleadores = list(set(listaEmpleadoresRep)) #contiene una lista con los empleados sin repetir
+
+        cantEmpleadores = len(listaEmpleadores)
+
+        calificaciones = {
+            'cantVinculos' : cantVinculos,
+            'cantEmpleadores' : cantEmpleadores,
+            'promedio': promedio
+        }
+
+        
+        return calificaciones
     except Exception as e:
         print("Error en getPromedioByEmpleadoId ", e)
 
@@ -282,24 +303,45 @@ def getPromedioByEmpleadorId(bd, idEmpleador):
         cursor = bd.connection.cursor()
         cursor.execute('''
             SELECT
+                id_empleado,
                 calificacion_empleador
             FROM vinculo WHERE id_empleador = {}'''.format(idEmpleador))
-        retornoV = cursor.fetchall()
+        retornoV = cursor.fetchall() #contiene id_empleado y calificacion_empleador para todos los vinculos del empleadoR
         bd.connection.commit()
         cursor.close()
-        vinculosCal = []
+        vinculosCal = [] #contiene id_empleado y calificacion_empleador para todos los vinculos CALIFICADOS del empleadoR
         for cal in retornoV:
-            if cal[0] != None:
-                vinculosCal.append(cal[0])
-        suma = 0
-        for c in vinculosCal:
-            suma += c
+            if cal[1] != None:
+                vinculosCal.append(cal)
 
-        promedio = 0
-        if len(vinculosCal) == 0:
+        suma = 0 #contiene la suma de todas las calificaciones del empleador
+        for c in vinculosCal:
+            suma += c[1]
+
+        cantVinculos = len(vinculosCal) #contiene la cantidad de vinculos calificados
+
+        promedio = 0 #contiene el promedio de las calificaciones
+        
+        if cantVinculos == 0:
             promedio = None
         else:
-            promedio = suma / len(vinculosCal)
-        return promedio
+            promedio = suma / cantVinculos
+
+        listaEmpleadosRep = []
+        for v in retornoV:
+            listaEmpleadosRep.append(v[0])
+
+        listaEmpleados = list(set(listaEmpleadosRep)) #contiene una lista con los empleados sin repetir
+
+        cantEmpleados = len(listaEmpleados)
+
+        calificaciones = {
+            'cantVinculos' : cantVinculos,
+            'cantEmpleados' : cantEmpleados,
+            'promedio': promedio
+        }
+
+        
+        return calificaciones
     except Exception as e:
         print("Error en getPromedioByEmpleadoId ", e)
