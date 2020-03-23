@@ -52,10 +52,10 @@ app = Flask(__name__)
 
 #baseDatos = connectionDb(app, 'remotemysql.com')
 #baseDatos = connectionDb(app, 'aws')
-baseDatos = connectionDb(app, 'CloudAccess')
+#baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'a-work')
 #baseDatos = connectionDb(app, 'a-home')
-#baseDatos = connectionDb(app, 'local')
+baseDatos = connectionDb(app, 'local')
 
 
 # session
@@ -1147,9 +1147,9 @@ def cal_vinculo(idVinculo):
             vinculo = getVinculoByID(baseDatos, idVinculo)
             vinculo.calif_empleador = cal
             vinculo.actualizarVinculo(baseDatos)
-            empleado = getEmpleadoByID(baseDatos, session['id_empleado'])
-            empleado.promedioCalificacion = getPromedioByEmpleadoId(baseDatos, empleado.id)
-            empleado.modificarEmpleado(baseDatos)
+            empleador = vinculo.empleador
+            empleador.promedioCalificacion = getPromedioByEmpleadorId(baseDatos, empleador.id)
+            empleador.modificarEmpleador(baseDatos)
         return redirect(url_for('mis_vinculos'))
     else:
         if request.method == 'POST':
@@ -1157,9 +1157,9 @@ def cal_vinculo(idVinculo):
             vinculo = getVinculoByID(baseDatos, idVinculo)
             vinculo.calif_empleado = cal
             vinculo.actualizarVinculo(baseDatos)
-            empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
-            empleador.promedioCalificacion = getPromedioByEmpleadorId(baseDatos, empleador.id)
-            empleador.modificarEmpleador(baseDatos)
+            empleado = vinculo.empleado
+            empleado.promedioCalificacion = getPromedioByEmpleadoId(baseDatos, empleado.id)
+            empleado.modificarEmpleado(baseDatos)
         return redirect(url_for('mis_vinculos'))
 
 
@@ -1176,6 +1176,10 @@ def end_vinculo(idVinculo):
             vinculo.calif_empleador = cal
             vinculo.fecha_fin = datetime.now()
             vinculo.actualizarVinculo(baseDatos)
+            empleador = vinculo.empleador
+            empleador.promedioCalificacion = getPromedioByEmpleadorId(baseDatos, empleador.id)
+            empleador.modificarEmpleador(baseDatos)
+            
         return redirect(url_for('mis_vinculos'))
     else:
         if request.method == 'POST':
@@ -1184,6 +1188,9 @@ def end_vinculo(idVinculo):
             vinculo.calif_empleado = cal
             vinculo.fecha_fin = datetime.now()
             vinculo.actualizarVinculo(baseDatos)
+            empleado = vinculo.empleado
+            empleado.promedioCalificacion = getPromedioByEmpleadoId(baseDatos, empleado.id)
+            empleado.modificarEmpleado(baseDatos)
         return redirect(url_for('mis_vinculos'))
 
 
