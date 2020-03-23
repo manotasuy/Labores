@@ -27,10 +27,12 @@ from Implementacion.Referencia import Referencia
 from Implementacion.Usuario import getUsuarioByID
 from Implementacion.Empleador import getEmpleadorByID
 from Implementacion.Empleador import getEmpleadorByUsuarioID
+from Implementacion.Empleador import getRankingPorCalificacionEmpleadores
 from Implementacion.Empleado import getEmpleadoByID
 from Implementacion.Empleado import getEmpleadoByUsuarioID
 from Implementacion.Empleado import getTareasEmpleado
 from Implementacion.Empleado import getDisponibilidadEmpleado
+from Implementacion.Empleado import getRankingPorCalificacionEmpleados
 from Implementacion.Anuncio import getAnuncioByID
 from Implementacion.Vinculo import getVinculoByID, getVinculoByEmpleado, getVinculoByEmpleador, getVinculoIDs, getPromedioByEmpleadorId, getPromedioByEmpleadoId
 from Implementacion.Postulacion import getPostulacionesAnuncio
@@ -52,10 +54,10 @@ app = Flask(__name__)
 
 #baseDatos = connectionDb(app, 'remotemysql.com')
 #baseDatos = connectionDb(app, 'aws')
-#baseDatos = connectionDb(app, 'CloudAccess')
+baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'a-work')
 #baseDatos = connectionDb(app, 'a-home')
-baseDatos = connectionDb(app, 'local')
+#baseDatos = connectionDb(app, 'local')
 
 
 # session
@@ -1354,18 +1356,22 @@ def contratar(idEmpleado):
 
 
 # En proceso
-@app.route('/RankingPorCalificación')
+@app.route('/RankingPorCalificacion')
 def ranking_calificaciones():
     if session.get('usertype') == None:
         return redirect(url_for('logueo'))
     elif session.get('usertype') == 'Administrador':
         return redirect(url_for('administrar'))
     else:
+        listado = list()
         tipo = session['usertype']
         if tipo == 'Empleado':
-            return 1
+            listado = getRankingPorCalificacionEmpleadores(baseDatos, 20)
         elif tipo == 'Empleador':
-            return 0
+            listado = getRankingPorCalificacionEmpleados(baseDatos, 20)           
+        pares = listado[0:][::2]
+        impares = listado[1:][::2]
+        return render_template('RankingPorCalificacion.html', elemPares=pares, elemImpares=impares)
 
 if __name__ == '__main__':
     app.run(debug=True)

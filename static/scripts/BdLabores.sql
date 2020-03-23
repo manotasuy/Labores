@@ -372,7 +372,7 @@ VALUES (11111111, 'Luisa', 'Ramos', '1975-05-22', 0, 'Montevideo', 'Uruguayo', '
 
 -- En tabla "anuncio"
 INSERT INTO anuncio (titulo, descripcion, fecha_inicio, fecha_cierre, estado, experiencia, pago_hora, id_empleador, calificacion_desde, calificacion_hasta, tiene_vinculo)
-VALUES ('Necesito limpiar mi casa', 'Casa grande, 3 dormitorios, cocina, living y 2 baños', '2020-02-20', NULL, true, 1, 120, 1, NULL, NULL, false);
+VALUES ('Necesito limpiar mi casa', 'Casa grande, 3 dormitorios, cocina, living y 2 baños', '2020-02-20', NULL, 1, 1, 120, 1, NULL, NULL, false);
 INSERT INTO anuncio_disponibilidad (id_anuncio, id_disponibilidad)
 VALUES (1, 4);
 INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
@@ -382,13 +382,13 @@ VALUES (1, 5);
 INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
 VALUES (1, 6);
 INSERT INTO anuncio (titulo, descripcion, fecha_inicio, fecha_cierre, estado, experiencia, pago_hora, id_empleador, calificacion_desde, calificacion_hasta, tiene_vinculo)
-VALUES ('Cuidado de niños', 'Uno tiene 6, fatal!!!, el otro tiene 16, buenísimo pero es metalero', '2020-02-25', NULL, true, 1, 200, 1, NULL, NULL, false);
+VALUES ('Cuidado de niños', 'Uno tiene 6, fatal!!!, el otro tiene 16, buenísimo pero es metalero', '2020-02-25', NULL, 1, 1, 200, 1, NULL, NULL, false);
 INSERT INTO anuncio_disponibilidad (id_anuncio, id_disponibilidad)
 VALUES (2, 2);
 INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
 VALUES (2, 7);
 INSERT INTO anuncio (titulo, descripcion, fecha_inicio, fecha_cierre, estado, experiencia, pago_hora, id_empleador, calificacion_desde, calificacion_hasta, tiene_vinculo)
-VALUES ('Limpieza de oficina', 'Es una oficina chica, en 2 horitas debería quedar pronta', '2020-02-26', NULL, true, 1, 180, 1, NULL, NULL, false);
+VALUES ('Limpieza de oficina', 'Es una oficina chica, en 2 horitas debería quedar pronta', '2020-02-26', NULL, 1, 1, 180, 1, NULL, NULL, false);
 INSERT INTO anuncio_disponibilidad (id_anuncio, id_disponibilidad)
 VALUES (3, 3);
 INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
@@ -441,3 +441,289 @@ INSERT INTO mensaje (id_empleado, id_empleador, id_anuncio, fecha, mensaje, id_t
 VALUES (2, 1, 3, '2020-01-22 15:36:01', 'Interesante', 2, 1, false);
 
 -- En tabla "vinculo"
+
+/* Para poder armar ranking de empleados
+
+-- Empleados
+
+INSERT INTO usuario (usuario, clave, id_tipo) 
+VALUES ('99999990', '0', 3);
+INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
+VALUES (99999990, 'Empleado', '1', '1977-04-02', 0, 'Montevideo', 'Uruguayo', 'empleado@gmail.com', '095251600', 38, 'Prolijo', 'images/Perfiles/NoImage.png', 4.5, 6);
+INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
+VALUES (4, 1);
+INSERT INTO empleado_tarea (id_empleado, id_tarea)
+VALUES (4, 1);
+
+INSERT INTO usuario (usuario, clave, id_tipo) 
+VALUES ('99999991', '0', 3);
+INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
+VALUES (99999991, 'Empleado', '2', '1977-04-02', 0, 'Montevideo', 'Uruguayo', 'empleado@gmail.com', '095251600', 38, 'Prolijo', 'images/Perfiles/NoImage.png', 4.2, 7);
+INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
+VALUES (5, 1);
+INSERT INTO empleado_tarea (id_empleado, id_tarea)
+VALUES (5, 1);
+
+INSERT INTO usuario (usuario, clave, id_tipo) 
+VALUES ('99999992', '0', 3);
+INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
+VALUES (99999992, 'Empleado', '3', '1977-04-02', 0, 'Montevideo', 'Uruguayo', 'empleado@gmail.com', '095251600', 38, 'Prolijo', 'images/Perfiles/NoImage.png', 4.5, 8);
+INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
+VALUES (6, 1);
+INSERT INTO empleado_tarea (id_empleado, id_tarea)
+VALUES (6, 1);
+
+INSERT INTO usuario (usuario, clave, id_tipo) 
+VALUES ('99999993', '0', 3);
+INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
+VALUES (99999993, 'Empleado', '4', '1977-04-02', 0, 'Montevideo', 'Uruguayo', 'empleado@gmail.com', '095251600', 38, 'Prolijo', 'images/Perfiles/NoImage.png', 3.8, 9);
+INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
+VALUES (7, 1);
+INSERT INTO empleado_tarea (id_empleado, id_tarea)
+VALUES (7, 1);
+
+INSERT INTO usuario (usuario, clave, id_tipo) 
+VALUES ('99999994', '0', 3);
+INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
+VALUES (99999994, 'Empleado', '5', '1977-04-02', 0, 'Montevideo', 'Uruguayo', 'empleado@gmail.com', '095251600', 38, 'Prolijo', 'images/Perfiles/NoImage.png', 3.2, 10);
+INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
+VALUES (8, 1);
+INSERT INTO empleado_tarea (id_empleado, id_tarea)
+VALUES (8, 1);
+
+INSERT INTO usuario (usuario, clave, id_tipo) 
+VALUES ('99999995', '0', 3);
+INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
+VALUES (99999995, 'Empleado', '6', '1977-04-02', 0, 'Montevideo', 'Uruguayo', 'empleado@gmail.com', '095251600', 38, 'Prolijo', 'images/Perfiles/NoImage.png', 4.7, 11);
+INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
+VALUES (9, 1);
+INSERT INTO empleado_tarea (id_empleado, id_tarea)
+VALUES (9, 1);
+
+INSERT INTO usuario (usuario, clave, id_tipo) 
+VALUES ('99999996', '0', 3);
+INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
+VALUES (99999996, 'Empleado', '7', '1977-04-02', 0, 'Montevideo', 'Uruguayo', 'empleado@gmail.com', '095251600', 38, 'Prolijo', 'images/Perfiles/NoImage.png', 4.9, 12);
+INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
+VALUES (10, 1);
+INSERT INTO empleado_tarea (id_empleado, id_tarea)
+VALUES (10, 1);
+
+INSERT INTO usuario (usuario, clave, id_tipo) 
+VALUES ('99999997', '0', 3);
+INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
+VALUES (99999997, 'Empleado', '8', '1977-04-02', 0, 'Montevideo', 'Uruguayo', 'empleado@gmail.com', '095251600', 38, 'Prolijo', 'images/Perfiles/NoImage.png', 2.6, 13);
+INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
+VALUES (11, 1);
+INSERT INTO empleado_tarea (id_empleado, id_tarea)
+VALUES (11, 1);
+
+INSERT INTO usuario (usuario, clave, id_tipo) 
+VALUES ('99999998', '0', 3);
+INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
+VALUES (99999998, 'Empleado', '9', '1977-04-02', 0, 'Montevideo', 'Uruguayo', 'empleado@gmail.com', '095251600', 38, 'Prolijo', 'images/Perfiles/NoImage.png', 3.8, 14);
+INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
+VALUES (12, 1);
+INSERT INTO empleado_tarea (id_empleado, id_tarea)
+VALUES (12, 1);
+
+INSERT INTO usuario (usuario, clave, id_tipo) 
+VALUES ('99999999', '0', 3);
+INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
+VALUES (99999999, 'Empleado', '10', '1977-04-02', 0, 'Montevideo', 'Uruguayo', 'empleado@gmail.com', '095251600', 38, 'Prolijo', 'images/Perfiles/NoImage.png', 4.4, 15);
+INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
+VALUES (13, 1);
+INSERT INTO empleado_tarea (id_empleado, id_tarea)
+VALUES (13, 1);
+
+-- Empleadores
+
+INSERT INTO usuario (usuario, clave, id_tipo) 
+VALUES ('11111112', '0', 2);
+INSERT INTO empleador (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, registro_bps, foto, promedio_calificacion, id_usuario)
+VALUES (11111112, 'Empleador', '1', '1975-05-22', 0, 'Montevideo', 'Uruguayo', 'empleador@gmail.com', '099123456', '', 'images/Perfiles/NoImage.png', 0, 16);
+
+INSERT INTO usuario (usuario, clave, id_tipo) 
+VALUES ('11111113', '0', 2);
+INSERT INTO empleador (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, registro_bps, foto, promedio_calificacion, id_usuario)
+VALUES (11111113, 'Empleador', '2', '1975-05-22', 0, 'Montevideo', 'Uruguayo', 'empleador@gmail.com', '099123456', '', 'images/Perfiles/NoImage.png', 0, 17);
+
+INSERT INTO usuario (usuario, clave, id_tipo) 
+VALUES ('11111114', '0', 2);
+INSERT INTO empleador (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, registro_bps, foto, promedio_calificacion, id_usuario)
+VALUES (11111114, 'Empleador', '3', '1975-05-22', 0, 'Montevideo', 'Uruguayo', 'empleador@gmail.com', '099123456', '', 'images/Perfiles/NoImage.png', 0, 18);
+
+-- Anuncios
+
+INSERT INTO anuncio (titulo, descripcion, fecha_inicio, fecha_cierre, estado, experiencia, pago_hora, id_empleador, calificacion_desde, calificacion_hasta, tiene_vinculo)
+VALUES ('Limpiar casa', 'Casa muy sucia', '2020-02-20', NULL, 1, 0, 120, 2, NULL, NULL, false);
+INSERT INTO anuncio_disponibilidad (id_anuncio, id_disponibilidad)
+VALUES (4, 1);
+INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
+VALUES (4, 1);
+
+INSERT INTO anuncio (titulo, descripcion, fecha_inicio, fecha_cierre, estado, experiencia, pago_hora, id_empleador, calificacion_desde, calificacion_hasta, tiene_vinculo)
+VALUES ('Limpiar casa 2', 'Casa muy sucia', '2020-02-20', NULL, 1, 0, 120, 3, NULL, NULL, false);
+INSERT INTO anuncio_disponibilidad (id_anuncio, id_disponibilidad)
+VALUES (5, 1);
+INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
+VALUES (5, 1);
+
+INSERT INTO anuncio (titulo, descripcion, fecha_inicio, fecha_cierre, estado, experiencia, pago_hora, id_empleador, calificacion_desde, calificacion_hasta, tiene_vinculo)
+VALUES ('Limpiar casa 3', 'Casa muy sucia', '2020-02-20', NULL, 1, 0, 120, 4, NULL, NULL, false);
+INSERT INTO anuncio_disponibilidad (id_anuncio, id_disponibilidad)
+VALUES (6, 1);
+INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
+VALUES (6, 1);
+
+INSERT INTO anuncio (titulo, descripcion, fecha_inicio, fecha_cierre, estado, experiencia, pago_hora, id_empleador, calificacion_desde, calificacion_hasta, tiene_vinculo)
+VALUES ('Limpiar casa 4', 'Casa muy sucia', '2020-02-20', NULL, 1, 0, 120, 2, NULL, NULL, false);
+INSERT INTO anuncio_disponibilidad (id_anuncio, id_disponibilidad)
+VALUES (7, 1);
+INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
+VALUES (7, 1);
+
+INSERT INTO anuncio (titulo, descripcion, fecha_inicio, fecha_cierre, estado, experiencia, pago_hora, id_empleador, calificacion_desde, calificacion_hasta, tiene_vinculo)
+VALUES ('Limpiar casa 5', 'Casa muy sucia', '2020-02-20', NULL, 1, 0, 120, 2, NULL, NULL, false);
+INSERT INTO anuncio_disponibilidad (id_anuncio, id_disponibilidad)
+VALUES (8, 1);
+INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
+VALUES (8, 1);
+
+INSERT INTO anuncio (titulo, descripcion, fecha_inicio, fecha_cierre, estado, experiencia, pago_hora, id_empleador, calificacion_desde, calificacion_hasta, tiene_vinculo)
+VALUES ('Limpiar casa 6', 'Casa muy sucia', '2020-02-20', NULL, 1, 0, 120, 3, NULL, NULL, false);
+INSERT INTO anuncio_disponibilidad (id_anuncio, id_disponibilidad)
+VALUES (9, 1);
+INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
+VALUES (9, 1);
+
+INSERT INTO anuncio (titulo, descripcion, fecha_inicio, fecha_cierre, estado, experiencia, pago_hora, id_empleador, calificacion_desde, calificacion_hasta, tiene_vinculo)
+VALUES ('Limpiar casa 7', 'Casa muy sucia', '2020-02-20', NULL, 1, 0, 120, 2, NULL, NULL, false);
+INSERT INTO anuncio_disponibilidad (id_anuncio, id_disponibilidad)
+VALUES (10, 1);
+INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
+VALUES (10, 1);
+
+INSERT INTO anuncio (titulo, descripcion, fecha_inicio, fecha_cierre, estado, experiencia, pago_hora, id_empleador, calificacion_desde, calificacion_hasta, tiene_vinculo)
+VALUES ('Limpiar casa 8', 'Casa muy sucia', '2020-02-20', NULL, 1, 0, 120, 2, NULL, NULL, false);
+INSERT INTO anuncio_disponibilidad (id_anuncio, id_disponibilidad)
+VALUES (11, 1);
+INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
+VALUES (11, 1);
+
+INSERT INTO anuncio (titulo, descripcion, fecha_inicio, fecha_cierre, estado, experiencia, pago_hora, id_empleador, calificacion_desde, calificacion_hasta, tiene_vinculo)
+VALUES ('Limpiar casa 9', 'Casa muy sucia', '2020-02-20', NULL, 1, 0, 120, 3, NULL, NULL, false);
+INSERT INTO anuncio_disponibilidad (id_anuncio, id_disponibilidad)
+VALUES (12, 1);
+INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
+VALUES (12, 1);
+
+INSERT INTO anuncio (titulo, descripcion, fecha_inicio, fecha_cierre, estado, experiencia, pago_hora, id_empleador, calificacion_desde, calificacion_hasta, tiene_vinculo)
+VALUES ('Limpiar casa 10', 'Casa muy sucia', '2020-02-20', NULL, 1, 0, 120, 2, NULL, NULL, false);
+INSERT INTO anuncio_disponibilidad (id_anuncio, id_disponibilidad)
+VALUES (13, 1);
+INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
+VALUES (13, 1);
+
+INSERT INTO anuncio (titulo, descripcion, fecha_inicio, fecha_cierre, estado, experiencia, pago_hora, id_empleador, calificacion_desde, calificacion_hasta, tiene_vinculo)
+VALUES ('Limpiar casa 11', 'Casa muy sucia', '2020-02-20', NULL, 1, 0, 120, 2, NULL, NULL, false);
+INSERT INTO anuncio_disponibilidad (id_anuncio, id_disponibilidad)
+VALUES (14, 1);
+INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
+VALUES (14, 1);
+
+INSERT INTO anuncio (titulo, descripcion, fecha_inicio, fecha_cierre, estado, experiencia, pago_hora, id_empleador, calificacion_desde, calificacion_hasta, tiene_vinculo)
+VALUES ('Limpiar casa 12', 'Casa muy sucia', '2020-02-20', NULL, 1, 0, 120, 3, NULL, NULL, false);
+INSERT INTO anuncio_disponibilidad (id_anuncio, id_disponibilidad)
+VALUES (15, 1);
+INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
+VALUES (15, 1);
+
+INSERT INTO anuncio (titulo, descripcion, fecha_inicio, fecha_cierre, estado, experiencia, pago_hora, id_empleador, calificacion_desde, calificacion_hasta, tiene_vinculo)
+VALUES ('Limpiar casa 13', 'Casa muy sucia', '2020-02-20', NULL, 1, 0, 120, 4, NULL, NULL, false);
+INSERT INTO anuncio_disponibilidad (id_anuncio, id_disponibilidad)
+VALUES (16, 1);
+INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
+VALUES (16, 1);
+
+INSERT INTO anuncio (titulo, descripcion, fecha_inicio, fecha_cierre, estado, experiencia, pago_hora, id_empleador, calificacion_desde, calificacion_hasta, tiene_vinculo)
+VALUES ('Limpiar casa 14', 'Casa muy sucia', '2020-02-20', NULL, 1, 0, 120, 2, NULL, NULL, false);
+INSERT INTO anuncio_disponibilidad (id_anuncio, id_disponibilidad)
+VALUES (17, 1);
+INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
+VALUES (17, 1);
+
+INSERT INTO anuncio (titulo, descripcion, fecha_inicio, fecha_cierre, estado, experiencia, pago_hora, id_empleador, calificacion_desde, calificacion_hasta, tiene_vinculo)
+VALUES ('Limpiar casa 15', 'Casa muy sucia', '2020-02-20', NULL, 1, 0, 120, 3, NULL, NULL, false);
+INSERT INTO anuncio_disponibilidad (id_anuncio, id_disponibilidad)
+VALUES (18, 1);
+INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
+VALUES (18, 1);
+
+INSERT INTO anuncio (titulo, descripcion, fecha_inicio, fecha_cierre, estado, experiencia, pago_hora, id_empleador, calificacion_desde, calificacion_hasta, tiene_vinculo)
+VALUES ('Limpiar casa 16', 'Casa muy sucia', '2020-02-20', NULL, 1, 0, 120, 3, NULL, NULL, false);
+INSERT INTO anuncio_disponibilidad (id_anuncio, id_disponibilidad)
+VALUES (19, 1);
+INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
+VALUES (19, 1);
+
+INSERT INTO anuncio (titulo, descripcion, fecha_inicio, fecha_cierre, estado, experiencia, pago_hora, id_empleador, calificacion_desde, calificacion_hasta, tiene_vinculo)
+VALUES ('Limpiar casa 17', 'Casa muy sucia', '2020-02-20', NULL, 1, 0, 120, 3, NULL, NULL, false);
+INSERT INTO anuncio_disponibilidad (id_anuncio, id_disponibilidad)
+VALUES (20, 1);
+INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
+VALUES (20, 1);
+
+-- Vinculos
+
+INSERT INTO vinculo (id_empleado, id_empleador, id_anuncio, fecha_inicio, fecha_fin, descripcion, calificacion_empleado, calificacion_empleador)
+VALUES (4, 2, 4, '2020-03-01', NULL, '', 4.5, 4.5);
+
+INSERT INTO vinculo (id_empleado, id_empleador, id_anuncio, fecha_inicio, fecha_fin, descripcion, calificacion_empleado, calificacion_empleador)
+VALUES (4, 3, 5, '2020-03-01', NULL, '', 4.0, 4.0);
+
+INSERT INTO vinculo (id_empleado, id_empleador, id_anuncio, fecha_inicio, fecha_fin, descripcion, calificacion_empleado, calificacion_empleador)
+VALUES (4, 4, 6, '2020-03-01', NULL, '', 4.5, 4.5);
+
+INSERT INTO vinculo (id_empleado, id_empleador, id_anuncio, fecha_inicio, fecha_fin, descripcion, calificacion_empleado, calificacion_empleador)
+VALUES (5, 2, 7, '2020-03-01', NULL, '', 4.5, 4.5);
+
+INSERT INTO vinculo (id_empleado, id_empleador, id_anuncio, fecha_inicio, fecha_fin, descripcion, calificacion_empleado, calificacion_empleador)
+VALUES (5, 2, 8, '2020-03-01', NULL, '', 4.0, 4.0);
+
+INSERT INTO vinculo (id_empleado, id_empleador, id_anuncio, fecha_inicio, fecha_fin, descripcion, calificacion_empleado, calificacion_empleador)
+VALUES (5, 3, 9, '2020-03-01', NULL, '', 4.5, 4.5);
+
+INSERT INTO vinculo (id_empleado, id_empleador, id_anuncio, fecha_inicio, fecha_fin, descripcion, calificacion_empleado, calificacion_empleador)
+VALUES (6, 2, 10, '2020-03-01', NULL, '', 4.0, 4.0);
+
+INSERT INTO vinculo (id_empleado, id_empleador, id_anuncio, fecha_inicio, fecha_fin, descripcion, calificacion_empleado, calificacion_empleador)
+VALUES (6, 2, 11, '2020-03-01', NULL, '', 4.0, 4.0);
+
+INSERT INTO vinculo (id_empleado, id_empleador, id_anuncio, fecha_inicio, fecha_fin, descripcion, calificacion_empleado, calificacion_empleador)
+VALUES (6, 3, 12, '2020-03-01', NULL, '', 4.5, 4.5);
+
+INSERT INTO vinculo (id_empleado, id_empleador, id_anuncio, fecha_inicio, fecha_fin, descripcion, calificacion_empleado, calificacion_empleador)
+VALUES (7, 2, 13, '2020-03-01', NULL, '', 4.5, 4.5);
+
+INSERT INTO vinculo (id_empleado, id_empleador, id_anuncio, fecha_inicio, fecha_fin, descripcion, calificacion_empleado, calificacion_empleador)
+VALUES (7, 2, 14, '2020-03-01', NULL, '', 4.5, 4.5);
+
+INSERT INTO vinculo (id_empleado, id_empleador, id_anuncio, fecha_inicio, fecha_fin, descripcion, calificacion_empleado, calificacion_empleador)
+VALUES (8, 3, 15, '2020-03-01', NULL, '', 4.5, 4.5);
+
+INSERT INTO vinculo (id_empleado, id_empleador, id_anuncio, fecha_inicio, fecha_fin, descripcion, calificacion_empleado, calificacion_empleador)
+VALUES (8, 4, 16, '2020-03-01', NULL, '', 4.5, 4.5);
+
+INSERT INTO vinculo (id_empleado, id_empleador, id_anuncio, fecha_inicio, fecha_fin, descripcion, calificacion_empleado, calificacion_empleador)
+VALUES (9, 2, 17, '2020-03-01', NULL, '', 4.5, 4.5);
+
+INSERT INTO vinculo (id_empleado, id_empleador, id_anuncio, fecha_inicio, fecha_fin, descripcion, calificacion_empleado, calificacion_empleador)
+VALUES (9, 3, 18, '2020-03-01', NULL, '', 4.0, 4.0);
+
+INSERT INTO vinculo (id_empleado, id_empleador, id_anuncio, fecha_inicio, fecha_fin, descripcion, calificacion_empleado, calificacion_empleador)
+VALUES (10, 3, 19, '2020-03-01', NULL, '', 4.5, 4.5);
+
+INSERT INTO vinculo (id_empleado, id_empleador, id_anuncio, fecha_inicio, fecha_fin, descripcion, calificacion_empleado, calificacion_empleador)
+VALUES (10, 3, 20, '2020-03-01', NULL, '', 4.0, 4.0);
+*/

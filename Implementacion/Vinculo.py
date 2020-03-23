@@ -250,6 +250,7 @@ def getVinculoIDs(bd, id):
     except Exception as e:
         print("Error en getVinculoIDs ", e)
 
+
 def getPromedioByEmpleadoId(bd, idEmpleado):
     try:
         cursor = bd.connection.cursor()
@@ -297,6 +298,7 @@ def getPromedioByEmpleadoId(bd, idEmpleado):
         return calificaciones
     except Exception as e:
         print("Error en getPromedioByEmpleadoId ", e)
+
 
 def getPromedioByEmpleadorId(bd, idEmpleador):
     try:

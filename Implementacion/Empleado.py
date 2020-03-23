@@ -12,6 +12,7 @@ from Implementacion.Disponibilidad import quitarTodaLaDisponibilidadDelEmpleado
 from Implementacion.DTOAuxEmpleado import TareaSeleccion
 from Implementacion.DTOAuxEmpleado import DisponibilidadSeleccion
 from Implementacion.Usuario import Usuario
+from Implementacion.DTOIndividuoCalificacion import DTOIndividuoCalificacion
 
 
 class Empleado:
@@ -385,7 +386,7 @@ def getDisponibilidadEmpleado(bd, idEmpleado):
         retorno = cursor.fetchall()
         bd.connection.commit()
         cursor.close()
-        # desde el retono debo generar los objetos Disponibilidad
+        # desde el retorno debo generar los objetos Disponibilidad
         disponibilidades = list()
         for tuplaDisponibilidad in retorno:
             disponibilidad = Disponibilidad(
@@ -394,3 +395,32 @@ def getDisponibilidadEmpleado(bd, idEmpleado):
         return disponibilidades
     except Exception as e:
         print("Error en getDisponibilidadEmpleado ", e)
+
+
+def getRankingPorCalificacionEmpleados(bd, top):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('''
+                SELECT e.id,
+                    e.nombre,
+                    e.apellido,
+                    e.promedio_calificacion,
+                    e.foto,
+                    e.experiencia_meses,
+                    COUNT(v.id) cant_vinculos,
+                    COUNT(DISTINCT v.id_empleador) cant_calificantes
+                FROM empleado e INNER JOIN vinculo v ON e.id = v.id_empleado
+                GROUP BY e.id
+                ORDER BY promedio_calificacion DESC, cant_vinculos DESC, cant_calificantes DESC LIMIT {}'''.format(top))
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+        # desde el retorno debo generar los objetos DTOIndividuoCalificacion
+        ranking = list()
+        for tuplaRanking in retorno:
+            dtoIndividuoCalificacion = DTOIndividuoCalificacion(tuplaRanking[0], tuplaRanking[1], tuplaRanking[2], tuplaRanking[3], 
+            tuplaRanking[4], tuplaRanking[5], tuplaRanking[6], tuplaRanking[7], 'Empleado')
+            ranking.append(dtoIndividuoCalificacion)
+        return ranking
+    except Exception as e:
+        print("Error en getRankingPorCalificacionEmpleados ", e)

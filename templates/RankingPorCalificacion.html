@@ -1,0 +1,138 @@
+{% extends 'page_layout.html' %}
+
+{% block referencias %}
+{% endblock %}
+
+{% block estilo %}
+{% endblock %}
+
+{% block titulo %}Labores - Ranking{% endblock %}
+
+{% block contenido %}
+<div class="container">
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            {% if session['usertype'] == 'Empleado' %}
+            <h1 class="display-5">Ranking de Empleadores</h1>
+            <a href="/HomeEmpleados" type="button" class="btn btn-primary float-right">Volver al inicio</a>
+            {% elif session['usertype'] == 'Empleador' %}
+            <h1 class="display-5">Ranking de Empleados</h1>
+            <a href="/HomeEmpleadores" type="button" class="btn btn-primary float-right">Volver al inicio</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="container mb-5">
+        {% if not elemPares %}
+        <p>
+            <h5>Aún no hay calificaciones.</h5>
+        </p>
+        {% else %}
+        {% for posicion in elemPares %}
+
+        {% set item_pares = elemPares[loop.index-1] %}
+        {% set item_impares = elemImpares[loop.index-1] %}
+
+        <div class="row">
+            <div class="card ml-5 mr-3 mb-3" style="max-width: 500px; min-width: 500px;">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        <img src="{{ url_for('static', filename=item_pares.foto)}}" class="card-img" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{item_pares.nombre}} {{item_pares.apellido}}</h5>
+                            <p class="card-text">
+                                Meses de experiencia: {{item_pares.experiencia}} </p>
+                            <div class="card-text">
+                                {% if item_pares.promedioCalificacion %}
+                                <img class="mt-2 mb-2" 
+                                  {% if item_pares.promedioCalificacion < 1 %}
+                                    src="{{ url_for('static', filename='images/Estrellas/05star.png')}}"
+                                  {% elif item_pares.promedioCalificacion >= 1 and item_pares.promedioCalificacion < 1.5 %}
+                                    src="{{ url_for('static', filename='images/Estrellas/10star.png')}}"
+                                  {% elif item_pares.promedioCalificacion >= 1.5 and item_pares.promedioCalificacion < 2 %}
+                                    src="{{ url_for('static', filename='images/Estrellas/15star.png')}}"
+                                  {% elif item_pares.promedioCalificacion >= 2 and item_pares.promedioCalificacion < 2.5 %}
+                                    src="{{ url_for('static', filename='images/Estrellas/20star.png')}}"                      
+                                  {% elif item_pares.promedioCalificacion >= 2.5 and item_pares.promedioCalificacion < 3 %}
+                                    src="{{ url_for('static', filename='images/Estrellas/25star.png')}}"                      
+                                  {% elif item_pares.promedioCalificacion >= 3 and item_pares.promedioCalificacion < 3.5 %}
+                                    src="{{ url_for('static', filename='images/Estrellas/30star.png')}}"                      
+                                  {% elif item_pares.promedioCalificacion >= 3.5 and item_pares.promedioCalificacion < 4 %}
+                                    src="{{ url_for('static', filename='images/Estrellas/35star.png')}}"                      
+                                  {% elif item_pares.promedioCalificacion >= 4 and item_pares.promedioCalificacion < 4.5 %}
+                                    src="{{ url_for('static', filename='images/Estrellas/40star.png')}}"                      
+                                  {% elif item_pares.promedioCalificacion >= 4.5 and item_pares.promedioCalificacion < 5 %}
+                                    src="{{ url_for('static', filename='images/Estrellas/45star.png')}}"    
+                                  {% elif item_pares.promedioCalificacion == 5 %}
+                                    src="{{ url_for('static', filename='images/Estrellas/50star.png')}}"
+                                  {% endif %}
+                                  alt="" width="188" height="41">
+                                  {{item_pares.promedioCalificacion}}                                 
+                              {% else %}
+                              <p class="mt-4 mb-4">Sin calificación.</p>
+                              {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% if item_impares %}
+            <div class="card mb-3" style="max-width: 500px;">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        <img src="{{ url_for('static', filename=item_impares.foto)}}" class="card-img"
+                            alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{item_impares.nombre}} {{item_impares.apellido}}
+                            </h5>
+                            <p class="card-text">
+                                Meses de experiencia: {{item_impares.experiencia}}<br></p>
+                                <div class="card-text">
+                                    {% if item_impares.promedioCalificacion %}
+                                    <img class="mt-2 mb-2" 
+                                      {% if item_impares.promedioCalificacion < 1 %}
+                                        src="{{ url_for('static', filename='images/Estrellas/05star.png')}}"
+                                      {% elif item_impares.promedioCalificacion >= 1 and item_impares.promedioCalificacion < 1.5 %}
+                                        src="{{ url_for('static', filename='images/Estrellas/10star.png')}}"
+                                      {% elif item_impares.promedioCalificacion >= 1.5 and item_impares.promedioCalificacion < 2 %}
+                                        src="{{ url_for('static', filename='images/Estrellas/15star.png')}}"
+                                      {% elif item_impares.promedioCalificacion >= 2 and item_impares.promedioCalificacion < 2.5 %}
+                                        src="{{ url_for('static', filename='images/Estrellas/20star.png')}}"                      
+                                      {% elif item_impares.promedioCalificacion >= 2.5 and item_impares.promedioCalificacion < 3 %}
+                                        src="{{ url_for('static', filename='images/Estrellas/25star.png')}}"                      
+                                      {% elif item_impares.promedioCalificacion >= 3 and item_impares.promedioCalificacion < 3.5 %}
+                                        src="{{ url_for('static', filename='images/Estrellas/30star.png')}}"                      
+                                      {% elif item_impares.promedioCalificacion >= 3.5 and item_impares.promedioCalificacion < 4 %}
+                                        src="{{ url_for('static', filename='images/Estrellas/35star.png')}}"                      
+                                      {% elif item_impares.promedioCalificacion >= 4 and item_impares.promedioCalificacion < 4.5 %}
+                                        src="{{ url_for('static', filename='images/Estrellas/40star.png')}}"                      
+                                      {% elif item_impares.promedioCalificacion >= 4.5 and item_impares.promedioCalificacion < 5 %}
+                                        src="{{ url_for('static', filename='images/Estrellas/45star.png')}}"    
+                                      {% elif item_impares.promedioCalificacion == 5 %}
+                                        src="{{ url_for('static', filename='images/Estrellas/50star.png')}}"
+                                      {% endif %}
+                                      alt="" width="188" height="41">
+                                      {{item_impares.promedioCalificacion}}
+                                  {% else %}
+                                  <p class="mt-4 mb-4">Sin calificación.</p>
+                                  {% endif %}
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

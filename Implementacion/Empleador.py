@@ -2,6 +2,7 @@ from datetime import datetime
 from Implementacion.Usuario import getUsuarioByID
 from Implementacion.Anuncio import Anuncio
 from Implementacion.Usuario import Usuario
+from Implementacion.DTOIndividuoCalificacion import DTOIndividuoCalificacion
 
 
 class Empleador:
@@ -419,3 +420,31 @@ def getEmpleadorByUsuarioID(bd, idUsuario):
         return empleador
     except Exception as e:
         print("Error en getEmpleadorByUsuarioID ", e)
+
+
+def getRankingPorCalificacionEmpleadores(bd, top):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('''
+                SELECT e.id,
+                    e.nombre,
+                    e.apellido,
+                    e.promedio_calificacion,
+                    e.foto,
+                    COUNT(v.id) cant_vinculos,
+                    COUNT(DISTINCT v.id_empleado) cant_calificantes
+                FROM empleador e INNER JOIN vinculo v ON e.id = v.id_empleador
+                GROUP BY e.id
+                ORDER BY promedio_calificacion DESC, cant_vinculos DESC, cant_calificantes DESC LIMIT {}'''.format(top))
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+        # desde el retorno debo generar los objetos DTOIndividuoCalificacion
+        ranking = list()
+        for tuplaRanking in retorno:
+            dtoIndividuoCalificacion = DTOIndividuoCalificacion(tuplaRanking[0], tuplaRanking[1], tuplaRanking[2], tuplaRanking[3], 
+            tuplaRanking[4], 0, tuplaRanking[5], tuplaRanking[6], 'Empleador')
+            ranking.append(dtoIndividuoCalificacion)
+        return ranking
+    except Exception as e:
+        print("Error en getRankingPorCalificacionEmpleadores ", e)
