@@ -449,7 +449,7 @@ VALUES (2, 1, 3, '2020-01-22 15:36:01', 'Interesante', 2, 1, false);
 INSERT INTO usuario (usuario, clave, id_tipo) 
 VALUES ('99999990', '0', 3);
 INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
-VALUES (99999990, 'Empleado', '1', '1977-04-02', 0, 'Montevideo', 'Uruguayo', 'empleado@gmail.com', '095251600', 38, 'Prolijo', 'images/Perfiles/NoImage.png', 4.5, 6);
+VALUES (99999990, 'Laura', 'Castro', '1977-04-02', 0, 'Montevideo', 'Uruguayo', 'empleado@gmail.com', '095251600', 38, 'Prolijo', 'images/Perfiles/NoImage.png', 4.3333, 6);
 INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
 VALUES (4, 1);
 INSERT INTO empleado_tarea (id_empleado, id_tarea)
@@ -458,7 +458,7 @@ VALUES (4, 1);
 INSERT INTO usuario (usuario, clave, id_tipo) 
 VALUES ('99999991', '0', 3);
 INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
-VALUES (99999991, 'Empleado', '2', '1977-04-02', 0, 'Montevideo', 'Uruguayo', 'empleado@gmail.com', '095251600', 38, 'Prolijo', 'images/Perfiles/NoImage.png', 4.2, 7);
+VALUES (99999991, 'Marta', 'Acevedo', '1977-04-02', 0, 'Montevideo', 'Uruguayo', 'empleado@gmail.com', '095251600', 38, 'Prolijo', 'images/Perfiles/NoImage.png', 4.3333, 7);
 INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
 VALUES (5, 1);
 INSERT INTO empleado_tarea (id_empleado, id_tarea)
@@ -467,7 +467,7 @@ VALUES (5, 1);
 INSERT INTO usuario (usuario, clave, id_tipo) 
 VALUES ('99999992', '0', 3);
 INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
-VALUES (99999992, 'Empleado', '3', '1977-04-02', 0, 'Montevideo', 'Uruguayo', 'empleado@gmail.com', '095251600', 38, 'Prolijo', 'images/Perfiles/NoImage.png', 4.5, 8);
+VALUES (99999992, 'Martin', 'Lima', '1977-04-02', 1, 'Montevideo', 'Uruguayo', 'empleado@gmail.com', '095251600', 38, 'Prolijo', 'images/Perfiles/NoImage.png', 4.1666, 8);
 INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
 VALUES (6, 1);
 INSERT INTO empleado_tarea (id_empleado, id_tarea)
@@ -476,7 +476,7 @@ VALUES (6, 1);
 INSERT INTO usuario (usuario, clave, id_tipo) 
 VALUES ('99999993', '0', 3);
 INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
-VALUES (99999993, 'Empleado', '4', '1977-04-02', 0, 'Montevideo', 'Uruguayo', 'empleado@gmail.com', '095251600', 38, 'Prolijo', 'images/Perfiles/NoImage.png', 3.8, 9);
+VALUES (99999993, 'Jessica', 'Boedo', '1977-04-02', 0, 'Montevideo', 'Uruguayo', 'empleado@gmail.com', '095251600', 38, 'Prolijo', 'images/Perfiles/NoImage.png', 4.5, 9);
 INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
 VALUES (7, 1);
 INSERT INTO empleado_tarea (id_empleado, id_tarea)
@@ -485,7 +485,7 @@ VALUES (7, 1);
 INSERT INTO usuario (usuario, clave, id_tipo) 
 VALUES ('99999994', '0', 3);
 INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
-VALUES (99999994, 'Empleado', '5', '1977-04-02', 0, 'Montevideo', 'Uruguayo', 'empleado@gmail.com', '095251600', 38, 'Prolijo', 'images/Perfiles/NoImage.png', 3.2, 10);
+VALUES (99999994, 'Lautaro', 'Greco', '1977-04-02', 1, 'Montevideo', 'Uruguayo', 'empleado@gmail.com', '095251600', 38, 'Prolijo', 'images/Perfiles/NoImage.png', 4.5, 10);
 INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
 VALUES (8, 1);
 INSERT INTO empleado_tarea (id_empleado, id_tarea)
@@ -494,7 +494,7 @@ VALUES (8, 1);
 INSERT INTO usuario (usuario, clave, id_tipo) 
 VALUES ('99999995', '0', 3);
 INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
-VALUES (99999995, 'Empleado', '6', '1977-04-02', 0, 'Montevideo', 'Uruguayo', 'empleado@gmail.com', '095251600', 38, 'Prolijo', 'images/Perfiles/NoImage.png', 4.7, 11);
+VALUES (99999995, 'Amalia', 'Soma', '1977-04-02', 0, 'Montevideo', 'Uruguayo', 'empleado@gmail.com', '095251600', 38, 'Prolijo', 'images/Perfiles/NoImage.png', 4.25, 11);
 INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
 VALUES (9, 1);
 INSERT INTO empleado_tarea (id_empleado, id_tarea)
@@ -503,7 +503,7 @@ VALUES (9, 1);
 INSERT INTO usuario (usuario, clave, id_tipo) 
 VALUES ('99999996', '0', 3);
 INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
-VALUES (99999996, 'Empleado', '7', '1977-04-02', 0, 'Montevideo', 'Uruguayo', 'empleado@gmail.com', '095251600', 38, 'Prolijo', 'images/Perfiles/NoImage.png', 4.9, 12);
+VALUES (99999996, 'Lucas', 'Hermes', '1977-04-02', 1, 'Montevideo', 'Uruguayo', 'empleado@gmail.com', '095251600', 38, 'Prolijo', 'images/Perfiles/NoImage.png', 4.25, 12);
 INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
 VALUES (10, 1);
 INSERT INTO empleado_tarea (id_empleado, id_tarea)
@@ -512,7 +512,7 @@ VALUES (10, 1);
 INSERT INTO usuario (usuario, clave, id_tipo) 
 VALUES ('99999997', '0', 3);
 INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
-VALUES (99999997, 'Empleado', '8', '1977-04-02', 0, 'Montevideo', 'Uruguayo', 'empleado@gmail.com', '095251600', 38, 'Prolijo', 'images/Perfiles/NoImage.png', 2.6, 13);
+VALUES (99999997, 'Fiorela', 'Bou', '1977-04-02', 0, 'Montevideo', 'Uruguayo', 'empleado@gmail.com', '095251600', 38, 'Prolijo', 'images/Perfiles/NoImage.png', 0.0, 13);
 INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
 VALUES (11, 1);
 INSERT INTO empleado_tarea (id_empleado, id_tarea)
@@ -521,7 +521,7 @@ VALUES (11, 1);
 INSERT INTO usuario (usuario, clave, id_tipo) 
 VALUES ('99999998', '0', 3);
 INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
-VALUES (99999998, 'Empleado', '9', '1977-04-02', 0, 'Montevideo', 'Uruguayo', 'empleado@gmail.com', '095251600', 38, 'Prolijo', 'images/Perfiles/NoImage.png', 3.8, 14);
+VALUES (99999998, 'Eduardo', 'Brint', '1977-04-02', 1, 'Montevideo', 'Uruguayo', 'empleado@gmail.com', '095251600', 38, 'Prolijo', 'images/Perfiles/NoImage.png', 0.0, 14);
 INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
 VALUES (12, 1);
 INSERT INTO empleado_tarea (id_empleado, id_tarea)
@@ -530,7 +530,7 @@ VALUES (12, 1);
 INSERT INTO usuario (usuario, clave, id_tipo) 
 VALUES ('99999999', '0', 3);
 INSERT INTO empleado (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, experiencia_meses, descripcion, foto, promedio_calificacion, id_usuario)
-VALUES (99999999, 'Empleado', '10', '1977-04-02', 0, 'Montevideo', 'Uruguayo', 'empleado@gmail.com', '095251600', 38, 'Prolijo', 'images/Perfiles/NoImage.png', 4.4, 15);
+VALUES (99999999, 'Mariela', 'Castillos', '1977-04-02', 0, 'Montevideo', 'Uruguayo', 'empleado@gmail.com', '095251600', 38, 'Prolijo', 'images/Perfiles/NoImage.png', 0.0, 15);
 INSERT INTO empleado_disponibilidad (id_empleado, id_disponibilidad)
 VALUES (13, 1);
 INSERT INTO empleado_tarea (id_empleado, id_tarea)
@@ -541,17 +541,17 @@ VALUES (13, 1);
 INSERT INTO usuario (usuario, clave, id_tipo) 
 VALUES ('11111112', '0', 2);
 INSERT INTO empleador (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, registro_bps, foto, promedio_calificacion, id_usuario)
-VALUES (11111112, 'Empleador', '1', '1975-05-22', 0, 'Montevideo', 'Uruguayo', 'empleador@gmail.com', '099123456', '', 'images/Perfiles/NoImage.png', 0, 16);
+VALUES (11111112, 'Fernando', 'Brum', '1975-05-22', 1, 'Montevideo', 'Uruguayo', 'empleador@gmail.com', '099123456', '', 'images/Perfiles/NoImage.png', 4.3125, 16);
 
 INSERT INTO usuario (usuario, clave, id_tipo) 
 VALUES ('11111113', '0', 2);
 INSERT INTO empleador (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, registro_bps, foto, promedio_calificacion, id_usuario)
-VALUES (11111113, 'Empleador', '2', '1975-05-22', 0, 'Montevideo', 'Uruguayo', 'empleador@gmail.com', '099123456', '', 'images/Perfiles/NoImage.png', 0, 17);
+VALUES (11111113, 'Claudia', 'Mendez', '1975-05-22', 0, 'Montevideo', 'Uruguayo', 'empleador@gmail.com', '099123456', '', 'images/Perfiles/NoImage.png', 4.2857, 17);
 
 INSERT INTO usuario (usuario, clave, id_tipo) 
 VALUES ('11111114', '0', 2);
 INSERT INTO empleador (cedula, nombre, apellido, fecha_nacimiento, genero, domicilio, nacionalidad, email, telefono, registro_bps, foto, promedio_calificacion, id_usuario)
-VALUES (11111114, 'Empleador', '3', '1975-05-22', 0, 'Montevideo', 'Uruguayo', 'empleador@gmail.com', '099123456', '', 'images/Perfiles/NoImage.png', 0, 18);
+VALUES (11111114, 'Alberto', 'Trota', '1975-05-22', 1, 'Montevideo', 'Uruguayo', 'empleador@gmail.com', '099123456', '', 'images/Perfiles/NoImage.png', 4.5, 18);
 
 -- Anuncios
 

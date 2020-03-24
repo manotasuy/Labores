@@ -54,10 +54,10 @@ app = Flask(__name__)
 
 #baseDatos = connectionDb(app, 'remotemysql.com')
 #baseDatos = connectionDb(app, 'aws')
-#baseDatos = connectionDb(app, 'CloudAccess')
+baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'a-work')
 #baseDatos = connectionDb(app, 'a-home')
-baseDatos = connectionDb(app, 'local')
+#baseDatos = connectionDb(app, 'local')
 
 
 # session
@@ -1388,6 +1388,11 @@ def ranking_calificaciones(tipo):
         pares = listado[0:][::2]
         impares = listado[1:][::2]
         return render_template('RankingPorCalificacion.html', elemPares=pares, elemImpares=impares, tipo=tipo)
+
+
+@app.route('/PlanesPremium')
+def planes_premium():
+    return render_template('PlanesPremium.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

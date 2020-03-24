@@ -80,6 +80,18 @@ h1 {
     color: black;
 }
 
+#pCarouselCustom1 {
+  color: white;
+}
+
+#pCarouselCustom2 {
+  color: white;
+}
+
+#pCarouselCustom3 {
+  color: white;
+}
+
 .carousel-caption {
     bottom: 3rem;
     z-index: 10;
@@ -113,6 +125,10 @@ h1 {
 }
 
 #carouselFooter-item-2 {
+  height: 17rem;
+}
+
+#carouselFooter-item-3 {
   height: 17rem;
 }
 
