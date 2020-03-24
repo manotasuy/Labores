@@ -54,10 +54,10 @@ app = Flask(__name__)
 
 #baseDatos = connectionDb(app, 'remotemysql.com')
 #baseDatos = connectionDb(app, 'aws')
-baseDatos = connectionDb(app, 'CloudAccess')
+#baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'a-work')
 #baseDatos = connectionDb(app, 'a-home')
-#baseDatos = connectionDb(app, 'local')
+baseDatos = connectionDb(app, 'local')
 
 
 # session
@@ -233,7 +233,8 @@ def vista_perfil_contratado(opcion, id):
 
             dtoAuxEmpleado = DTOAuxEmpleado(
                 tareasSeleccion, disponibilidadSeleccion)
-            return render_template('VistaPerfilContratado.html', tipo=opcion, data=objeto, aux=dtoAuxEmpleado)
+            cal = getPromedioByEmpleadoId(baseDatos, objeto.id)
+            return render_template('VistaPerfilContratado.html', tipo=opcion, data=objeto, aux=dtoAuxEmpleado, cal=cal)
 
         elif opcion == 'Empleador':
             objeto = getEmpleadorByID(baseDatos, id)
@@ -974,12 +975,7 @@ def ver_anuncio(idAnuncio, postulacion):
     else:
         elAnuncio = getAnuncioByID(baseDatos, idAnuncio),
         empleador = elAnuncio[0].empleador
-        listaEmpleador = [
-            empleador.nombre,
-            empleador.apellido,
-            empleador.foto,
-            empleador.registroBps
-        ]
+
         tareasAnuncio = []
         if elAnuncio[0].hogar == True:
             tareasAnuncio.append(1)
@@ -1017,14 +1013,14 @@ def ver_anuncio(idAnuncio, postulacion):
         ]
         cal = getPromedioByEmpleadorId(baseDatos, empleador.id)
         context = {
-            'empleador': listaEmpleador,
+            'empleador': empleador,
             'anuncio': listaAnuncio,
             'postulacion': postulacion,
             'cal': cal
         }
 
         # el desempaquetado tendrá 3 claves, 'empleador', 'anuncio' y psotulacion
-        # 'empleador' : [nombre, apellido, foto, registroBps]
+        # 'empleador' : objeto empleador
         # 'anuncio' : [titulo, descripcion, disponibilidad, [tareas], pago_hora, experiencia, idAnuncio]
         # 'postulación': contiene 1 si el usuario está postulado al anuncio, y 0 si no lo está
         return render_template('verOferta.html', **context)
@@ -1174,7 +1170,7 @@ def cal_vinculo(idVinculo):
             empleador = vinculo.empleador
             empleador.promedioCalificacion = getPromedioByEmpleadorId(baseDatos, empleador.id)['promedio']
             empleador.modificarEmpleador(baseDatos)
-        return redirect(url_for('mis_vinculos'))
+        return redirect(url_for('ver_vinculo', idVinculo = idVinculo))
     else:
         if request.method == 'POST':
             cal = request.form.get('rating')
@@ -1184,7 +1180,7 @@ def cal_vinculo(idVinculo):
             empleado = vinculo.empleado
             empleado.promedioCalificacion = getPromedioByEmpleadoId(baseDatos, empleado.id)['promedio']
             empleado.modificarEmpleado(baseDatos)
-        return redirect(url_for('mis_vinculos'))
+        return redirect(url_for('ver_vinculo', idVinculo = idVinculo))
 
 
 @app.route('/endVinculo/<idVinculo>/', methods=['POST'])
@@ -1204,7 +1200,7 @@ def end_vinculo(idVinculo):
             empleador.promedioCalificacion = getPromedioByEmpleadorId(baseDatos, empleador.id)['promedio']
             empleador.modificarEmpleador(baseDatos)
             
-        return redirect(url_for('mis_vinculos'))
+        return redirect(url_for('ver_vinculo', idVinculo = idVinculo))
     else:
         if request.method == 'POST':
             cal = request.form.get('rating')
@@ -1215,7 +1211,7 @@ def end_vinculo(idVinculo):
             empleado = vinculo.empleado
             empleado.promedioCalificacion = getPromedioByEmpleadoId(baseDatos, empleado.id)['promedio']
             empleado.modificarEmpleado(baseDatos)
-        return redirect(url_for('mis_vinculos'))
+        return redirect(url_for('ver_vinculo', idVinculo = idVinculo))
 
 
 @app.route('/Candidatos/<id_anuncio>', methods=['POST', 'GET'])

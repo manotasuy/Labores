@@ -26,27 +26,27 @@
           {% endif %}
         </p>
         <img class="mb-4" src="{{ url_for('static', filename=sujeto.foto)}}" alt="" width="125" height="125"><br>
-        {% if cal['promedio'] %}
+        {% if sujeto.promedioCalificacion %}
         <img class="mt-4 mb-4" style="margin-bottom: 0.3rem !important; margin: 0.3em !important;"
-          {% if cal['promedio'] < 1 %}
+          {% if sujeto.promedioCalificacion < 1 %}
             src="{{ url_for('static', filename='images/Estrellas/05star.png')}}"
-          {% elif cal['promedio'] >= 1 and cal['promedio'] < 1.5 %}
+          {% elif sujeto.promedioCalificacion >= 1 and sujeto.promedioCalificacion < 1.5 %}
             src="{{ url_for('static', filename='images/Estrellas/10star.png')}}"
-          {% elif cal['promedio'] >= 1.5 and cal['promedio'] < 2 %}
+          {% elif sujeto.promedioCalificacion >= 1.5 and sujeto.promedioCalificacion < 2 %}
             src="{{ url_for('static', filename='images/Estrellas/15star.png')}}"
-          {% elif cal['promedio'] >= 2 and cal['promedio'] < 2.5 %}
+          {% elif sujeto.promedioCalificacion >= 2 and sujeto.promedioCalificacion < 2.5 %}
             src="{{ url_for('static', filename='images/Estrellas/20star.png')}}"                      
-          {% elif cal['promedio'] >= 2.5 and cal['promedio'] < 3 %}
+          {% elif sujeto.promedioCalificacion >= 2.5 and sujeto.promedioCalificacion < 3 %}
             src="{{ url_for('static', filename='images/Estrellas/25star.png')}}"                      
-          {% elif cal['promedio'] >= 3 and cal['promedio'] < 3.5 %}
+          {% elif sujeto.promedioCalificacion >= 3 and sujeto.promedioCalificacion < 3.5 %}
             src="{{ url_for('static', filename='images/Estrellas/30star.png')}}"                      
-          {% elif cal['promedio'] >= 3.5 and cal['promedio'] < 4 %}
+          {% elif sujeto.promedioCalificacion >= 3.5 and sujeto.promedioCalificacion < 4 %}
             src="{{ url_for('static', filename='images/Estrellas/35star.png')}}"                      
-          {% elif cal['promedio'] >= 4 and cal['promedio'] < 4.5 %}
+          {% elif sujeto.promedioCalificacion >= 4 and sujeto.promedioCalificacion < 4.5 %}
             src="{{ url_for('static', filename='images/Estrellas/40star.png')}}"                      
-          {% elif cal['promedio'] >= 4.5 and cal['promedio'] < 5 %}
+          {% elif sujeto.promedioCalificacion >= 4.5 and sujeto.promedioCalificacion < 5 %}
             src="{{ url_for('static', filename='images/Estrellas/45star.png')}}"    
-          {% elif cal['promedio'] == 5 %}
+          {% elif sujeto.promedioCalificacion == 5 %}
             src="{{ url_for('static', filename='images/Estrellas/50star.png')}}"
           {% endif %}
           alt="" width="188" height="41">
