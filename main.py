@@ -500,7 +500,8 @@ def inicio_empleados():
         empleado = getEmpleadoByID(baseDatos, session['id_empleado'])
         tiene = empleadoTieneMensajesSinLeer(baseDatos, empleado.id)
         #print('empleadoTieneMensajesSinLeer: ', tiene)
-        return render_template('HomeEmpleados.html', sujeto=empleado, tieneMensajesSinLeer=tiene)
+        cal = getPromedioByEmpleadoId(baseDatos, empleado.id)
+        return render_template('HomeEmpleados.html', sujeto=empleado, tieneMensajesSinLeer=tiene, cal=cal)
 
 
 @app.route('/HomeEmpleadores/', methods=['POST', 'GET'])
@@ -1002,10 +1003,12 @@ def ver_anuncio(idAnuncio, postulacion):
             experienciaAnuncio,
             idAnuncio
         ]
+        cal = getPromedioByEmpleadorId(baseDatos, empleador.id)
         context = {
             'empleador': listaEmpleador,
             'anuncio': listaAnuncio,
-            'postulacion': postulacion
+            'postulacion': postulacion,
+            'cal': cal
         }
 
         # el desempaquetado tendrá 3 claves, 'empleador', 'anuncio' y psotulacion
