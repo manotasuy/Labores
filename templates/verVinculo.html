@@ -12,7 +12,7 @@
 <div class="container">
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
-            {% if extension < 30 %}
+            {% if extension < 30 and not vinculo.fecha_fin %}
             <a class="btn btn-outline-info float-right" href="/notVinculo/{{vinculo.id}}" aria-label="">¿Este vínculo no llegó <br> a concretarse?</a>
             {% endif %}
             <h1 class="display-5 mb-5">Vínculo</h1>
