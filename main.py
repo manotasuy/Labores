@@ -54,10 +54,10 @@ app = Flask(__name__)
 
 #baseDatos = connectionDb(app, 'remotemysql.com')
 #baseDatos = connectionDb(app, 'aws')
-#baseDatos = connectionDb(app, 'CloudAccess')
+baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'a-work')
 #baseDatos = connectionDb(app, 'a-home')
-baseDatos = connectionDb(app, 'local')
+#baseDatos = connectionDb(app, 'local')
 
 
 # session
@@ -103,9 +103,21 @@ def login(user, password):
             return redirect(url_for('administrar'))
 
 
+def getTop3EmpleadosParaBaseTemplate():
+    return getRankingPorCalificacionEmpleados(baseDatos, 3)
+
+
+def getTop3EmpleadoresParaBaseTemplate():
+    return getRankingPorCalificacionEmpleadores(baseDatos, 3)
+
+@app.context_processor
+def contexto():
+    return dict(rankEmpleados=getTop3EmpleadosParaBaseTemplate, rankEmpleadores=getTop3EmpleadoresParaBaseTemplate)
+
+
 @app.route('/')
 @app.route('/Inicio/')
-def inicio():
+def inicio():        
     return render_template('Inicio.html')
 
 
@@ -1365,23 +1377,21 @@ def contratar(idEmpleado):
         return render_template('contactoEmpleado.html', data=empleado)
 
 
-# En proceso
-@app.route('/RankingPorCalificacion')
-def ranking_calificaciones():
+@app.route('/RankingPorCalificacion/<tipo>')
+def ranking_calificaciones(tipo):
     if session.get('usertype') == None:
         return redirect(url_for('logueo'))
     elif session.get('usertype') == 'Administrador':
         return redirect(url_for('administrar'))
     else:
         listado = list()
-        tipo = session['usertype']
-        if tipo == 'Empleado':
+        if tipo == 'Empleador':
             listado = getRankingPorCalificacionEmpleadores(baseDatos, 20)
-        elif tipo == 'Empleador':
+        elif tipo == 'Empleado':
             listado = getRankingPorCalificacionEmpleados(baseDatos, 20)           
         pares = listado[0:][::2]
         impares = listado[1:][::2]
-        return render_template('RankingPorCalificacion.html', elemPares=pares, elemImpares=impares)
+        return render_template('RankingPorCalificacion.html', elemPares=pares, elemImpares=impares, tipo=tipo)
 
 if __name__ == '__main__':
     app.run(debug=True)

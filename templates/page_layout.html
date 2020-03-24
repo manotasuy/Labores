@@ -54,6 +54,266 @@
 
 <footer class="text">
     <div class="container">
+        <div id="carouselFooter" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#carouselFooter" data-slide-to="0" class="active bg-dark"></li>
+                <li data-target="#carouselFooter" data-slide-to="1" class="bg-dark"></li>
+            </ol>
+            <div class="carousel-inner">
+                <div id="carouselFooter-item-1" class="carousel-item active mb-4">
+                    <h2 class="display-5 text-center pt-2">Top 3 Empleados<a class="btn btn-sm btn-outline-primary ml-3" href="/RankingPorCalificacion/Empleado">ver más</a></h2>
+                    <div class="album py-2 bg-white">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card mb-4 shadow-sm">
+                                        <div class="card-body oro">
+                                            <!--<img class="imgTop3" src="{{ url_for('static', filename=rankEmpleados()[0].foto)}}" class="card-img" alt="...">-->
+                                            <h3 class="card-title float-right mr-2 font-italic font-weight-bold">{{rankEmpleados()[0].nombre}} {{rankEmpleados()[0].apellido}}</h3>
+                                            <!--<p class="card-text">
+                                                Meses de experiencia: {{rankEmpleados()[0].experiencia}} </p>-->
+                                        <div class="card-text">
+                                            {% if rankEmpleados()[0].promedioCalificacion %}
+                                            <img class="mt-2 mb-2"
+                                                 {% if rankEmpleados()[0].promedioCalificacion < 1 %}
+                                            src="{{ url_for('static', filename='images/Estrellas/05star.png')}}"
+                                            {% elif rankEmpleados()[0].promedioCalificacion >= 1 and rankEmpleados()[0].promedioCalificacion < 1.5 %}
+                                            src="{{ url_for('static', filename='images/Estrellas/10star.png')}}"
+                                            {% elif rankEmpleados()[0].promedioCalificacion >= 1.5 and rankEmpleados()[0].promedioCalificacion < 2 %}
+                                            src="{{ url_for('static', filename='images/Estrellas/15star.png')}}"
+                                            {% elif rankEmpleados()[0].promedioCalificacion >= 2 and rankEmpleados()[0].promedioCalificacion < 2.5 %}
+                                            src="{{ url_for('static', filename='images/Estrellas/20star.png')}}"
+                                            {% elif rankEmpleados()[0].promedioCalificacion >= 2.5 and rankEmpleados()[0].promedioCalificacion < 3 %}
+                                            src="{{ url_for('static', filename='images/Estrellas/25star.png')}}"
+                                            {% elif rankEmpleados()[0].promedioCalificacion >= 3 and rankEmpleados()[0].promedioCalificacion < 3.5 %}
+                                            src="{{ url_for('static', filename='images/Estrellas/30star.png')}}"
+                                            {% elif rankEmpleados()[0].promedioCalificacion >= 3.5 and rankEmpleados()[0].promedioCalificacion < 4 %}
+                                            src="{{ url_for('static', filename='images/Estrellas/35star.png')}}"
+                                            {% elif rankEmpleados()[0].promedioCalificacion >= 4 and rankEmpleados()[0].promedioCalificacion < 4.5 %}
+                                            src="{{ url_for('static', filename='images/Estrellas/40star.png')}}"
+                                            {% elif rankEmpleados()[0].promedioCalificacion >= 4.5 and rankEmpleados()[0].promedioCalificacion < 5 %}
+                                            src="{{ url_for('static', filename='images/Estrellas/45star.png')}}"
+                                            {% elif rankEmpleados()[0].promedioCalificacion == 5 %}
+                                            src="{{ url_for('static', filename='images/Estrellas/50star.png')}}"
+                                            {% endif %}
+                                            alt="" width="188" height="41">
+                                            <p class="ml-2"><strong>{{rankEmpleados()[0].promedioCalificacion}}</strong></p>
+                                            {% else %}
+                                            <p class="mt-4 mb-4">Sin calificación.</p>
+                                            {% endif %}
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card mb-4 shadow-sm">
+                                        <div class="card-body plata">
+                                            <!--<img class="imgTop3" src="{{ url_for('static', filename=rankEmpleados()[1].foto)}}" class="card-img" alt="...">-->
+                                            <h3 class="card-title float-right mr-2 font-italic font-weight-bold">{{rankEmpleados()[1].nombre}} {{rankEmpleados()[1].apellido}}</h3>
+                                            <!--<p class="card-text">
+                                                Meses de experiencia: {{rankEmpleados()[1].experiencia}} </p>-->
+                                            <div class="card-text">
+                                                {% if rankEmpleados()[1].promedioCalificacion %}
+                                                <img class="mt-2 mb-2" 
+                                                {% if rankEmpleados()[1].promedioCalificacion < 1 %}
+                                                    src="{{ url_for('static', filename='images/Estrellas/05star.png')}}"
+                                                {% elif rankEmpleados()[1].promedioCalificacion >= 1 and rankEmpleados()[1].promedioCalificacion < 1.5 %}
+                                                    src="{{ url_for('static', filename='images/Estrellas/10star.png')}}"
+                                                {% elif rankEmpleados()[1].promedioCalificacion >= 1.5 and rankEmpleados()[1].promedioCalificacion < 2 %}
+                                                    src="{{ url_for('static', filename='images/Estrellas/15star.png')}}"
+                                                {% elif rankEmpleados()[1].promedioCalificacion >= 2 and rankEmpleados()[1].promedioCalificacion < 2.5 %}
+                                                    src="{{ url_for('static', filename='images/Estrellas/20star.png')}}"                      
+                                                {% elif rankEmpleados()[1].promedioCalificacion >= 2.5 and rankEmpleados()[1].promedioCalificacion < 3 %}
+                                                    src="{{ url_for('static', filename='images/Estrellas/25star.png')}}"                      
+                                                {% elif rankEmpleados()[1].promedioCalificacion >= 3 and rankEmpleados()[1].promedioCalificacion < 3.5 %}
+                                                    src="{{ url_for('static', filename='images/Estrellas/30star.png')}}"                      
+                                                {% elif rankEmpleados()[1].promedioCalificacion >= 3.5 and rankEmpleados()[1].promedioCalificacion < 4 %}
+                                                    src="{{ url_for('static', filename='images/Estrellas/35star.png')}}"                      
+                                                {% elif rankEmpleados()[1].promedioCalificacion >= 4 and rankEmpleados()[1].promedioCalificacion < 4.5 %}
+                                                    src="{{ url_for('static', filename='images/Estrellas/40star.png')}}"                      
+                                                {% elif rankEmpleados()[1].promedioCalificacion >= 4.5 and rankEmpleados()[1].promedioCalificacion < 5 %}
+                                                    src="{{ url_for('static', filename='images/Estrellas/45star.png')}}"    
+                                                {% elif rankEmpleados()[1].promedioCalificacion == 5 %}
+                                                    src="{{ url_for('static', filename='images/Estrellas/50star.png')}}"
+                                                {% endif %}
+                                                alt="" width="188" height="41">
+                                                <p class="ml-2"><strong>{{rankEmpleados()[1].promedioCalificacion}}</strong></p>                                
+                                                {% else %}
+                                                <p class="mt-4 mb-4">Sin calificación.</p>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card mb-4 shadow-sm">
+                                        <div class="card-body bronce">
+                                            <!--<img class="imgTop3" src="{{ url_for('static', filename=rankEmpleados()[2].foto)}}" class="card-img" alt="...">-->
+                                            <h3 class="card-title float-right mr-2 font-italic font-weight-bold">{{rankEmpleados()[2].nombre}} {{rankEmpleados()[2].apellido}}</h3>
+                                            <!--<p class="card-text">
+                                                Meses de experiencia: {{rankEmpleados()[2].experiencia}} </p>-->
+                                            <div class="card-text">
+                                                {% if rankEmpleados()[2].promedioCalificacion %}
+                                                <img class="mt-2 mb-2" 
+                                                {% if rankEmpleados()[2].promedioCalificacion < 1 %}
+                                                    src="{{ url_for('static', filename='images/Estrellas/05star.png')}}"
+                                                {% elif rankEmpleados()[2].promedioCalificacion >= 1 and rankEmpleados()[2].promedioCalificacion < 1.5 %}
+                                                    src="{{ url_for('static', filename='images/Estrellas/10star.png')}}"
+                                                {% elif rankEmpleados()[2].promedioCalificacion >= 1.5 and rankEmpleados()[2].promedioCalificacion < 2 %}
+                                                    src="{{ url_for('static', filename='images/Estrellas/15star.png')}}"
+                                                {% elif rankEmpleados()[2].promedioCalificacion >= 2 and rankEmpleados()[2].promedioCalificacion < 2.5 %}
+                                                    src="{{ url_for('static', filename='images/Estrellas/20star.png')}}"                      
+                                                {% elif rankEmpleados()[2].promedioCalificacion >= 2.5 and rankEmpleados()[2].promedioCalificacion < 3 %}
+                                                    src="{{ url_for('static', filename='images/Estrellas/25star.png')}}"                      
+                                                {% elif rankEmpleados()[2].promedioCalificacion >= 3 and rankEmpleados()[2].promedioCalificacion < 3.5 %}
+                                                    src="{{ url_for('static', filename='images/Estrellas/30star.png')}}"                      
+                                                {% elif rankEmpleados()[2].promedioCalificacion >= 3.5 and rankEmpleados()[2].promedioCalificacion < 4 %}
+                                                    src="{{ url_for('static', filename='images/Estrellas/35star.png')}}"                      
+                                                {% elif rankEmpleados()[2].promedioCalificacion >= 4 and rankEmpleados()[2].promedioCalificacion < 4.5 %}
+                                                    src="{{ url_for('static', filename='images/Estrellas/40star.png')}}"                      
+                                                {% elif rankEmpleados()[2].promedioCalificacion >= 4.5 and rankEmpleados()[2].promedioCalificacion < 5 %}
+                                                    src="{{ url_for('static', filename='images/Estrellas/45star.png')}}"    
+                                                {% elif rankEmpleados()[2].promedioCalificacion == 5 %}
+                                                    src="{{ url_for('static', filename='images/Estrellas/50star.png')}}"
+                                                {% endif %}
+                                                alt="" width="188" height="41">
+                                                <p class="ml-2"><strong>{{rankEmpleados()[2].promedioCalificacion}}</strong></p>                                 
+                                                {% else %}
+                                                <p class="mt-4 mb-4">Sin calificación.</p>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="carouselFooter-item-2" class="carousel-item mb-4">
+                <h2 class="display-5 text-center pt-2">Top 3 Empleadores<a class="btn btn-sm btn-outline-primary ml-3" href="/RankingPorCalificacion/Empleador">ver más</a></h2>
+                    <div class="album py-2 bg-white">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card mb-4 shadow-sm">
+                                        <div class="card-body oro">
+                                            <!--<img class="imgTop3" src="{{ url_for('static', filename=rankEmpleadores()[0].foto)}}" class="card-img" alt="...">-->
+                                            <h3 class="card-title float-right mr-2 font-italic font-weight-bold">{{rankEmpleadores()[0].nombre}} {{rankEmpleadores()[0].apellido}}</h3>
+                                            <div class="card-text">
+                                                {% if rankEmpleadores()[0].promedioCalificacion %}
+                                                <img class="mt-2 mb-2" 
+                                                {% if rankEmpleadores()[0].promedioCalificacion < 1 %}
+                                                    src="{{ url_for('static', filename='images/Estrellas/05star.png')}}"
+                                                {% elif rankEmpleadores()[0].promedioCalificacion >= 1 and rankEmpleadores()[0].promedioCalificacion < 1.5 %}
+                                                    src="{{ url_for('static', filename='images/Estrellas/10star.png')}}"
+                                                {% elif rankEmpleadores()[0].promedioCalificacion >= 1.5 and rankEmpleadores()[0].promedioCalificacion < 2 %}
+                                                    src="{{ url_for('static', filename='images/Estrellas/15star.png')}}"
+                                                {% elif rankEmpleadores()[0].promedioCalificacion >= 2 and rankEmpleadores()[0].promedioCalificacion < 2.5 %}
+                                                    src="{{ url_for('static', filename='images/Estrellas/20star.png')}}"                      
+                                                {% elif rankEmpleadores()[0].promedioCalificacion >= 2.5 and rankEmpleadores()[0].promedioCalificacion < 3 %}
+                                                    src="{{ url_for('static', filename='images/Estrellas/25star.png')}}"                      
+                                                {% elif rankEmpleadores()[0].promedioCalificacion >= 3 and rankEmpleadores()[0].promedioCalificacion < 3.5 %}
+                                                    src="{{ url_for('static', filename='images/Estrellas/30star.png')}}"                      
+                                                {% elif rankEmpleadores()[0].promedioCalificacion >= 3.5 and rankEmpleadores()[0].promedioCalificacion < 4 %}
+                                                    src="{{ url_for('static', filename='images/Estrellas/35star.png')}}"                      
+                                                {% elif rankEmpleadores()[0].promedioCalificacion >= 4 and rankEmpleadores()[0].promedioCalificacion < 4.5 %}
+                                                    src="{{ url_for('static', filename='images/Estrellas/40star.png')}}"                      
+                                                {% elif rankEmpleadores()[0].promedioCalificacion >= 4.5 and rankEmpleadores()[0].promedioCalificacion < 5 %}
+                                                    src="{{ url_for('static', filename='images/Estrellas/45star.png')}}"    
+                                                {% elif rankEmpleadores()[0].promedioCalificacion == 5 %}
+                                                    src="{{ url_for('static', filename='images/Estrellas/50star.png')}}"
+                                                {% endif %}
+                                                alt="" width="188" height="41">
+                                                <p class="ml-2"><strong>{{rankEmpleadores()[0].promedioCalificacion}}</strong></p>                               
+                                                {% else %}
+                                                <p class="mt-4 mb-4">Sin calificación.</p>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card mb-4 shadow-sm">
+                                        <div class="card-body plata">
+                                            <!--<img class="imgTop3" src="{{ url_for('static', filename=rankEmpleadores()[1].foto)}}" class="card-img" alt="...">-->
+                                            <h3 class="card-title float-right mr-2 font-italic font-weight-bold">{{rankEmpleadores()[1].nombre}} {{rankEmpleadores()[1].apellido}}</h3>
+                                            <div class="card-text">
+                                                {% if rankEmpleadores()[1].promedioCalificacion %}
+                                                <img class="mt-2 mb-2"
+                                                     {% if rankEmpleadores()[1].promedioCalificacion < 1 %}
+                                                src="{{ url_for('static', filename='images/Estrellas/05star.png')}}"
+                                                {% elif rankEmpleadores()[1].promedioCalificacion >= 1 and rankEmpleadores()[1].promedioCalificacion < 1.5 %}
+                                                src="{{ url_for('static', filename='images/Estrellas/10star.png')}}"
+                                                {% elif rankEmpleadores()[1].promedioCalificacion >= 1.5 and rankEmpleadores()[1].promedioCalificacion < 2 %}
+                                                src="{{ url_for('static', filename='images/Estrellas/15star.png')}}"
+                                                {% elif rankEmpleadores()[1].promedioCalificacion >= 2 and rankEmpleadores()[1].promedioCalificacion < 2.5 %}
+                                                src="{{ url_for('static', filename='images/Estrellas/20star.png')}}"
+                                                {% elif rankEmpleadores()[1].promedioCalificacion >= 2.5 and rankEmpleadores()[1].promedioCalificacion < 3 %}
+                                                src="{{ url_for('static', filename='images/Estrellas/25star.png')}}"
+                                                {% elif rankEmpleadores()[1].promedioCalificacion >= 3 and rankEmpleadores()[1].promedioCalificacion < 3.5 %}
+                                                src="{{ url_for('static', filename='images/Estrellas/30star.png')}}"
+                                                {% elif rankEmpleadores()[1].promedioCalificacion >= 3.5 and rankEmpleadores()[1].promedioCalificacion < 4 %}
+                                                src="{{ url_for('static', filename='images/Estrellas/35star.png')}}"
+                                                {% elif rankEmpleadores()[1].promedioCalificacion >= 4 and rankEmpleadores()[1].promedioCalificacion < 4.5 %}
+                                                src="{{ url_for('static', filename='images/Estrellas/40star.png')}}"
+                                                {% elif rankEmpleadores()[1].promedioCalificacion >= 4.5 and rankEmpleadores()[1].promedioCalificacion < 5 %}
+                                                src="{{ url_for('static', filename='images/Estrellas/45star.png')}}"
+                                                {% elif rankEmpleadores()[1].promedioCalificacion == 5 %}
+                                                src="{{ url_for('static', filename='images/Estrellas/50star.png')}}"
+                                                {% endif %}
+                                                alt="" width="188" height="41">
+                                                <p class="ml-2"><strong>{{rankEmpleadores()[1].promedioCalificacion}}</strong></p>
+                                                {% else %}
+                                                <p class="mt-4 mb-4">Sin calificación.</p>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card mb-4 shadow-sm">
+                                        <div class="card-body bronce">
+                                            <!--<img class="imgTop3" src="{{ url_for('static', filename=rankEmpleadores()[2].foto)}}" class="card-img" alt="...">-->
+                                            <h3 class="card-title float-right mr-2 font-italic font-weight-bold">{{rankEmpleadores()[2].nombre}} {{rankEmpleadores()[2].apellido}}</h3>
+                                            <div class="card-text">
+                                                {% if rankEmpleadores()[2].promedioCalificacion %}
+                                                <img class="mt-2 mb-2"
+                                                     {% if rankEmpleadores()[2].promedioCalificacion < 1 %}
+                                                src="{{ url_for('static', filename='images/Estrellas/05star.png')}}"
+                                                {% elif rankEmpleadores()[2].promedioCalificacion >= 1 and rankEmpleadores()[2].promedioCalificacion < 1.5 %}
+                                                src="{{ url_for('static', filename='images/Estrellas/10star.png')}}"
+                                                {% elif rankEmpleadores()[2].promedioCalificacion >= 1.5 and rankEmpleadores()[2].promedioCalificacion < 2 %}
+                                                src="{{ url_for('static', filename='images/Estrellas/15star.png')}}"
+                                                {% elif rankEmpleadores()[2].promedioCalificacion >= 2 and rankEmpleadores()[2].promedioCalificacion < 2.5 %}
+                                                src="{{ url_for('static', filename='images/Estrellas/20star.png')}}"
+                                                {% elif rankEmpleadores()[2].promedioCalificacion >= 2.5 and rankEmpleadores()[2].promedioCalificacion < 3 %}
+                                                src="{{ url_for('static', filename='images/Estrellas/25star.png')}}"
+                                                {% elif rankEmpleadores()[2].promedioCalificacion >= 3 and rankEmpleadores()[2].promedioCalificacion < 3.5 %}
+                                                src="{{ url_for('static', filename='images/Estrellas/30star.png')}}"
+                                                {% elif rankEmpleadores()[2].promedioCalificacion >= 3.5 and rankEmpleadores()[2].promedioCalificacion < 4 %}
+                                                src="{{ url_for('static', filename='images/Estrellas/35star.png')}}"
+                                                {% elif rankEmpleadores()[2].promedioCalificacion >= 4 and rankEmpleadores()[2].promedioCalificacion < 4.5 %}
+                                                src="{{ url_for('static', filename='images/Estrellas/40star.png')}}"
+                                                {% elif rankEmpleadores()[2].promedioCalificacion >= 4.5 and rankEmpleadores()[2].promedioCalificacion < 5 %}
+                                                src="{{ url_for('static', filename='images/Estrellas/45star.png')}}"
+                                                {% elif rankEmpleadores()[2].promedioCalificacion == 5 %}
+                                                src="{{ url_for('static', filename='images/Estrellas/50star.png')}}"
+                                                {% endif %}
+                                                alt="" width="188" height="41">
+                                                <p class="ml-2"><strong>{{rankEmpleadores()[2].promedioCalificacion}}</strong></p>
+                                                {% else %}
+                                                <p class="mt-4 mb-4">Sin calificación.</p>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <p class="float-right">
             <a href="#">Volver arriba!</a>
         </p>

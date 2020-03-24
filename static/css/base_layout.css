@@ -102,6 +102,54 @@ h1 {
     height: 20rem;
 }
 
+/***********/
+
+#carouselFooter {
+  margin-bottom: 1rem;
+}
+
+#carouselFooter-item-1 {
+  height: 17rem;
+}
+
+#carouselFooter-item-2 {
+  height: 17rem;
+}
+
+.imgTop3 {
+  float: right;
+  top: 0;
+  left: 0;
+  max-width: 96px;
+  min-width: 96px;
+  min-height: 96px;
+  max-height: 96px;
+}
+
+.oro {
+  background: #FF8008;
+  background: -webkit-linear-gradient(to bottom, rgba(238, 158, 9, 0.959), #FFC837);
+  background: linear-gradient(to bottom, rgba(238, 158, 9, 0.959), #FFC837);
+}
+
+.plata {
+  background: #8e9eab;
+  background: -webkit-linear-gradient(to bottom, #8e9eab, #bdc8ca);
+  background: linear-gradient(to bottom, #8e9eab, #bdc8ca);
+}
+
+.bronce {
+  background: #cd7f32;
+  background: -webkit-linear-gradient(to bottom, #a1570d, #cd7f32);
+  background: linear-gradient(to bottom, #a1570d, #cd7f32);
+}
+
+.ranking {
+    background: #E0EAFC;
+    background: -webkit-linear-gradient(to top, #CFDEF3, #E0EAFC);
+    background: linear-gradient(to top, #CFDEF3, #E0EAFC);
+}
+
 .marketing .col-lg-4 {
     margin-bottom: 1.5rem;
     text-align: center;
