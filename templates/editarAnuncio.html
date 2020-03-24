@@ -65,11 +65,7 @@
                 <div class="form-group row mb-5">
                     <div class="col-form-label col-sm-10 pt-0">Tareas a realizar</div>
                     <div class="col-sm-10">
-                        <div class="custom-control custom-checkbox ml-5">
-                            <input type="checkbox" class="custom-control-input" id="hogar" name="chkHogar"
-                                {% if anuncio.4 == True%} checked="" {% endif %}>
-                            <label class="custom-control-label" for="hogar">Hogar</label>
-                        </div>
+
                         <div class="custom-control custom-checkbox ml-5">
                             <input type="checkbox" class="custom-control-input" id="oficina" name="chkOficina"
                                 {% if anuncio.5 == True%} checked="" {% endif %}>
@@ -114,6 +110,11 @@
                             <input type="checkbox" class="custom-control-input" id="mascotas" name="chkCuidadoMascotas"
                                 {% if anuncio.13 == True%} checked="" {% endif %}>
                             <label class="custom-control-label" for="mascotas">Cuidado de mascotas</label>
+                        </div>
+                        <div class="custom-control custom-checkbox ml-5">
+                            <input type="checkbox" class="custom-control-input" id="hogar" name="chkHogar"
+                                {% if anuncio.4 == True%} checked="" {% endif %}>
+                            <label class="custom-control-label" for="hogar">Otras tareas</label>
                         </div>
                     </div>
                 </div>
