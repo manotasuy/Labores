@@ -12,7 +12,7 @@ from Implementacion.Usuario import Usuario, getUsuarioByID
 from Implementacion.Empleado import Empleado, getEmpleadoByID, getEmpleadoByUsuarioID, getTareasEmpleado, getDisponibilidadEmpleado, getRankingPorCalificacionEmpleados
 from Implementacion.Empleador import Empleador, getEmpleadorByID, getEmpleadorByUsuarioID, getRankingPorCalificacionEmpleadores
 from Implementacion.Anuncio import Anuncio, getAllAnuncios, getAnuncioByID
-from Implementacion.Postulacion import Postulacion, getPostulacionesAnuncio, getPostulacionesEmpleado, getPostulacionEmpleadoAnuncio, getPostulacionesEmpleadoIDs, empleadorTieneNotificacionesPendientesPostulaciones
+from Implementacion.Postulacion import Postulacion, getPostulacionesAnuncio, getPostulacionesEmpleado, getPostulacionEmpleadoAnuncio, getPostulacionesEmpleadoIDs, empleadorTieneNotificacionesPendientesPostulaciones, getPostulacionById
 from Implementacion.Tarea import Tarea, getTareasRegistradas
 from Implementacion.Disponibilidad import Disponibilidad, getDisponibilidadesRegistradas
 from Implementacion.Vinculo import Vinculo, getVinculoByID, getVinculoByEmpleado, getVinculoByEmpleador, getVinculoIDs, getPromedioByEmpleadorId, getPromedioByEmpleadoId, getVinculosNoNotificadosDelEmpleado, empleadoTieneNotificacionesPendientesVinculos
@@ -27,10 +27,10 @@ app = Flask(__name__)
 
 #baseDatos = connectionDb(app, 'remotemysql.com')
 #baseDatos = connectionDb(app, 'aws')
-baseDatos = connectionDb(app, 'CloudAccess')
+#baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'a-work')
 #baseDatos = connectionDb(app, 'a-home')
-#baseDatos = connectionDb(app, 'local')
+baseDatos = connectionDb(app, 'local')
 
 
 # session
@@ -1063,6 +1063,21 @@ def mis_postulaciones():
                 post.append(0)
 
         return render_template('TusPostulaciones.html', postulaciones=misPostulaciones)
+
+
+@app.route('/despostularse/<idPostulacion>') 
+def despostularse(idPostulacion):
+    if session.get('usertype') == None:
+        return redirect(url_for('logueo'))
+    elif session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    elif session.get('usertype') == 'Empleador':
+        return redirect(url_for('inicio_empleadores'))
+    else:
+        postulacion = getPostulacionById(baseDatos, idPostulacion)
+        postulacion.borrarPostulacion(baseDatos)
+        return redirect(url_for('mis_postulaciones'))
+
 
 
 @app.route('/MisVinculos')

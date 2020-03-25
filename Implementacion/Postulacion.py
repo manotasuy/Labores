@@ -86,6 +86,20 @@ class Postulacion:
         except Exception as e:
             print("Error en marcarPostulacionComoNotificada ", e)
 
+    
+    def borrarPostulacion(self, bd):
+        try:
+            cursor = bd.connection.cursor()
+            cursor.execute('''
+                DELETE FROM postulacion WHERE id = {}
+                '''.format(self.id))
+            bd.connection.commit()
+            cursor.close()
+            print('Postulación Borrada')
+        except Exception as e:
+            print("Error en borrarPostulación ", e)      
+
+
 def getPostulacionesAnuncio(bd, idAnuncio):
     try:
         cursor = bd.connection.cursor()
@@ -205,6 +219,34 @@ def getPostulacionEmpleadoAnuncio(bd, idEmpleado, idAnuncio):
         return postulacion
     except Exception as e:
         print('Error en getPostulacionEmpleadoAnuncio ', e)
+
+
+
+
+def getPostulacionById(bd, idPostulacion):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('''
+            SELECT
+                id,
+                id_empleado,
+                id_anuncio,
+                fecha, 
+                genera_vinculo
+            FROM postulacion 
+            WHERE id = {}''' .format(idPostulacion))
+        tuplaPostulacion = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+        postulacion = Postulacion(
+        tuplaPostulacion[0][0],
+        getEmpleadoByID(bd, tuplaPostulacion[0][1]),
+        getAnuncioByID(bd, tuplaPostulacion[0][2]),
+        tuplaPostulacion[0][3],
+        tuplaPostulacion[0][4])
+        return postulacion
+    except Exception as e:
+        print('Error en getPostulacionById ', e)
 
 
 def empleadorTieneNotificacionesPendientesPostulaciones(bd, id_empleador):

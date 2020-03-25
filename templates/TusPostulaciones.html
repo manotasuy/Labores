@@ -40,23 +40,62 @@
                         {{ postulacion[1].descripcion }} <br>
 
                         {% if postulacion[3] == 1 %}
-                        <a class="btn btn-sm btn-success mb-2 mt-4" href="/verAnuncio/{{ postulacion.0 }}/1"
+                        <a class="btn btn-sm btn-success mb-2 mt-4 float-left" href="/verAnuncio/{{ postulacion.0 }}/1"
                             aria-label="">
                             Ir al Anuncio
                         </a>
+                        <a class="btn btn-sm btn-warning mb-2 mt-4 float-right" href=""
+                        aria-label="" data-toggle="modal" data-target="#modal">
+                        Despostularme
+                        </a>
                         {% else %}
-                        <a class="btn btn-sm btn-grey mb-2 mt-4" aria-label="">Anuncio cerrado</a>
+                        <a class="btn btn-sm btn-grey mb-2 mt-4 float-left" aria-label="">Anuncio cerrado</a>
+                        <a class="btn btn-sm btn-warning mb-2 mt-4 float-right" href=""
+                        aria-label="" data-toggle="modal" data-target="#modal">
+                        Despostularme
+                        </a>
                         {% endif %}
                     </p>
                 </div>
             </div>
+            <!-------------------------------------------MODAL---------------------------------------------------------------------------------->
+            <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="mensaje"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="exampleModalLabel">¿Desea despostularse?</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h6>Podrá volver a postularse mientras el anuncio esté publicado</h6>
+                        <a class="btn btn-sm btn-warning mb-2 mt-4 float-left" href="/despostularse/{{ postulacion.2.id }}"
+                        aria-label="">
+                        Despostularme
+                        </a>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <!---------------------------------------------------------------------------------------------------------------------------------->
             {% endfor %}
             {% endif %}
         </div>
     </div>
     <button type="button" class="btn btn-primary mt-4" onClick="history.go(-1)">Volver</button>
 </div>
+
+
 {% endblock %}
 
 {% block scripts %}
 {% endblock %}
+
+
+
+
