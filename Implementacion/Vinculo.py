@@ -106,6 +106,19 @@ class Vinculo:
         except Exception as e:
             print("Error en actualizarVinculo ", e)
 
+    def marcarVinculoComoNotificado(self, bd):
+        try:
+            cursor = bd.connection.cursor()
+            cursor.execute('''
+                UPDATE vinculo
+                SET notificado = true
+                WHERE id = {}
+                '''.format(self.id))
+            bd.connection.commit()
+            cursor.close()
+            print('Vínculo marcado como notificado')
+        except Exception as e:
+            print("Error en marcarVinculoComoNotificado ", e)
 
 def getVinculoByID(bd, id):
     try:
@@ -347,3 +360,58 @@ def getPromedioByEmpleadorId(bd, idEmpleador):
         return calificaciones
     except Exception as e:
         print("Error en getPromedioByEmpleadoId ", e)
+
+
+def empleadoTieneNotificacionesPendientesVinculos(bd, id_empleado):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('''
+            SELECT id FROM vinculo WHERE id_empleado = {} AND notificado = 0
+            '''.format(id_empleado))
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+        if retorno is None or len(retorno) == 0:
+            return False
+        else:
+            return len(retorno[0]) > 0
+    except Exception as e:
+        print("Error en empleadoTieneNotificacionesPendientesVinculos ", e)
+
+
+def getVinculosNoNotificadosDelEmpleado(bd, empleado):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('''
+            SELECT
+                id,
+                id_empleado,
+                id_empleador,
+                id_anuncio,
+                fecha_inicio,
+                fecha_fin,
+                descripcion,
+                calificacion_empleado,
+                calificacion_empleador
+            FROM vinculo WHERE id_empleado = {} AND notificado = 0'''.format(empleado.id))
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+
+        vinculos = list()
+        for v in retorno:
+            vinculo = Vinculo(
+                v[0],
+                getEmpleadoByID(bd, v[1]),
+                getEmpleadorByID(bd, v[2]),
+                getAnuncioByID(bd, v[3]),
+                v[4],
+                v[5],
+                v[6],
+                v[7],
+                v[8]
+            )
+            vinculos.append(vinculo)
+        return vinculos
+    except Exception as e:
+        print("Error en getVinculosNoNotificadosDelEmpleado ", e)

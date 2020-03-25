@@ -56,6 +56,35 @@ class Postulacion:
         except Exception as e:
             print('Error en generarVinculoEnPostulacion ', e)
 
+    def fueNotificada(self, bd):
+        try:
+            cursor = bd.connection.cursor()
+            cursor.execute('''SELECT notificada FROM postulacion WHERE id = {}'''.format(self.id))
+            retorno = cursor.fetchall()
+            bd.connection.commit()
+            cursor.close()
+            if retorno[0][0] == 0:
+                return False
+            if retorno[0][0] == 1:
+                return True
+            else:
+                return False
+        except Exception as e:
+            print("Error en postulacionFueNotificada ", e)
+
+    def marcarPostulacionComoNotificada(self, bd):
+        try:
+            cursor = bd.connection.cursor()
+            cursor.execute('''
+                UPDATE postulacion
+                SET notificada = true
+                WHERE id = {}
+                '''.format(self.id))
+            bd.connection.commit()
+            cursor.close()
+            print('Postulación marcada como notificada')
+        except Exception as e:
+            print("Error en marcarPostulacionComoNotificada ", e)
 
 def getPostulacionesAnuncio(bd, idAnuncio):
     try:
@@ -176,3 +205,21 @@ def getPostulacionEmpleadoAnuncio(bd, idEmpleado, idAnuncio):
         return postulacion
     except Exception as e:
         print('Error en getPostulacionEmpleadoAnuncio ', e)
+
+
+def empleadorTieneNotificacionesPendientesPostulaciones(bd, id_empleador):
+    try:
+        cursor = bd.connection.cursor()
+        # Debo buscar las postulaciones NO notificadas para los anuncios que pertenezcan al empleador
+        cursor.execute('''
+            SELECT p.id FROM postulacion p INNER JOIN anuncio a ON p.id_anuncio = a.id WHERE a.id_empleador = {} AND notificada = 0
+            '''.format(id_empleador))
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+        if retorno is None or len(retorno) == 0:
+            return False
+        else:
+            return len(retorno[0]) > 0
+    except Exception as e:
+        print("Error en empleadorTieneNotificacionesPendientesPostulaciones ", e)

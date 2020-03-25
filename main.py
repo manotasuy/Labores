@@ -6,47 +6,19 @@ from flask_mysqldb import MySQL
 from datetime import datetime
 from enum import Enum
 
-
-
 # Paquetes implementación
 from Implementacion.Conexion import connectionDb
-from Implementacion.Usuario import Usuario
-from Implementacion.Empleado import Empleado
-from Implementacion.Empleador import Empleador
-from Implementacion.Anuncio import Anuncio, getAllAnuncios
-from Implementacion.Postulacion import Postulacion
-from Implementacion.Tarea import Tarea
-from Implementacion.Disponibilidad import Disponibilidad
-from Implementacion.Vinculo import Vinculo
-from Implementacion.Mensaje import Mensaje
-from Implementacion.DTOAuxEmpleado import DTOAuxEmpleado
-from Implementacion.DTOAuxEmpleado import TareaSeleccion
-from Implementacion.DTOAuxEmpleado import DisponibilidadSeleccion
-from Implementacion.Referencia import Referencia
-
-from Implementacion.Usuario import getUsuarioByID
-from Implementacion.Empleador import getEmpleadorByID
-from Implementacion.Empleador import getEmpleadorByUsuarioID
-from Implementacion.Empleador import getRankingPorCalificacionEmpleadores
-from Implementacion.Empleado import getEmpleadoByID
-from Implementacion.Empleado import getEmpleadoByUsuarioID
-from Implementacion.Empleado import getTareasEmpleado
-from Implementacion.Empleado import getDisponibilidadEmpleado
-from Implementacion.Empleado import getRankingPorCalificacionEmpleados
-from Implementacion.Anuncio import getAnuncioByID
-from Implementacion.Vinculo import getVinculoByID, getVinculoByEmpleado, getVinculoByEmpleador, getVinculoIDs, getPromedioByEmpleadorId, getPromedioByEmpleadoId
-from Implementacion.Postulacion import getPostulacionesAnuncio
-from Implementacion.Postulacion import getPostulacionesEmpleado
-from Implementacion.Postulacion import getPostulacionEmpleadoAnuncio
-from Implementacion.Postulacion import getPostulacionesEmpleadoIDs
-from Implementacion.Tarea import getTareasRegistradas
-from Implementacion.Disponibilidad import getDisponibilidadesRegistradas
-from Implementacion.Referencia import getReferenciaByID
-from Implementacion.Referencia import getReferenciasEmpleado
-from Implementacion.Mensaje import getMensajesParaEmpleado
-from Implementacion.Mensaje import empleadoTieneMensajesSinLeer
-from Implementacion.Mensaje import getMensajesParaEmpleador
-from Implementacion.Mensaje import empleadorTieneMensajesSinLeer
+from Implementacion.Usuario import Usuario, getUsuarioByID
+from Implementacion.Empleado import Empleado, getEmpleadoByID, getEmpleadoByUsuarioID, getTareasEmpleado, getDisponibilidadEmpleado, getRankingPorCalificacionEmpleados
+from Implementacion.Empleador import Empleador, getEmpleadorByID, getEmpleadorByUsuarioID, getRankingPorCalificacionEmpleadores
+from Implementacion.Anuncio import Anuncio, getAllAnuncios, getAnuncioByID
+from Implementacion.Postulacion import Postulacion, getPostulacionesAnuncio, getPostulacionesEmpleado, getPostulacionEmpleadoAnuncio, getPostulacionesEmpleadoIDs, empleadorTieneNotificacionesPendientesPostulaciones
+from Implementacion.Tarea import Tarea, getTareasRegistradas
+from Implementacion.Disponibilidad import Disponibilidad, getDisponibilidadesRegistradas
+from Implementacion.Vinculo import Vinculo, getVinculoByID, getVinculoByEmpleado, getVinculoByEmpleador, getVinculoIDs, getPromedioByEmpleadorId, getPromedioByEmpleadoId, getVinculosNoNotificadosDelEmpleado, empleadoTieneNotificacionesPendientesVinculos
+from Implementacion.Mensaje import Mensaje, getMensajesParaEmpleado, empleadoTieneMensajesSinLeer, getMensajesParaEmpleador, empleadorTieneMensajesSinLeer
+from Implementacion.DTOAuxEmpleado import DTOAuxEmpleado, TareaSeleccion, DisponibilidadSeleccion
+from Implementacion.Referencia import Referencia, getReferenciaByID, getReferenciasEmpleado
 from Implementacion.Admin import getDatosAdmin
 
 EXTENSIONES_ADMITIDAS = set(['jpg', 'png', 'jpeg', 'bmp', 'gif'])
@@ -512,10 +484,12 @@ def inicio_empleados():
         return redirect(url_for('inicio_empleadores'))
     else:
         empleado = getEmpleadoByID(baseDatos, session['id_empleado'])
-        tiene = empleadoTieneMensajesSinLeer(baseDatos, empleado.id)
-        #print('empleadoTieneMensajesSinLeer: ', tiene)
+        # se debe verificar que el empleado no tenga mensajes sin leer, en caso afirmativo se debe notificar
+        tieneNotifMensajes = empleadoTieneMensajesSinLeer(baseDatos, empleado.id)
+        # se debe verificar que el empleado este notificado sobre todos sus vínculos, en caso negativo se debe notificar
+        tieneNotifVinculos = empleadoTieneNotificacionesPendientesVinculos(baseDatos, session['id_empleado'])
         cal = getPromedioByEmpleadoId(baseDatos, empleado.id)
-        return render_template('HomeEmpleados.html', sujeto=empleado, tieneMensajesSinLeer=tiene, cal=cal)
+        return render_template('HomeEmpleados.html', sujeto=empleado, tieneMensajesSinLeer=tieneNotifMensajes, tieneNotifPendientesVinculos=tieneNotifVinculos, cal=cal)
 
 
 @app.route('/HomeEmpleadores/', methods=['POST', 'GET'])
@@ -528,10 +502,13 @@ def inicio_empleadores():
         return redirect(url_for('inicio_empleados'))
     else:
         empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
+        # se debe verificar que el empleador no tenga mensajes sin leer, en caso afirmativo se debe notificar
         tiene = empleadorTieneMensajesSinLeer(baseDatos, empleador.id)
-        #print('empleadorTieneMensajesSinLeer: ', tiene)
+        # se debe verificar que el empleador este notificado sobre todas las postulaciones a sus anuncios, 
+        # en caso negativo se debe notificar
+        tieneNotifPostulaciones = empleadorTieneNotificacionesPendientesPostulaciones(baseDatos, session['id_empleador'])
         cal = getPromedioByEmpleadorId(baseDatos, empleador.id)
-        return render_template('HomeEmpleadores.html', sujeto=empleador, tieneMensajesSinLeer=tiene, cal=cal)
+        return render_template('HomeEmpleadores.html', sujeto=empleador, tieneMensajesSinLeer=tiene, tieneNotifPendientesPostulaciones=tieneNotifPostulaciones, cal=cal)
 
 
 @app.route('/PanelControl/')
@@ -1101,6 +1078,13 @@ def mis_vinculos():
                 'vinculos': getVinculoByEmpleado(baseDatos, empleado),
                 'sesion': session.get('usertype')
             }
+            # Obtener la lista de vínculos que no hayan sido notificados al Empleado
+            listaVinculosNoNotif = getVinculosNoNotificadosDelEmpleado(baseDatos, empleado)
+            # se deben marcar los vinculos como notificados
+            for vinculo in listaVinculosNoNotif:
+                #print('ID de vinculo a marcar como notificado: ', vinculo.id)
+                vinculo.marcarVinculoComoNotificado(baseDatos)
+
             return render_template('MisVinculos.html', **context)
         elif session.get('usertype') == 'Empleador':
             empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
@@ -1109,8 +1093,6 @@ def mis_vinculos():
                 'vinculos': getVinculoByEmpleador(baseDatos, empleador),
                 'sesion': session.get('usertype')
             }
-            # print('idEmpleador: ', empleador.id)
-            # print('Contexto: ', context)
             return render_template('MisVinculos.html', **context)
         else:
             return redirect(url_for('logueo'))
@@ -1229,18 +1211,24 @@ def listar_candidatos(id_anuncio):
         session['id_anuncio'] = id_anuncio
         # Obtengo la lista de postulaciones para el anuncio dado
         anuncio = getAnuncioByID(baseDatos, id_anuncio)
-        postulaciones = getPostulacionesAnuncio(baseDatos, id_anuncio)
-        postulacioneS = []
-        for postulacion in postulaciones:
+        listaPostulaciones = getPostulacionesAnuncio(baseDatos, id_anuncio)
+        postulaciones = []
+        for postulacion in listaPostulaciones:
+            
+            # se deben marcar como notificadas las postulaciones que no lo estén
+            if not postulacion.fueNotificada(baseDatos):
+                #print('ID de postulación a marcar como notificada: ', postulacion.id)
+                postulacion.marcarPostulacionComoNotificada(baseDatos)
+            
             post = []
             cal = getPromedioByEmpleadoId(baseDatos, postulacion.empleado.id)
             l = [postulacion]
             post.append(l)
             post.append(cal)
-            postulacioneS.append(post)
+            postulaciones.append(post)
 
-        pares = postulacioneS[0:][::2]
-        impares = postulacioneS[1:][::2]
+        pares = postulaciones[0:][::2]
+        impares = postulaciones[1:][::2]
 
 
         return render_template('ListaCandidatos.html', elemPares=pares, elemImpares=impares, elanuncio=anuncio)

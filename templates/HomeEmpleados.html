@@ -14,10 +14,12 @@
         <div class="container">
             <div class="text-center mb-4">
                 <p class="lead">
+                    {% if tieneNotifPendientesVinculos %}
                     <a class="my-0 mr-md-auto" href="/MisVinculos" aria-label="Home">
                         <img class="mr-5" src="{{ url_for('static', filename='images/Alertas/Vinculo.png')}}" alt=""
                             width="80" height="80">
                     </a>
+                    {% endif %}
                     {% if tieneMensajesSinLeer %}
                     <a class="my-0 mr-md-auto" href="/MensajesEmpleado/{{sujeto.id}}/0" aria-label="Home">
                         <img class="ml-5" src="{{ url_for('static', filename='images/Alertas/Mensaje.png')}}" alt=""
