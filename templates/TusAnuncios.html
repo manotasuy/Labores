@@ -26,7 +26,7 @@
 									<thead class="thead-light">
 										<tr>
 
-											<th scope="col">Publicada</th>
+											<th scope="col">Publicado</th>
 											<th scope="col">Título</th>
 											<th scope="col">Estado</th>
 											<th scope="col"></th>
@@ -41,9 +41,9 @@
 											<td>{{ anuncio.1 }}</td>
 											<td>
 												{% if anuncio.5 == 1 %}
-												<p>Activa</p>
+												<p>Publicado</p>
 												{% elif anuncio.5 == 0 %}
-												<p>Inactiva</p>
+												<p>Inactivo</p>
 												{% endif %}
 											</td>
 											<td>
