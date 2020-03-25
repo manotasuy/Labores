@@ -17,7 +17,7 @@
             {% else %}
             <h1 class="display-5 mb-5">Registro {{tipo}}</h1>
             {% endif %}
-            <form class="needs-validation" novalidate="" action="/GuardarPerfil/{{tipo}}" method="POST"
+            <form class="needs-validation" novalidate="" name="perfil" action="/GuardarPerfil/{{tipo}}" method="POST"
                 enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-md-6 mb-3">
@@ -419,4 +419,5 @@
 {% endblock %}
 
 {% block scripts %}
+
 {% endblock %}
