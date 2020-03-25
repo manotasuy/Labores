@@ -79,14 +79,12 @@ def promedioCalificacionesEmpleados(bd):
 
 def cuentasCerradasEmpleadores(bd):
     try:
-        #cursor = bd.connection.cursor()
-        # hay que agregar una columna de estado 0:Inactivo, 1:Activo
-        #cursor.execute('SELECT COUNT(*) FROM empleador WHERE estado = 0')
-        #retorno = cursor.fetchall()
-        # bd.connection.commit()
-        # cursor.close()
-        #cant = int(retorno[0][0])
-        cant = 0
+        cursor = bd.connection.cursor()
+        cursor.execute('SELECT COUNT(*) FROM empleador WHERE activo = 0')
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+        cant = int(retorno[0][0])
         return cant
     except Exception as e:
         print("Error en cuentasCerradasEmpleadores ", e)
@@ -94,14 +92,12 @@ def cuentasCerradasEmpleadores(bd):
 
 def cuentasCerradasEmpleados(bd):
     try:
-        #cursor = bd.connection.cursor()
-        # hay que agregar una columna de estado 0:Inactivo, 1:Activo
-        #cursor.execute('SELECT COUNT(*) FROM empleado WHERE estado = 0')
-        #retorno = cursor.fetchall()
-        # bd.connection.commit()
-        # cursor.close()
-        #cant = int(retorno[0][0])
-        cant = 0
+        cursor = bd.connection.cursor()
+        cursor.execute('SELECT COUNT(*) FROM empleado WHERE activo = 0')
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+        cant = int(retorno[0][0])
         return cant
     except Exception as e:
         print("Error en cuentasCerradasEmpleados ", e)
@@ -118,3 +114,17 @@ def vinculosEstablecidos(bd):
         return cant
     except Exception as e:
         print("Error en vinculosEstablecidos ", e)
+
+
+def getDatosAdmin(bd):
+    datos = dict()
+    datos ['ctasEmpleadores'] = getCantCuentasRegistradasEmpleadores(bd)
+    datos ['ctasEmpleados'] = getCantCuentasRegistradasEmpleados(bd)
+    datos['cantAnuncios'] = ofertasPublicadas(bd)
+    datos['cantPostulaciones'] = postulacionesRegistradas(bd)
+    datos['promCalificEmpleadores'] = promedioCalificacionesEmpleadores(bd)
+    datos['promCalificEmpleados'] = promedioCalificacionesEmpleados(bd)
+    datos['ctasCerradasEmpleadores'] = cuentasCerradasEmpleadores(bd)
+    datos['ctasCerradasEmpleados'] = cuentasCerradasEmpleados(bd)
+    datos['cantVinculos'] = vinculosEstablecidos(bd)
+    return datos

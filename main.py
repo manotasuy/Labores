@@ -47,6 +47,7 @@ from Implementacion.Mensaje import getMensajesParaEmpleado
 from Implementacion.Mensaje import empleadoTieneMensajesSinLeer
 from Implementacion.Mensaje import getMensajesParaEmpleador
 from Implementacion.Mensaje import empleadorTieneMensajesSinLeer
+from Implementacion.Admin import getDatosAdmin
 
 EXTENSIONES_ADMITIDAS = set(['jpg', 'png', 'jpeg', 'bmp', 'gif'])
 
@@ -542,7 +543,8 @@ def administrar():
     elif session.get('usertype') == 'Empleado':
         return redirect(url_for('inicio_empleados'))
     else:
-        return render_template('ControlPanel.html')
+        datosAdmin = getDatosAdmin(baseDatos)
+        return render_template('ControlPanel.html', data=datosAdmin)
 
 
 @app.route('/Anuncio/<accion>')

@@ -85,6 +85,7 @@ CREATE TABLE IF NOT EXISTS empleador (
 	foto varchar(150),
 	promedio_calificacion double DEFAULT NULL,
 	id_usuario int NOT NULL,
+    activo boolean DEFAULT 1 NOT NULL,
 	CONSTRAINT PK_empleador PRIMARY KEY (id),
 	CONSTRAINT UK_empleador UNIQUE (cedula),
 	CONSTRAINT FK_empleador_usuario FOREIGN KEY (id_usuario) REFERENCES usuario (id)
@@ -108,6 +109,7 @@ CREATE TABLE IF NOT EXISTS empleado (
 	foto varchar(150),
 	promedio_calificacion double DEFAULT NULL,
 	id_usuario int NOT NULL,
+    activo boolean DEFAULT 1 NOT NULL,
 	CONSTRAINT PK_empleado PRIMARY KEY (id),
 	CONSTRAINT UK_empleado UNIQUE (cedula),
 	CONSTRAINT FK_empleado_usuario FOREIGN KEY (id_usuario) REFERENCES usuario (id)
@@ -194,6 +196,7 @@ CREATE TABLE IF NOT EXISTS postulacion (
 	id_anuncio int NOT NULL,
 	fecha date NULL,
 	genera_vinculo boolean NULL,
+    notificada boolean DEFAULT 0 NOT NULL,
 	CONSTRAINT PK_postulacion PRIMARY KEY (id),
 	CONSTRAINT FK_postulacion_empleado FOREIGN KEY (id_empleado) REFERENCES empleado(id),
 	CONSTRAINT FK_postulacion_anuncio FOREIGN KEY (id_anuncio) REFERENCES anuncio(id)
@@ -211,6 +214,7 @@ CREATE TABLE IF NOT EXISTS vinculo (
 	descripcion text DEFAULT NULL,
 	calificacion_empleado double DEFAULT NULL,
 	calificacion_empleador double DEFAULT NULL,
+    notificado boolean DEFAULT 0 NOT NULL,
 	CONSTRAINT PK_vinculo PRIMARY KEY (id),
 	CONSTRAINT FK_vinculo_empleado FOREIGN KEY (id_empleado) REFERENCES empleado(id),
 	CONSTRAINT FK_vinculo_empleador FOREIGN KEY (id_empleador) REFERENCES empleador(id),
