@@ -146,7 +146,7 @@
                                     <h5 class="card-title">{{empleador.nombre}} {{empleador.apellido}}</h5>
                                     <p class="card-text">
                                         Registro en el BPS: 
-                                        {% if empleador.bps == '' or empleador.bps == '0'%}No{% else %}Si{% endif %}</p>
+                                        {% if empleador.registroBps == '' or empleador.registroBps == '0'%}No{% else %}Si{% endif %}</p>
                                         {% if empleador.promedioCalificacion %}
                                         <img class="mt-4 mb-4" style="margin-bottom: 0.3rem !important;"
                                           {% if empleador.promedioCalificacion < 1 %}
@@ -285,7 +285,7 @@
                         <h5 class="card-title">{{empleador.nombre}} {{empleador.apellido}}</h5>
                         <p class="card-text">
                             Registro en el BPS: 
-                            {% if empleador.bps == '' or empleador.bps == '0'%}No{% else %}Si{% endif %}</p>
+                            {% if empleador.registroBps == '' or empleador.registroBps == '0'%}No{% else %}Si{% endif %}</p>
                             {% if empleador.promedioCalificacion %}
                             <img class="mt-4 mb-4" style="margin-bottom: 0.3rem !important;"
                               {% if empleador.promedioCalificacion < 1 %}

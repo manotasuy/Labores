@@ -26,9 +26,9 @@
 									<thead class="thead-light">
 										<tr>
 
-											<th scope="col"  class="text_full">Publicado</th>
+											<th scope="col"  class="tb_full">Publicado</th>
 											<th scope="col">Título</th>
-											<th scope="col" class="text_full">Estado</th>
+											<th scope="col" class="tb_full">Estado</th>
 											<th scope="col"></th>
 											<!--<th></th>-->
 
@@ -37,9 +37,9 @@
 									<tbody>
 										{% for anuncio in listaMisAnuncios %}
 										<tr>
-											<td class="text_full">{{ anuncio.3.strftime('%d/%m/%Y') }}</td>
+											<td class="tb_full">{{ anuncio.3.strftime('%d/%m/%Y') }}</td>
 											<td >{{ anuncio.1 }}</td>
-											<td class="text_full">
+											<td class="tb_full">
 												{% if anuncio.5 == 1 %}
 												<p>Publicado</p>
 												{% elif anuncio.5 == 0 %}
