@@ -151,16 +151,23 @@ h1 {
 .card_mobile{
  display:none;
 }
-
+.foot_mobile{
+  display: none;
+}
 
 @media (max-width: 640px) and (min-width: 320px){
+ .foot_full{
+  display: none;
+ }
+
+
  .image_full{
   display:none;
  }
 
  .div_full{
   display: none;
-}
+ }
 
  .image_mobile{
   display:block;
@@ -183,9 +190,9 @@ h1 {
   display:none;
  }
 
-.card_mobile{
- display:block;
-}
+ .card_mobile{
+  display:block;
+ }
 
 }
 

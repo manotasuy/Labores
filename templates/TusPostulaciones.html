@@ -23,7 +23,10 @@
             <p>Aún no tienes postulaciones.</p>
             {% else %}
             {% for postulacion in postulaciones %}
-            <div class="container border-top border-bottom bg-light mb-3">
+
+<!---------------------------------------------------FULL---------------------------------------------------------------------------------->
+            
+            <div class="container border-top border-bottom bg-light mb-3 text_full">
                 <div class="media text-muted pt-3 ml-5 mt-3">
                     <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32"
                         xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false"
@@ -37,7 +40,6 @@
                         <strong class="d-block text-gray-dark"
                             style="font-size: large;">{{ postulacion[1].titulo }}</strong><br>
                         Postulación: <strong>{{ postulacion[2].fecha.strftime('%d/%m/%Y') }}</strong> <br>
-                        {{ postulacion[1].descripcion }} <br>
 
                         {% if postulacion[3] == 1 %}
                         <a class="btn btn-sm btn-success mb-2 mt-4 float-left" href="/verAnuncio/{{ postulacion.0 }}/1"
@@ -58,6 +60,46 @@
                     </p>
                 </div>
             </div>
+<!-------------------------------------------------------------------------------------------------------------------------------------->
+
+
+<!---------------------------------------------------mobile---------------------------------------------------------------------------------->
+            
+<div class="bg-light text_mobile">
+    <div class="">
+        <hr class="mt-5 mb-5">
+        <p class="" style="margin-left: 10px;">
+            <strong class="d-block text-gray-dark"
+                style="font-size: large;">{{ postulacion[1].titulo }}</strong><br>
+            Postulación: <strong>{{ postulacion[2].fecha.strftime('%d/%m/%Y') }}</strong> <br>
+
+            {% if postulacion[3] == 1 %}
+            <br>
+            <a class="btn btn-sm btn-success" href="/verAnuncio/{{ postulacion.0 }}/1"
+                aria-label="">
+                Ir al Anuncio
+            </a>
+            <br>
+            <a class="btn btn-sm btn-warning" style="margin-top: 5px;" href=""
+            aria-label="" data-toggle="modal" data-target="#modal">
+            Despostularme
+            </a>
+            {% else %}
+            <br>
+            <a class="btn btn-sm btn-secondary" aria-label="">Anuncio cerrado</a>
+            <br>
+            <a class="btn btn-sm btn-warning" style="margin-top: 5px;" href=""
+            aria-label="" data-toggle="modal" data-target="#modal">
+            Despostularme
+            </a>
+            {% endif %}
+        </p>
+        <hr class="mt-5 mb-5">
+    </div>
+</div>
+<!-------------------------------------------------------------------------------------------------------------------------------------->
+
+
             <!-------------------------------------------MODAL---------------------------------------------------------------------------------->
             <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="mensaje"
             aria-hidden="true">
