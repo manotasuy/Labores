@@ -255,7 +255,7 @@
                     Los empleadores te invitarán a pasar a su casa <br>
                     ¡cuentales algo sobre tí, así comienzan a conocerte!
                 </h5>
-                <textarea class="" name="presentacion" rows="10" cols="65"
+                <textarea class="" name="presentacion" rows="10" cols="35"
                     placeholder="Escribe aqui...">{{data.descripcion}}</textarea>
 
                 <hr class="mt-5 mb-5">
@@ -272,22 +272,22 @@
                     <table class="table table-bordered table bg-white">
                         <thead>
                             <tr>
-                                <td>Nombre</td>
+                                <td class="tb_full">Nombre</td>
                                 <td>Apellido</td>
                                 <td>Teléfono</td>
-                                <td>Desde</td>
-                                <td>Hasta</td>
+                                <td class="tb_full">Desde</td>
+                                <td class="tb_full">Hasta</td>
                                 <td></td>
                             </tr>
                         </thead>
                         <tbody>
                             {% for referencia in data.referencias %}
                             <tr>
-                                <td>{{referencia.nombre}}</td>
+                                <td class="tb_full">{{referencia.nombre}}</td>
                                 <td>{{referencia.apellido}}</td>
                                 <td>{{referencia.telefono}}</td>
-                                <td>{{referencia.fechaDesde.strftime('%d/%m/%Y')}}</td>
-                                <td>{{referencia.fechaHasta.strftime('%d/%m/%Y')}}</td>
+                                <td class="tb_full">{{referencia.fechaDesde.strftime('%d/%m/%Y')}}</td>
+                                <td class="tb_full">{{referencia.fechaHasta.strftime('%d/%m/%Y')}}</td>
                                 <td>
                                     <button class="btn btn-sm btn-primary btn btn-block" name="btnEditarReferencia"
                                         value={{referencia.id}}>Editar</button>

@@ -12,7 +12,7 @@
 <div class="container">
   <div class="jumbotron jumbotron-fluid">
     <div class="container">
-
+      <div class="text_full">
       <div class="mt-1 mb-5">
         <div class="text-center mb-3">
           <h1 for="">{{data.nombre}} {{data.apellido}}</h1>
@@ -69,17 +69,83 @@
                 {% endif %}
               </td>
               <td>
+ 
                 {% if tipo == 'Empleado' %}
                 <textarea
                   class="float-right border-0 text-decoration-none bg-transparent text-small font-weight-bold font-italic ml-2 mt-2"
                   name="presentacion" rows="10" cols="42" placeholder="" disabled>{{data.descripcion}}</textarea>
                 {% endif %}
+
               </td>
             </tr>
           </tbody>
         </table>
       </div>
+    </div>
+    <div class="text_mobile">
+      <div class="mt-1 mb-5">
+        <div class="text-center mb-3">
+          <h1 for="">{{data.nombre}} {{data.apellido}}</h1>
+          <br>
+        </div>
 
+                <a class="my-0 mr-md-auto" href="" aria-label="Home">
+                  <img class="mt-2 mb-2 ml-4" src="{{ url_for('static', filename=data.foto)}}" alt="" width="125"
+                    height="125">
+                </a>
+                {% if data.promedioCalificacion %}
+                  <img class="mt-4 mb-4" style="margin-bottom: 0.3rem !important;"
+                    {% if data.promedioCalificacion < 1 %}
+                      src="{{ url_for('static', filename='images/Estrellas/05star.png')}}"
+                    {% elif data.promedioCalificacion >= 1 and data.promedioCalificacion < 1.5 %}
+                      src="{{ url_for('static', filename='images/Estrellas/10star.png')}}"
+                    {% elif data.promedioCalificacion >= 1.5 and data.promedioCalificacion < 2 %}
+                      src="{{ url_for('static', filename='images/Estrellas/15star.png')}}"
+                    {% elif data.promedioCalificacion >= 2 and data.promedioCalificacion < 2.5 %}
+                      src="{{ url_for('static', filename='images/Estrellas/20star.png')}}"                      
+                    {% elif data.promedioCalificacion >= 2.5 and data.promedioCalificacion < 3 %}
+                      src="{{ url_for('static', filename='images/Estrellas/25star.png')}}"                      
+                    {% elif data.promedioCalificacion >= 3 and data.promedioCalificacion < 3.5 %}
+                      src="{{ url_for('static', filename='images/Estrellas/30star.png')}}"                      
+                    {% elif data.promedioCalificacion >= 3.5 and data.promedioCalificacion < 4 %}
+                      src="{{ url_for('static', filename='images/Estrellas/35star.png')}}"                      
+                    {% elif data.promedioCalificacion >= 4 and data.promedioCalificacion < 4.5 %}
+                      src="{{ url_for('static', filename='images/Estrellas/40star.png')}}"                      
+                    {% elif data.promedioCalificacion >= 4.5 and data.promedioCalificacion < 5 %}
+                      src="{{ url_for('static', filename='images/Estrellas/45star.png')}}"    
+                    {% elif data.promedioCalificacion == 5 %}
+                      src="{{ url_for('static', filename='images/Estrellas/50star.png')}}"
+                    {% endif %}
+                    alt="" width="188" height="41">
+                    <p style="font-size: 0.8em important; text-align: center important;">
+                      De {{cal['cantEmpleadores']}}
+                      {% if cal['cantEmpleadores'] == 1 %}
+                      calificante
+                      {% else %}
+                      calificantes
+                      {% endif %}
+                      por {{cal['cantVinculos']}} 
+                      {% if cal['cantVinculos'] == 1 %}
+                      vínculo
+                      {% else %}
+                      vínculos
+                      {% endif %}
+                    </p>
+                {% else %}
+                <p class="mt-4 mb-4">Sin calificaciones aún.</p>
+                {% endif %}
+
+ 
+                {% if tipo == 'Empleado' %}
+                <br><br>
+                <textarea
+                  class="border-0 text-decoration-none bg-transparent text-small font-weight-bold font-italic"
+                  name="presentacion" rows="10" cols="30" placeholder="" disabled>{{data.descripcion}}</textarea>
+                {% endif %}
+
+
+      </div>
+    </div>
       <form class="needs-validation" novalidate="" action="" method="POST">
         <div class="row">
           <div class="col-md-6 mb-3">
@@ -205,8 +271,8 @@
                 <td>Nombre</td>
                 <td>Apellido</td>
                 <td>Teléfono</td>
-                <td>Desde</td>
-                <td>Hasta</td>
+                <td class="tb_full">Desde</td>
+                <td class="tb_full">Hasta</td>
               </tr>
             </thead>
             <tbody>
@@ -215,8 +281,8 @@
                 <td>{{referencia.nombre}}</td>
                 <td>{{referencia.apellido}}</td>
                 <td>{{referencia.telefono}}</td>
-                <td>{{referencia.fechaDesde.strftime('%d/%m/%Y')}}</td>
-                <td>{{referencia.fechaHasta.strftime('%d/%m/%Y')}}</td>
+                <td class="tb_full">{{referencia.fechaDesde.strftime('%d/%m/%Y')}}</td>
+                <td class="tb_full">{{referencia.fechaHasta.strftime('%d/%m/%Y')}}</td>
               </tr>
               {% endfor %}
             </tbody>
@@ -225,7 +291,7 @@
         {% endif %}
 
         <hr class="mt-5 mb-5">
-
+      <div class="text_full">
         <div class="card mb-5" style="min-width: 500px;">
           <div class="row no-gutters">
             <div class="col-md-15">
@@ -245,6 +311,30 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <div class="text_mobile">
+        <div class="card mb-5">
+          <div class="row no-gutters">
+            <div class="col-md-15">
+              <div class="card-body">
+                <a class="btn btn btn-primary mr-3"
+                  href="/MensajesEmpleador/{{ session['id_empleador'] }}/{{data.id}}" aria-label="">Enviar Mensaje</a><br><br>
+                <p class="card-text">
+                  <small class="text-muted">
+                    Si lo deseas, puedes enviar mensaje a <strong><i>{{data.nombre}} {{data.apellido}}</i></strong>
+                    para hacerle algunas especificaciones del empleo, para evacuar dudas sobre días,
+                    horarios o cualquier aspecto relacionado con las tareas a desarrollar. <br>
+                    <strong><i>{{data.nombre}}</i></strong> podrá responderte y serás notificado en tu área personal de
+                    mensajes.
+                  </small>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
         <p class="mt-5 pb-5"><button type="button" class="btn btn-primary" onClick="history.go(-1)">Volver</button><a
             class="btn btn-lg btn-success float-right" href="/Contratar/{{data.id}}" aria-label="">Realizar
             Contratación</a></p>

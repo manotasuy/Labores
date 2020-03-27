@@ -26,9 +26,9 @@
 									<thead class="thead-light">
 										<tr>
 
-											<th scope="col">Publicado</th>
+											<th scope="col"  class="text_full">Publicado</th>
 											<th scope="col">Título</th>
-											<th scope="col">Estado</th>
+											<th scope="col" class="text_full">Estado</th>
 											<th scope="col"></th>
 											<!--<th></th>-->
 
@@ -37,9 +37,9 @@
 									<tbody>
 										{% for anuncio in listaMisAnuncios %}
 										<tr>
-											<td>{{ anuncio.3.strftime('%d/%m/%Y') }}</td>
-											<td>{{ anuncio.1 }}</td>
-											<td>
+											<td class="text_full">{{ anuncio.3.strftime('%d/%m/%Y') }}</td>
+											<td >{{ anuncio.1 }}</td>
+											<td class="text_full">
 												{% if anuncio.5 == 1 %}
 												<p>Publicado</p>
 												{% elif anuncio.5 == 0 %}
@@ -60,17 +60,19 @@
 								</table>
 							</div>
 						</div>
+
 					</div>
+					<br>
+					<button type="button" class="btn btn-primary float-left" onClick="history.go(-1)">Volver</button>
+					<a class="btn btn-success float-right" href="/Anuncio/Alta">Crear oferta</a>
+					<br>
 				</div>
+				
+
 			</div>
-			<div class="container-fluid h-100">
-				<div class="row w-100 align-items-center">
-					<div class="col text-center">
-						<button type="button" class="btn btn-primary mt-4 mr-5" onClick="history.go(-1)">Volver</button>
-						<a class="btn btn-success mt-4 ml-5" href="/Anuncio/Alta">Crear nueva oferta</a>
-					</div>
-				</div>
-			</div>
+
+
+
 		</div>
 	</div>
 </div>

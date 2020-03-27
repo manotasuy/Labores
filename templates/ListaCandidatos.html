@@ -97,8 +97,10 @@
                     </div>
                 </div>
             </div>
+            <br><br>
 
             {% if item_impares %}
+          <div class="text_full">
             <div class="card mb-3" style="max-width: 500px;">
                 <div class="row no-gutters">
                     <div class="col-md-4">
@@ -113,7 +115,7 @@
                                 Meses de experiencia: {{item_impares[0][0].experiencia_meses}}<br></p>
                                 <div class="card-text">
                                     {% if item_impares[0][0].empleado.promedioCalificacion %}
-                                    <img class="mt-4 mb-4" 
+                                    <img class="mt-4 mb-4" style="margin-bottom: 0.3rem !important;"
                                       {% if item_impares[0][0].empleado.promedioCalificacion < 1 %}
                                         src="{{ url_for('static', filename='images/Estrellas/05star.png')}}"
                                       {% elif item_impares[0][0].empleado.promedioCalificacion >= 1 and item_impares[0][0].empleado.promedioCalificacion < 1.5 %}
@@ -162,6 +164,76 @@
                     </div>
                 </div>
             </div>
+          </div>
+          <br><br>
+
+
+          <div class="text_mobile">
+            <div class="card mb-3 ml-5 mr-3 mb-3" style="max-width: 500px;">
+              <div class="row no-gutters">
+                  <div class="col-md-4">
+                      <img src="{{ url_for('static', filename=item_impares[0][0].empleado.foto)}}" class="card-img"
+                          alt="...">
+                  </div>
+                  <div class="col-md-8">
+                      <div class="card-body">
+                          <h5 class="card-title">{{item_impares[0][0].empleado.nombre}} {{item_impares[0][0].empleado.apellido}}
+                          </h5>
+                          <p class="card-text">
+                              Meses de experiencia: {{item_impares[0][0].experiencia_meses}}<br></p>
+                              <div class="card-text">
+                                  {% if item_impares[0][0].empleado.promedioCalificacion %}
+                                  <img class="mt-4 mb-4" style="margin-bottom: 0.3rem !important;"
+                                    {% if item_impares[0][0].empleado.promedioCalificacion < 1 %}
+                                      src="{{ url_for('static', filename='images/Estrellas/05star.png')}}"
+                                    {% elif item_impares[0][0].empleado.promedioCalificacion >= 1 and item_impares[0][0].empleado.promedioCalificacion < 1.5 %}
+                                      src="{{ url_for('static', filename='images/Estrellas/10star.png')}}"
+                                    {% elif item_impares[0][0].empleado.promedioCalificacion >= 1.5 and item_impares[0][0].empleado.promedioCalificacion < 2 %}
+                                      src="{{ url_for('static', filename='images/Estrellas/15star.png')}}"
+                                    {% elif item_impares[0][0].empleado.promedioCalificacion >= 2 and item_impares[0][0].empleado.promedioCalificacion < 2.5 %}
+                                      src="{{ url_for('static', filename='images/Estrellas/20star.png')}}"                      
+                                    {% elif item_impares[0][0].empleado.promedioCalificacion >= 2.5 and item_impares[0][0].empleado.promedioCalificacion < 3 %}
+                                      src="{{ url_for('static', filename='images/Estrellas/25star.png')}}"                      
+                                    {% elif item_impares[0][0].empleado.promedioCalificacion >= 3 and item_impares[0][0].empleado.promedioCalificacion < 3.5 %}
+                                      src="{{ url_for('static', filename='images/Estrellas/30star.png')}}"                      
+                                    {% elif item_impares[0][0].empleado.promedioCalificacion >= 3.5 and item_impares[0][0].empleado.promedioCalificacion < 4 %}
+                                      src="{{ url_for('static', filename='images/Estrellas/35star.png')}}"                      
+                                    {% elif item_impares[0][0].empleado.promedioCalificacion >= 4 and item_impares[0][0].empleado.promedioCalificacion < 4.5 %}
+                                      src="{{ url_for('static', filename='images/Estrellas/40star.png')}}"                      
+                                    {% elif item_impares[0][0].empleado.promedioCalificacion >= 4.5 and item_impares[0][0].empleado.promedioCalificacion < 5 %}
+                                      src="{{ url_for('static', filename='images/Estrellas/45star.png')}}"    
+                                    {% elif item_impares[0][0].empleado.promedioCalificacion == 5 %}
+                                      src="{{ url_for('static', filename='images/Estrellas/50star.png')}}"
+                                    {% endif %}
+                                    alt="" width="188" height="41">
+                                    <p>
+                                      De {{item_impares[1]['cantEmpleadores']}}
+                                      {% if item_impares[1]['cantEmpleadores'] == 1 %}
+                                      calificante
+                                      {% else %}
+                                      calificantes
+                                      {% endif %}
+                                      por {{item_impares[1]['cantVinculos']}} 
+                                      {% if item_impares[1]['cantVinculos'] == 1 %}
+                                      vínculo
+                                      {% else %}
+                                      vínculos
+                                      {% endif %}
+                                    </p>
+                                {% else %}
+                                <p class="mt-4 mb-4">Sin calificaciones aún.</p>
+                                {% endif %}
+                              </div>
+                          <a class="btn btn-sm btn-success float-right"
+                              href="/VistaPerfil/Empleado/{{item_impares[0][0].empleado.id}}" aria-label="">Ir al Perfil</a>
+                          <p class="card-text"><small class="text-muted">Su postulación fue en:
+                                  {{item_impares[0][0].fecha.strftime('%d/%m/%Y')}}</small></p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+        <br><br>
             {% endif %}
         </div>
         {% endfor %}
