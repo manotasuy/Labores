@@ -136,6 +136,10 @@ h1 {
   display: contents;
 }
 
+.div_mobile{
+  display: none;
+}
+
 .text_full{
   display: block;
  }
@@ -159,6 +163,10 @@ h1 {
  .foot_full{
   display: none;
  }
+
+ .div_mobile{
+  display: contents;
+}
 
 
  .image_full{

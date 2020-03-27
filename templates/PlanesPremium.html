@@ -19,21 +19,24 @@
     </ol>
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img class="d-block" src="{{ url_for('static', filename='images/PlanPremium1.png')}}" alt="First slide">
+            <img class="image_full" src="{{ url_for('static', filename='images/PlanPremium1.png')}}" alt="First slide">
+            <img class="image_mobile" src="{{ url_for('static', filename='images/PlanPremiumMobile.png')}}" alt="First slide">
             <div class="carousel-caption d-md-block text-right">
                 <h3>Plan Premium 1</h3>
                 <p id="pCarouselCustom1">Resumen de beneficios del plan premium 1</p>
             </div>
         </div>
         <div class="carousel-item">
-            <img class="d-block" src="{{ url_for('static', filename='images/PlanPremium2.png')}}" alt="Second slide">
+            <img class="image_full" src="{{ url_for('static', filename='images/PlanPremium1.png')}}" alt="Second slide">
+            <img class="image_mobile" src="{{ url_for('static', filename='images/PlanPremiumMobile.png')}}" alt="Second slide">
             <div class="carousel-caption d-md-block text-right">
                 <h3>Plan Premium 2</h3>
                 <p id="pCarouselCustom2">Resumen de beneficios del plan premium 2</p>
             </div>
         </div>
         <div class="carousel-item">
-            <img class="d-block" src="{{ url_for('static', filename='images/PlanPremium3.png')}}" alt="Third slide">
+            <img class="image_full" src="{{ url_for('static', filename='images/PlanPremium1.png')}}" alt="Third slide">
+            <img class="image_mobile" src="{{ url_for('static', filename='images/PlanPremiumMobile.png')}}" alt="Third slide">
             <div class="carousel-caption d-md-block text-right">
                 <h3>Plan Premium 3</h3>
                 <p id="pCarouselCustom3">Resumen de beneficios del plan premium 3</p>
@@ -52,7 +55,7 @@
 </div>
  
 
-<div class="container marketing">
+<div class="container marketing div_full">
     <!--<hr class="featurette-divider">-->
     <div class="row featurette">
         <div class="col-md-7 order-md-2">
@@ -99,6 +102,75 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="mensaje"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">Mensaje</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h4>Funcionalidad no implementada</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container marketing div_mobile">
+    <hr class="featurette-divider" >
+    <div class="row featurette">
+        <div class="col-md-7 order-md-2" style="margin: 50px !important;">
+            <h2 class="featurette-heading">Plan 1</h2>
+            <img class="float-right" src="{{ url_for('static', filename='images/Logos/LogoPremium.png')}}" alt="" width="96"
+            height="96">
+            <p class="lead">
+                Explicar los <br>beneficios <br>del <br>Plan 1
+            </p>
+            <a class="btn btn-sm btn-dark" href="#/" data-toggle="modal"
+                    data-target="#modal">CONTRATAR</a>
+        </div>
+
+    </div>
+    <hr class="featurette-divider">
+    <div class="row featurette">
+        <div class="col-md-7 order-md-2" style="margin: 50px !important;">
+            <h2 class="featurette-heading">Plan 2</h2>
+            <img class="float-right" src="{{ url_for('static', filename='images/Logos/LogoPremium.png')}}" alt="" width="96"
+            height="96">
+            <p class="lead">
+                Explicar los <br>beneficios <br>del <br>Plan 2
+            </p>
+            <a class="btn btn-sm btn-dark" href="#/" data-toggle="modal"
+                    data-target="#modal">CONTRATAR</a>
+        </div>
+        <hr class="featurette-divider">
+
+    </div>
+
+<hr class="featurette-divider">
+
+    <div class="row featurette mb-5">
+        <div class="col-md-7 order-md-2" style="margin: 50px !important;">
+            <h2 class="featurette-heading">Plan 3</h2>
+            <img class="float-right" src="{{ url_for('static', filename='images/Logos/LogoPremium.png')}}" alt="" width="96"
+            height="96">
+            <p class="lead">
+                Explicar los <br>beneficios <br>del <br>Plan 3
+            </p>
+            <a class="btn btn-sm btn-dark" href="#/" data-toggle="modal"
+                    data-target="#modal">CONTRATAR</a>
+        </div>
+
+    </div>
+    <hr class="featurette-divider">
     <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="mensaje"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
