@@ -294,7 +294,7 @@ def getPromedioByEmpleadoId(bd, idEmpleado):
             promedio = suma / cantVinculos
 
         listaEmpleadoresRep = []
-        for v in retornoV:
+        for v in vinculosCal:
             listaEmpleadoresRep.append(v[0])
 
         listaEmpleadores = list(set(listaEmpleadoresRep)) #contiene una lista con los empleados sin repetir
@@ -326,8 +326,10 @@ def getPromedioByEmpleadorId(bd, idEmpleador):
         cursor.close()
         vinculosCal = [] #contiene id_empleado y calificacion_empleador para todos los vinculos CALIFICADOS del empleadoR
         for cal in retornoV:
+            
             if cal[1] != None:
                 vinculosCal.append(cal)
+                print(cal)
 
         suma = 0 #contiene la suma de todas las calificaciones del empleador
         for c in vinculosCal:
@@ -343,7 +345,7 @@ def getPromedioByEmpleadorId(bd, idEmpleador):
             promedio = suma / cantVinculos
 
         listaEmpleadosRep = []
-        for v in retornoV:
+        for v in vinculosCal:
             listaEmpleadosRep.append(v[0])
 
         listaEmpleados = list(set(listaEmpleadosRep)) #contiene una lista con los empleados sin repetir
