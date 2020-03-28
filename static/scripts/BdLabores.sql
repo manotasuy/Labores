@@ -444,9 +444,7 @@ VALUES (2, 1, 3, '2020-01-18 11:11:28', 'Tengo gran experiencia en limpieza de o
 INSERT INTO mensaje (id_empleado, id_empleador, id_anuncio, fecha, mensaje, id_tipo_emisor, id_tipo_receptor, leido)
 VALUES (2, 1, 3, '2020-01-22 15:36:01', 'Interesante', 2, 1, false);
 
--- En tabla "vinculo"
-
-/* Para poder armar ranking de empleados
+/* Para poder armar ranking de empleados */
 
 -- Empleados
 
@@ -730,4 +728,3 @@ VALUES (10, 3, 19, '2020-03-01', NULL, '', 4.5, 4.5);
 
 INSERT INTO vinculo (id_empleado, id_empleador, id_anuncio, fecha_inicio, fecha_fin, descripcion, calificacion_empleado, calificacion_empleador)
 VALUES (10, 3, 20, '2020-03-01', NULL, '', 4.0, 4.0);
-*/

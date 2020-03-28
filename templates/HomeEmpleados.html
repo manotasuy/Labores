@@ -16,15 +16,32 @@
                 <p class="lead">
                     {% if tieneNotifPendientesVinculos %}
                     <a class="my-0 mr-md-auto" href="/MisVinculos" aria-label="Home">
-                        <img class="mr-5" src="{{ url_for('static', filename='images/Alertas/Vinculo.png')}}" alt=""
+                        <img class="mr-2" src="{{ url_for('static', filename='images/Alertas/Vinculo.png')}}" alt=""
                             width="80" height="80">
                     </a>
+                    {% else %}
+                    <img class="mr-2" src="{{ url_for('static', filename='images/Alertas/NoVinculo.png')}}" alt=""
+                            width="80" height="80">
                     {% endif %}
+
+                    {% if tieneRecordatorios %}
+                    <a class="my-0 mr-md-auto" href="/" aria-label="Home">
+                      <img class="" src="{{ url_for('static', filename='images/Alertas/Recordatorio.png')}}" alt="" width="80"
+                        height="80">
+                    </a>
+                    {% else %}
+                      <img class="" src="{{ url_for('static', filename='images/Alertas/NoRecordatorio.png')}}" alt="" width="80"
+                        height="80">
+                    {% endif %}
+
                     {% if tieneMensajesSinLeer %}
                     <a class="my-0 mr-md-auto" href="/MensajesEmpleado/{{sujeto.id}}/0" aria-label="Home">
-                        <img class="ml-5" src="{{ url_for('static', filename='images/Alertas/Mensaje.png')}}" alt=""
+                        <img class="ml-2" src="{{ url_for('static', filename='images/Alertas/Mensaje.png')}}" alt=""
                             width="80" height="80">
                     </a>
+                    {% else %}
+                    <img class="ml-2" src="{{ url_for('static', filename='images/Alertas/NoMensaje.png')}}" alt="" width="80"
+                        height="80">
                     {% endif %}
                 </p>
                 <img class="mb-4" src="{{ url_for('static', filename=sujeto.foto)}}" alt="" width="125" height="125"><br>
