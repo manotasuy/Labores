@@ -120,8 +120,11 @@ class Vinculo:
         except Exception as e:
             print("Error en marcarVinculoComoNotificado ", e)
 
+
 def getVinculoByID(bd, id):
     try:
+        if id == None or id == 0:
+            return None
         cursor = bd.connection.cursor()
         cursor.execute('''
             SELECT
@@ -329,7 +332,7 @@ def getPromedioByEmpleadorId(bd, idEmpleador):
             
             if cal[1] != None:
                 vinculosCal.append(cal)
-                print(cal)
+                #print(cal)
 
         suma = 0 #contiene la suma de todas las calificaciones del empleador
         for c in vinculosCal:

@@ -10,6 +10,8 @@
 -- Si se usa AWS o localhost
 -- USE bdlabores;
 
+DROP TABLE IF EXISTS recordatorio;
+DROP TABLE IF EXISTS tipo_recordatorio;
 DROP TABLE IF EXISTS vinculo;
 DROP TABLE IF EXISTS mensaje;
 DROP TABLE IF EXISTS tipo_emisor_receptor_mensaje;
@@ -249,6 +251,36 @@ CREATE TABLE IF NOT EXISTS mensaje (
     CONSTRAINT FK_mensaje_tipo_receptor FOREIGN KEY (id_tipo_receptor) REFERENCES tipo_emisor_receptor_mensaje (id)
 );
 
+-- Tabla: Tipo de Recordatorio
+CREATE TABLE IF NOT EXISTS tipo_recordatorio
+(
+	id int NOT NULL AUTO_INCREMENT,
+	nombre VARCHAR(50) NOT NULL,
+    CONSTRAINT PK_tipo_recordatorio PRIMARY KEY (id),
+    CONSTRAINT UK_tipo_recordatorio UNIQUE (nombre)
+);
+
+-- Tabla: recordatorio
+CREATE TABLE IF NOT EXISTS recordatorio (
+	id int NOT NULL AUTO_INCREMENT,
+    id_tipo int NOT NULL, -- Tipo de recordatorio: calificación pendiente, cambio contraseña, vencimiento anuncio, etc.
+	id_empleado int NOT NULL,
+	id_empleador int NOT NULL,
+    id_destinatario int NOT NULL, -- Id del empleado o del empleador
+	id_anuncio int NULL, -- Puede ser vacío
+    id_postulacion int NULL, -- Puede ser vacío
+    id_vinculo int NULL, -- Puede ser vacío
+	fecha_recordatorio date NOT NULL,
+    fecha_limite date NULL,
+    cant_veces_aplazado int NULL,
+	leyenda text NOT NULL,
+    bloqueante boolean DEFAULT 0 NOT NULL,
+	CONSTRAINT PK_recordatorio PRIMARY KEY (id),
+    CONSTRAINT FK_recordatorio_tipo FOREIGN KEY (id_tipo) REFERENCES tipo_recordatorio (id),
+	CONSTRAINT FK_recordatorio_empleado FOREIGN KEY (id_empleado) REFERENCES empleado (id),
+	CONSTRAINT FK_recordatorio_empleador FOREIGN KEY (id_empleador) REFERENCES empleador (id)
+);
+
 
 -- *** INSERCIONES EN LAS TABLAS ***
 
@@ -443,6 +475,25 @@ INSERT INTO mensaje (id_empleado, id_empleador, id_anuncio, fecha, mensaje, id_t
 VALUES (2, 1, 3, '2020-01-18 11:11:28', 'Tengo gran experiencia en limpieza de oficinas', 1, 2, false);
 INSERT INTO mensaje (id_empleado, id_empleador, id_anuncio, fecha, mensaje, id_tipo_emisor, id_tipo_receptor, leido)
 VALUES (2, 1, 3, '2020-01-22 15:36:01', 'Interesante', 2, 1, false);
+
+-- En tabla "tipo_recordatorio"
+INSERT INTO tipo_recordatorio (nombre) 
+VALUES ('Calificación Pendiente');
+INSERT INTO tipo_recordatorio (nombre) 
+VALUES ('Cambio Contraseña');
+INSERT INTO tipo_recordatorio (nombre) 
+VALUES ('Vencimiento Anuncio');
+INSERT INTO tipo_recordatorio (nombre) 
+VALUES ('Alerta Inactividad');
+
+-- En tabla "recordatorio"
+INSERT INTO recordatorio (id_tipo, id_empleado, id_empleador, id_destinatario, id_anuncio, id_postulacion, id_vinculo, fecha_recordatorio, fecha_limite, cant_veces_aplazado, leyenda, bloqueante)
+VALUES (1, 6, 2, 6, 10, NULL, 7, '2020-03-28', '2020-03-28', 2, 'Debe calificar el vínculo', 1);
+INSERT INTO recordatorio (id_tipo, id_empleado, id_empleador, id_destinatario, id_anuncio, id_postulacion, id_vinculo, fecha_recordatorio, fecha_limite, cant_veces_aplazado, leyenda, bloqueante)
+VALUES (1, 6, 2, 2, 10, NULL, 7, '2020-03-28', '2020-03-28', 2, 'Debe calificar el vínculo', 1);
+INSERT INTO recordatorio (id_tipo, id_empleado, id_empleador, id_destinatario, id_anuncio, id_postulacion, id_vinculo, fecha_recordatorio, fecha_limite, cant_veces_aplazado, leyenda, bloqueante)
+VALUES (1, 9, 2, 2, 17, NULL, 14, '2020-03-29', '2020-03-29', 2, 'Debe calificar el vínculo', 1);
+
 
 /* Para poder armar ranking de empleados */
 

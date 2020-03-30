@@ -3,7 +3,7 @@ import os
 from flask import Flask, request, Response, render_template, url_for, redirect, flash, session, send_from_directory
 from werkzeug.utils import secure_filename
 from flask_mysqldb import MySQL
-from datetime import datetime
+from datetime import datetime, timedelta
 from enum import Enum
 
 # Paquetes implementación
@@ -20,6 +20,7 @@ from Implementacion.Mensaje import Mensaje, getMensajesParaEmpleado, empleadoTie
 from Implementacion.DTOAuxEmpleado import DTOAuxEmpleado, TareaSeleccion, DisponibilidadSeleccion
 from Implementacion.Referencia import Referencia, getReferenciaByID, getReferenciasEmpleado
 from Implementacion.Admin import getDatosAdmin
+from Implementacion.Recordatorio import Recordatorio, getRecordatorioByID, recordatoriosBloqueantes, recordatoriosCalificacionesPendientes
 
 EXTENSIONES_ADMITIDAS = set(['jpg', 'png', 'jpeg', 'bmp', 'gif'])
 
@@ -76,6 +77,40 @@ def login(user, password):
             return redirect(url_for('administrar'))
 
 
+def getRecordatoriosCalificacionesPendientes():
+    if session.get('usertype') == None:
+        return None
+    elif session.get('usertype') == 'Administrador':
+        return None
+    elif session.get('usertype') == 'Empleado':
+        idEmpleado = session['id_empleado']
+        #print('idEmpleado: ', idEmpleado)
+        return recordatoriosCalificacionesPendientes(baseDatos, idEmpleado)
+    elif session.get('usertype') == 'Empleador':
+        idEmpleador = session['id_empleador']
+        #print('idEmpleador: ', idEmpleador)
+        return recordatoriosCalificacionesPendientes(baseDatos, idEmpleador)
+    else:
+        return None
+
+
+def getRecordatoriosBloqueantes():
+    if session.get('usertype') == None:
+        return None
+    elif session.get('usertype') == 'Administrador':
+        return None
+    elif session.get('usertype') == 'Empleado':
+        idEmpleado = session['id_empleado']
+        #print('idEmpleado: ', idEmpleado)
+        return recordatoriosBloqueantes(baseDatos, idEmpleado)
+    elif session.get('usertype') == 'Empleador':
+        idEmpleador = session['id_empleador']
+        #print('idEmpleador: ', idEmpleador)
+        return recordatoriosBloqueantes(baseDatos, idEmpleador)
+    else:
+        return None
+
+
 def getTop3EmpleadosParaBaseTemplate():
     return getRankingPorCalificacionEmpleados(baseDatos, 3)
 
@@ -85,7 +120,13 @@ def getTop3EmpleadoresParaBaseTemplate():
 
 @app.context_processor
 def contexto():
-    return dict(rankEmpleados=getTop3EmpleadosParaBaseTemplate, rankEmpleadores=getTop3EmpleadoresParaBaseTemplate)
+    contextProcessor = dict()
+    contextProcessor['rankEmpleados'] = getTop3EmpleadosParaBaseTemplate
+    contextProcessor['rankEmpleadores'] = getTop3EmpleadoresParaBaseTemplate
+    contextProcessor['recordatoriosBloqueantes'] = getRecordatoriosBloqueantes
+    contextProcessor['recordatoriosCalificacionesPendientes'] = getRecordatoriosCalificacionesPendientes
+    #print('recordatoriosBloqueantes: ', contextProcessor['recordatoriosBloqueantes'])
+    return contextProcessor
 
 
 @app.route('/')
@@ -104,10 +145,6 @@ def ayuda():
     return render_template('Ayuda.html')
 
 
-# @app.route("/LogIn/", methods=['GET'], defaults={'mensaje': None})
-# @app.route("/LogIn/<mensaje>", methods=['POST', 'GET'])
-# def logueo(mensaje):
-# return render_template('Login.html', mensaje=mensaje)
 @app.route("/LogIn/")
 def logueo():
     # return render_template('Login.html', mensaje=mensaje)
@@ -136,7 +173,14 @@ def ingresar():
 
 @app.route('/SignUp/')
 def opcion_registrarse():
-    return render_template('OpcionRegistro.html')
+    if session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    elif session.get('usertype') == 'Empleado':
+        return redirect(url_for('inicio_empleados'))
+    elif session.get('usertype') == 'Empleador':
+        return redirect(url_for('inicio_empleadores'))
+    else:
+        return render_template('OpcionRegistro.html')
 
 
 @app.route('/VistaPerfil/<opcion>/<id>', methods=['POST', 'GET'])
@@ -488,8 +532,12 @@ def inicio_empleados():
         tieneNotifMensajes = empleadoTieneMensajesSinLeer(baseDatos, empleado.id)
         # se debe verificar que el empleado este notificado sobre todos sus vínculos, en caso negativo se debe notificar
         tieneNotifVinculos = empleadoTieneNotificacionesPendientesVinculos(baseDatos, session['id_empleado'])
+        # Se debe verificar que el empleado no tenga recordatorios pendientes para resolver
+        tieneRecordatoriosPendientes = getRecordatoriosCalificacionesPendientes()
+        #print('tieneRecordatoriosPendientes: ', tieneRecordatoriosPendientes)
         cal = getPromedioByEmpleadoId(baseDatos, empleado.id)
-        return render_template('HomeEmpleados.html', sujeto=empleado, tieneMensajesSinLeer=tieneNotifMensajes, tieneNotifPendientesVinculos=tieneNotifVinculos, cal=cal)
+        return render_template('HomeEmpleados.html', sujeto=empleado, tieneMensajesSinLeer=tieneNotifMensajes, 
+        tieneNotifPendientesVinculos=tieneNotifVinculos, tieneRecordatorios=tieneRecordatoriosPendientes, cal=cal)
 
 
 @app.route('/HomeEmpleadores/', methods=['POST', 'GET'])
@@ -503,12 +551,16 @@ def inicio_empleadores():
     else:
         empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
         # se debe verificar que el empleador no tenga mensajes sin leer, en caso afirmativo se debe notificar
-        tiene = empleadorTieneMensajesSinLeer(baseDatos, empleador.id)
+        tieneNotifMensajes = empleadorTieneMensajesSinLeer(baseDatos, empleador.id)
         # se debe verificar que el empleador este notificado sobre todas las postulaciones a sus anuncios, 
         # en caso negativo se debe notificar
         tieneNotifPostulaciones = empleadorTieneNotificacionesPendientesPostulaciones(baseDatos, session['id_empleador'])
+        # Se debe verificar que el empleador no tenga recordatorios pendientes para resolver
+        tieneRecordatoriosPendientes = getRecordatoriosCalificacionesPendientes()
+        #print('tieneRecordatoriosPendientes: ', tieneRecordatoriosPendientes)
         cal = getPromedioByEmpleadorId(baseDatos, empleador.id)
-        return render_template('HomeEmpleadores.html', sujeto=empleador, tieneMensajesSinLeer=tiene, tieneNotifPendientesPostulaciones=tieneNotifPostulaciones, cal=cal)
+        return render_template('HomeEmpleadores.html', sujeto=empleador, tieneMensajesSinLeer=tieneNotifMensajes, 
+        tieneNotifPendientesPostulaciones=tieneNotifPostulaciones, tieneRecordatorios=tieneRecordatoriosPendientes, cal=cal)
 
 
 @app.route('/PanelControl/')
@@ -1182,6 +1234,59 @@ def cal_vinculo(idVinculo):
         return redirect(url_for('ver_vinculo', idVinculo = idVinculo))
 
 
+@app.route('/calificarVinculosPendientes/<bloqueado>', methods=['POST'])
+def calificar_vinculos_pendientes(bloqueado):
+    if session.get('usertype') == None:
+        return redirect(url_for('logueo'))
+    elif session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    else:
+        if request.method == 'POST':
+            idRecordatorio = request.form.get('idRecordatorio')
+            idVinculo = request.form.get('idVinculo')
+            cant_recordatorios = int(request.form.get('cant_recordatorios'))
+            #print('cant_recordatorios: ', cant_recordatorios)
+            cal = request.form.get('rating' + str(idVinculo))
+            #print('cal: ', cal)
+            vinculo = getVinculoByID(baseDatos, idVinculo)
+
+            if session.get('usertype') == 'Empleado':               
+                vinculo.calif_empleador = cal
+                vinculo.actualizarVinculo(baseDatos)
+                empleador = vinculo.empleador
+                empleador.promedioCalificacion = getPromedioByEmpleadorId(baseDatos, empleador.id)['promedio']
+                empleador.modificarEmpleador(baseDatos)
+                # debo eliminar el recordatorio
+                recordatorio : Recordatorio = getRecordatorioByID(baseDatos, idRecordatorio)
+                recordatorio.borrarRecordatorio(baseDatos)
+                # Si había un solo recordatorio como ya calificó lo debo enviar al Home
+                if cant_recordatorios == 1:
+                    flash('Has calificado satisfactoriamente con ' + str(cal) + ' estrellas tu vínculo sobre el anuncio: ' + str(vinculo.anuncio.titulo))
+                    return redirect(url_for('inicio_empleados'))
+
+
+            elif session.get('usertype') == 'Empleador': 
+                vinculo.calif_empleado = cal
+                vinculo.actualizarVinculo(baseDatos)
+                empleado = vinculo.empleado
+                empleado.promedioCalificacion = getPromedioByEmpleadoId(baseDatos, empleado.id)['promedio']
+                empleado.modificarEmpleado(baseDatos)
+                # debo eliminar el recordatorio
+                recordatorio : Recordatorio = getRecordatorioByID(baseDatos, idRecordatorio)
+                recordatorio.borrarRecordatorio(baseDatos)
+                # Si había un solo recordatorio como ya calificó lo debo enviar al Home
+                if cant_recordatorios == 1:
+                    flash('Has calificado satisfactoriamente con ' + str(cal) + ' estrellas tu vínculo sobre el anuncio: ' + str(vinculo.anuncio.titulo))
+                    return redirect(url_for('inicio_empleadores'))
+            
+            # Como son varios los recordatorios tengo que regresar al form de bloqueo para que siga calificando
+            flash('Has calificado satisfactoriamente con ' + str(cal) + ' estrellas tu vínculo sobre el anuncio: ' + str(vinculo.anuncio.titulo))
+            if bloqueado == 'True':
+                return redirect(url_for('desbloqueo_cuenta'))
+            else:
+                return redirect(url_for('calificaciones_pendientes'))
+                
+
 @app.route('/endVinculo/<idVinculo>/', methods=['POST'])
 def end_vinculo(idVinculo):
     if session.get('usertype') == None:
@@ -1374,6 +1479,14 @@ def contratar(idEmpleado):
             0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has contratado a: {} {}, les deseamos un buen vínculo laboral.'.format(empleado.nombre, empleado.apellido), 3, 2, False)
         mensajeEmpleador.crearMensaje(baseDatos)
 
+        # Se debe generar recordatorio de calificación para el empleado
+        recordatorioEmpleado = Recordatorio(0, 1, empleado, empleador, empleado, anuncio, postulacion, vinculo, datetime.now() + timedelta(days=90), None, 0, 'Debe calificar el vínculo', 0)
+        recordatorioEmpleado.crearRecordatorio(baseDatos)
+        
+        # Se debe generar recordatorio de calificación para el empleador
+        recordatorioEmpleador = Recordatorio(0, 1, empleado, empleador, empleador, anuncio, postulacion, vinculo, datetime.now() + timedelta(days=90), None, 0, 'Debe calificar el vínculo', 0)
+        recordatorioEmpleador.crearRecordatorio(baseDatos)
+
         flash('Empleado Contratado!')
         return render_template('contactoEmpleado.html', data=empleado)
 
@@ -1398,6 +1511,32 @@ def ranking_calificaciones(tipo):
 @app.route('/PlanesPremium')
 def planes_premium():
     return render_template('PlanesPremium.html')
+
+
+@app.route('/CalificacionesPendientes/')
+def calificaciones_pendientes():
+    if session.get('usertype') == None:
+        return redirect(url_for('logueo'))
+    elif session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    else:
+        if getRecordatoriosCalificacionesPendientes() is None:
+            return render_template('Inicio.html')
+        else:
+            return render_template('CalificacionesPendientes.html')
+
+
+@app.route('/DesbloqueoCuenta/')
+def desbloqueo_cuenta():
+    if session.get('usertype') == None:
+        return redirect(url_for('logueo'))
+    elif session.get('usertype') == 'Administrador':
+        return redirect(url_for('administrar'))
+    else:
+        if getRecordatoriosBloqueantes() is None:
+            return render_template('Inicio.html')
+        else:
+            return render_template('DesbloqueoCuenta.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -221,10 +221,10 @@ def getPostulacionEmpleadoAnuncio(bd, idEmpleado, idAnuncio):
         print('Error en getPostulacionEmpleadoAnuncio ', e)
 
 
-
-
 def getPostulacionById(bd, idPostulacion):
     try:
+        if idPostulacion == None or idPostulacion == 0:
+            return None
         cursor = bd.connection.cursor()
         cursor.execute('''
             SELECT
