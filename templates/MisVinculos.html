@@ -35,13 +35,15 @@
                 </svg>
 
                 <p class="media-body pb-3 mb-0 small lh-125">
+                    <text class="d-block text-gray-dark" style="font-size: medium;">Título del anuncio: </text>
+                    <strong class="d-block text-gray-dark" style="font-size: medium;">"{{vinculo.anuncio.titulo}}"</strong><br>
                     {% if sesion == 'Empleado' %}
-                    <text class="d-block text-gray-dark" style="font-size: medium;">Empleador: </text>
-                    <strong class="d-block text-gray-dark" style="font-size: medium;">{{vinculo.empleador.apellido}},
+                    <text class="d-block text-gray-dark" style="font-size: small;">Empleador: </text>
+                    <strong class="d-block text-gray-dark" style="font-size: small;">{{vinculo.empleador.apellido}},
                         {{vinculo.empleador.nombre}}</strong>
                     {% else %}
-                    <text class="d-block text-gray-dark" style="font-size: medium;">Empleado: </text>
-                    <strong class="d-block text-gray-dark" style="font-size: medium;">{{vinculo.empleado.apellido}},
+                    <text class="d-block text-gray-dark" style="font-size: small;">Empleado: </text>
+                    <strong class="d-block text-gray-dark" style="font-size: small;">{{vinculo.empleado.apellido}},
                         {{vinculo.empleado.nombre}}</strong>
                     {% endif %}
                     Inicio del vínculo: <strong>{{ vinculo.fecha_inicio.strftime('%d/%m/%Y') }}</strong> <br>

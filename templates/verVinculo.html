@@ -6,7 +6,7 @@
 {% block estilo %}
 {% endblock %}
 
-{% block titulo %}Labores - Ver anuncio{% endblock %}
+{% block titulo %}Labores - Ver vínculo{% endblock %}
 
 {% block contenido %}
 <div class="container">
@@ -17,9 +17,8 @@
             {% endif %}
             <h1 class="display-5 mb-5">Vínculo</h1>
 
-
             
-                <div class="form-group row">
+                <div class="form-group row" style="margin-bottom: 0px;">
                     <label class="col-sm-3 col-form-label">Inicio del vínculo:</label>
                     <div class="col-sm-5">
                         <label class="col-form-label">{{vinculo.fecha_inicio.strftime('%d/%m/%Y')}}</label>
@@ -37,10 +36,102 @@
                         </label>
                     </div>
                 </div>
+                <br>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Calificación del empleador:</label>
+                    <div class="col-sm-8">
+                        <label class="col-form-label">
+                            {% if vinculo.calif_empleado %}
+                                <strong>{{empleador.nombre}} {{empleador.apellido}}</strong> a calificado este vínculo con:
+                                <img class="mt-4 mb-4" style="margin-bottom: 0.3rem !important;"
+                                {% if vinculo.calif_empleado < 1 %}
+                                src="{{ url_for('static', filename='images/Estrellas/05star.png')}}"
+                                {% elif vinculo.calif_empleado >= 1 and vinculo.calif_empleado < 1.5 %}
+                                src="{{ url_for('static', filename='images/Estrellas/10star.png')}}"
+                                {% elif vinculo.calif_empleado >= 1.5 and vinculo.calif_empleado < 2 %}
+                                src="{{ url_for('static', filename='images/Estrellas/15star.png')}}"
+                                {% elif vinculo.calif_empleado >= 2 and vinculo.calif_empleado < 2.5 %}
+                                src="{{ url_for('static', filename='images/Estrellas/20star.png')}}"                      
+                                {% elif vinculo.calif_empleado >= 2.5 and vinculo.calif_empleado < 3 %}
+                                src="{{ url_for('static', filename='images/Estrellas/25star.png')}}"                      
+                                {% elif vinculo.calif_empleado >= 3 and vinculo.calif_empleado < 3.5 %}
+                                src="{{ url_for('static', filename='images/Estrellas/30star.png')}}"                      
+                                {% elif vinculo.calif_empleado >= 3.5 and vinculo.calif_empleado < 4 %}
+                                src="{{ url_for('static', filename='images/Estrellas/35star.png')}}"                      
+                                {% elif vinculo.calif_empleado >= 4 and vinculo.calif_empleado < 4.5 %}
+                                src="{{ url_for('static', filename='images/Estrellas/40star.png')}}"                      
+                                {% elif vinculo.calif_empleado >= 4.5 and vinculo.calif_empleado < 5 %}
+                                src="{{ url_for('static', filename='images/Estrellas/45star.png')}}"    
+                                {% elif vinculo.calif_empleado == 5 %}
+                                src="{{ url_for('static', filename='images/Estrellas/50star.png')}}"
+                                {% endif %}
+                                alt="" width="188" height="41">
+                            {% else %}
+                                <strong>{{empleador.nombre}} {{empleador.apellido}}</strong> aún no ha calificado este vínculo
+                            {% endif %}
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Calificación del empleado:</label>
+                    <div class="col-sm-8">
+                        <label class="col-form-label">
+                            {% if vinculo.calif_empleador %}
+                                <strong>{{empleado.nombre}} {{empleado.apellido}}</strong> a calificado este vínculo con:
+                                <img class="mt-4 mb-4" style="margin-bottom: 0.3rem !important;"
+                                {% if vinculo.calif_empleador < 1 %}
+                                src="{{ url_for('static', filename='images/Estrellas/05star.png')}}"
+                                {% elif vinculo.calif_empleador >= 1 and vinculo.calif_empleador < 1.5 %}
+                                src="{{ url_for('static', filename='images/Estrellas/10star.png')}}"
+                                {% elif vinculo.calif_empleador >= 1.5 and vinculo.calif_empleador < 2 %}
+                                src="{{ url_for('static', filename='images/Estrellas/15star.png')}}"
+                                {% elif vinculo.calif_empleador >= 2 and vinculo.calif_empleador < 2.5 %}
+                                src="{{ url_for('static', filename='images/Estrellas/20star.png')}}"                      
+                                {% elif vinculo.calif_empleador >= 2.5 and vinculo.calif_empleador < 3 %}
+                                src="{{ url_for('static', filename='images/Estrellas/25star.png')}}"                      
+                                {% elif vinculo.calif_empleador >= 3 and vinculo.calif_empleador < 3.5 %}
+                                src="{{ url_for('static', filename='images/Estrellas/30star.png')}}"                      
+                                {% elif vinculo.calif_empleador >= 3.5 and vinculo.calif_empleador < 4 %}
+                                src="{{ url_for('static', filename='images/Estrellas/35star.png')}}"                      
+                                {% elif vinculo.calif_empleador >= 4 and vinculo.calif_empleador < 4.5 %}
+                                src="{{ url_for('static', filename='images/Estrellas/40star.png')}}"                      
+                                {% elif vinculo.calif_empleador >= 4.5 and vinculo.calif_empleador < 5 %}
+                                src="{{ url_for('static', filename='images/Estrellas/45star.png')}}"    
+                                {% elif vinculo.calif_empleador == 5 %}
+                                src="{{ url_for('static', filename='images/Estrellas/50star.png')}}"
+                                {% endif %}
+                                alt="" width="188" height="41">
+                            {% else %}
+                                <strong>{{empleado.nombre}} {{empleado.apellido}}</strong> aún no ha calificado este vínculo
+                            {% endif %}
+                        </label>
+                    </div>
+                </div>
 
                 <hr class="mt-5 mb-5">
 
                 <div class="d-block my-3 mt-5">
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Anuncio:</label>
+                        <div class="col-sm-5">
+                            <label class="col-form-label" style="padding-bottom: 0;"><strong>{{anuncio.titulo}}</strong></label>
+                            <label class="col-form-label" style="font-size: small; padding-top: 0;">{{anuncio.descripcion}}</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Publicación del anuncio:</label>
+                        <div class="col-sm-5">
+                            <label class="col-form-label">
+                                {{anuncio.fecha_inicio.strftime('%d/%m/%Y')}}
+                            </label>
+                        </div>
+                    </div>
+                    <br><br>
+
+
                     <p>Tipo trabajo</p>
                     <div class="custom-control custom-radio">
                         <input id="dispHora" name="disponibilidad" type="radio" class="custom-control-input" required=""
@@ -244,7 +335,7 @@
                                       {% endif %}
                                     
                                     <a class="btn btn-sm btn-success float-right"
-                                        href="/VistaPerfilContratado/Empleado/{{empleado.id}}" aria-label="">Ir al
+                                        href="/VistaPerfilContratado/Empleado/{{empleado.id}}" aria-label="" style="margin:5px;">Ir al
                                         Perfil</a>
                                 </div>
                             </div>
@@ -383,7 +474,7 @@
                           {% endif %}
                         
                         <a class="btn btn-sm btn-success float-right"
-                            href="/VistaPerfilContratado/Empleado/{{empleado.id}}" aria-label="">Ir al
+                            href="/VistaPerfilContratado/Empleado/{{empleado.id}}" aria-label="" style="margin:5px;">Ir al
                             Perfil</a>
                     </div>
                 </div>
@@ -406,10 +497,10 @@
                 <br>
                 {% if extension > 90 or vinculo.fecha_fin %}
                 {% if user == 'Empleador'  %}
-                    <h3 class="display-6 mb-5">¿Como calificas a {{empleado.nombre}} como empleado?</h3>
+                    <h3 class="display-6 mb-5">¿Cómo calificas este vínculo con {{empleado.nombre}}?</h3>
 
                 {% elif user == 'Empleado' %}
-                    <h1 class="display-6 mb-5">¿Como calificas a {{empleador.nombre}} como empleador?</h1>
+                    <h1 class="display-6 mb-5">¿Cómo calificas este vínculo con {{empleador.nombre}}?</h1>
                 {% endif %}
 
 
@@ -530,7 +621,7 @@
                         </div>
                         <div class="modal-body">
 
-                            <h2>¿Cómo califícas tu vínculo con 
+                            <h2>¿Cómo califícas este vínculo con 
                                 {% if user == 'Empleador' %}
                                     {{empleado.nombre}}
                                 {% elif user == 'Empleado' %}
