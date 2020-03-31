@@ -38,6 +38,91 @@
       {% endif %}
       {% endwith %}
 
+      {# si tiene recordatorios para el día debo mostrar ventana modal para que los pueda resolver o posponer #}
+      {% if recordatoriosDelDia() is not none %}
+      <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">Recordatorios</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% set cant_recordatorios = recordatoriosDelDia()|length %}
+            {% if cant_recordatorios == 0 %}
+            <div class="modal-body">
+                <h4>No tiene más recordatorios para hoy</h4>
+            </div>
+            {% else %}
+            <div class="modal-body">             
+              {% for recordatorio in recordatoriosDelDia() %}
+              {% if recordatorio.tipo == 1 %}
+              <form class="mb-3" action="/calificarVinculosPendientes/False" method="POST" name="cal" onsubmit="return validateForm()">
+                  <div class="container border-top border-bottom border-left border-right border-dark bg-light">
+                      <div class="mt-4 ml-5">
+                          <h4 class="display-5 font-italic font-weight-bold">{{recordatorio.leyenda}}</h4>
+                          <p class="mt-4">
+                              <input type="hidden" name="idRecordatorio" value="{{recordatorio.id}}" />
+                              <input type="hidden" name="idVinculo" value="{{recordatorio.vinculo.id}}" />
+                              <input type="hidden" name="cant_recordatorios" value="{{cant_recordatorios}}" />
+                              Vínculo iniciado en <strong>{{recordatorio.vinculo.fecha_inicio.strftime('%d/%m/%Y')}} </strong>
+                              {% if recordatorio.vinculo.fecha_fin == None %}
+                              hasta <strong>[Vínculo activo]</strong><br>
+                              {% else %}
+                              hasta <strong>{{recordatorio.vinculo.fecha_fin.strftime('%d/%m/%Y')}}</strong><br>
+                              {% endif %}
+                              Empleado: <input class="font-weight-bold text-center w-50" disabled type="text" name="empleado" value="{{recordatorio.empleado.nombre}} {{recordatorio.empleado.apellido}}" /><br>
+                              <br>
+                              Título del Anuncio: <strong>{{recordatorio.anuncio.titulo}}</strong><br>
+                              Descripción del Anuncio: <strong>{{recordatorio.anuncio.descripcion}}</strong><br>
+                              Fecha del Anuncio: <strong>{{recordatorio.anuncio.fecha_inicio.strftime('%d/%m/%Y')}}</strong>
+                          </p>
+                          <div class="form-group">
+                              <div class="star-rating">
+                                  <input id="star-5{{recordatorio.vinculo.id}}" type="radio" name="rating{{recordatorio.vinculo.id}}" value="5" />
+                                  <label for="star-5{{recordatorio.vinculo.id}}" title="5 estrellas">
+                                      <i class="active fa fa-star" aria-hidden="true"></i>
+                                  </label>
+                                  <input id="star-4{{recordatorio.vinculo.id}}" type="radio" name="rating{{recordatorio.vinculo.id}}" value="4" />
+                                  <label for="star-4{{recordatorio.vinculo.id}}" title="4 estrellas">
+                                      <i class="active fa fa-star" aria-hidden="true"></i>
+                                  </label>
+                                  <input id="star-3{{recordatorio.vinculo.id}}" type="radio" name="rating{{recordatorio.vinculo.id}}" value="3" />
+                                  <label for="star-3{{recordatorio.vinculo.id}}" title="3 estrellas">
+                                      <i class="active fa fa-star" aria-hidden="true"></i>
+                                  </label>
+                                  <input id="star-2{{recordatorio.vinculo.id}}" type="radio" name="rating{{recordatorio.vinculo.id}}" value="2" />
+                                  <label for="star-2{{recordatorio.vinculo.id}}" title="2 estrellas">
+                                      <i class="active fa fa-star" aria-hidden="true"></i>
+                                  </label>
+                                  <input id="star-1{{recordatorio.vinculo.id}}" type="radio" name="rating{{recordatorio.vinculo.id}}" value="1" />
+                                  <label for="star-1{{recordatorio.vinculo.id}}" title="1 estrellas">
+                                      <i class="active fa fa-star" aria-hidden="true"></i>
+                                  </label>
+                              </div>
+                              <br>
+                              <button id="btnAhora" class="btn btn-success" type="submit" name="btnGuardar">Calificar ahora</button>
+                              <button id="btnLuego" class="btn btn-warning mr-4 float-right" type="submit" name="btnGuardar">Recuerdame en 3 meses</button>
+                          </div>
+                      </div>
+                  </div>
+              </form>
+              {% endif %}
+              {% endfor %}
+            </div>
+            {% endif %}
+            <div class="modal-footer">
+                <button id="btnLuegoTodos" class="btn btn-warning mr-2" type="submit" name="btnGuardar" 
+                {% if cant_recordatorios == 0 %}hidden{% endif %}>Posponer todos</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                {% if cant_recordatorios != 0 %}disabled{% endif %}>CERRAR</button>
+            </div>
+            </div>
+        </div>
+      </div>
+      {% endif %}
+
       <div class="text-center mb-4 in-line">
         <p class="lead">
           {% if tieneNotifPendientesPostulaciones %}

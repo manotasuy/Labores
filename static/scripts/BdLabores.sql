@@ -487,12 +487,12 @@ INSERT INTO tipo_recordatorio (nombre)
 VALUES ('Alerta Inactividad');
 
 -- En tabla "recordatorio"
-INSERT INTO recordatorio (id_tipo, id_empleado, id_empleador, id_destinatario, id_anuncio, id_postulacion, id_vinculo, fecha_recordatorio, fecha_limite, cant_veces_aplazado, leyenda, bloqueante)
+/*INSERT INTO recordatorio (id_tipo, id_empleado, id_empleador, id_destinatario, id_anuncio, id_postulacion, id_vinculo, fecha_recordatorio, fecha_limite, cant_veces_aplazado, leyenda, bloqueante)
 VALUES (1, 6, 2, 6, 10, NULL, 7, '2020-03-28', '2020-03-28', 2, 'Debe calificar el vínculo', 1);
 INSERT INTO recordatorio (id_tipo, id_empleado, id_empleador, id_destinatario, id_anuncio, id_postulacion, id_vinculo, fecha_recordatorio, fecha_limite, cant_veces_aplazado, leyenda, bloqueante)
 VALUES (1, 6, 2, 2, 10, NULL, 7, '2020-03-28', '2020-03-28', 2, 'Debe calificar el vínculo', 1);
 INSERT INTO recordatorio (id_tipo, id_empleado, id_empleador, id_destinatario, id_anuncio, id_postulacion, id_vinculo, fecha_recordatorio, fecha_limite, cant_veces_aplazado, leyenda, bloqueante)
-VALUES (1, 9, 2, 2, 17, NULL, 14, '2020-03-29', '2020-03-29', 2, 'Debe calificar el vínculo', 1);
+VALUES (1, 9, 2, 2, 17, NULL, 14, '2020-03-29', '2020-03-29', 2, 'Debe calificar el vínculo', 1);*/
 
 
 /* Para poder armar ranking de empleados */

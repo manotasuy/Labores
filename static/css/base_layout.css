@@ -133,7 +133,7 @@ h1 {
 }
 
 .div_full{
-  display: contents;
+  display: block;
 }
 
 .div_mobile{

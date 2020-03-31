@@ -69,7 +69,7 @@ url_for(request.endpoint) != '/DesbloqueoCuenta/' and url_for(request.endpoint) 
 {% endif %}
 
 
-{# si tiene recordatorios bloqueantes no muestro el footer #}
+{# si no tiene recordatorios bloqueantes muestro el footer #}
 {% if recordatoriosBloqueantes() is none %}
 <!-- ******************************************************** footer ******************************************************************-->
 <footer class="text">

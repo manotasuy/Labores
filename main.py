@@ -28,10 +28,10 @@ app = Flask(__name__)
 
 #baseDatos = connectionDb(app, 'remotemysql.com')
 #baseDatos = connectionDb(app, 'aws')
-#baseDatos = connectionDb(app, 'CloudAccess')
+baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'a-work')
 #baseDatos = connectionDb(app, 'a-home')
-baseDatos = connectionDb(app, 'local')
+#baseDatos = connectionDb(app, 'local')
 
 
 # session
@@ -75,6 +75,34 @@ def login(user, password):
             return redirect(url_for('inicio_empleados'))
         else:
             return redirect(url_for('administrar'))
+
+
+def getRecordatoriosDelDia():
+    if session.get('usertype') == None:
+        return None
+    elif session.get('usertype') == 'Administrador':
+        return None
+    else:
+        recordatorios = list()
+        recordatoriosDelDia = list()
+        if session.get('usertype') == 'Empleado':
+            idEmpleado = session['id_empleado']
+            recordatorios = recordatoriosCalificacionesPendientes(baseDatos, idEmpleado)
+        elif session.get('usertype') == 'Empleador':
+            idEmpleador = session['id_empleador']
+            recordatorios = recordatoriosCalificacionesPendientes(baseDatos, idEmpleador)
+
+        if recordatorios is None:
+            return None
+        else:
+            for rec in recordatorios:
+                if str(rec.fechaRecordatorio) == datetime.now().strftime('%Y-%m-%d'):
+                    recordatoriosDelDia.append(rec)
+            
+            if len(recordatoriosDelDia) == 0:
+                return None
+            else:
+                return recordatoriosDelDia
 
 
 def getRecordatoriosCalificacionesPendientes():
@@ -125,7 +153,7 @@ def contexto():
     contextProcessor['rankEmpleadores'] = getTop3EmpleadoresParaBaseTemplate
     contextProcessor['recordatoriosBloqueantes'] = getRecordatoriosBloqueantes
     contextProcessor['recordatoriosCalificacionesPendientes'] = getRecordatoriosCalificacionesPendientes
-    #print('recordatoriosBloqueantes: ', contextProcessor['recordatoriosBloqueantes'])
+    contextProcessor['recordatoriosDelDia'] = getRecordatoriosDelDia
     return contextProcessor
 
 
@@ -549,6 +577,7 @@ def inicio_empleadores():
     elif session.get('usertype') == 'Empleado':
         return redirect(url_for('inicio_empleados'))
     else:
+        #print('getRecordatoriosDelDia(): ', getRecordatoriosDelDia())
         empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
         # se debe verificar que el empleador no tenga mensajes sin leer, en caso afirmativo se debe notificar
         tieneNotifMensajes = empleadorTieneMensajesSinLeer(baseDatos, empleador.id)
@@ -1236,6 +1265,7 @@ def cal_vinculo(idVinculo):
 
 @app.route('/calificarVinculosPendientes/<bloqueado>', methods=['POST'])
 def calificar_vinculos_pendientes(bloqueado):
+    print('Estoy en calificar_vinculos_pendientes')
     if session.get('usertype') == None:
         return redirect(url_for('logueo'))
     elif session.get('usertype') == 'Administrador':
