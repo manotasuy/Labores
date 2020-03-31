@@ -28,10 +28,10 @@ app = Flask(__name__)
 
 #baseDatos = connectionDb(app, 'remotemysql.com')
 #baseDatos = connectionDb(app, 'aws')
-baseDatos = connectionDb(app, 'CloudAccess')
+#baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'a-work')
 #baseDatos = connectionDb(app, 'a-home')
-#baseDatos = connectionDb(app, 'local')
+baseDatos = connectionDb(app, 'local')
 
 
 # session
@@ -1244,7 +1244,7 @@ def cal_vinculo(idVinculo):
             vinculo.actualizarVinculo(baseDatos)
             empleador = vinculo.empleador
             empleador.promedioCalificacion = getPromedioByEmpleadorId(baseDatos, empleador.id)['promedio']
-            empleador.modificarEmpleador(baseDatos)
+            empleador.calificarEmpleador(baseDatos)
         return redirect(url_for('ver_vinculo', idVinculo = idVinculo))
     else:
         if request.method == 'POST':
@@ -1254,7 +1254,7 @@ def cal_vinculo(idVinculo):
             vinculo.actualizarVinculo(baseDatos)
             empleado = vinculo.empleado
             empleado.promedioCalificacion = getPromedioByEmpleadoId(baseDatos, empleado.id)['promedio']
-            empleado.modificarEmpleado(baseDatos)
+            empleado.calificarEmpleado(baseDatos)
         return redirect(url_for('ver_vinculo', idVinculo = idVinculo))
 
 
@@ -1294,7 +1294,7 @@ def calificar_vinculos_pendientes(bloqueado):
                     vinculo.actualizarVinculo(baseDatos)
                     empleador = vinculo.empleador
                     empleador.promedioCalificacion = getPromedioByEmpleadorId(baseDatos, empleador.id)['promedio']
-                    empleador.modificarEmpleador(baseDatos)
+                    empleador.calificarEmpleador(baseDatos)
 
                 # Si había un solo recordatorio como ya lo procesó lo debo enviar al Home
                 if cant_recordatorios == 1:
@@ -1307,7 +1307,7 @@ def calificar_vinculos_pendientes(bloqueado):
                     vinculo.actualizarVinculo(baseDatos)
                     empleado = vinculo.empleado
                     empleado.promedioCalificacion = getPromedioByEmpleadoId(baseDatos, empleado.id)['promedio']
-                    empleado.modificarEmpleado(baseDatos)
+                    empleado.calificarEmpleado(baseDatos)
 
                 # Si había un solo recordatorio como ya lo procesó lo debo enviar al Home
                 if cant_recordatorios == 1:
@@ -1344,14 +1344,14 @@ def end_vinculo(idVinculo):
                 vinculo.fecha_fin = datetime.now()
                 vinculo.actualizarVinculo(baseDatos)
                 empleador.promedioCalificacion = getPromedioByEmpleadorId(baseDatos, empleador.id)['promedio']
-                empleador.modificarEmpleador(baseDatos)
+                empleador.calificarEmpleador(baseDatos)
         
             if session.get('usertype') == 'Empleador':
                 vinculo.calif_empleado = cal
                 vinculo.fecha_fin = datetime.now()
                 vinculo.actualizarVinculo(baseDatos)
                 empleado.promedioCalificacion = getPromedioByEmpleadoId(baseDatos, empleado.id)['promedio']
-                empleado.modificarEmpleado(baseDatos)
+                empleado.calificarEmpleado(baseDatos)
     
             # Se debe notificar al empleado mediante mensaje de que el vínculo con el empleador "X" finalizó
             mensajeEmpleado = Mensaje(0, empleado, empleador, anuncio, datetime.now(), 

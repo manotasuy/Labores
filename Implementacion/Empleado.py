@@ -107,6 +107,24 @@ class Empleado:
         except Exception as e:
             print("Error en creación del empleado ", e)
 
+
+    def calificarEmpleado(self, bd):
+        try:
+            cursor = bd.connection.cursor()
+            cursor.execute('''
+                UPDATE empleado SET
+                    promedio_calificacion = %s
+                WHERE id = %s''',
+                           (
+                               self.promedioCalificacion,
+                               self.id
+                           ))
+            bd.connection.commit()
+            cursor.close()
+            print('Empleado calificado')
+        except Exception as e:
+            print("Error en calificación de empleado ", e)
+
     def modificarEmpleado(self, bd):
         try:
 
@@ -126,8 +144,7 @@ class Empleado:
                     telefono = %s,
                     experiencia_meses = %s,
                     descripcion = %s,
-                    foto = %s,
-                    promedio_calificacion = %s
+                    foto = %s
                 WHERE id = %s''',
                            (
                                self.nombre,
@@ -141,7 +158,6 @@ class Empleado:
                                self.experiencia_meses,
                                self.descripcion,
                                self.foto,
-                               self.promedioCalificacion,
                                self.id
                            ))
             bd.connection.commit()

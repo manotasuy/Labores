@@ -8,7 +8,7 @@
 -- USE LvP2Ka0CsK;
 
 -- Si se usa AWS o localhost
--- USE bdlabores;
+USE bdlabores;
 
 DROP TABLE IF EXISTS recordatorio;
 DROP TABLE IF EXISTS tipo_recordatorio;
