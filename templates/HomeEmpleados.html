@@ -41,7 +41,7 @@
       {# si tiene recordatorios para el día debo mostrar ventana modal para que los pueda resolver o posponer #}
       {% if recordatoriosDelDia() is not none %}
       <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="ModalLabel">Recordatorios</h5>
@@ -49,8 +49,13 @@
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            {% set cant_recordatorios = recordatoriosDelDia()|length %}
+            {% if cant_recordatorios == 0 %}
             <div class="modal-body">
-              {% set cant_recordatorios = recordatoriosDelDia()|length %}
+                <h4>No tiene más recordatorios para hoy</h4>
+            </div>
+            {% else %}
+            <div class="modal-body">             
               {% for recordatorio in recordatoriosDelDia() %}
               {% if recordatorio.tipo == 1 %}
               <form class="mb-3" action="/calificarVinculosPendientes/False" method="POST" name="cal" onsubmit="return validateForm()">
@@ -58,6 +63,7 @@
                       <div class="mt-4 ml-5">
                           <h4 class="display-5 font-italic font-weight-bold">{{recordatorio.leyenda}}</h4>
                           <p class="mt-4">
+                              <input type="hidden" name="ventanaModal" />
                               <input type="hidden" name="idRecordatorio" value="{{recordatorio.id}}" />
                               <input type="hidden" name="idVinculo" value="{{recordatorio.vinculo.id}}" />
                               <input type="hidden" name="cant_recordatorios" value="{{cant_recordatorios}}" />
@@ -96,8 +102,12 @@
                                       <i class="active fa fa-star" aria-hidden="true"></i>
                                   </label>
                               </div>
-                              <button id="btnAhora" class="btn btn-success" type="submit" name="btnGuardar">Calificar ahora</button>
-                              <button id="btnLuego" class="btn btn-warning mr-4 float-right" type="submit" name="btnGuardar">Recuerdame en 3 meses</button>
+                              <br>
+                              <button class="btn btn-success ml-5" type="submit" name="btnCalificarAhora">Calificar ahora</button>
+                              {# si ya aplazó 2 veces no puede volver a aplazar #}
+                              {% if recordatorio.cantVecesAplazado < 2 %}
+                              <button class="btn btn-warning ml-5" type="submit" name="btnCalificarLuego">Recuerdame en 3 meses</button>
+                              {% endif %}
                           </div>
                       </div>
                   </div>
@@ -105,8 +115,12 @@
               {% endif %}
               {% endfor %}
             </div>
+            {% endif %}
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
+                {# al botón de posponer todos por el momento le pongo una condición que no se cumpla nunca para no mostrarlo #}
+                {# ya que la lógica sería bastante compleja, tendría que hacer el post de cada form del modal, no da en este momento #}
+                <button class="btn btn-warning mr-2" type="submit" name="btnCalificarLuegoTodos" 
+                {% if cant_recordatorios != -1 %}hidden{% endif %}>Posponer todos</button>
             </div>
             </div>
         </div>
@@ -232,7 +246,21 @@
 {% block scripts %}
 <script type="text/javascript">
     $(window).on('load',function(){
+        $("#Modal").modal({
+            backdrop: 'static',
+            keyboard: false
+        })
         $('#Modal').modal('show');
     });
-</script> 
+</script>
+
+<script type="text/javascript">
+    $("#btnCerrarModal").click(function(){
+        window.location.reload();
+    });
+</script>
+
+<script type="text/javascript">
+    $('#Modal .close').css('display', 'none');
+</script>
 {% endblock %}

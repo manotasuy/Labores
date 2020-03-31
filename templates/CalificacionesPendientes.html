@@ -87,7 +87,12 @@
                                     <i class="active fa fa-star" aria-hidden="true"></i>
                                 </label>
                             </div>
-                            <button class="btn btn-success ml-5 mb-2" type="submit" name="btnGuardar">CALIFICAR</button>
+                            <br>
+                            <button class="btn btn-success ml-5" type="submit" name="btnCalificarAhora">Calificar ahora</button>
+                            {# si ya aplazó 2 veces no puede volver a aplazar #}
+                            {% if recordatorio.cantVecesAplazado < 2 %}
+                            <button class="btn btn-warning ml-5" type="submit" name="btnCalificarLuego">Recuerdame en 3 meses</button>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -138,7 +143,12 @@
                                     <i class="active fa fa-star" aria-hidden="true"></i>
                                 </label>
                             </div>
-                            <button class="btn btn-success ml-5 mb-2" type="submit" name="btnGuardar">CALIFICAR</button>
+                            <br>
+                            <button class="btn btn-success ml-5" type="submit" name="btnCalificarAhora">Calificar ahora</button>
+                            {# si ya aplazó 2 veces no puede volver a aplazar #}
+                            {% if recordatorio.cantVecesAplazado < 2 %}
+                            <button class="btn btn-warning ml-5" type="submit" name="btnCalificarLuego">Recuerdame en 3 meses</button>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

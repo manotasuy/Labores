@@ -112,11 +112,9 @@ def getRecordatoriosCalificacionesPendientes():
         return None
     elif session.get('usertype') == 'Empleado':
         idEmpleado = session['id_empleado']
-        #print('idEmpleado: ', idEmpleado)
         return recordatoriosCalificacionesPendientes(baseDatos, idEmpleado)
     elif session.get('usertype') == 'Empleador':
         idEmpleador = session['id_empleador']
-        #print('idEmpleador: ', idEmpleador)
         return recordatoriosCalificacionesPendientes(baseDatos, idEmpleador)
     else:
         return None
@@ -129,11 +127,9 @@ def getRecordatoriosBloqueantes():
         return None
     elif session.get('usertype') == 'Empleado':
         idEmpleado = session['id_empleado']
-        #print('idEmpleado: ', idEmpleado)
         return recordatoriosBloqueantes(baseDatos, idEmpleado)
     elif session.get('usertype') == 'Empleador':
         idEmpleador = session['id_empleador']
-        #print('idEmpleador: ', idEmpleador)
         return recordatoriosBloqueantes(baseDatos, idEmpleador)
     else:
         return None
@@ -1160,7 +1156,6 @@ def despostularse(idPostulacion):
         return redirect(url_for('mis_postulaciones'))
 
 
-
 @app.route('/MisVinculos')
 def mis_vinculos():
     if session.get('usertype') == None:
@@ -1265,56 +1260,69 @@ def cal_vinculo(idVinculo):
 
 @app.route('/calificarVinculosPendientes/<bloqueado>', methods=['POST'])
 def calificar_vinculos_pendientes(bloqueado):
-    print('Estoy en calificar_vinculos_pendientes')
     if session.get('usertype') == None:
         return redirect(url_for('logueo'))
     elif session.get('usertype') == 'Administrador':
         return redirect(url_for('administrar'))
     else:
         if request.method == 'POST':
-            idRecordatorio = request.form.get('idRecordatorio')
-            idVinculo = request.form.get('idVinculo')
-            cant_recordatorios = int(request.form.get('cant_recordatorios'))
-            #print('cant_recordatorios: ', cant_recordatorios)
-            cal = request.form.get('rating' + str(idVinculo))
-            #print('cal: ', cal)
+            parametros = request.form
+            #for param in parametros:
+                #print('parametro: ', param)
+            idRecordatorio = parametros.get('idRecordatorio')
+            idVinculo = parametros.get('idVinculo')
+            cant_recordatorios = int(parametros.get('cant_recordatorios'))
+            cal = parametros.get('rating' + str(idVinculo))
             vinculo = getVinculoByID(baseDatos, idVinculo)
+            recordatorio : Recordatorio = getRecordatorioByID(baseDatos, idRecordatorio)
 
-            if session.get('usertype') == 'Empleado':               
-                vinculo.calif_empleador = cal
-                vinculo.actualizarVinculo(baseDatos)
-                empleador = vinculo.empleador
-                empleador.promedioCalificacion = getPromedioByEmpleadorId(baseDatos, empleador.id)['promedio']
-                empleador.modificarEmpleador(baseDatos)
-                # debo eliminar el recordatorio
-                recordatorio : Recordatorio = getRecordatorioByID(baseDatos, idRecordatorio)
+            if 'btnCalificarAhora' in parametros:
+                # como está calificando debo eliminar el recordatorio
                 recordatorio.borrarRecordatorio(baseDatos)
-                # Si había un solo recordatorio como ya calificó lo debo enviar al Home
+                # genero el mensaje que se mostrará en el ambito que corresponda
+                flash('Has calificado satisfactoriamente con ' + str(cal) + ' estrellas tu vínculo sobre el anuncio: ' + str(vinculo.anuncio.titulo))
+            elif 'btnCalificarLuego' in parametros:
+                # como está posponiendo el recordatorio debo actualizar su fecha, 
+                # la cantidad de veces aplazado y si debe ser o no bloqueante
+                recordatorio.fechaRecordatorio += timedelta(days=90)
+                recordatorio.cantVecesAplazado += 1
+                recordatorio.actualizarRecordatorio(baseDatos)
+
+            if session.get('usertype') == 'Empleado':
+                if 'btnCalificarAhora' in parametros:             
+                    vinculo.calif_empleador = cal
+                    vinculo.actualizarVinculo(baseDatos)
+                    empleador = vinculo.empleador
+                    empleador.promedioCalificacion = getPromedioByEmpleadorId(baseDatos, empleador.id)['promedio']
+                    empleador.modificarEmpleador(baseDatos)
+
+                # Si había un solo recordatorio como ya lo procesó lo debo enviar al Home
                 if cant_recordatorios == 1:
-                    flash('Has calificado satisfactoriamente con ' + str(cal) + ' estrellas tu vínculo sobre el anuncio: ' + str(vinculo.anuncio.titulo))
                     return redirect(url_for('inicio_empleados'))
 
 
-            elif session.get('usertype') == 'Empleador': 
-                vinculo.calif_empleado = cal
-                vinculo.actualizarVinculo(baseDatos)
-                empleado = vinculo.empleado
-                empleado.promedioCalificacion = getPromedioByEmpleadoId(baseDatos, empleado.id)['promedio']
-                empleado.modificarEmpleado(baseDatos)
-                # debo eliminar el recordatorio
-                recordatorio : Recordatorio = getRecordatorioByID(baseDatos, idRecordatorio)
-                recordatorio.borrarRecordatorio(baseDatos)
-                # Si había un solo recordatorio como ya calificó lo debo enviar al Home
+            elif session.get('usertype') == 'Empleador':
+                if 'btnCalificarAhora' in parametros:
+                    vinculo.calif_empleado = cal
+                    vinculo.actualizarVinculo(baseDatos)
+                    empleado = vinculo.empleado
+                    empleado.promedioCalificacion = getPromedioByEmpleadoId(baseDatos, empleado.id)['promedio']
+                    empleado.modificarEmpleado(baseDatos)
+
+                # Si había un solo recordatorio como ya lo procesó lo debo enviar al Home
                 if cant_recordatorios == 1:
-                    flash('Has calificado satisfactoriamente con ' + str(cal) + ' estrellas tu vínculo sobre el anuncio: ' + str(vinculo.anuncio.titulo))
                     return redirect(url_for('inicio_empleadores'))
             
-            # Como son varios los recordatorios tengo que regresar al form de bloqueo para que siga calificando
-            flash('Has calificado satisfactoriamente con ' + str(cal) + ' estrellas tu vínculo sobre el anuncio: ' + str(vinculo.anuncio.titulo))
+            # Como son varios los recordatorios tengo que regresar al form de origen para que siga calificando
             if bloqueado == 'True':
                 return redirect(url_for('desbloqueo_cuenta'))
             else:
-                return redirect(url_for('calificaciones_pendientes'))
+                if 'ventanaModal' in parametros and session.get('usertype') == 'Empleado':
+                    return redirect(url_for('inicio_empleados'))
+                elif 'ventanaModal' in parametros and session.get('usertype') == 'Empleador':
+                    return redirect(url_for('inicio_empleadores'))
+                else:
+                    return redirect(url_for('calificaciones_pendientes'))
                 
 
 @app.route('/endVinculo/<idVinculo>/', methods=['POST'])
@@ -1323,29 +1331,41 @@ def end_vinculo(idVinculo):
         return redirect(url_for('logueo'))
     elif session.get('usertype') == 'Administrador':
         return redirect(url_for('administrar'))
-    elif session.get('usertype') == 'Empleado':    
-        if request.method == 'POST':
-            cal = request.form.get('rating')
-            vinculo = getVinculoByID(baseDatos, idVinculo)
-            vinculo.calif_empleador = cal
-            vinculo.fecha_fin = datetime.now()
-            vinculo.actualizarVinculo(baseDatos)
-            empleador = vinculo.empleador
-            empleador.promedioCalificacion = getPromedioByEmpleadorId(baseDatos, empleador.id)['promedio']
-            empleador.modificarEmpleador(baseDatos)
-            
-        return redirect(url_for('ver_vinculo', idVinculo = idVinculo))
     else:
         if request.method == 'POST':
             cal = request.form.get('rating')
             vinculo = getVinculoByID(baseDatos, idVinculo)
-            vinculo.calif_empleado = cal
-            vinculo.fecha_fin = datetime.now()
-            vinculo.actualizarVinculo(baseDatos)
+            empleador = vinculo.empleador
             empleado = vinculo.empleado
-            empleado.promedioCalificacion = getPromedioByEmpleadoId(baseDatos, empleado.id)['promedio']
-            empleado.modificarEmpleado(baseDatos)
-        return redirect(url_for('ver_vinculo', idVinculo = idVinculo))
+            anuncio = vinculo.anuncio
+
+            if session.get('usertype') == 'Empleado':
+                vinculo.calif_empleador = cal
+                vinculo.fecha_fin = datetime.now()
+                vinculo.actualizarVinculo(baseDatos)
+                empleador.promedioCalificacion = getPromedioByEmpleadorId(baseDatos, empleador.id)['promedio']
+                empleador.modificarEmpleador(baseDatos)
+        
+            if session.get('usertype') == 'Empleador':
+                vinculo.calif_empleado = cal
+                vinculo.fecha_fin = datetime.now()
+                vinculo.actualizarVinculo(baseDatos)
+                empleado.promedioCalificacion = getPromedioByEmpleadoId(baseDatos, empleado.id)['promedio']
+                empleado.modificarEmpleado(baseDatos)
+    
+            # Se debe notificar al empleado mediante mensaje de que el vínculo con el empleador "X" finalizó
+            mensajeEmpleado = Mensaje(0, empleado, empleador, anuncio, datetime.now(), 
+            'Su vínculo con: {} {} por el anuncio: "{}" ha finalizado. Recuerde que puede calificar el vínculo cuantas veces lo considere desde "Mis Vínculos"'
+            .format(empleador.nombre, empleador.apellido, anuncio.titulo), 3, 1, False)
+            mensajeEmpleado.crearMensaje(baseDatos)
+
+            # Se debe notificar al empleador mediante mensaje de que el vínculo con el empleado "X" finalizó
+            mensajeEmpleador = Mensaje(0, empleado, empleador, anuncio, datetime.now(), 
+            'Su vínculo con: {} {} por el anuncio: "{}" ha finalizado. Recuerde que puede calificar el vínculo cuantas veces lo considere desde "Mis Vínculos'
+            .format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
+            mensajeEmpleador.crearMensaje(baseDatos)
+
+            return redirect(url_for('ver_vinculo', idVinculo = idVinculo))
 
 
 @app.route('/Candidatos/<id_anuncio>', methods=['POST', 'GET'])
@@ -1510,11 +1530,11 @@ def contratar(idEmpleado):
         mensajeEmpleador.crearMensaje(baseDatos)
 
         # Se debe generar recordatorio de calificación para el empleado
-        recordatorioEmpleado = Recordatorio(0, 1, empleado, empleador, empleado, anuncio, postulacion, vinculo, datetime.now() + timedelta(days=90), None, 0, 'Debe calificar el vínculo', 0)
+        recordatorioEmpleado = Recordatorio(0, 1, empleado, empleador, empleado, anuncio, postulacion, vinculo, datetime.now() + timedelta(days=90), datetime.now() + timedelta(days=270), 0, 'Debe calificar el vínculo', 0)
         recordatorioEmpleado.crearRecordatorio(baseDatos)
         
         # Se debe generar recordatorio de calificación para el empleador
-        recordatorioEmpleador = Recordatorio(0, 1, empleado, empleador, empleador, anuncio, postulacion, vinculo, datetime.now() + timedelta(days=90), None, 0, 'Debe calificar el vínculo', 0)
+        recordatorioEmpleador = Recordatorio(0, 1, empleado, empleador, empleador, anuncio, postulacion, vinculo, datetime.now() + timedelta(days=90), datetime.now() + timedelta(days=270), 0, 'Debe calificar el vínculo', 0)
         recordatorioEmpleador.crearRecordatorio(baseDatos)
 
         flash('Empleado Contratado!')

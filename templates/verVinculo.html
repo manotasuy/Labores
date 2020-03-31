@@ -607,6 +607,8 @@
                 {% if not vinculo.fecha_fin %}
                 <a class="btn btn-danger float-right" href="" aria-label=""data-toggle="modal"
                 data-target="#modal">FINALIZAR VÍNCULO</a>
+                {% else %}
+                <button type="button" class="btn btn-danger float-right" aria-label="" disabled>Vínculo Finalizado</button>
                 {% endif %}
 
                 <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="mensaje"

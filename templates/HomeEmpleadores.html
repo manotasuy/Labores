@@ -29,7 +29,7 @@
               <h4>{{ message }}</h4>
           </div>
           <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
+              <button id="btnCerrarModal" type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
           </div>
           </div>
       </div>
@@ -63,6 +63,7 @@
                       <div class="mt-4 ml-5">
                           <h4 class="display-5 font-italic font-weight-bold">{{recordatorio.leyenda}}</h4>
                           <p class="mt-4">
+                              <input type="hidden" name="ventanaModal" />
                               <input type="hidden" name="idRecordatorio" value="{{recordatorio.id}}" />
                               <input type="hidden" name="idVinculo" value="{{recordatorio.vinculo.id}}" />
                               <input type="hidden" name="cant_recordatorios" value="{{cant_recordatorios}}" />
@@ -102,8 +103,11 @@
                                   </label>
                               </div>
                               <br>
-                              <button id="btnAhora" class="btn btn-success" type="submit" name="btnGuardar">Calificar ahora</button>
-                              <button id="btnLuego" class="btn btn-warning mr-4 float-right" type="submit" name="btnGuardar">Recuerdame en 3 meses</button>
+                              <button class="btn btn-success ml-5" type="submit" name="btnCalificarAhora">Calificar ahora</button>
+                              {# si ya aplazó 2 veces no puede volver a aplazar #}
+                              {% if recordatorio.cantVecesAplazado < 2 %}
+                              <button class="btn btn-warning ml-5" type="submit" name="btnCalificarLuego">Recuerdame en 3 meses</button>
+                              {% endif %}
                           </div>
                       </div>
                   </div>
@@ -113,10 +117,10 @@
             </div>
             {% endif %}
             <div class="modal-footer">
-                <button id="btnLuegoTodos" class="btn btn-warning mr-2" type="submit" name="btnGuardar" 
-                {% if cant_recordatorios == 0 %}hidden{% endif %}>Posponer todos</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                {% if cant_recordatorios != 0 %}disabled{% endif %}>CERRAR</button>
+                {# al botón de posponer todos por el momento le pongo una condición que no se cumpla nunca para no mostrarlo #}
+                {# ya que la lógica sería bastante compleja, tendría que hacer el post de cada form del modal, no da en este momento #}
+                <button class="btn btn-warning mr-2" type="submit" name="btnCalificarLuegoTodos" 
+                {% if cant_recordatorios != -1 %}hidden{% endif %}>Posponer todos</button>
             </div>
             </div>
         </div>
@@ -241,7 +245,21 @@
 {% block scripts %}
 <script type="text/javascript">
     $(window).on('load',function(){
+        $("#Modal").modal({
+            backdrop: 'static',
+            keyboard: false
+        })
         $('#Modal').modal('show');
     });
+</script>
+
+<script type="text/javascript">
+    $("#btnCerrarModal").click(function(){
+        window.location.reload();
+    });
+</script>
+
+<script type="text/javascript">
+    $('#Modal .close').css('display', 'none');
 </script>
 {% endblock %}

@@ -56,7 +56,7 @@ url_for(request.endpoint) != '/DesbloqueoCuenta/' and url_for(request.endpoint) 
 <div class="container">
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
-            <img class="mt-2 mb-2 ml-4" src="{{ url_for('static', filename='images/Alertas/Bloqueo.png')}}" alt="" width="125" height="125">
+            <img class="mt-2 mb-2" src="{{ url_for('static', filename='images/Alertas/Bloqueo.png')}}" alt="" width="125" height="125">
             <h1>Cuenta Bloqueada</h1>
             <p>Debe desbloquear la cuenta para poder seguir operando en el sistema
             <p><a class="btn btn-lg btn-primary" href="{{ url_for('desbloqueo_cuenta') }}">DESBLOQUEAR</a>

@@ -44,7 +44,7 @@ class Recordatorio:
         self.bloqueante = pBloqueante
 
     def __str__(self):
-        return 'Id: {}, Empleado: {}, Empleador: {}, Anuncio: {}, Fecha: {}, Leyenda: {}'.format(self.id, self.empleado.id, self.empleador.id, self.anuncio.id, self.fechaRecordatorio, self.leyenda)
+        return 'Id Recordatorio: {}, Id Empleado: {}, Id Empleador: {}, Id Anuncio: {}, Fecha Recordatorio: {}, Fecha Limite: {}, Cant Veces Aplazado: {},Leyenda: {}, Bloqueante? {}'.format(self.id, self.empleado.id, self.empleador.id, self.anuncio.id, self.fechaRecordatorio, self.fechaLimite, self.cantVecesAplazado, self.leyenda, self.bloqueante)
 
     def __getitem__(self, item):
         return self.__dict__[item]
@@ -125,14 +125,15 @@ class Recordatorio:
                     fecha_limite = %s, 
                     cant_veces_aplazado = %s, 
                     leyenda = %s, 
-                    bloqueante = %s,
+                    bloqueante = %s
                 WHERE id = %s''',
                            (
                                self.fechaRecordatorio,
                                self.fechaLimite,
                                self.cantVecesAplazado,
                                self.leyenda,
-                               self.bloqueante
+                               self.bloqueante,
+                               self.id
                            ))
 
             bd.connection.commit()
@@ -187,10 +188,25 @@ def getRecordatorioByID(bd, id):
     except Exception as e:
         print("Error en getRecordatorioByID ", e)
 
+def comprobarSiHayRecordatoriosParaBloquear(bd):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('''
+            UPDATE recordatorio SET  
+                bloqueante = 1
+            WHERE fecha_limite = CURDATE()''')
+        bd.connection.commit()
+        cursor.close()
+    except Exception as e:
+        print("Error en comprobarSiHayRecordatoriosParaBloquear ", e)
+
 def recordatoriosBloqueantes(bd, idDestinatario):
     try:
         if idDestinatario == None or idDestinatario == 0:
             return None
+        # primero compruebo si hay recordatorios para bloquear porque se llegó a su fecha límite
+        comprobarSiHayRecordatoriosParaBloquear(bd)
+
         cursor = bd.connection.cursor()
         cursor.execute('''
             SELECT
