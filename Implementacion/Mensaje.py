@@ -173,7 +173,7 @@ def getMensajesParaEmpleado(bd, id_empleado):
                 id_tipo_emisor,
                 id_tipo_receptor,
                 leido
-            FROM mensaje WHERE id_empleado = {} AND (id_tipo_emisor = 1 OR id_tipo_receptor = 1)  ORDER BY fecha DESC'''.format(id_empleado))
+            FROM mensaje WHERE id_empleado = {} AND (id_tipo_emisor = 1 OR id_tipo_receptor = 1)  ORDER BY fecha'''.format(id_empleado))
         retorno = cursor.fetchall()
         bd.connection.commit()
         cursor.close()
@@ -237,7 +237,7 @@ def getMensajesParaEmpleador(bd, id_empleador):
                 id_tipo_emisor,
                 id_tipo_receptor,
                 leido
-            FROM mensaje WHERE id_empleador = {} AND (id_tipo_emisor = 2 OR id_tipo_receptor = 2) ORDER BY fecha DESC'''.format(id_empleador))
+            FROM mensaje WHERE id_empleador = {} AND (id_tipo_emisor = 2 OR id_tipo_receptor = 2) ORDER BY fecha'''.format(id_empleador))
         retorno = cursor.fetchall()
         bd.connection.commit()
         cursor.close()

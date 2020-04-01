@@ -28,10 +28,10 @@ app = Flask(__name__)
 
 #baseDatos = connectionDb(app, 'remotemysql.com')
 #baseDatos = connectionDb(app, 'aws')
-#baseDatos = connectionDb(app, 'CloudAccess')
+baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'a-work')
 #baseDatos = connectionDb(app, 'a-home')
-baseDatos = connectionDb(app, 'local')
+#baseDatos = connectionDb(app, 'local')
 
 
 # session
@@ -1361,7 +1361,7 @@ def end_vinculo(idVinculo):
 
             # Se debe notificar al empleador mediante mensaje de que el vínculo con el empleado "X" finalizó
             mensajeEmpleador = Mensaje(0, empleado, empleador, anuncio, datetime.now(), 
-            'Su vínculo con: {} {} por el anuncio: "{}" ha finalizado. Recuerde que puede calificar el vínculo cuantas veces lo considere desde "Mis Vínculos'
+            'Su vínculo con: {} {} por el anuncio: "{}" ha finalizado. Recuerde que puede calificar el vínculo cuantas veces lo considere desde "Mis Vínculos"'
             .format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
             mensajeEmpleador.crearMensaje(baseDatos)
 
@@ -1587,6 +1587,7 @@ def desbloqueo_cuenta():
             return render_template('Inicio.html')
         else:
             return render_template('DesbloqueoCuenta.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
