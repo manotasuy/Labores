@@ -9,13 +9,16 @@
 {% block titulo %}Labores - Ver vínculo{% endblock %}
 
 {% block contenido %}
+
 <div class="container">
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
             {% if extension < 30 and not vinculo.fecha_fin %}
-            <a class="btn btn-outline-info float-right" href="/notVinculo/{{vinculo.id}}" aria-label="">¿Este vínculo no llegó <br> a concretarse?</a>
+            <a class="btn btn-outline-info float-right" href="/notVinculo/{{vinculo.id}}"  aria-label=""data-toggle="modal"
+            data-target="#modal2">¿Este vínculo no llegó <br> a concretarse?</a>
             {% endif %}
             <h1 class="display-5 mb-5">Vínculo</h1>
+
 
             
                 <div class="form-group row" style="margin-bottom: 0px;">
@@ -496,12 +499,12 @@
 <hr class="mt-5 mb-5">
                 <br>
                 {% if extension > 90 or vinculo.fecha_fin %}
-                {% if user == 'Empleador'  %}
-                    <h3 class="display-6 mb-5">¿Cómo calificas este vínculo con {{empleado.nombre}}?</h3>
+                    {% if user == 'Empleador'  %}
+                        <h3 class="display-6 mb-5">¿Cómo calificas este vínculo con {{empleado.nombre}}?</h3>
 
-                {% elif user == 'Empleado' %}
-                    <h1 class="display-6 mb-5">¿Cómo calificas este vínculo con {{empleador.nombre}}?</h1>
-                {% endif %}
+                    {% elif user == 'Empleado' %}
+                        <h3 class="display-6 mb-5">¿Cómo calificas este vínculo con {{empleador.nombre}}?</h3>
+                    {% endif %}
 
 
  <!-- ************************************************************************************************************************************ -->
@@ -592,6 +595,9 @@
                 
                 </form>
 <!-- ************************************************************************************************************************************ -->
+                {% else %}
+                    <p class="display-6 mb-5" style="text-align: center;" >Aquí podras calificar este vínculo cuando lleve tres meses activos. <br> <br> 
+                    También podrás calificarlo al momento de Finalizar el vínculo. </p>
                 {% endif %}
 
                 <br>
@@ -610,6 +616,7 @@
                 {% else %}
                 <button type="button" class="btn btn-danger float-right" aria-label="" disabled>Vínculo Finalizado</button>
                 {% endif %}
+
 
                 <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="mensaje"
                 aria-hidden="true">
@@ -738,6 +745,39 @@
 </div>
 </div>
 </div>
+
+<!----------------------------------------------pruebo-->
+
+
+
+<div class="modal fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="mensaje"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title" id="exampleModalLabel">¿Vínculo no concretado?</h3>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            <h5 style="text-align: center;">Si este vínculo finalmente no llegó a concretarse, puede descartarlo.</h5>
+                            <br>
+                            <p style="text-align: left; font-size: small;">
+                                Atención! si descarta este vínculo el mismo se elminira completamente. <br>
+                                Esta acción no se puede deshacer.</p>
+
+
+                        </div>
+                <div class="modal-footer">
+                    <a class="btn btn-outline-info float-right" href="/notVinculo/{{vinculo.id}}">Descartar vínculo</a>
+                </div>
+            
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block scripts %}
