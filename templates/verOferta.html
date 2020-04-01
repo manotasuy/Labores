@@ -331,7 +331,9 @@
                 </div>
 
                 {% if postulacion == '0' %}
-                <a href="/postularse/{{ anuncio.6 }}" type="button" class="btn btn-warning float-right">Me interesa. ¡Contactar!</a>
+                <a href="" type="button" class="btn btn-warning float-right" aria-label=""data-toggle="modal"
+                data-target="#modal">
+                  Me interesa. ¡Contactar!</a>
                 {% else %}
                 <button type="button" class="btn btn-success float-right" disabled>Ya estás postulado a este anuncio</button>
                 {% endif %}
@@ -340,6 +342,38 @@
         </div>
     </div>
 </div>
+
+
+<!----------------------------------------------------------------MODAL--------------------------------------------------------------->
+
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="mensaje"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-body">
+
+            <h2>¿Desea postular a este anuncio?</h2>
+            <p>
+              <br>
+              Podrá despostularse luego si cambia de opinión. 
+              Mientras usted mantenga 
+              la postulación el empleador puede decidir contratarlo. 
+            </p>
+
+            
+        </div>
+        <div class="modal-footer">
+          <a href="/postularse/{{ anuncio.6 }}" type="button" class="btn btn-success float-right">
+            Postularme</a>
+      </div>
+<br>
+
+
+</div>
+</div>
+</div>
+
 {% endblock %}
 
 {% block scripts %}
