@@ -285,3 +285,44 @@ def empleadorTieneMensajesSinLeer(bd, id_empleador):
             return len(retorno[0]) > 0
     except Exception as e:
         print("Error en empleadorTieneMensajesSinLeer ", e)
+
+
+def tieneElEmpleadoMensajeDeEmpleador(bd, id_empleado, id_empleador):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('''
+            SELECT
+                id
+            FROM mensaje WHERE id_empleado = {} AND id_empleador = {} AND id_tipo_emisor = 2 AND  id_tipo_receptor = 1'''
+            .format(id_empleado, id_empleador))
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+        
+        if retorno is None or len(retorno) == 0:
+            return False
+        else:
+            return True
+    except Exception as e:
+        print("Error en tieneElEmpleadoMensajeDeEmpleador ", e)
+
+
+def tieneElEmpleadorMensajeDeEmpleado(bd, id_empleador, id_empleado):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('''
+            SELECT
+                id
+            FROM mensaje WHERE id_empleado = {} AND id_empleador = {} AND id_tipo_emisor = 1 AND  id_tipo_receptor = 2'''
+            .format(id_empleado, id_empleador))
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+        
+        if retorno is None or len(retorno) == 0:
+            return False
+        else:
+            return True
+    except Exception as e:
+        print("Error en tieneElEmpleadorMensajeDeEmpleado ", e)
+        

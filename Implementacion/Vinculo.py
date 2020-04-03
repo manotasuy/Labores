@@ -420,3 +420,43 @@ def getVinculosNoNotificadosDelEmpleado(bd, empleado):
         return vinculos
     except Exception as e:
         print("Error en getVinculosNoNotificadosDelEmpleado ", e)
+
+
+def tieneElEmpleadoVinculoConEmpleador(bd, id_empleado, id_empleador):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('''
+            SELECT
+                id
+            FROM vinculo WHERE id_empleado = {} AND id_empleador = {} AND fecha_fin is NULL AND id_anuncio > 0'''
+            .format(id_empleado, id_empleador))
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+        
+        if retorno is None or len(retorno) == 0:
+            return False
+        else:
+            return True
+    except Exception as e:
+        print("Error en tieneElEmpleadoVinculoConEmpleador ", e)
+
+
+def tieneElEmpleadorVinculoConEmpleado(bd, id_empleador, id_empleado):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('''
+            SELECT
+                id
+            FROM vinculo WHERE id_empleado = {} AND id_empleador = {} AND fecha_fin is NULL AND id_anuncio > 0'''
+            .format(id_empleado, id_empleador))
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+        
+        if retorno is None or len(retorno) == 0:
+            return False
+        else:
+            return True
+    except Exception as e:
+        print("Error en tieneElEmpleadorVinculoConEmpleado ", e)

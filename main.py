@@ -12,15 +12,16 @@ from Implementacion.Usuario import Usuario, getUsuarioByID
 from Implementacion.Empleado import Empleado, getEmpleadoByID, getEmpleadoByUsuarioID, getTareasEmpleado, getDisponibilidadEmpleado, getRankingPorCalificacionEmpleados
 from Implementacion.Empleador import Empleador, getEmpleadorByID, getEmpleadorByUsuarioID, getRankingPorCalificacionEmpleadores
 from Implementacion.Anuncio import Anuncio, getAllAnuncios, getAnuncioByID
-from Implementacion.Postulacion import Postulacion, getPostulacionesAnuncio, getPostulacionesEmpleado, getPostulacionEmpleadoAnuncio, getPostulacionesEmpleadoIDs, empleadorTieneNotificacionesPendientesPostulaciones, getPostulacionById
+from Implementacion.Postulacion import Postulacion, getPostulacionesAnuncio, getPostulacionesEmpleado, getPostulacionEmpleadoAnuncio, getPostulacionesEmpleadoIDs, empleadorTieneNotificacionesPendientesPostulaciones, getPostulacionById, existePostulacionDeEmpleadoEnAnuncioDeEmpleador
 from Implementacion.Tarea import Tarea, getTareasRegistradas
 from Implementacion.Disponibilidad import Disponibilidad, getDisponibilidadesRegistradas
-from Implementacion.Vinculo import Vinculo, getVinculoByID, getVinculoByEmpleado, getVinculoByEmpleador, getVinculoIDs, getPromedioByEmpleadorId, getPromedioByEmpleadoId, getVinculosNoNotificadosDelEmpleado, empleadoTieneNotificacionesPendientesVinculos
-from Implementacion.Mensaje import Mensaje, getMensajesParaEmpleado, empleadoTieneMensajesSinLeer, getMensajesParaEmpleador, empleadorTieneMensajesSinLeer
+from Implementacion.Vinculo import Vinculo, getVinculoByID, getVinculoByEmpleado, getVinculoByEmpleador, getVinculoIDs, getPromedioByEmpleadorId, getPromedioByEmpleadoId, getVinculosNoNotificadosDelEmpleado, empleadoTieneNotificacionesPendientesVinculos, tieneElEmpleadorVinculoConEmpleado, tieneElEmpleadoVinculoConEmpleador
+from Implementacion.Mensaje import Mensaje, getMensajesParaEmpleado, empleadoTieneMensajesSinLeer, getMensajesParaEmpleador, empleadorTieneMensajesSinLeer, tieneElEmpleadoMensajeDeEmpleador, tieneElEmpleadorMensajeDeEmpleado
 from Implementacion.DTOAuxEmpleado import DTOAuxEmpleado, TareaSeleccion, DisponibilidadSeleccion
 from Implementacion.Referencia import Referencia, getReferenciaByID, getReferenciasEmpleado
 from Implementacion.Admin import getDatosAdmin
 from Implementacion.Recordatorio import Recordatorio, getRecordatorioByID, recordatoriosBloqueantes, recordatoriosCalificacionesPendientes
+from Implementacion.DTOMensaje import DTOMensaje
 
 EXTENSIONES_ADMITIDAS = set(['jpg', 'png', 'jpeg', 'bmp', 'gif'])
 
@@ -219,6 +220,10 @@ def vista_perfil(opcion, id):
         # objeto = None
         if opcion == 'Empleado':
             objeto = getEmpleadoByID(baseDatos, id)
+            # Si no se puede cargar la foto guardada en la base cargo la imagen default
+            rutaFisica = '.' + url_for('static', filename=objeto.foto)
+            if not os.path.exists(rutaFisica):
+                objeto.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
             dtoAuxEmpleado: DTOAuxEmpleado = DTOAuxEmpleado()
             # Debo traer las tareas y disponibilidades (estableciendo las seleccionadas por el empleado) para cargarlas dinámicamente
             tareasSeleccion = objeto.getTareasSeleccionadas(baseDatos)
@@ -242,6 +247,10 @@ def vista_perfil(opcion, id):
 
         elif opcion == 'Empleador':
             objeto = getEmpleadorByID(baseDatos, id)
+            # Si no se puede cargar la foto guardada en la base cargo la imagen default
+            rutaFisica = '.' + url_for('static', filename=objeto.foto)
+            if not os.path.exists(rutaFisica):
+                objeto.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
             return render_template('VistaPerfil.html', tipo=opcion, data=objeto)
 
 
@@ -257,6 +266,11 @@ def vista_perfil_contratado(opcion, id):
         # objeto = None
         if opcion == 'Empleado':
             objeto = getEmpleadoByID(baseDatos, id)
+            # Si no se puede cargar la foto guardada en la base cargo la imagen default
+            rutaFisica = '.' + url_for('static', filename=objeto.foto)
+            if not os.path.exists(rutaFisica):
+                objeto.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+
             dtoAuxEmpleado: DTOAuxEmpleado = DTOAuxEmpleado()
             # Debo traer las tareas y disponibilidades (estableciendo las seleccionadas por el empleado) para cargarlas dinámicamente
             tareasSeleccion = objeto.getTareasSeleccionadas(baseDatos)
@@ -279,6 +293,10 @@ def vista_perfil_contratado(opcion, id):
 
         elif opcion == 'Empleador':
             objeto = getEmpleadorByID(baseDatos, id)
+            # Si no se puede cargar la foto guardada en la base cargo la imagen default
+            rutaFisica = '.' + url_for('static', filename=objeto.foto)
+            if not os.path.exists(rutaFisica):
+                objeto.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
             return render_template('VistaPerfil.html', tipo=opcion, data=objeto)
 
 
@@ -298,6 +316,11 @@ def perfil(opcion):
                 # obtengo los datos del empleado
                 idEmpleado = session['id_empleado']
                 empleado = getEmpleadoByID(baseDatos, idEmpleado)
+                # Si no se puede cargar la foto guardada en la base cargo la imagen default
+                rutaFisica = '.' + url_for('static', filename=empleado.foto)
+                if not os.path.exists(rutaFisica):
+                    empleado.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+
                 # Debo traer las tareas y disponibilidades (estableciendo las seleccionadas por el empleado) para cargarlas dinámicamente
                 tareasSeleccion = empleado.getTareasSeleccionadas(baseDatos)
                 disponibilidadSeleccion = empleado.getDisponibilidadSeleccionadas(
@@ -327,6 +350,10 @@ def perfil(opcion):
                 # obtengo los datos del empleador
                 idEmpleador = session['id_empleador']
                 empleador = getEmpleadorByID(baseDatos, idEmpleador)
+                # Si no se puede cargar la foto guardada en la base cargo la imagen default
+                rutaFisica = '.' + url_for('static', filename=empleador.foto)
+                if not os.path.exists(rutaFisica):
+                    empleador.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
                 # convierto byte a entero, el atributo "género" en mysql es de tipo bit
                 generoInt = int.from_bytes(empleador.genero, "big")
                 empleador.genero = generoInt
@@ -462,12 +489,13 @@ def guardar_perfil(tipo):
                             else:
                                 if archivoAdmitido(foto.filename):
                                     filename = secure_filename(foto.filename)
-                                    rutaFisica = os.path.join(
-                                        app.config['CARPETA_FISICA_IMAGENES'], filename)
-                                    rutaCarga = os.path.join(
-                                        app.config['CARPETA_CARGA_IMAGENES'], filename)
+                                    rutaFisica = os.path.join(app.config['CARPETA_FISICA_IMAGENES'], filename)
                                     foto.save(rutaFisica)
-                                    new_empleado.foto = rutaCarga
+                                    # Si no se pudo guardar la foto cargo la imagen default
+                                    if not os.path.exists(rutaFisica):
+                                        filename ='NoImage.png'
+                                        foto.save(os.path.join(app.config['CARPETA_FISICA_IMAGENES'], filename))
+                                    new_empleado.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], filename)
 
                         new_empleado.modificarEmpleado(baseDatos)
                         return redirect(url_for('inicio_empleados'))
@@ -501,12 +529,13 @@ def guardar_perfil(tipo):
                             else:
                                 if archivoAdmitido(foto.filename):
                                     filename = secure_filename(foto.filename)
-                                    rutaFisica = os.path.join(
-                                        app.config['CARPETA_FISICA_IMAGENES'], filename)
-                                    rutaCarga = os.path.join(
-                                        app.config['CARPETA_CARGA_IMAGENES'], filename)
+                                    rutaFisica = os.path.join(app.config['CARPETA_FISICA_IMAGENES'], filename)
                                     foto.save(rutaFisica)
-                                    new_empleador.foto = rutaCarga
+                                    # Si no se pudo guardar la foto cargo la imagen default
+                                    if not os.path.exists(rutaFisica):
+                                        filename ='NoImage.png'
+                                        foto.save(os.path.join(app.config['CARPETA_FISICA_IMAGENES'], filename))
+                                    new_empleador.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], filename)
 
                         new_empleador.registroBps = regBPS
                         new_empleador.id = session['id_empleador']
@@ -552,6 +581,11 @@ def inicio_empleados():
         return redirect(url_for('inicio_empleadores'))
     else:
         empleado = getEmpleadoByID(baseDatos, session['id_empleado'])
+        # Si no se puede cargar la foto guardada en la base cargo la imagen default
+        rutaFisica = '.' + url_for('static', filename=empleado.foto)
+        if not os.path.exists(rutaFisica):
+            empleado.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+
         # se debe verificar que el empleado no tenga mensajes sin leer, en caso afirmativo se debe notificar
         tieneNotifMensajes = empleadoTieneMensajesSinLeer(baseDatos, empleado.id)
         # se debe verificar que el empleado este notificado sobre todos sus vínculos, en caso negativo se debe notificar
@@ -575,6 +609,10 @@ def inicio_empleadores():
     else:
         #print('getRecordatoriosDelDia(): ', getRecordatoriosDelDia())
         empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
+        # Si no se puede cargar la foto guardada en la base cargo la imagen default
+        rutaFisica = '.' + url_for('static', filename=empleador.foto)
+        if not os.path.exists(rutaFisica):
+            empleador.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
         # se debe verificar que el empleador no tenga mensajes sin leer, en caso afirmativo se debe notificar
         tieneNotifMensajes = empleadorTieneMensajesSinLeer(baseDatos, empleador.id)
         # se debe verificar que el empleador este notificado sobre todas las postulaciones a sus anuncios, 
@@ -677,7 +715,7 @@ def publicar_anuncio():
                 nCuidadoBebes,
                 nCuidadoAdultos,
                 nCuidadoMascotas)
-            flash('Anuncio creado!')
+            #flash('Anuncio creado!')
             return redirect(url_for('tus_anuncios'))
 
 
@@ -765,7 +803,7 @@ def borrandoAnuncio(idAnuncio):
             del_CuidadoBebes,
             del_CuidadoAdultos,
             del_CuidadoMascotas)
-        flash('Anuncio eliminado!')
+        #flash('Anuncio eliminado!')
         return redirect(url_for('listandoMisAnuncios'))
 
 # acá va la funcion que envía los datos viejos para llenar el form del anuncio q se va a cambiar
@@ -1031,6 +1069,10 @@ def ver_anuncio(idAnuncio, postulacion):
     else:
         elAnuncio = getAnuncioByID(baseDatos, idAnuncio),
         empleador = elAnuncio[0].empleador
+        # Si no se puede cargar la foto guardada en la base cargo la imagen default
+        rutaFisica = '.' + url_for('static', filename=empleador.foto)
+        if not os.path.exists(rutaFisica):
+            empleador.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
 
         tareasAnuncio = []
         if elAnuncio[0].hogar == True:
@@ -1108,8 +1150,8 @@ def postularse(idAnuncio):
         ), 'Buenas noticias!!! {} {}, se ha postulado a tu anuncio: "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
         mensajeEmpleador.crearMensaje(baseDatos)
 
-        flash('Postulación enviada!')
-        print('llego hasta acá 2')
+        #flash('Postulación enviada!')
+        #print('llego hasta acá 2')
         return redirect(url_for('listar_anuncios'))
 
 
@@ -1198,7 +1240,15 @@ def ver_vinculo(idVinculo):
     else:
         vinculo = getVinculoIDs(baseDatos, idVinculo)
         empleador = getEmpleadorByID(baseDatos, vinculo.empleador)
+        # Si no se puede cargar la foto guardada en la base cargo la imagen default
+        rutaFisica = '.' + url_for('static', filename=empleador.foto)
+        if not os.path.exists(rutaFisica):
+            empleador.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
         empleado = getEmpleadoByID(baseDatos, vinculo.empleado)
+        # Si no se puede cargar la foto guardada en la base cargo la imagen default
+        rutaFisica = '.' + url_for('static', filename=empleado.foto)
+        if not os.path.exists(rutaFisica):
+            empleado.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
         anuncio = getAnuncioByID(baseDatos, vinculo.anuncio)
         extension = datetime.now().date() - vinculo.fecha_inicio
         calempleado = getPromedioByEmpleadoId(baseDatos, empleado.id)
@@ -1242,7 +1292,10 @@ def cal_vinculo(idVinculo):
             vinculo = getVinculoByID(baseDatos, idVinculo)
             vinculo.calif_empleador = cal
             vinculo.actualizarVinculo(baseDatos)
-            empleador = vinculo.empleador
+            empleador = vinculo.empleador# Si no se puede cargar la foto guardada en la base cargo la imagen default
+            rutaFisica = '.' + url_for('static', filename=empleador.foto)
+            if not os.path.exists(rutaFisica):
+                empleador.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
             empleador.promedioCalificacion = getPromedioByEmpleadorId(baseDatos, empleador.id)['promedio']
             empleador.calificarEmpleador(baseDatos)
         return redirect(url_for('ver_vinculo', idVinculo = idVinculo))
@@ -1253,6 +1306,10 @@ def cal_vinculo(idVinculo):
             vinculo.calif_empleado = cal
             vinculo.actualizarVinculo(baseDatos)
             empleado = vinculo.empleado
+            # Si no se puede cargar la foto guardada en la base cargo la imagen default
+            rutaFisica = '.' + url_for('static', filename=empleado.foto)
+            if not os.path.exists(rutaFisica):
+                empleado.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
             empleado.promedioCalificacion = getPromedioByEmpleadoId(baseDatos, empleado.id)['promedio']
             empleado.calificarEmpleado(baseDatos)
         return redirect(url_for('ver_vinculo', idVinculo = idVinculo))
@@ -1293,6 +1350,10 @@ def calificar_vinculos_pendientes(bloqueado):
                     vinculo.calif_empleador = cal
                     vinculo.actualizarVinculo(baseDatos)
                     empleador = vinculo.empleador
+                    # Si no se puede cargar la foto guardada en la base cargo la imagen default
+                    rutaFisica = '.' + url_for('static', filename=empleador.foto)
+                    if not os.path.exists(rutaFisica):
+                        empleador.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
                     empleador.promedioCalificacion = getPromedioByEmpleadorId(baseDatos, empleador.id)['promedio']
                     empleador.calificarEmpleador(baseDatos)
 
@@ -1306,6 +1367,10 @@ def calificar_vinculos_pendientes(bloqueado):
                     vinculo.calif_empleado = cal
                     vinculo.actualizarVinculo(baseDatos)
                     empleado = vinculo.empleado
+                    # Si no se puede cargar la foto guardada en la base cargo la imagen default
+                    rutaFisica = '.' + url_for('static', filename=empleado.foto)
+                    if not os.path.exists(rutaFisica):
+                        empleado.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
                     empleado.promedioCalificacion = getPromedioByEmpleadoId(baseDatos, empleado.id)['promedio']
                     empleado.calificarEmpleado(baseDatos)
 
@@ -1336,7 +1401,15 @@ def end_vinculo(idVinculo):
             cal = request.form.get('rating')
             vinculo = getVinculoByID(baseDatos, idVinculo)
             empleador = vinculo.empleador
+            # Si no se puede cargar la foto guardada en la base cargo la imagen default
+            rutaFisica = '.' + url_for('static', filename=empleador.foto)
+            if not os.path.exists(rutaFisica):
+                empleador.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
             empleado = vinculo.empleado
+            # Si no se puede cargar la foto guardada en la base cargo la imagen default
+            rutaFisica = '.' + url_for('static', filename=empleado.foto)
+            if not os.path.exists(rutaFisica):
+                empleado.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
             anuncio = vinculo.anuncio
 
             if session.get('usertype') == 'Empleado':
@@ -1415,6 +1488,15 @@ def mensajes_empleado(idEmpleado, idEmpleador):
     else:
         diccMensajes = getMensajesParaEmpleado(baseDatos, idEmpleado)
         objeto = getEmpleadoByID(baseDatos, idEmpleado)
+
+        tieneVinculo = tieneElEmpleadoVinculoConEmpleador(baseDatos, idEmpleado, idEmpleador)
+        existePostulacion = existePostulacionDeEmpleadoEnAnuncioDeEmpleador(baseDatos, idEmpleado, idEmpleador)
+        if tieneElEmpleadoMensajeDeEmpleador(baseDatos, idEmpleado, idEmpleador):
+            tipoEmisor = 2
+        else:
+            tipoEmisor = 3
+        dtoMensaje = DTOMensaje(tieneVinculo, existePostulacion, tipoEmisor)
+
         if int(idEmpleador) == 0:
             # carga inicial del form, no hay remitente seleccionado,
             # solo se va a cargar la lista de remitentes con panel de mensajes vacío
@@ -1423,10 +1505,10 @@ def mensajes_empleado(idEmpleado, idEmpleador):
             elEmpleador = getEmpleadorByID(baseDatos, int(idEmpleador))
             # se deben marcar los mensajes como leídos
             for mensaje in diccMensajes.get(int(idEmpleador)):
-                if mensaje.tipoReceptor == 1:
+                if mensaje.tipoReceptor == 1 and mensaje.leido == False:
                     mensaje.marcarMensajeComoLeido(baseDatos)
 
-        return render_template('Mensajes.html', diccmensajes=diccMensajes, actor=objeto, interactuanteseleccionado=elEmpleador)
+        return render_template('Mensajes.html', diccmensajes=diccMensajes, actor=objeto, interactuanteseleccionado=elEmpleador, dto=dtoMensaje)
 
 
 @app.route('/MensajesEmpleador/<idEmpleador>/<idEmpleado>', methods=['POST', 'GET'])
@@ -1440,6 +1522,15 @@ def mensajes_empleador(idEmpleador, idEmpleado):
     else:
         diccMensajes = getMensajesParaEmpleador(baseDatos, idEmpleador)
         objeto = getEmpleadorByID(baseDatos, idEmpleador)
+
+        tieneVinculo = tieneElEmpleadorVinculoConEmpleado(baseDatos, idEmpleador, idEmpleado)
+        existePostulacion = existePostulacionDeEmpleadoEnAnuncioDeEmpleador(baseDatos, idEmpleado, idEmpleador)
+        if tieneElEmpleadorMensajeDeEmpleado(baseDatos, idEmpleador, idEmpleado):
+            tipoEmisor = 1
+        else:
+            tipoEmisor = 3
+        dtoMensaje = DTOMensaje(tieneVinculo, existePostulacion, tipoEmisor)
+
         if int(idEmpleado) == 0:
             # carga inicial del form, no hay remitente seleccionado,
             # solo se va a cargar la lista de remitentes con panel de mensajes vacío
@@ -1448,10 +1539,10 @@ def mensajes_empleador(idEmpleador, idEmpleado):
             elEmpleado = getEmpleadoByID(baseDatos, int(idEmpleado))
             # se deben marcar los mensajes como leídos
             for mensaje in diccMensajes.get(int(idEmpleado)):
-                if mensaje.tipoReceptor == 2:
+                if mensaje.tipoReceptor == 2 and mensaje.leido == False:
                     mensaje.marcarMensajeComoLeido(baseDatos)
 
-        return render_template('Mensajes.html', diccmensajes=diccMensajes, actor=objeto, interactuanteseleccionado=elEmpleado)
+        return render_template('Mensajes.html', diccmensajes=diccMensajes, actor=objeto, interactuanteseleccionado=elEmpleado, dto=dtoMensaje)
 
 
 @app.route('/AgregarMensaje/<idDestinatario>/<idAnuncio>', methods=['POST', 'GET'])
@@ -1537,7 +1628,6 @@ def contratar(idEmpleado):
         recordatorioEmpleador = Recordatorio(0, 1, empleado, empleador, empleador, anuncio, postulacion, vinculo, datetime.now() + timedelta(days=90), datetime.now() + timedelta(days=270), 0, 'Debe calificar el vínculo', 0)
         recordatorioEmpleador.crearRecordatorio(baseDatos)
 
-        flash('Empleado Contratado!')
         return render_template('contactoEmpleado.html', data=empleado)
 
 
@@ -1552,7 +1642,14 @@ def ranking_calificaciones(tipo):
         if tipo == 'Empleador':
             listado = getRankingPorCalificacionEmpleadores(baseDatos, 20)
         elif tipo == 'Empleado':
-            listado = getRankingPorCalificacionEmpleados(baseDatos, 20)           
+            listado = getRankingPorCalificacionEmpleados(baseDatos, 20)
+
+        for item in listado:
+            rutaFisica = '.' + url_for('static', filename=item.foto)
+            # Si no se puede cargar la foto guardada en la base cargo la imagen default
+            if not os.path.exists(rutaFisica):
+                item.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+
         pares = listado[0:][::2]
         impares = listado[1:][::2]
         return render_template('RankingPorCalificacion.html', elemPares=pares, elemImpares=impares, tipo=tipo)

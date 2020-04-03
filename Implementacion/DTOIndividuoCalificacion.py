@@ -16,4 +16,4 @@ class DTOIndividuoCalificacion:
         return self.__dict__[item]
 
     def __str__(self):
-        return 'Nombre: {}, Apellido: {}, Promedio: {}, Cantidad de Vínculos: {}, Cantidad de Calificantes'.format(self.nombre, self.apellido, self.promedio, self.cantVinculos, self.cantCalificantes)
+        return 'Nombre: {}, Apellido: {}, Promedio: {}, Cantidad de Vínculos: {}, Cantidad de Calificantes: {}, Foto: {}'.format(self.nombre, self.apellido, self.promedioCalificacion, self.cantVinculos, self.cantCalificantes, self.foto)

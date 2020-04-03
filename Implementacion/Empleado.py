@@ -425,7 +425,7 @@ def getRankingPorCalificacionEmpleados(bd, top):
                     e.experiencia_meses,
                     COUNT(v.id) cant_vinculos,
                     COUNT(DISTINCT v.id_empleador) cant_calificantes
-                FROM empleado e INNER JOIN vinculo v ON e.id = v.id_empleado
+                FROM empleado e INNER JOIN vinculo v ON e.id = v.id_empleado WHERE e.promedio_calificacion > 0
                 GROUP BY e.id
                 ORDER BY promedio_calificacion DESC, cant_vinculos DESC, cant_calificantes DESC LIMIT {}'''.format(top))
         retorno = cursor.fetchall()
