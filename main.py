@@ -1499,13 +1499,13 @@ def mensajes_empleado(idEmpleado, idEmpleador):
         diccMensajes = getMensajesParaEmpleado(baseDatos, idEmpleado)
         objeto = getEmpleadoByID(baseDatos, idEmpleado)
 
-        tieneVinculo = tieneElEmpleadoVinculoConEmpleador(baseDatos, idEmpleado, idEmpleador)
-        existePostulacion = existePostulacionDeEmpleadoEnAnuncioDeEmpleador(baseDatos, idEmpleado, idEmpleador)
+        vinculo = tieneElEmpleadoVinculoConEmpleador(baseDatos, idEmpleado, idEmpleador)
+        postulacion = existePostulacionDeEmpleadoEnAnuncioDeEmpleador(baseDatos, idEmpleado, idEmpleador)
         if tieneElEmpleadoMensajeDeEmpleador(baseDatos, idEmpleado, idEmpleador):
             tipoEmisor = 2
         else:
             tipoEmisor = 3
-        dtoMensaje = DTOMensaje(tieneVinculo, existePostulacion, tipoEmisor)
+        dtoMensaje = DTOMensaje(vinculo, postulacion, tipoEmisor)
 
         if int(idEmpleador) == 0:
             # carga inicial del form, no hay remitente seleccionado,
@@ -1533,13 +1533,13 @@ def mensajes_empleador(idEmpleador, idEmpleado):
         diccMensajes = getMensajesParaEmpleador(baseDatos, idEmpleador)
         objeto = getEmpleadorByID(baseDatos, idEmpleador)
 
-        tieneVinculo = tieneElEmpleadorVinculoConEmpleado(baseDatos, idEmpleador, idEmpleado)
-        existePostulacion = existePostulacionDeEmpleadoEnAnuncioDeEmpleador(baseDatos, idEmpleado, idEmpleador)
+        vinculo = tieneElEmpleadorVinculoConEmpleado(baseDatos, idEmpleador, idEmpleado)
+        postulacion = existePostulacionDeEmpleadoEnAnuncioDeEmpleador(baseDatos, idEmpleado, idEmpleador)
         if tieneElEmpleadorMensajeDeEmpleado(baseDatos, idEmpleador, idEmpleado):
             tipoEmisor = 1
         else:
             tipoEmisor = 3
-        dtoMensaje = DTOMensaje(tieneVinculo, existePostulacion, tipoEmisor)
+        dtoMensaje = DTOMensaje(vinculo, postulacion, tipoEmisor)
 
         if int(idEmpleado) == 0:
             # carga inicial del form, no hay remitente seleccionado,

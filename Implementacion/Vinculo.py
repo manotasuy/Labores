@@ -427,17 +427,17 @@ def tieneElEmpleadoVinculoConEmpleador(bd, id_empleado, id_empleador):
         cursor = bd.connection.cursor()
         cursor.execute('''
             SELECT
-                id
+                MAX(id)
             FROM vinculo WHERE id_empleado = {} AND id_empleador = {} AND fecha_fin is NULL AND id_anuncio > 0'''
             .format(id_empleado, id_empleador))
         retorno = cursor.fetchall()
         bd.connection.commit()
         cursor.close()
         
-        if retorno is None or len(retorno) == 0:
-            return False
+        if retorno is None:
+            return None
         else:
-            return True
+            return getVinculoByID(bd, retorno[0][0])
     except Exception as e:
         print("Error en tieneElEmpleadoVinculoConEmpleador ", e)
 
@@ -447,16 +447,16 @@ def tieneElEmpleadorVinculoConEmpleado(bd, id_empleador, id_empleado):
         cursor = bd.connection.cursor()
         cursor.execute('''
             SELECT
-                id
+                MAX(id)
             FROM vinculo WHERE id_empleado = {} AND id_empleador = {} AND fecha_fin is NULL AND id_anuncio > 0'''
             .format(id_empleado, id_empleador))
         retorno = cursor.fetchall()
         bd.connection.commit()
         cursor.close()
         
-        if retorno is None or len(retorno) == 0:
-            return False
+        if retorno is None:
+            return None
         else:
-            return True
+            return getVinculoByID(bd, retorno[0][0])
     except Exception as e:
         print("Error en tieneElEmpleadorVinculoConEmpleado ", e)

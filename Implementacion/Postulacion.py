@@ -285,3 +285,23 @@ def existePostulacionDeEmpleadoEnAnuncioDeEmpleador(bd, id_empleado, id_empleado
             return True
     except Exception as e:
         print("Error en existePostulacionDeEmpleadoEnAnuncioDeEmpleador ", e)
+
+
+def existePostulacionDeEmpleadoEnAnuncioDeEmpleador(bd, id_empleado, id_empleador):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('''
+            SELECT MAX(p.id)
+            FROM postulacion p 
+            INNER JOIN anuncio a ON p.id_anuncio = a.id 
+            WHERE p.id_empleado = {} AND a.id_empleador = {}'''.format(id_empleado, id_empleador))
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+        
+        if retorno is None:
+            return None
+        else:
+            return getPostulacionById(bd, retorno[0][0])
+    except Exception as e:
+        print("Error en existePostulacionDeEmpleadoEnAnuncioDeEmpleador ", e)
