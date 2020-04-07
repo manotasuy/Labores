@@ -439,7 +439,7 @@ def guardar_perfil(tipo):
                 if tipo == 'Empleado':
                     # debo crear un empleado
                     new_empleado = Empleado(0, cedula, nombre, apellido, nacimiento, genero, domicilio,
-                                            nacionalidad, mail, telefono, 0, '', 'images/NoImage.png', 0, usuario, None, None, None)
+                                            nacionalidad, mail, telefono, 0, '', 'images/Perfiles/NoImage.png', 0, usuario, None, None, None)
 
                     # como es edición de perfil debo modificar la contraseña y el empleado
                     if logueado:
@@ -483,13 +483,18 @@ def guardar_perfil(tipo):
                         if request.files:
                             foto = request.files["fotoPerfil"]
                             if foto.filename == '':
-                                print('No hay foto cargada, mantengo la que tenía')
-                                new_empleado.foto = getEmpleadoByID(
-                                    baseDatos, session['id_empleado']).foto
+                                #print('No hay foto cargada, mantengo la que tenía')
+                                filename = secure_filename(getEmpleadoByID(baseDatos, session['id_empleado']).foto)
+                                rutaFisica = os.path.join(app.config['CARPETA_FISICA_IMAGENES'], filename)
+                                # Si no se pudo cargar la foto cargo la imagen default
+                                if not os.path.exists(rutaFisica):
+                                    filename = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+                                new_empleado.foto = filename
                             else:
                                 if archivoAdmitido(foto.filename):
                                     filename = secure_filename(foto.filename)
                                     rutaFisica = os.path.join(app.config['CARPETA_FISICA_IMAGENES'], filename)
+                                    #print('rutaFisica: ', rutaFisica)
                                     foto.save(rutaFisica)
                                     # Si no se pudo guardar la foto cargo la imagen default
                                     if not os.path.exists(rutaFisica):
@@ -509,7 +514,7 @@ def guardar_perfil(tipo):
                 elif tipo == 'Empleador':
                     # debo crear un empleador
                     new_empleador = Empleador(0, cedula, nombre, apellido, nacimiento, genero,
-                                              domicilio, nacionalidad, mail, telefono, 0, 'images/NoImage.png', 0, usuario)
+                                              domicilio, nacionalidad, mail, telefono, 0, 'images/Perfiles/NoImage.png', 0, usuario)
 
                     # como es edición de perfil debo modificar la contraseña y el empleador
                     if logueado:
@@ -523,13 +528,18 @@ def guardar_perfil(tipo):
                         if request.files:
                             foto = request.files["fotoPerfil"]
                             if foto.filename == '':
-                                print('No hay foto cargada, mantengo la que tenía')
-                                new_empleador.foto = getEmpleadorByID(
-                                    baseDatos, session['id_empleador']).foto
+                                #print('No hay foto cargada, mantengo la que tenía')
+                                filename = secure_filename(getEmpleadorByID(baseDatos, session['id_empleador']).foto)
+                                rutaFisica = os.path.join(app.config['CARPETA_FISICA_IMAGENES'], filename)
+                                # Si no se pudo cargar la foto cargo la imagen default
+                                if not os.path.exists(rutaFisica):
+                                    filename = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+                                new_empleador.foto = filename
                             else:
                                 if archivoAdmitido(foto.filename):
                                     filename = secure_filename(foto.filename)
                                     rutaFisica = os.path.join(app.config['CARPETA_FISICA_IMAGENES'], filename)
+                                    #print('rutaFisica: ', rutaFisica)
                                     foto.save(rutaFisica)
                                     # Si no se pudo guardar la foto cargo la imagen default
                                     if not os.path.exists(rutaFisica):
