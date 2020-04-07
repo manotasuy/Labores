@@ -29,10 +29,10 @@ app = Flask(__name__)
 
 #baseDatos = connectionDb(app, 'remotemysql.com')
 #baseDatos = connectionDb(app, 'aws')
-baseDatos = connectionDb(app, 'CloudAccess')
+#baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'a-work')
 #baseDatos = connectionDb(app, 'a-home')
-#baseDatos = connectionDb(app, 'local')
+baseDatos = connectionDb(app, 'local')
 
 
 # session
@@ -1183,6 +1183,7 @@ def mis_postulaciones():
             lista.append(getAnuncioByID(baseDatos, postulacion.anuncio))
             lista.append(getPostulacionEmpleadoAnuncio(
                 baseDatos, idEmpleado, postulacion.anuncio))
+            lista.append(postulacion)
             misPostulaciones.append(lista)
 
         for post in misPostulaciones:
