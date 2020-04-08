@@ -549,12 +549,12 @@ input::placeholder {
     transform: translateX(-100%);
   }
 
-  #divRemitentes {
+  #divContenedorRemitentes {
     display: contents;
   }
 
   #divContenedorMensajes {
-    min-width: 100%;
+    display: contents;
   }
 }
 
@@ -601,7 +601,7 @@ input::placeholder {
    display:block;
   }
 
-  #divRemitentes {
+  #divContenedorRemitentes {
     display: contents;
   }
 
