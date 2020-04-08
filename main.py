@@ -29,10 +29,10 @@ app = Flask(__name__)
 
 #baseDatos = connectionDb(app, 'remotemysql.com')
 #baseDatos = connectionDb(app, 'aws')
-#baseDatos = connectionDb(app, 'CloudAccess')
+baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'a-work')
 #baseDatos = connectionDb(app, 'a-home')
-baseDatos = connectionDb(app, 'local')
+#baseDatos = connectionDb(app, 'local')
 
 
 # session
@@ -1152,16 +1152,14 @@ def postularse(idAnuncio):
 
         # Se debe notificar al empleado mediante mensaje de que se ha postulado
         mensajeEmpleado = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
-        ), 'Buena suerte!!! {} {}, te has postulado al anuncio: "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 1, False)
+        ), 'Buena suerte {} {}!!! te has postulado al anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 1, False)
         mensajeEmpleado.crearMensaje(baseDatos)
 
         # Se debe notificar al empleador mediante mensaje de que se ha postulado
         mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
-        ), 'Buenas noticias!!! {} {}, se ha postulado a tu anuncio: "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
+        ), 'Buenas noticias!!! {} {} se ha postulado a tu anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
         mensajeEmpleador.crearMensaje(baseDatos)
 
-        #flash('Postulación enviada!')
-        #print('llego hasta acá 2')
         return redirect(url_for('listar_anuncios'))
 
 
@@ -1204,8 +1202,21 @@ def despostularse(idPostulacion):
     elif session.get('usertype') == 'Empleador':
         return redirect(url_for('inicio_empleadores'))
     else:
+        empleado = getEmpleadoByID(baseDatos, session['id_empleado'])
         postulacion = getPostulacionById(baseDatos, idPostulacion)
         postulacion.borrarPostulacion(baseDatos)
+        anuncio = postulacion.anuncio
+
+        # Se debe notificar al empleado mediante mensaje de que se ha despostulado del anuncio
+        mensajeEmpleado = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
+        ), '{} {}, te has despostulado del anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 1, False)
+        mensajeEmpleado.crearMensaje(baseDatos)
+
+        # Se debe notificar al empleador mediante mensaje de que se han despostulado de su anuncio
+        mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
+        ), '{} {} se ha despostulado de tu anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
+        mensajeEmpleador.crearMensaje(baseDatos)
+
         return redirect(url_for('mis_postulaciones'))
 
 
@@ -1439,13 +1450,13 @@ def end_vinculo(idVinculo):
     
             # Se debe notificar al empleado mediante mensaje de que el vínculo con el empleador "X" finalizó
             mensajeEmpleado = Mensaje(0, empleado, empleador, anuncio, datetime.now(), 
-            'Su vínculo con: {} {} por el anuncio: "{}" ha finalizado. Recuerde que puede calificar el vínculo cuantas veces lo considere desde "Mis Vínculos"'
+            'Su vínculo con {} {} por el anuncio "{}" ha finalizado. Recuerde que puede calificar el vínculo cuantas veces lo considere desde "Mis Vínculos"'
             .format(empleador.nombre, empleador.apellido, anuncio.titulo), 3, 1, False)
             mensajeEmpleado.crearMensaje(baseDatos)
 
             # Se debe notificar al empleador mediante mensaje de que el vínculo con el empleado "X" finalizó
             mensajeEmpleador = Mensaje(0, empleado, empleador, anuncio, datetime.now(), 
-            'Su vínculo con: {} {} por el anuncio: "{}" ha finalizado. Recuerde que puede calificar el vínculo cuantas veces lo considere desde "Mis Vínculos"'
+            'Su vínculo con {} {} por el anuncio "{}" ha finalizado. Recuerde que puede calificar el vínculo cuantas veces lo considere desde "Mis Vínculos"'
             .format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
             mensajeEmpleador.crearMensaje(baseDatos)
 
@@ -1536,11 +1547,7 @@ def mensajes_empleador(idEmpleador, idEmpleado):
 
         vinculo = tieneElEmpleadorVinculoConEmpleado(baseDatos, idEmpleador, idEmpleado)
         postulacion = existePostulacionDeEmpleadoEnAnuncioDeEmpleador(baseDatos, idEmpleado, idEmpleador)
-        if tieneElEmpleadorMensajeDeEmpleado(baseDatos, idEmpleador, idEmpleado):
-            tipoEmisor = 1
-        else:
-            tipoEmisor = 3
-        dtoMensaje = DTOMensaje(vinculo, postulacion, tipoEmisor)
+        dtoMensaje = DTOMensaje(vinculo, postulacion, 1)
 
         if int(idEmpleado) == 0:
             # carga inicial del form, no hay remitente seleccionado,
@@ -1623,12 +1630,12 @@ def contratar(idEmpleado):
 
         # Se debe notificar al empleado mediante mensaje de que el empleador "X" lo contrató
         mensajeEmpleado = Mensaje(
-            0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has sido contratado por: {} {}, les deseamos un buen vínculo laboral.'.format(empleador.nombre, empleador.apellido), 3, 1, False)
+            0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has sido contratado por {} {}, por el anuncio "{}", les deseamos un buen vínculo laboral.'.format(empleador.nombre, empleador.apellido, anuncio.titulo), 3, 1, False)
         mensajeEmpleado.crearMensaje(baseDatos)
 
         # Se debe notificar al empleador mediante mensaje de que contrató al empleador "X"
         mensajeEmpleador = Mensaje(
-            0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has contratado a: {} {}, les deseamos un buen vínculo laboral.'.format(empleado.nombre, empleado.apellido), 3, 2, False)
+            0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has contratado a {} {}, por el anuncio "{}", les deseamos un buen vínculo laboral.'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
         mensajeEmpleador.crearMensaje(baseDatos)
 
         # Se debe generar recordatorio de calificación para el empleado

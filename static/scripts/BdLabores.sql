@@ -197,7 +197,7 @@ CREATE TABLE IF NOT EXISTS postulacion (
 	id_empleado int NOT NULL,
 	id_anuncio int NOT NULL,
 	fecha date NULL,
-	genera_vinculo boolean NULL,
+	genera_vinculo boolean default 0 NULL,
     notificada boolean DEFAULT 0 NOT NULL,
 	CONSTRAINT PK_postulacion PRIMARY KEY (id),
 	CONSTRAINT FK_postulacion_empleado FOREIGN KEY (id_empleado) REFERENCES empleado(id),

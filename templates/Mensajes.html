@@ -20,16 +20,16 @@
             <a id="anclaContenedorMensajes"></a>
             <div id="divPrincipal" class="row rounded-lg overflow-hidden shadow">
                 <!-- Cuadro de remitentes -->
-                <div class="col-5 px-0">
+                <div id="divContenedorRemitentes" class="col-5 px-0">
                     <div class="bg-white">
-                        <div class="messages-box">
+                        <div id ="divRemitentes" class="messages-box">
                             <div class="list-group rounded-0">
 
                                 {% if session['usertype'] == 'Empleado' %}
                                 {% for interactuante in diccmensajes %}
                                 {% set ultimo_elemento = diccmensajes[interactuante]|length -1 %}                                
                                 {% if interactuanteseleccionado is not none and interactuanteseleccionado.id == interactuante %}
-                                <a class="list-group-item list-group-item-action active text-white rounded-0">
+                                <a id="anclaRemitente{{interactuanteseleccionado.id}}" class="list-group-item list-group-item-action active text-white rounded-0">
                                     <div class="media">
                                         <img src="{{ url_for('static', filename=diccmensajes[interactuante][ultimo_elemento].empleador.foto)}}"
                                             alt="" width="100" class="rounded-circle">
@@ -75,7 +75,7 @@
                                 {% for interactuante in diccmensajes %}
                                 {% set ultimo_elemento = diccmensajes[interactuante]|length -1 %}
                                 {% if interactuanteseleccionado is not none and interactuanteseleccionado.id == interactuante %}
-                                <a class="list-group-item list-group-item-action active text-white rounded-0">
+                                <a id="anclaRemitente{{interactuanteseleccionado.id}}" class="list-group-item list-group-item-action active text-white rounded-0">
                                     <div class="media">
                                         <img src="{{ url_for('static', filename=diccmensajes[interactuante][ultimo_elemento].empleado.foto)}}"
                                             alt="" width="100" class="rounded-circle">
@@ -247,7 +247,7 @@
                     
                     </div>
                     {#dto#}
-                    <div class="bg-gray px-4 py-2 bg-light">
+                    <div id="divNewMessage" class="bg-gray px-4 py-2 bg-light">
                         <!-- Area de mensaje para escribir -->
                         <form action="/AgregarMensaje/{{interactuanteseleccionado.id}}/0" method="POST" class="bg-light"
                             name="mensajeChat">
@@ -275,8 +275,12 @@
 {% block scripts %}
 <script type="text/javascript">
     $(window).on('load',function(){
+        $(document).scrollTop($("#anclaContenedorMensajes").offset().top);
+        /*
+        No logro posicionar el scroll en el ancla del remitente
+        $('#divRemitentes').scrollTop($("#anclaRemitente{{interactuanteseleccionado.id}}").offset().top);
+        */
         $('#divMensajes').scrollTop($('#divMensajes')[0].scrollHeight);
-        $(document).scrollTop( $("#anclaContenedorMensajes").offset().top);  
     });
 </script>
 {% endblock %}

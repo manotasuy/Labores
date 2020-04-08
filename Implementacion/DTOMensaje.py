@@ -14,15 +14,17 @@ class DTOMensaje():
 
 
     def habilitaMensaje(self):
-        if self.tipo_emisor == 3:
+        if self.tipo_emisor == 3 and self.vinculo is None:
             return False
+        elif self.tipo_emisor == 3 and self.vinculo is not None:
+            return True
         elif self.postulacion is None:
             return False
         elif self.postulacion is not None and self.postulacion.genera_vinculo == True and self.vinculo is None:
             return False
         elif self.postulacion is not None and self.postulacion.genera_vinculo == True and self.vinculo is not None:
             return True
-        elif self.postulacion is not None and self.postulacion.genera_vinculo == False:
+        elif self.postulacion is not None and (self.postulacion.genera_vinculo is None or self.postulacion.genera_vinculo == False):
             return True
         elif self.vinculo is not None:
             return True

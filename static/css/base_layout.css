@@ -122,8 +122,6 @@ h1 {
   text-shadow: 0 0 0.2em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0)
 }
 
-/***********/
-
 .image_full{
   display:block;
  }
@@ -158,53 +156,6 @@ h1 {
 .foot_mobile{
   display: none;
 }
-
-@media (max-width: 640px) and (min-width: 320px){
- .foot_full{
-  display: none;
- }
-
- .div_mobile{
-  display: contents;
-}
-
-
- .image_full{
-  display:none;
- }
-
- .div_full{
-  display: none;
- }
-
- .image_mobile{
-  display:block;
- }
-
- .text_full{
-  display:none;
- }
-
- .tb_full{
-  display:none;
- }
-
- .text_mobile{
-  display:block;
-  font-size: small;
- }
-
- .card_full{
-  display:none;
- }
-
- .card_mobile{
-  display:block;
- }
-
-}
-
-/***********/
 
 #carouselFooter {
   margin-bottom: 1rem;
@@ -288,8 +239,12 @@ h1 {
     max-width: 700px;
 }
 
+.card-deck {
+  background-color: transparent;
+}
+
 .card-deck .card {
-    min-width: 220px;
+  min-width: 220px;
 }
 
 .form-signin {
@@ -592,6 +547,66 @@ input::placeholder {
     visibility: visible;
     -webkit-transform: translateX(-100%);
     transform: translateX(-100%);
+  }
+
+  #divRemitentes {
+    display: contents;
+  }
+
+  #divContenedorMensajes {
+    min-width: 100%;
+  }
+}
+
+@media (max-width: 640px) and (min-width: 320px){
+  .foot_full{
+   display: none;
+  }
+ 
+  .div_mobile{
+   display: contents;
+ }
+ 
+ 
+  .image_full{
+   display:none;
+  }
+ 
+  .div_full{
+   display: none;
+  }
+ 
+  .image_mobile{
+   display:block;
+  }
+ 
+  .text_full{
+   display:none;
+  }
+ 
+  .tb_full{
+   display:none;
+  }
+ 
+  .text_mobile{
+   display:block;
+   font-size: small;
+  }
+ 
+  .card_full{
+   display:none;
+  }
+ 
+  .card_mobile{
+   display:block;
+  }
+
+  #divRemitentes {
+    display: contents;
+  }
+
+  #divContenedorMensajes {
+    display: contents;
   }
 }
 
