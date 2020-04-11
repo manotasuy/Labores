@@ -1,5 +1,8 @@
-import Implementacion
+import os
+from flask import url_for
 from datetime import datetime
+import Implementacion
+from Implementacion.Conexion import getCarpetaCargaImagenes
 from Implementacion.Usuario import getUsuarioByID
 from Implementacion.Tarea import Tarea
 from Implementacion.Tarea import agregarTareaEmpleado
@@ -297,6 +300,15 @@ def getEmpleadoByID(bd, id):
         retorno = cursor.fetchall()
         bd.connection.commit()
         cursor.close()
+
+        # Si no se puede cargar la foto guardada en la base cargo la imagen default
+        foto = retorno[0][12]
+        if foto is None or foto == '':
+            foto = 'SinImagen'
+        rutaFisica = '.' + url_for('static', filename = foto)
+        if not os.path.exists(rutaFisica):
+            foto = os.path.join(getCarpetaCargaImagenes(), 'NoImage.png')
+
         empleado = Empleado(
             retorno[0][0],
             retorno[0][1],
@@ -310,7 +322,7 @@ def getEmpleadoByID(bd, id):
             retorno[0][9],
             retorno[0][10],
             retorno[0][11],
-            retorno[0][12],
+            foto,
             retorno[0][13],
             getUsuarioByID(bd, retorno[0][14]),
             None,

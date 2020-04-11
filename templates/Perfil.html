@@ -257,16 +257,16 @@
                     Los empleadores te invitarán a pasar a su casa <br>
                     ¡cuentales algo sobre tí, así comienzan a conocerte!
                 </h5>
-                <textarea class="" name="presentacion" rows="10" cols="35"
+                <textarea class="" name="presentacion" rows="10" cols="45"
                     placeholder="Escribe aqui...">{{data.descripcion}}</textarea>
 
                 <hr class="mt-5 mb-5">
 
                 {% if not data.referencias %}
                 <div class="row mb-5 ml-4">
-                    <button type="button" style="max-width: 560px; min-width: 560px;" class="btn btn-secondary"
+                    <button type="button" class="btn btn-secondary btn-block"
                         disabled>
-                        <h5>No tiene ninguna referencia registrada hasta el momento</h5>
+                        <h5>No tiene ninguna referencia registrada</h5>
                     </button>
                 </div>
                 {% else %}

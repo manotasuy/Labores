@@ -38,3 +38,9 @@ def connectionDb(app, servidor):
     app.config['CARPETA_FISICA_IMAGENES'] = CARPETA_FISICA_IMAGENES
     app.config['CARPETA_CARGA_IMAGENES'] = CARPETA_CARGA_IMAGENES
     return MySQL(app)
+
+def getCarpetaFisicaImagenes():
+    return CARPETA_FISICA_IMAGENES;
+
+def getCarpetaCargaImagenes():
+    return CARPETA_CARGA_IMAGENES;

@@ -247,6 +247,10 @@ h1 {
   min-width: 220px;
 }
 
+.special-card {
+  background-color: rgba(245, 245, 245, 0.4) !important;
+}
+
 .form-signin {
   width: 100%;
   max-width: 420px;
@@ -565,7 +569,7 @@ input::placeholder {
  
   .div_mobile{
    display: contents;
- }
+  }
  
  
   .image_full{

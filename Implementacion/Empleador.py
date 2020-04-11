@@ -1,4 +1,7 @@
+import os
+from flask import url_for
 from datetime import datetime
+from Implementacion.Conexion import getCarpetaCargaImagenes
 from Implementacion.Usuario import getUsuarioByID
 from Implementacion.Anuncio import Anuncio
 from Implementacion.Usuario import Usuario
@@ -372,6 +375,14 @@ def getEmpleadorByID(bd, id):
         retorno = cursor.fetchall()
         bd.connection.commit()
         cursor.close()
+
+        # Si no se puede cargar la foto guardada en la base cargo la imagen default
+        foto = retorno[0][11]
+        if foto is None or foto == '':
+            foto = 'SinImagen'
+        rutaFisica = '.' + url_for('static', filename = foto)
+        if not os.path.exists(rutaFisica):
+            foto = os.path.join(getCarpetaCargaImagenes(), 'NoImage.png')
 
         empleador = Empleador(
             retorno[0][0],

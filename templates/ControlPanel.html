@@ -10,105 +10,65 @@
 
 {% block contenido %}
 <div class="container">
-  <div class="row">
-    <div class="col-sm-6">
-      <div class="card text-white bg-primary mb-1">
-        <div class="card-body">
-          <h2 class="card-title">Empleadores</h2>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-6">
-      <div class="card text-white bg-success mb-1">
-        <div class="card-body">
-          <h2 class="card-title">Empleados</h2>
-        </div>
-      </div>
-    </div>
-  </div>
+  <div class="jumbotron jumbotron-fluid no-mobile">
+    <div class="container">
 
-  <div class="row">
-    <div class="col-sm-6">
-      <div class="card bg-light mb-1 text-right">
-        <div class="card-body">
-          <h3 class="card-title">{{data.ctasEmpleadores}}</h3>
-          <p class="card-text">Cuentas registradas</p>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="card text-white bg-primary mb-3 text-right" style=" ">
+            <div class="card-header text-left">
+            Empleadores
+            </div>
+            <div class="card-body special-card">
+              <h6 class="card-text">Cuentas registradas</h6>
+              <h3 class="card-title">{{data.ctasEmpleadores}}</h3>
+            </div>
+            <div class="card-body special-card">
+              <h6 class="card-text">Ofertas publicadas</h6>
+              <h3 class="card-title">{{data.cantAnuncios}}</h3>
+            </div>
+            <div class="card-body special-card">
+              <h6 class="card-text">Promedio de calificaciones</h6>
+              <h3 class="card-title">{{data.promCalificEmpleadores}}</h3>
+            </div>
+            <div class="card-body special-card">
+              <h6 class="card-text">Cuentas cerradas</h6>
+              <h3 class="card-title">{{data.ctasCerradasEmpleadores}}</h3>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-sm-6">
+          <div class="card text-white bg-success mb-3 text-right" style=" ">
+            <div class="card-header text-left">Empleados</div>
+            <div class="card-body special-card">
+              <h6 class="card-text">Cuentas registradas</h6>
+              <h3 class="card-title">{{data.ctasEmpleados}}</h3>
+            </div>
+            <div class="card-body special-card">
+              <h6 class="card-text">Postulaciones a empleos</h6>
+              <h3 class="card-title">{{data.cantPostulaciones}}</h3>
+            </div>
+            <div class="card-body special-card">
+              <h6 class="card-text">Promedio de calificaciones</h6>
+              <h3 class="card-title">{{data.promCalificEmpleados}}</h3>
+            </div>
+            <div class="card-body special-card">
+              <h6 class="card-text">Cuentas cerradas</h6>
+              <h3 class="card-title">{{data.ctasCerradasEmpleados}}</h3>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="col-sm-6">
-      <div class="card bg-light mb-1 text-right">
-        <div class="card-body">
-          <h3 class="card-title">{{data.ctasEmpleados}}</h3>
-          <p class="card-text">Cuentas registradas</p>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <div class="row">
-    <div class="col-sm-6">
-      <div class="card bg-light mb-1 text-right">
+      <!-- Datos comunes -->
+      <div class="card text-white bg-info mb-3 text-center">
         <div class="card-body">
-          <h3 class="card-title">{{data.cantAnuncios}}</h3>
-          <p class="card-text">Ofertas de trabajo publicadas</p>
+          <h3 class="card-title">{{data.cantVinculos}}</h3>
+          <h6 class="card-text">Vínculos establecidos</h6>
         </div>
       </div>
-    </div>
-    <div class="col-sm-6">
-      <div class="card bg-light mb-1 text-right">
-        <div class="card-body">
-          <h3 class="card-title">{{data.cantPostulaciones}}</h3>
-          <p class="card-text">Postulaciones a empleos ejecutadas</p>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <div class="row">
-    <div class="col-sm-6">
-      <div class="card bg-light mb-1 text-right">
-        <div class="card-body">
-          <h3 class="card-title">{{data.promCalificEmpleadores}}</h3>
-          <p class="card-text">Promedio de calificaciones</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-6">
-      <div class="card bg-light mb-1 text-right">
-        <div class="card-body">
-          <h3 class="card-title">{{data.promCalificEmpleados}}</h3>
-          <p class="card-text">Promedio de calificaciones</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-6">
-      <div class="card bg-light mb-1 text-right">
-        <div class="card-body">
-          <h3 class="card-title">{{data.ctasCerradasEmpleadores}}</h3>
-          <p class="card-text">Cuentas cerradas</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-6">
-      <div class="card bg-light mb-1 text-right">
-        <div class="card-body">
-          <h3 class="card-title">{{data.ctasCerradasEmpleados}}</h3>
-          <p class="card-text">Cuentas cerradas</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Datos comunes -->
-
-  <div class="card bg-light mb-3 text-center">
-    <div class="card-body">
-      <h3 class="card-title">{{data.cantVinculos}}</h3>
-      <p class="card-text">Vínculos establecidos</p>
     </div>
   </div>
 </div>
