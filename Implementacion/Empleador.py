@@ -455,7 +455,7 @@ def getRankingPorCalificacionEmpleadores(bd, top):
                 SELECT e.id,
                     e.nombre,
                     e.apellido,
-                    e.promedio_calificacion,
+                    ROUND(e.promedio_calificacion, 2),
                     e.foto,
                     COUNT(v.id) cant_vinculos,
                     COUNT(DISTINCT v.id_empleado) cant_calificantes

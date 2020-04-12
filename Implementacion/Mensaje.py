@@ -1,6 +1,5 @@
 from datetime import datetime
 from collections import defaultdict
-from collections import OrderedDict
 # si establezco from modulo import clase obtengo referencia ciclíca [Inicio]
 from Implementacion import Empleador
 from Implementacion import Empleado
@@ -161,6 +160,12 @@ def getMensajeByID(bd, id):
 
 def getMensajesParaEmpleado(bd, id_empleado):
     try:
+        # debo devolver un dicc con clave:valor id_empleado:lista de mensajes del empleado
+        # entonces al consultar clave obtengo la lista de mensajes con ese empleado
+        diccRetorno = dict()
+
+        # primero cargo las claves ordenadas por fecha de los mensajes de forma descendente
+        # la lista de mensajes la dejo vacía ya que se carga en la próxima recorrida con orden de mensajes ascendente
         cursor = bd.connection.cursor()
         cursor.execute('''
             SELECT
@@ -173,16 +178,45 @@ def getMensajesParaEmpleado(bd, id_empleado):
                 id_tipo_emisor,
                 id_tipo_receptor,
                 leido
-            FROM mensaje WHERE id_empleado = {} AND (id_tipo_emisor = 1 OR id_tipo_receptor = 1)  ORDER BY fecha'''.format(id_empleado))
+            FROM mensaje WHERE id_empleado = {} AND (id_tipo_emisor = 1 OR id_tipo_receptor = 1) ORDER BY fecha DESC'''.format(id_empleado))
         retorno = cursor.fetchall()
         bd.connection.commit()
         cursor.close()
 
-        diccRetorno = OrderedDict()
+        for registro in retorno:
+            mensaje = Mensaje(
+                registro[0],
+                getEmpleadoByID(bd, registro[1]),
+                getEmpleadorByID(bd, registro[2]),
+                getAnuncioByID(bd, registro[3]),
+                registro[4],
+                registro[5],
+                registro[6],
+                registro[7],
+                registro[8]
+            )
+            clave = mensaje.empleador.id
+            if not clave in diccRetorno:
+                diccRetorno[clave] = []
 
-        # debo devolver un dicc con clave:valor id_empleador:lista de mensajes del empleador
-        # entonces al consultar clave obtengo la lista de mensajes con ese empleador
-        
+        # luego cargo la lista de mensajes de cada remitente ordenados por fecha de los mensajes de forma ascendente
+        cursor = bd.connection.cursor()
+        cursor.execute('''
+            SELECT
+                id,
+                id_empleado,
+                id_empleador,
+                id_anuncio,
+                fecha,
+                mensaje,
+                id_tipo_emisor,
+                id_tipo_receptor,
+                leido
+            FROM mensaje WHERE id_empleado = {} AND (id_tipo_emisor = 1 OR id_tipo_receptor = 1) ORDER BY fecha'''.format(id_empleado))
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+
         for registro in retorno:
             mensaje = Mensaje(
                 registro[0],
@@ -225,6 +259,46 @@ def empleadoTieneMensajesSinLeer(bd, id_empleado):
 
 def getMensajesParaEmpleador(bd, id_empleador):
     try:
+        # debo devolver un dicc con clave:valor id_empleado:lista de mensajes del empleado
+        # entonces al consultar clave obtengo la lista de mensajes con ese empleado
+        diccRetorno = dict()
+
+        # primero cargo las claves ordenadas por fecha de los mensajes de forma descendente
+        # la lista de mensajes la dejo vacía ya que se carga en la próxima recorrida con orden de mensajes ascendente
+        cursor = bd.connection.cursor()
+        cursor.execute('''
+            SELECT
+                id,
+                id_empleado,
+                id_empleador,
+                id_anuncio,
+                fecha,
+                mensaje,
+                id_tipo_emisor,
+                id_tipo_receptor,
+                leido
+            FROM mensaje WHERE id_empleador = {} AND (id_tipo_emisor = 2 OR id_tipo_receptor = 2) ORDER BY fecha DESC'''.format(id_empleador))
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+
+        for registro in retorno:
+            mensaje = Mensaje(
+                registro[0],
+                getEmpleadoByID(bd, registro[1]),
+                getEmpleadorByID(bd, registro[2]),
+                getAnuncioByID(bd, registro[3]),
+                registro[4],
+                registro[5],
+                registro[6],
+                registro[7],
+                registro[8]
+            )
+            clave = mensaje.empleado.id
+            if not clave in diccRetorno:
+                diccRetorno[clave] = []
+
+        # luego cargo la lista de mensajes de cada remitente ordenados por fecha de los mensajes de forma ascendente
         cursor = bd.connection.cursor()
         cursor.execute('''
             SELECT
@@ -242,11 +316,6 @@ def getMensajesParaEmpleador(bd, id_empleador):
         bd.connection.commit()
         cursor.close()
 
-        diccRetorno = OrderedDict()
-
-        # debo devolver un dicc con clave:valor id_empleado:lista de mensajes del empleado
-        # entonces al consultar clave obtengo la lista de mensajes con ese empleado
-        
         for registro in retorno:
             mensaje = Mensaje(
                 registro[0],

@@ -84,8 +84,8 @@ function validateForm(){
     descripcion = document.forms["anuncio"]["descripcion"].value;
     pagoPorHora = document.forms["anuncio"]["pagoPorHora"].value;
 
-    if (titulo.length>30 || titulo.length<4){
-        alert("El titulo debe contener de 4 a 30 caracteres");
+    if (titulo.length>100 || titulo.length<4){
+        alert("El titulo debe contener de 4 a 100 caracteres");
         return false;
     }
     else if (descripcion.length>350 || descripcion.length<20){

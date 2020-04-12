@@ -75,6 +75,7 @@ def login(user, password):
                 empleado.nombre, empleado.apellido)
             return redirect(url_for('inicio_empleados'))
         else:
+            session['nombre'] = 'Administrador'
             return redirect(url_for('administrar'))
 
 
@@ -1653,8 +1654,8 @@ def contratar(idEmpleado):
 def ranking_calificaciones(tipo):
     if session.get('usertype') == None:
         return redirect(url_for('logueo'))
-    elif session.get('usertype') == 'Administrador':
-        return redirect(url_for('administrar'))
+    #elif session.get('usertype') == 'Administrador':
+        #return redirect(url_for('administrar'))
     else:
         listado = list()
         if tipo == 'Empleador':
