@@ -40,6 +40,7 @@ app.secret_key = "session"
 
 
 def archivoAdmitido(filename):
+    
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in EXTENSIONES_ADMITIDAS
 
@@ -738,7 +739,7 @@ def verOferta():
         return redirect(url_for('administrar'))
     else:
         # 2020-03-08 (A) - Se unifica todo el manejo de anuncios en un único form: Anuncio.html [Inicio]
-        # return render_template('verOferta.html')
+        #return render_template('verOferta.html')
         return render_template('Anuncio.html')
         # 2020-03-08 (A) - Se unifica todo el manejo de anuncios en un único form: Anuncio.html [Fin]
 
@@ -1121,11 +1122,14 @@ def ver_anuncio(idAnuncio, postulacion):
             idAnuncio
         ]
         cal = getPromedioByEmpleadorId(baseDatos, empleador.id)
+
+        post = getPostulacionEmpleadoAnuncio(baseDatos, session['id_empleado'], idAnuncio)
         context = {
             'empleador': empleador,
             'anuncio': listaAnuncio,
             'postulacion': postulacion,
-            'cal': cal
+            'cal': cal,
+            'post' : post
         }
 
         # el desempaquetado tendrá 3 claves, 'empleador', 'anuncio' y psotulacion
