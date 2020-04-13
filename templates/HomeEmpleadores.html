@@ -131,32 +131,36 @@
         <p class="lead">
           {% if tieneNotifPendientesPostulaciones %}
           <a class="my-0 mr-md-auto" href="/TusAnuncios" aria-label="Home">
-            <img class="mr-2" src="{{ url_for('static', filename='images/Alertas/Postulacion.png')}}" alt="" width="80"
+            <img class="mr-0" src="{{ url_for('static', filename='images/Alertas/Postulacion.png')}}" alt="" width="80"
               height="80">
           </a>
           {% else %}
-            <img class="mr-2" src="{{ url_for('static', filename='images/Alertas/NoPostulacion.png')}}" alt="" width="80"
+          <a class="my-0 mr-md-auto" href="/TusAnuncios" aria-label="Home">
+            <img class="mr-0" src="{{ url_for('static', filename='images/Alertas/NoPostulacion.png')}}" alt="" width="80"
               height="80">
+          </a>
           {% endif %}
 
           {% if tieneRecordatorios %}
           <a class="my-0 mr-md-auto" href="/CalificacionesPendientes" aria-label="Home">
-            <img class="" src="{{ url_for('static', filename='images/Alertas/Recordatorio.png')}}" alt="" width="80"
+            <img class="ml-0 mr-0" src="{{ url_for('static', filename='images/Alertas/Recordatorio.png')}}" alt="" width="80"
               height="80">
           </a>
           {% else %}
-            <img class="" src="{{ url_for('static', filename='images/Alertas/NoRecordatorio.png')}}" alt="" width="80"
+            <img class="ml-0" src="{{ url_for('static', filename='images/Alertas/NoRecordatorio.png')}}" alt="" width="80"
               height="80">
           {% endif %}
 
           {% if tieneMensajesSinLeer %}
           <a class="my-0 mr-md-auto" href="/MensajesEmpleador/{{sujeto.id}}/0" aria-label="Home">
-            <img class="ml-2" src="{{ url_for('static', filename='images/Alertas/Mensaje.png')}}" alt="" width="80"
+            <img class="mr-0" src="{{ url_for('static', filename='images/Alertas/Mensaje.png')}}" alt="" width="80"
               height="80">
           </a>
           {% else %}
-          <img class="ml-2" src="{{ url_for('static', filename='images/Alertas/NoMensaje.png')}}" alt="" width="80"
+          <a class="my-0 mr-md-auto" href="/MensajesEmpleador/{{sujeto.id}}/0" aria-label="Home">
+            <img class="mr-0" src="{{ url_for('static', filename='images/Alertas/NoMensaje.png')}}" alt="" width="80"
               height="80">
+          </a>
           {% endif %}
         </p>
         <img class="mb-4" src="{{ url_for('static', filename=sujeto.foto)}}" alt="" width="125" height="125"><br>
