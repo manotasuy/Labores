@@ -110,7 +110,6 @@ class Empleado:
         except Exception as e:
             print("Error en creación del empleado ", e)
 
-
     def calificarEmpleado(self, bd):
         try:
             cursor = bd.connection.cursor()

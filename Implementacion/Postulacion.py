@@ -49,7 +49,7 @@ class Postulacion:
         try:
             cursor = bd.connection.cursor()
             cursor.execute(
-                'UPDATE postulacion SET genera_vinculo=true WHERE id= {}'.format(self.id))
+                'UPDATE postulacion SET genera_vinculo = true WHERE id = {}'.format(self.id))
             bd.connection.commit()
             cursor.close()
             print('Se grabó el vínculo en la postulación')
