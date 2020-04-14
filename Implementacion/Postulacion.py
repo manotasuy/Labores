@@ -49,12 +49,23 @@ class Postulacion:
         try:
             cursor = bd.connection.cursor()
             cursor.execute(
-                'UPDATE postulacion SET genera_vinculo = true WHERE id = {}'.format(self.id))
+                'UPDATE postulacion SET genera_vinculo=true WHERE id= {}'.format(self.id))
             bd.connection.commit()
             cursor.close()
             print('Se grabó el vínculo en la postulación')
         except Exception as e:
             print('Error en generarVinculoEnPostulacion ', e)
+
+    def eliminarVinculoEnPostulacion(self, bd):
+        try:
+            cursor = bd.connection.cursor()
+            cursor.execute(
+                'UPDATE postulacion SET genera_vinculo=false WHERE id= {}'.format(self.id))
+            bd.connection.commit()
+            cursor.close()
+            print('Se eliminó el vínculo en la postulación')
+        except Exception as e:
+            print('Error en eliminarVinculoEnPostulacion ', e)
 
     def fueNotificada(self, bd):
         try:

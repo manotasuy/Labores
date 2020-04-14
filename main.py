@@ -29,10 +29,10 @@ app = Flask(__name__)
 
 #baseDatos = connectionDb(app, 'remotemysql.com')
 #baseDatos = connectionDb(app, 'aws')
-baseDatos = connectionDb(app, 'CloudAccess')
+#baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'a-work')
 #baseDatos = connectionDb(app, 'a-home')
-#baseDatos = connectionDb(app, 'local')
+baseDatos = connectionDb(app, 'local')
 
 
 # session
@@ -1300,10 +1300,18 @@ def not_vinculo(idVinculo):
         return redirect(url_for('logueo'))
     elif session.get('usertype') == 'Administrador':
         return redirect(url_for('administrar'))
+    elif session.get('usertype') == 'Empleado':
+        vinculo = getVinculoByID(baseDatos, idVinculo)
+        postulacion = getPostulacionEmpleadoAnuncio(baseDatos, session['id_empleado'], vinculo.anuncio.id)
+        vinculo.borrarVinculo(baseDatos)
+        postulacion.eliminarVinculoEnPostulacion(baseDatos)
+        return redirect(url_for('mis_vinculos'))
+
     else:
         vinculo = getVinculoByID(baseDatos, idVinculo)
+        postulacion = getPostulacionEmpleadoAnuncio(baseDatos, vinculo.empleado.id, vinculo.anuncio.id)
         vinculo.borrarVinculo(baseDatos)
-
+        postulacion.eliminarVinculoEnPostulacion(baseDatos)
         return redirect(url_for('mis_vinculos'))
 
 
