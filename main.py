@@ -29,10 +29,10 @@ app = Flask(__name__)
 
 #baseDatos = connectionDb(app, 'remotemysql.com')
 #baseDatos = connectionDb(app, 'aws')
-baseDatos = connectionDb(app, 'CloudAccess')
+#baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'a-work')
 #baseDatos = connectionDb(app, 'a-home')
-#baseDatos = connectionDb(app, 'local')
+baseDatos = connectionDb(app, 'local')
 
 
 # session
@@ -1069,6 +1069,7 @@ def listar_anuncios():
         return render_template('ListaAnuncios.html', anuncios=listaMatcheo)
 
 
+
 @app.route('/verAnuncio/<idAnuncio>/<postulacion>')
 def ver_anuncio(idAnuncio, postulacion):
     if session.get('usertype') == None:
@@ -1121,11 +1122,14 @@ def ver_anuncio(idAnuncio, postulacion):
             idAnuncio
         ]
         cal = getPromedioByEmpleadorId(baseDatos, empleador.id)
+
+        post = getPostulacionEmpleadoAnuncio(baseDatos, session['id_empleado'], idAnuncio)
         context = {
             'empleador': empleador,
             'anuncio': listaAnuncio,
             'postulacion': postulacion,
-            'cal': cal
+            'cal': cal,
+            'post' : post
         }
 
         # el desempaquetado tendrá 3 claves, 'empleador', 'anuncio' y psotulacion
