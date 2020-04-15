@@ -17,7 +17,7 @@ def connectionDb(app, servidor):
         app.config['MYSQL_DB'] = 'amqtvopx'
     elif servidor == 'aws':
         app.config['MYSQL_HOST'] = 'labores.cdjsb04v3a46.us-east-1.rds.amazonaws.com'
-        app.config['MYSQL_UOER'] = 'master'
+        app.config['MYSQL_USER'] = 'master'
         app.config['MYSQL_PASSWORD'] = 'masterterLabores'
         app.config['MYSQL_DB'] = 'bdlabores'
     elif servidor == 'a-work':
@@ -29,6 +29,11 @@ def connectionDb(app, servidor):
         app.config['MYSQL_HOST'] = 'localhost'
         app.config['MYSQL_USER'] = 'root'
         app.config['MYSQL_PASSWORD'] = 'root'
+        app.config['MYSQL_DB'] = 'bdlabores'
+    elif servidor == 'gcp':
+        app.config['MYSQL_HOST'] = '35.198.46.68'
+        app.config['MYSQL_USER'] = 'root'
+        app.config['MYSQL_PASSWORD'] = 'rootgcp'
         app.config['MYSQL_DB'] = 'bdlabores'
     else:
         app.config['MYSQL_HOST'] = 'localhost'
