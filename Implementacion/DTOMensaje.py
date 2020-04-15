@@ -28,3 +28,5 @@ class DTOMensaje():
             return True
         elif self.vinculo is not None:
             return True
+        else:
+            return False

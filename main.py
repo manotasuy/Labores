@@ -29,10 +29,10 @@ app = Flask(__name__)
 
 #baseDatos = connectionDb(app, 'remotemysql.com')
 #baseDatos = connectionDb(app, 'aws')
-#baseDatos = connectionDb(app, 'CloudAccess')
+baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'a-work')
 #baseDatos = connectionDb(app, 'a-home')
-baseDatos = connectionDb(app, 'local')
+#baseDatos = connectionDb(app, 'local')
 
 
 # session
@@ -377,7 +377,7 @@ def guardar_perfil(tipo):
                     apellido = request.form['refApellidoEmp']
                     telefono = request.form['refTelefonoEmp']
                     trabaja_desde = request.form['refTrabDesde']
-                    trabaja_hasta = request.form['refTrabDesde']
+                    trabaja_hasta = request.form['refTrabHasta']
                     referencia = Referencia(
                         0, new_empleado, nombre, apellido, telefono, trabaja_desde, trabaja_hasta)
                     referencia.crearReferencia(baseDatos)
@@ -390,7 +390,7 @@ def guardar_perfil(tipo):
                     referencia.apellido = request.form['refApellidoEmp']
                     referencia.telefono = request.form['refTelefonoEmp']
                     referencia.trabaja_desde = request.form['refTrabDesde']
-                    referencia.trabaja_hasta = request.form['refTrabDesde']
+                    referencia.trabaja_hasta = request.form['refTrabHasta']
                     referencia.actualizarReferencia(baseDatos)
                     print('Referencia actualizada')
                     session.pop('id_refer')
@@ -1067,7 +1067,6 @@ def listar_anuncios():
             else:
                 k.append(0)
         return render_template('ListaAnuncios.html', anuncios=listaMatcheo)
-
 
 
 @app.route('/verAnuncio/<idAnuncio>/<postulacion>')
