@@ -1,5 +1,6 @@
 import json
 import os
+import logging
 from flask import Flask, request, Response, render_template, url_for, redirect, flash, session, send_from_directory
 from werkzeug.utils import secure_filename
 from flask_mysqldb import MySQL
@@ -1718,4 +1719,4 @@ def desbloqueo_cuenta():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='127.0.0.1', port=8080, debug=True)
