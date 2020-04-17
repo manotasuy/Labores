@@ -42,6 +42,13 @@ def connectionDb(app, servidor):
         app.config['MYSQL_DB'] = 'bdlabores'
     app.config['CARPETA_FISICA_IMAGENES'] = CARPETA_FISICA_IMAGENES
     app.config['CARPETA_CARGA_IMAGENES'] = CARPETA_CARGA_IMAGENES
+
+    try:
+      import googleclouddebugger
+      googleclouddebugger.enable()
+    except ImportError:
+      pass
+    
     return MySQL(app)
 
 def getCarpetaFisicaImagenes():
