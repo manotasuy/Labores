@@ -11,7 +11,7 @@
 {% block contenido %}
 
 <div class="container">
-    <div id="carouselFull" class="carousel slide ml-2" data-ride="carousel">
+    <div id="carouselFull" class="carousel slide d-block" data-ride="carousel">
     <ol class="carousel-indicators">
         <li data-target="#carouselFull" data-slide-to="0" class="active"></li>
         <li data-target="#carouselFull" data-slide-to="1"></li>
@@ -20,8 +20,8 @@
     <div class="carousel-inner">
         <div class="carousel-item active">
 
-            <img class="image_full" src="{{ url_for('static', filename='images/s1.png')}}" alt="First slide">
-            <img class="image_mobile" src="{{ url_for('static', filename='images/s1device.png')}}" alt="First slide">
+            <img class="image_full w-100 d-block" src="{{ url_for('static', filename='images/s1.png')}}" alt="First slide">
+            <img class="image_mobile w-100 d-block" src="{{ url_for('static', filename='images/s1device.png')}}" alt="First slide">
 
             <div class="carousel-caption d-md-block">
                 <div class="carousel-text">
@@ -32,8 +32,8 @@
         </div>
         <div class="carousel-item">
 
-            <img class="image_full" src="{{ url_for('static', filename='images/s2.png')}}" alt="First slide">
-            <img class="image_mobile" src="{{ url_for('static', filename='images/s2device.png')}}" alt="First slide">
+            <img class="image_full w-100 d-block" src="{{ url_for('static', filename='images/s2.png')}}" alt="First slide">
+            <img class="image_mobile w-100 d-block" src="{{ url_for('static', filename='images/s2device.png')}}" alt="First slide">
 
             <div class="carousel-caption d-md-block">
                 <div class="carousel-text">
@@ -44,8 +44,8 @@
         </div>
         <div class="carousel-item">
 
-            <img class="image_full" src="{{ url_for('static', filename='images/s3.png')}}" alt="First slide">
-            <img class="image_mobile" src="{{ url_for('static', filename='images/s3device.png')}}" alt="First slide">
+            <img class="image_full w-100 d-block" src="{{ url_for('static', filename='images/s3.png')}}" alt="First slide">
+            <img class="image_mobile w-100 d-block" src="{{ url_for('static', filename='images/s3device.png')}}" alt="First slide">
 
             <div class="carousel-caption d-md-block">
                 <div class="carousel-text">

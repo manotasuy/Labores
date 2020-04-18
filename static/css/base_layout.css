@@ -5,8 +5,6 @@ html {
 
 body {
     height: 100%;
-    /*background-color: #fcfef1;*/
-    /*background-color: lavender;*/
     background-color: white;
 }
 
@@ -33,8 +31,7 @@ cuerpo {
 .jumbotron {
     padding-top: 3rem;
     padding-bottom: 3rem;
-    margin-bottom: 0;
-    /*background-color: #fff;*/
+    margin-bottom: 1rem;
     background-color: aliceblue;
     border-style: solid;
     border-width: 0.5px;
@@ -57,7 +54,6 @@ footer {
     padding-top: 3rem;
     padding-bottom: 3rem;
     color: black;
-    /*background-color: gainsboro;*/
 }
 
 footer p {
@@ -93,7 +89,7 @@ h1 {
 }
 
 .carousel-caption {
-    bottom: 3rem;
+    bottom: 1rem;
     z-index: 10;
 }
 
@@ -107,10 +103,10 @@ h1 {
 }
 
 .carousel-item > img {
-    position: absolute;
+    position: relative;
     top: 0;
     left: 0;
-    min-width: 50%;
+    min-width: 40%;
     height: 20rem;
 }
 
@@ -123,11 +119,11 @@ h1 {
 }
 
 .image_full{
-  display:block;
+  display: block;
  }
 
 .image_mobile{
- display:none;
+ display: none;
 }
 
 .div_full{
@@ -143,16 +139,21 @@ h1 {
  }
 
 .text_mobile{
- display:none;
+ display: none;
 }
 
 .card_full{
-  display:block;
+  display: block;
  }
 
 .card_mobile{
- display:none;
+ display: none;
 }
+
+.foot_full{
+  display: block;
+ }
+
 .foot_mobile{
   display: none;
 }
@@ -563,46 +564,58 @@ input::placeholder {
 }
 
 @media (max-width: 640px) and (min-width: 320px){
+  
   .foot_full{
    display: none;
   }
- 
-  .div_mobile{
-   display: contents;
-  }
- 
- 
-  .image_full{
-   display:none;
+
+  .foot_mobile{
+    display: block;
   }
  
   .div_full{
    display: none;
   }
- 
+
+  .div_mobile{
+    display: contents;
+  }
+
+  .image_full{
+    display: none;
+  }
+
   .image_mobile{
-   display:block;
+    display: block;
+  }
+
+  .tb_full{
+    display: none;
   }
  
   .text_full{
-   display:none;
-  }
- 
-  .tb_full{
-   display:none;
+   display: none;
   }
  
   .text_mobile{
-   display:block;
+   display: block;
    font-size: small;
   }
  
   .card_full{
-   display:none;
+   display: none;
   }
  
   .card_mobile{
-   display:block;
+   display: block;
+  }
+
+  .carousel-item > img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 40%;
+    height: 20rem;
   }
 
   #divContenedorRemitentes {

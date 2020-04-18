@@ -39,11 +39,11 @@
 
 
             {% if session['usertype'] %}
-            <strong class="my-2 my-md-0 mr-md-3" style="font-size: large;">{{session['nombre']}}</strong>
+            <strong class="my-2 my-md-0 mr-md-3" style="font-size: medium;">{{session['nombre']}}</strong>
             <div class="">
-                <a class="btn btn-outline-primary ml-3 mr-3" href="/LogOut">Salir</a>
+                <a class="btn btn-outline-primary ml-0" href="/LogOut">Salir</a>
                 {% else %}
-                <a class="btn btn-outline-primary ml-3 mr-3" href="/LogIn">Ingresar</a>
+                <a class="btn btn-outline-primary ml-0" href="/LogIn">Ingresar</a>
                 {% endif %}
             </div>
         </div>
@@ -93,14 +93,14 @@ url_for(request.endpoint) != '/DesbloqueoCuenta/' and url_for(request.endpoint) 
                 {# BANNER PREMIUM #}
                 <div id="carouselFooter-item-1" class="carousel-item active mb-4">
                     <div class="div_full">
-                        <img class="d-block ml-2 img-fluid" src="{{ url_for('static', filename='images/BannerPremium.png')}}" alt="First slide">
+                        <img class="d-block ml-2 img-fluid" src="{{ url_for('static', filename='images/Logos/BannerPremium.png')}}" alt="First slide">
                         <div class="carousel-caption d-md-block text-right">
                             <a class="btn btn-sm btn-outline-warning mr-5 mb-4" href="/PlanesPremium">más información</a>
                         </div>
                     </div>
                     <div class="div_mobile">
                         <a href="/PlanesPremium">
-                            <img class="img-fluid" src="{{ url_for('static', filename='images/BannerPremiumMobile.png')}}" alt="First slide">
+                            <img class="img-fluid" src="{{ url_for('static', filename='images/Logos/BannerPremiumMobile.png')}}" alt="First slide">
                         </a>
                     </div>
                 </div>

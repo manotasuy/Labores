@@ -14,20 +14,24 @@
     <div class="container">
 
       <div class="mt-1 mb-5">
-        <div class="text-center mb-3">
+        <div class="text-center mb-0">
           <h1 for="">{{data.nombre}} {{data.apellido}}</h1>
           <br>
         </div>
-        <table class="table table-borderless bg-transparent">
+        <table class="table table-borderless text-center bg-transparent">
           <tbody>
             <tr>
               <td>
                 <a class="my-0 mr-md-auto" href="" aria-label="Home">
-                  <img class="mt-2 mb-2 ml-4" src="{{ url_for('static', filename=data.foto)}}" alt="" width="125"
+                  <img src="{{ url_for('static', filename=data.foto)}}" alt="" width="125"
                     height="125">
                 </a>
+              </td>
+            </tr>
+            <tr>
+              <td>
                 {% if data.promedioCalificacion %}
-                  <img class="mt-4 mb-4" style="margin-bottom: 0.3rem !important;"
+                  <img style="margin-bottom: 0.3rem !important;"
                     {% if data.promedioCalificacion < 1 %}
                       src="{{ url_for('static', filename='images/Estrellas/05star.png')}}"
                     {% elif data.promedioCalificacion >= 1 and data.promedioCalificacion < 1.5 %}
@@ -65,14 +69,16 @@
                       {% endif %}
                     </p>
                 {% else %}
-                <p class="mt-4 mb-4">Sin calificaciones aún.</p>
+                <p>Sin calificaciones aún.</p>
                 {% endif %}
               </td>
+            </tr>
+            <tr>
               <td>
                 {% if tipo == 'Empleado' %}
                 <textarea
-                  class="float-right border-0 text-decoration-none bg-transparent text-small font-weight-bold font-italic ml-2 mt-2"
-                  name="presentacion" rows="10" cols="42" placeholder="" disabled>{{data.descripcion}}</textarea>
+                  class="border-1 text-decoration-none bg-transparent text-small font-weight-bold font-italic"
+                  name="presentacion" rows="10" cols="35" placeholder="" disabled>{{data.descripcion}}</textarea>
                 {% endif %}
               </td>
             </tr>
