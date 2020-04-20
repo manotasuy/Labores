@@ -7,7 +7,7 @@
 -- Si se usa RemoteMySQL
 -- USE LvP2Ka0CsK;
 
--- Si se usa AWS o localhost
+-- Si se usa AWS, CoogleCloud o localhost
 USE bdlabores;
 
 DROP TABLE IF EXISTS recordatorio;
@@ -726,6 +726,42 @@ INSERT INTO anuncio_disponibilidad (id_anuncio, id_disponibilidad)
 VALUES (20, 1);
 INSERT INTO anuncio_tarea (id_anuncio, id_tarea)
 VALUES (20, 1);
+
+-- Postulaciones
+INSERT INTO postulacion (id_empleado, id_anuncio, fecha, genera_vinculo)
+VALUES (4, 4, '2020-02-25', true);
+INSERT INTO postulacion (id_empleado, id_anuncio, fecha, genera_vinculo)
+VALUES (4, 5, '2020-02-25', true);
+INSERT INTO postulacion (id_empleado, id_anuncio, fecha, genera_vinculo)
+VALUES (4, 6, '2020-02-25', true);
+INSERT INTO postulacion (id_empleado, id_anuncio, fecha, genera_vinculo)
+VALUES (5, 7, '2020-02-25', true);
+INSERT INTO postulacion (id_empleado, id_anuncio, fecha, genera_vinculo)
+VALUES (5, 8, '2020-02-25', true);
+INSERT INTO postulacion (id_empleado, id_anuncio, fecha, genera_vinculo)
+VALUES (5, 9, '2020-02-25', true);
+INSERT INTO postulacion (id_empleado, id_anuncio, fecha, genera_vinculo)
+VALUES (6, 10, '2020-02-25', true);
+INSERT INTO postulacion (id_empleado, id_anuncio, fecha, genera_vinculo)
+VALUES (6, 11, '2020-02-25', true);
+INSERT INTO postulacion (id_empleado, id_anuncio, fecha, genera_vinculo)
+VALUES (6, 12, '2020-02-25', true);
+INSERT INTO postulacion (id_empleado, id_anuncio, fecha, genera_vinculo)
+VALUES (7, 13, '2020-02-25', true);
+INSERT INTO postulacion (id_empleado, id_anuncio, fecha, genera_vinculo)
+VALUES (7, 14, '2020-02-25', true);
+INSERT INTO postulacion (id_empleado, id_anuncio, fecha, genera_vinculo)
+VALUES (8, 15, '2020-02-25', true);
+INSERT INTO postulacion (id_empleado, id_anuncio, fecha, genera_vinculo)
+VALUES (8, 16, '2020-02-25', true);
+INSERT INTO postulacion (id_empleado, id_anuncio, fecha, genera_vinculo)
+VALUES (9, 17, '2020-02-25', true);
+INSERT INTO postulacion (id_empleado, id_anuncio, fecha, genera_vinculo)
+VALUES (9, 18, '2020-02-25', true);
+INSERT INTO postulacion (id_empleado, id_anuncio, fecha, genera_vinculo)
+VALUES (10, 19, '2020-02-25', true);
+INSERT INTO postulacion (id_empleado, id_anuncio, fecha, genera_vinculo)
+VALUES (10, 20, '2020-02-25', true);
 
 -- Vinculos
 

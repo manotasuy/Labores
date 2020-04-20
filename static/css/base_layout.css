@@ -158,6 +158,11 @@ h1 {
   display: none;
 }
 
+.card-size{
+  min-width: 450px;
+  max-width: 450px;
+}
+
 #carouselFooter {
   margin-bottom: 1rem;
 }
@@ -554,12 +559,92 @@ input::placeholder {
     transform: translateX(-100%);
   }
 
-  #divContenedorRemitentes {
-    display: contents;
+  .logo > img{
+    width: 250px;
+    height: 80px;
   }
 
-  #divContenedorMensajes {
-    display: contents;
+  .foot_full{
+  display: block;
+  }
+
+  .div_full{
+  display: contents;
+  }
+
+  .image_full{
+    display: block;
+  }
+
+  .tb_full{
+    display: none;
+  }
+
+  .card-size{
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  .card_full{
+    display: none;
+  }
+
+  .card_mobile{
+    display: block;
+  }
+
+  .carousel-item > img {
+    position: relative;
+    top: 0;
+    left: 0;
+    min-width: 40%;
+    height: 20rem;
+  }
+
+  #carouselFooter {
+    margin-bottom: 1rem;
+  }
+  
+  #carouselFooter-item-1 {
+    height: 15rem;
+  }
+  
+  #carouselFooter-item-2 {
+    height: 15rem;
+  }
+  
+  #carouselFooter-item-3 {
+    height: 15rem;
+  }
+
+  .oro {
+    background: #FF8008;
+    background: -webkit-linear-gradient(to bottom, rgba(238, 158, 9, 0.959), #FFC837);
+    background: linear-gradient(to bottom, rgba(238, 158, 9, 0.959), #FFC837);
+  }
+
+  .oro h3{
+    font-size: large;
+  }
+  
+  .plata {
+    background: #8e9eab;
+    background: -webkit-linear-gradient(to bottom, #8e9eab, #bdc8ca);
+    background: linear-gradient(to bottom, #8e9eab, #bdc8ca);
+  } 
+
+  .plata h3{
+    font-size: large;
+  }
+  
+  .bronce {
+    background: #cd7f32;
+    background: -webkit-linear-gradient(to bottom, #a1570d, #cd7f32);
+    background: linear-gradient(to bottom, #a1570d, #cd7f32);
+  }
+
+  .bronce h3{
+    font-size: large;
   }
 }
 
@@ -624,6 +709,22 @@ input::placeholder {
 
   #divContenedorMensajes {
     display: contents;
+  }
+
+  #carouselFooter {
+    margin-bottom: 1rem;
+  }
+  
+  #carouselFooter-item-1 {
+    height: 20rem;
+  }
+  
+  #carouselFooter-item-2 {
+    height: 20rem;
+  }
+  
+  #carouselFooter-item-3 {
+    height: 20rem;
   }
 }
 
