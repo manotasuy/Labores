@@ -30,11 +30,24 @@ def connectionDb(app, servidor):
         app.config['MYSQL_USER'] = 'root'
         app.config['MYSQL_PASSWORD'] = 'root'
         app.config['MYSQL_DB'] = 'bdlabores'
+
+    elif servidor == 'PA':
+        app.config['MYSQL_HOST'] = 'Labores.mysql.pythonanywhere-services.com'
+        app.config['MYSQL_USER'] = 'Labores'
+        app.config['MYSQL_PASSWORD'] = 'LaboresApp1234'
+        app.config['MYSQL_DB'] = 'Labores$LaboresDB'
+
     elif servidor == 'gcp':
         app.config['MYSQL_HOST'] = '35.198.46.68'
         app.config['MYSQL_USER'] = 'root'
         app.config['MYSQL_PASSWORD'] = 'rootgcp'
         app.config['MYSQL_DB'] = 'bdlabores'
+
+#URI: postgres://eswmwhvegalapf:22a2aae8cbd55351515ec670984ca1b7bdf744f1147f162244fc2f4f08c9f0bb@ec2-52-202-146-43.compute-1.amazonaws.com:5432/db0f5hpdmfbnh8
+    elif servidor == 'postgresql':
+        app.config['MYSQL_URI'] = 'postgres://eswmwhvegalapf:22a2aae8cbd55351515ec670984ca1b7bdf744f1147f162244fc2f4f08c9f0bb@ec2-52-202-146-43.compute-1.amazonaws.com:5432/db0f5hpdmfbnh8'
+
+
     else:
         app.config['MYSQL_HOST'] = 'localhost'
         app.config['MYSQL_USER'] = 'root'
