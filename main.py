@@ -310,18 +310,8 @@ def x():
         try:
             cursor = baseDatos.connection.cursor()
             cursor.execute('''
-                -- DROP SCHEMA bdLabores;
-                -- CREATE SCHEMA IF NOT EXISTS bdlabores DEFAULT CHARACTER SET utf8mb4;
 
-                -- Si se usa CloudAccess
-                -- USE amqtvopx;
-
-                -- Si se usa RemoteMySQL
-                -- USE LvP2Ka0CsK;
-
-                -- Si se usa AWS, CoogleCloud o localhost
-                --USE bdlabores;
-                USE db0f5hpdmfbnh8
+                USE Labores$LaboresDB
 
                 DROP TABLE IF EXISTS recordatorio;
                 DROP TABLE IF EXISTS tipo_recordatorio;
