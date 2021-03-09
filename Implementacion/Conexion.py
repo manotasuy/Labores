@@ -32,10 +32,10 @@ def connectionDb(app, servidor):
         app.config['MYSQL_DB'] = 'bdlabores'
 
     elif servidor == 'PA':
-        app.config['MYSQL_HOST'] = 'Labores.mysql.pythonanywhere-services.com'
-        app.config['MYSQL_USER'] = 'Labores'
-        app.config['MYSQL_PASSWORD'] = 'LaboresApp1234'
-        app.config['MYSQL_DB'] = 'Labores$LaboresDB'
+        app.config['MYSQL_HOST'] = 'labores2021.mysql.pythonanywhere-services.com'
+        app.config['MYSQL_USER'] = 'labores2021'
+        app.config['MYSQL_PASSWORD'] = 'basededatos'
+        app.config['MYSQL_DB'] = 'labores2021$laboresdb'
 
     elif servidor == 'gcp':
         app.config['MYSQL_HOST'] = '35.198.46.68'

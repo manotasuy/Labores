@@ -40,6 +40,7 @@ baseDatos = connectionDb(app, 'PA')
 
 
 # session
+# a
 app.secret_key = "session"
 
 
