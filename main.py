@@ -2,6 +2,7 @@ import json
 import os
 import logging
 from flask import Flask, request, Response, render_template, url_for, redirect, flash, session, send_from_directory
+from flask import jsonify
 from werkzeug.utils import secure_filename
 from flask_mysqldb import MySQL
 from datetime import datetime, timedelta
@@ -9,7 +10,7 @@ from enum import Enum
 
 # Paquetes implementación
 from Implementacion.Conexion import connectionDb
-from Implementacion.Usuario import Usuario, getUsuarioByID
+from Implementacion.Usuario import Usuario, getUsuarioByID, getUsuarioByCI
 from Implementacion.Empleado import Empleado, getEmpleadoByID, getEmpleadoByUsuarioID, getTareasEmpleado, getDisponibilidadEmpleado, getRankingPorCalificacionEmpleados
 from Implementacion.Empleador import Empleador, getEmpleadorByID, getEmpleadorByUsuarioID, getRankingPorCalificacionEmpleadores
 from Implementacion.Anuncio import Anuncio, getAllAnuncios, getAnuncioByID
@@ -33,10 +34,9 @@ app = Flask(__name__)
 #baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'a-work')
 #baseDatos = connectionDb(app, 'a-home')
-#baseDatos = connectionDb(app, 'local')
-baseDatos = connectionDb(app, 'PA')
+baseDatos = connectionDb(app, 'local')
+#baseDatos = connectionDb(app, 'PA')
 #baseDatos = connectionDb(app, 'gcp')
-
 
 
 # session
@@ -94,10 +94,12 @@ def getRecordatoriosDelDia():
         recordatoriosDelDia = list()
         if session.get('usertype') == 'Empleado':
             idEmpleado = session['id_empleado']
-            recordatorios = recordatoriosCalificacionesPendientes(baseDatos, idEmpleado)
+            recordatorios = recordatoriosCalificacionesPendientes(
+                baseDatos, idEmpleado)
         elif session.get('usertype') == 'Empleador':
             idEmpleador = session['id_empleador']
-            recordatorios = recordatoriosCalificacionesPendientes(baseDatos, idEmpleador)
+            recordatorios = recordatoriosCalificacionesPendientes(
+                baseDatos, idEmpleador)
 
         if recordatorios is None:
             return None
@@ -105,7 +107,7 @@ def getRecordatoriosDelDia():
             for rec in recordatorios:
                 if str(rec.fechaRecordatorio) == datetime.now().strftime('%Y-%m-%d'):
                     recordatoriosDelDia.append(rec)
-            
+
             if len(recordatoriosDelDia) == 0:
                 return None
             else:
@@ -149,6 +151,7 @@ def getTop3EmpleadosParaBaseTemplate():
 def getTop3EmpleadoresParaBaseTemplate():
     return getRankingPorCalificacionEmpleadores(baseDatos, 3)
 
+
 @app.context_processor
 def contexto():
     contextProcessor = dict()
@@ -162,7 +165,7 @@ def contexto():
 
 @app.route('/')
 @app.route('/Inicio/')
-def inicio():        
+def inicio():
     return render_template('Inicio.html')
 
 
@@ -178,7 +181,6 @@ def ayuda():
 
 @app.route("/LogIn/")
 def logueo():
-    # return render_template('Login.html', mensaje=mensaje)
     return render_template('Login.html')
 
 
@@ -229,7 +231,8 @@ def vista_perfil(opcion, id):
             # Si no se puede cargar la foto guardada en la base cargo la imagen default
             rutaFisica = '.' + url_for('static', filename=objeto.foto)
             if not os.path.exists(rutaFisica):
-                objeto.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+                objeto.foto = os.path.join(
+                    app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
             dtoAuxEmpleado: DTOAuxEmpleado = DTOAuxEmpleado()
             # Debo traer las tareas y disponibilidades (estableciendo las seleccionadas por el empleado) para cargarlas dinámicamente
             tareasSeleccion = objeto.getTareasSeleccionadas(baseDatos)
@@ -248,7 +251,7 @@ def vista_perfil(opcion, id):
             dtoAuxEmpleado = DTOAuxEmpleado(
                 tareasSeleccion, disponibilidadSeleccion)
 
-            cal = getPromedioByEmpleadoId(baseDatos, objeto.id)            
+            cal = getPromedioByEmpleadoId(baseDatos, objeto.id)
             return render_template('VistaPerfil.html', tipo=opcion, data=objeto, aux=dtoAuxEmpleado, cal=cal)
 
         elif opcion == 'Empleador':
@@ -256,7 +259,8 @@ def vista_perfil(opcion, id):
             # Si no se puede cargar la foto guardada en la base cargo la imagen default
             rutaFisica = '.' + url_for('static', filename=objeto.foto)
             if not os.path.exists(rutaFisica):
-                objeto.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+                objeto.foto = os.path.join(
+                    app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
             return render_template('VistaPerfil.html', tipo=opcion, data=objeto)
 
 
@@ -275,7 +279,8 @@ def vista_perfil_contratado(opcion, id):
             # Si no se puede cargar la foto guardada en la base cargo la imagen default
             rutaFisica = '.' + url_for('static', filename=objeto.foto)
             if not os.path.exists(rutaFisica):
-                objeto.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+                objeto.foto = os.path.join(
+                    app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
 
             dtoAuxEmpleado: DTOAuxEmpleado = DTOAuxEmpleado()
             # Debo traer las tareas y disponibilidades (estableciendo las seleccionadas por el empleado) para cargarlas dinámicamente
@@ -302,9 +307,9 @@ def vista_perfil_contratado(opcion, id):
             # Si no se puede cargar la foto guardada en la base cargo la imagen default
             rutaFisica = '.' + url_for('static', filename=objeto.foto)
             if not os.path.exists(rutaFisica):
-                objeto.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+                objeto.foto = os.path.join(
+                    app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
             return render_template('VistaPerfil.html', tipo=opcion, data=objeto)
-    
 
 
 @app.route('/Perfil/<opcion>', methods=['POST', 'GET'])
@@ -326,7 +331,8 @@ def perfil(opcion):
                 # Si no se puede cargar la foto guardada en la base cargo la imagen default
                 rutaFisica = '.' + url_for('static', filename=empleado.foto)
                 if not os.path.exists(rutaFisica):
-                    empleado.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+                    empleado.foto = os.path.join(
+                        app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
 
                 # Debo traer las tareas y disponibilidades (estableciendo las seleccionadas por el empleado) para cargarlas dinámicamente
                 tareasSeleccion = empleado.getTareasSeleccionadas(baseDatos)
@@ -360,7 +366,8 @@ def perfil(opcion):
                 # Si no se puede cargar la foto guardada en la base cargo la imagen default
                 rutaFisica = '.' + url_for('static', filename=empleador.foto)
                 if not os.path.exists(rutaFisica):
-                    empleador.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+                    empleador.foto = os.path.join(
+                        app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
                 # convierto byte a entero, el atributo "género" en mysql es de tipo bit
                 generoInt = int.from_bytes(empleador.genero, "big")
                 empleador.genero = generoInt
@@ -491,23 +498,29 @@ def guardar_perfil(tipo):
                             foto = request.files["fotoPerfil"]
                             if foto.filename == '':
                                 #print('No hay foto cargada, mantengo la que tenía')
-                                filename = secure_filename(getEmpleadoByID(baseDatos, session['id_empleado']).foto)
-                                rutaFisica = os.path.join(app.config['CARPETA_FISICA_IMAGENES'], filename)
+                                filename = secure_filename(getEmpleadoByID(
+                                    baseDatos, session['id_empleado']).foto)
+                                rutaFisica = os.path.join(
+                                    app.config['CARPETA_FISICA_IMAGENES'], filename)
                                 # Si no se pudo cargar la foto cargo la imagen default
                                 if not os.path.exists(rutaFisica):
-                                    filename = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+                                    filename = os.path.join(
+                                        app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
                                 new_empleado.foto = filename
                             else:
                                 if archivoAdmitido(foto.filename):
                                     filename = secure_filename(foto.filename)
-                                    rutaFisica = os.path.join(app.config['CARPETA_FISICA_IMAGENES'], filename)
+                                    rutaFisica = os.path.join(
+                                        app.config['CARPETA_FISICA_IMAGENES'], filename)
                                     #print('rutaFisica: ', rutaFisica)
                                     foto.save(rutaFisica)
                                     # Si no se pudo guardar la foto cargo la imagen default
                                     if not os.path.exists(rutaFisica):
-                                        filename ='NoImage.png'
-                                        foto.save(os.path.join(app.config['CARPETA_FISICA_IMAGENES'], filename))
-                                    new_empleado.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], filename)
+                                        filename = 'NoImage.png'
+                                        foto.save(os.path.join(
+                                            app.config['CARPETA_FISICA_IMAGENES'], filename))
+                                    new_empleado.foto = os.path.join(
+                                        app.config['CARPETA_CARGA_IMAGENES'], filename)
 
                         new_empleado.modificarEmpleado(baseDatos)
                         return redirect(url_for('inicio_empleados'))
@@ -536,23 +549,29 @@ def guardar_perfil(tipo):
                             foto = request.files["fotoPerfil"]
                             if foto.filename == '':
                                 #print('No hay foto cargada, mantengo la que tenía')
-                                filename = secure_filename(getEmpleadorByID(baseDatos, session['id_empleador']).foto)
-                                rutaFisica = os.path.join(app.config['CARPETA_FISICA_IMAGENES'], filename)
+                                filename = secure_filename(getEmpleadorByID(
+                                    baseDatos, session['id_empleador']).foto)
+                                rutaFisica = os.path.join(
+                                    app.config['CARPETA_FISICA_IMAGENES'], filename)
                                 # Si no se pudo cargar la foto cargo la imagen default
                                 if not os.path.exists(rutaFisica):
-                                    filename = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+                                    filename = os.path.join(
+                                        app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
                                 new_empleador.foto = filename
                             else:
                                 if archivoAdmitido(foto.filename):
                                     filename = secure_filename(foto.filename)
-                                    rutaFisica = os.path.join(app.config['CARPETA_FISICA_IMAGENES'], filename)
+                                    rutaFisica = os.path.join(
+                                        app.config['CARPETA_FISICA_IMAGENES'], filename)
                                     #print('rutaFisica: ', rutaFisica)
                                     foto.save(rutaFisica)
                                     # Si no se pudo guardar la foto cargo la imagen default
                                     if not os.path.exists(rutaFisica):
-                                        filename ='NoImage.png'
-                                        foto.save(os.path.join(app.config['CARPETA_FISICA_IMAGENES'], filename))
-                                    new_empleador.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], filename)
+                                        filename = 'NoImage.png'
+                                        foto.save(os.path.join(
+                                            app.config['CARPETA_FISICA_IMAGENES'], filename))
+                                    new_empleador.foto = os.path.join(
+                                        app.config['CARPETA_CARGA_IMAGENES'], filename)
 
                         new_empleador.registroBps = regBPS
                         new_empleador.id = session['id_empleador']
@@ -601,18 +620,21 @@ def inicio_empleados():
         # Si no se puede cargar la foto guardada en la base cargo la imagen default
         rutaFisica = '.' + url_for('static', filename=empleado.foto)
         if not os.path.exists(rutaFisica):
-            empleado.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+            empleado.foto = os.path.join(
+                app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
 
         # se debe verificar que el empleado no tenga mensajes sin leer, en caso afirmativo se debe notificar
-        tieneNotifMensajes = empleadoTieneMensajesSinLeer(baseDatos, empleado.id)
+        tieneNotifMensajes = empleadoTieneMensajesSinLeer(
+            baseDatos, empleado.id)
         # se debe verificar que el empleado este notificado sobre todos sus vínculos, en caso negativo se debe notificar
-        tieneNotifVinculos = empleadoTieneNotificacionesPendientesVinculos(baseDatos, session['id_empleado'])
+        tieneNotifVinculos = empleadoTieneNotificacionesPendientesVinculos(
+            baseDatos, session['id_empleado'])
         # Se debe verificar que el empleado no tenga recordatorios pendientes para resolver
         tieneRecordatoriosPendientes = getRecordatoriosCalificacionesPendientes()
         #print('tieneRecordatoriosPendientes: ', tieneRecordatoriosPendientes)
         cal = getPromedioByEmpleadoId(baseDatos, empleado.id)
-        return render_template('HomeEmpleados.html', sujeto=empleado, tieneMensajesSinLeer=tieneNotifMensajes, 
-        tieneNotifPendientesVinculos=tieneNotifVinculos, tieneRecordatorios=tieneRecordatoriosPendientes, cal=cal)
+        return render_template('HomeEmpleados.html', sujeto=empleado, tieneMensajesSinLeer=tieneNotifMensajes,
+                               tieneNotifPendientesVinculos=tieneNotifVinculos, tieneRecordatorios=tieneRecordatoriosPendientes, cal=cal)
 
 
 @app.route('/HomeEmpleadores/', methods=['POST', 'GET'])
@@ -629,18 +651,21 @@ def inicio_empleadores():
         # Si no se puede cargar la foto guardada en la base cargo la imagen default
         rutaFisica = '.' + url_for('static', filename=empleador.foto)
         if not os.path.exists(rutaFisica):
-            empleador.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+            empleador.foto = os.path.join(
+                app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
         # se debe verificar que el empleador no tenga mensajes sin leer, en caso afirmativo se debe notificar
-        tieneNotifMensajes = empleadorTieneMensajesSinLeer(baseDatos, empleador.id)
-        # se debe verificar que el empleador este notificado sobre todas las postulaciones a sus anuncios, 
+        tieneNotifMensajes = empleadorTieneMensajesSinLeer(
+            baseDatos, empleador.id)
+        # se debe verificar que el empleador este notificado sobre todas las postulaciones a sus anuncios,
         # en caso negativo se debe notificar
-        tieneNotifPostulaciones = empleadorTieneNotificacionesPendientesPostulaciones(baseDatos, session['id_empleador'])
+        tieneNotifPostulaciones = empleadorTieneNotificacionesPendientesPostulaciones(
+            baseDatos, session['id_empleador'])
         # Se debe verificar que el empleador no tenga recordatorios pendientes para resolver
         tieneRecordatoriosPendientes = getRecordatoriosCalificacionesPendientes()
         #print('tieneRecordatoriosPendientes: ', tieneRecordatoriosPendientes)
         cal = getPromedioByEmpleadorId(baseDatos, empleador.id)
-        return render_template('HomeEmpleadores.html', sujeto=empleador, tieneMensajesSinLeer=tieneNotifMensajes, 
-        tieneNotifPendientesPostulaciones=tieneNotifPostulaciones, tieneRecordatorios=tieneRecordatoriosPendientes, cal=cal)
+        return render_template('HomeEmpleadores.html', sujeto=empleador, tieneMensajesSinLeer=tieneNotifMensajes,
+                               tieneNotifPendientesPostulaciones=tieneNotifPostulaciones, tieneRecordatorios=tieneRecordatoriosPendientes, cal=cal)
 
 
 @app.route('/PanelControl/')
@@ -824,6 +849,8 @@ def borrandoAnuncio(idAnuncio):
         return redirect(url_for('listandoMisAnuncios'))
 
 # acá va la funcion que envía los datos viejos para llenar el form del anuncio q se va a cambiar
+
+
 @app.route('/actualizandoAnuncio/<idAnuncio>/', methods=['POST', 'GET'])
 def actualizandoAnuncio(idAnuncio):
     if session.get('usertype') == None:
@@ -1089,7 +1116,8 @@ def ver_anuncio(idAnuncio, postulacion):
         # Si no se puede cargar la foto guardada en la base cargo la imagen default
         rutaFisica = '.' + url_for('static', filename=empleador.foto)
         if not os.path.exists(rutaFisica):
-            empleador.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+            empleador.foto = os.path.join(
+                app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
 
         tareasAnuncio = []
         if elAnuncio[0].hogar == True:
@@ -1128,13 +1156,14 @@ def ver_anuncio(idAnuncio, postulacion):
         ]
         cal = getPromedioByEmpleadorId(baseDatos, empleador.id)
 
-        post = getPostulacionEmpleadoAnuncio(baseDatos, session['id_empleado'], idAnuncio)
+        post = getPostulacionEmpleadoAnuncio(
+            baseDatos, session['id_empleado'], idAnuncio)
         context = {
             'empleador': empleador,
             'anuncio': listaAnuncio,
             'postulacion': postulacion,
             'cal': cal,
-            'post' : post
+            'post': post
         }
 
         # el desempaquetado tendrá 3 claves, 'empleador', 'anuncio' y psotulacion
@@ -1203,7 +1232,7 @@ def mis_postulaciones():
         return render_template('TusPostulaciones.html', postulaciones=misPostulaciones)
 
 
-@app.route('/despostularse/<idPostulacion>') 
+@app.route('/despostularse/<idPostulacion>')
 def despostularse(idPostulacion):
     if session.get('usertype') == None:
         return redirect(url_for('logueo'))
@@ -1244,7 +1273,8 @@ def mis_vinculos():
                 'sesion': session.get('usertype')
             }
             # Obtener la lista de vínculos que no hayan sido notificados al Empleado
-            listaVinculosNoNotif = getVinculosNoNotificadosDelEmpleado(baseDatos, empleado)
+            listaVinculosNoNotif = getVinculosNoNotificadosDelEmpleado(
+                baseDatos, empleado)
             # se deben marcar los vinculos como notificados
             for vinculo in listaVinculosNoNotif:
                 #print('ID de vinculo a marcar como notificado: ', vinculo.id)
@@ -1275,12 +1305,14 @@ def ver_vinculo(idVinculo):
         # Si no se puede cargar la foto guardada en la base cargo la imagen default
         rutaFisica = '.' + url_for('static', filename=empleador.foto)
         if not os.path.exists(rutaFisica):
-            empleador.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+            empleador.foto = os.path.join(
+                app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
         empleado = getEmpleadoByID(baseDatos, vinculo.empleado)
         # Si no se puede cargar la foto guardada en la base cargo la imagen default
         rutaFisica = '.' + url_for('static', filename=empleado.foto)
         if not os.path.exists(rutaFisica):
-            empleado.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+            empleado.foto = os.path.join(
+                app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
         anuncio = getAnuncioByID(baseDatos, vinculo.anuncio)
         extension = datetime.now().date() - vinculo.fecha_inicio
         calempleado = getPromedioByEmpleadoId(baseDatos, empleado.id)
@@ -1307,14 +1339,16 @@ def not_vinculo(idVinculo):
         return redirect(url_for('administrar'))
     elif session.get('usertype') == 'Empleado':
         vinculo = getVinculoByID(baseDatos, idVinculo)
-        postulacion = getPostulacionEmpleadoAnuncio(baseDatos, session['id_empleado'], vinculo.anuncio.id)
+        postulacion = getPostulacionEmpleadoAnuncio(
+            baseDatos, session['id_empleado'], vinculo.anuncio.id)
         vinculo.borrarVinculo(baseDatos)
         postulacion.eliminarVinculoEnPostulacion(baseDatos)
         return redirect(url_for('mis_vinculos'))
 
     else:
         vinculo = getVinculoByID(baseDatos, idVinculo)
-        postulacion = getPostulacionEmpleadoAnuncio(baseDatos, vinculo.empleado.id, vinculo.anuncio.id)
+        postulacion = getPostulacionEmpleadoAnuncio(
+            baseDatos, vinculo.empleado.id, vinculo.anuncio.id)
         vinculo.borrarVinculo(baseDatos)
         postulacion.eliminarVinculoEnPostulacion(baseDatos)
         return redirect(url_for('mis_vinculos'))
@@ -1326,19 +1360,22 @@ def cal_vinculo(idVinculo):
         return redirect(url_for('logueo'))
     elif session.get('usertype') == 'Administrador':
         return redirect(url_for('administrar'))
-    elif session.get('usertype') == 'Empleado':    
+    elif session.get('usertype') == 'Empleado':
         if request.method == 'POST':
             cal = request.form.get('rating')
             vinculo = getVinculoByID(baseDatos, idVinculo)
             vinculo.calif_empleador = cal
             vinculo.actualizarVinculo(baseDatos)
-            empleador = vinculo.empleador# Si no se puede cargar la foto guardada en la base cargo la imagen default
+            # Si no se puede cargar la foto guardada en la base cargo la imagen default
+            empleador = vinculo.empleador
             rutaFisica = '.' + url_for('static', filename=empleador.foto)
             if not os.path.exists(rutaFisica):
-                empleador.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
-            empleador.promedioCalificacion = getPromedioByEmpleadorId(baseDatos, empleador.id)['promedio']
+                empleador.foto = os.path.join(
+                    app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+            empleador.promedioCalificacion = getPromedioByEmpleadorId(
+                baseDatos, empleador.id)['promedio']
             empleador.calificarEmpleador(baseDatos)
-        return redirect(url_for('ver_vinculo', idVinculo = idVinculo))
+        return redirect(url_for('ver_vinculo', idVinculo=idVinculo))
     else:
         if request.method == 'POST':
             cal = request.form.get('rating')
@@ -1349,10 +1386,12 @@ def cal_vinculo(idVinculo):
             # Si no se puede cargar la foto guardada en la base cargo la imagen default
             rutaFisica = '.' + url_for('static', filename=empleado.foto)
             if not os.path.exists(rutaFisica):
-                empleado.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
-            empleado.promedioCalificacion = getPromedioByEmpleadoId(baseDatos, empleado.id)['promedio']
+                empleado.foto = os.path.join(
+                    app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+            empleado.promedioCalificacion = getPromedioByEmpleadoId(
+                baseDatos, empleado.id)['promedio']
             empleado.calificarEmpleado(baseDatos)
-        return redirect(url_for('ver_vinculo', idVinculo = idVinculo))
+        return redirect(url_for('ver_vinculo', idVinculo=idVinculo))
 
 
 @app.route('/calificarVinculosPendientes/<bloqueado>', methods=['POST'])
@@ -1364,43 +1403,47 @@ def calificar_vinculos_pendientes(bloqueado):
     else:
         if request.method == 'POST':
             parametros = request.form
-            #for param in parametros:
-                #print('parametro: ', param)
+            # for param in parametros:
+            #print('parametro: ', param)
             idRecordatorio = parametros.get('idRecordatorio')
             idVinculo = parametros.get('idVinculo')
             cant_recordatorios = int(parametros.get('cant_recordatorios'))
             cal = parametros.get('rating' + str(idVinculo))
             vinculo = getVinculoByID(baseDatos, idVinculo)
-            recordatorio : Recordatorio = getRecordatorioByID(baseDatos, idRecordatorio)
+            recordatorio: Recordatorio = getRecordatorioByID(
+                baseDatos, idRecordatorio)
 
             if 'btnCalificarAhora' in parametros:
                 # como está calificando debo eliminar el recordatorio
                 recordatorio.borrarRecordatorio(baseDatos)
                 # genero el mensaje que se mostrará en el ambito que corresponda
-                flash('Has calificado satisfactoriamente con ' + str(cal) + ' estrellas tu vínculo sobre el anuncio: ' + str(vinculo.anuncio.titulo))
+                flash('Has calificado satisfactoriamente con ' + str(cal) +
+                      ' estrellas tu vínculo sobre el anuncio: ' + str(vinculo.anuncio.titulo))
             elif 'btnCalificarLuego' in parametros:
-                # como está posponiendo el recordatorio debo actualizar su fecha, 
+                # como está posponiendo el recordatorio debo actualizar su fecha,
                 # la cantidad de veces aplazado y si debe ser o no bloqueante
                 recordatorio.fechaRecordatorio += timedelta(days=90)
                 recordatorio.cantVecesAplazado += 1
                 recordatorio.actualizarRecordatorio(baseDatos)
 
             if session.get('usertype') == 'Empleado':
-                if 'btnCalificarAhora' in parametros:             
+                if 'btnCalificarAhora' in parametros:
                     vinculo.calif_empleador = cal
                     vinculo.actualizarVinculo(baseDatos)
                     empleador = vinculo.empleador
                     # Si no se puede cargar la foto guardada en la base cargo la imagen default
-                    rutaFisica = '.' + url_for('static', filename=empleador.foto)
+                    rutaFisica = '.' + \
+                        url_for('static', filename=empleador.foto)
                     if not os.path.exists(rutaFisica):
-                        empleador.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
-                    empleador.promedioCalificacion = getPromedioByEmpleadorId(baseDatos, empleador.id)['promedio']
+                        empleador.foto = os.path.join(
+                            app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+                    empleador.promedioCalificacion = getPromedioByEmpleadorId(
+                        baseDatos, empleador.id)['promedio']
                     empleador.calificarEmpleador(baseDatos)
 
                 # Si había un solo recordatorio como ya lo procesó lo debo enviar al Home
                 if cant_recordatorios == 1:
                     return redirect(url_for('inicio_empleados'))
-
 
             elif session.get('usertype') == 'Empleador':
                 if 'btnCalificarAhora' in parametros:
@@ -1408,16 +1451,19 @@ def calificar_vinculos_pendientes(bloqueado):
                     vinculo.actualizarVinculo(baseDatos)
                     empleado = vinculo.empleado
                     # Si no se puede cargar la foto guardada en la base cargo la imagen default
-                    rutaFisica = '.' + url_for('static', filename=empleado.foto)
+                    rutaFisica = '.' + \
+                        url_for('static', filename=empleado.foto)
                     if not os.path.exists(rutaFisica):
-                        empleado.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
-                    empleado.promedioCalificacion = getPromedioByEmpleadoId(baseDatos, empleado.id)['promedio']
+                        empleado.foto = os.path.join(
+                            app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+                    empleado.promedioCalificacion = getPromedioByEmpleadoId(
+                        baseDatos, empleado.id)['promedio']
                     empleado.calificarEmpleado(baseDatos)
 
                 # Si había un solo recordatorio como ya lo procesó lo debo enviar al Home
                 if cant_recordatorios == 1:
                     return redirect(url_for('inicio_empleadores'))
-            
+
             # Como son varios los recordatorios tengo que regresar al form de origen para que siga calificando
             if bloqueado == 'True':
                 return redirect(url_for('desbloqueo_cuenta'))
@@ -1428,7 +1474,7 @@ def calificar_vinculos_pendientes(bloqueado):
                     return redirect(url_for('inicio_empleadores'))
                 else:
                     return redirect(url_for('calificaciones_pendientes'))
-                
+
 
 @app.route('/endVinculo/<idVinculo>/', methods=['POST'])
 def end_vinculo(idVinculo):
@@ -1444,41 +1490,45 @@ def end_vinculo(idVinculo):
             # Si no se puede cargar la foto guardada en la base cargo la imagen default
             rutaFisica = '.' + url_for('static', filename=empleador.foto)
             if not os.path.exists(rutaFisica):
-                empleador.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+                empleador.foto = os.path.join(
+                    app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
             empleado = vinculo.empleado
             # Si no se puede cargar la foto guardada en la base cargo la imagen default
             rutaFisica = '.' + url_for('static', filename=empleado.foto)
             if not os.path.exists(rutaFisica):
-                empleado.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+                empleado.foto = os.path.join(
+                    app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
             anuncio = vinculo.anuncio
 
             if session.get('usertype') == 'Empleado':
                 vinculo.calif_empleador = cal
                 vinculo.fecha_fin = datetime.now()
                 vinculo.actualizarVinculo(baseDatos)
-                empleador.promedioCalificacion = getPromedioByEmpleadorId(baseDatos, empleador.id)['promedio']
+                empleador.promedioCalificacion = getPromedioByEmpleadorId(
+                    baseDatos, empleador.id)['promedio']
                 empleador.calificarEmpleador(baseDatos)
-        
+
             if session.get('usertype') == 'Empleador':
                 vinculo.calif_empleado = cal
                 vinculo.fecha_fin = datetime.now()
                 vinculo.actualizarVinculo(baseDatos)
-                empleado.promedioCalificacion = getPromedioByEmpleadoId(baseDatos, empleado.id)['promedio']
+                empleado.promedioCalificacion = getPromedioByEmpleadoId(
+                    baseDatos, empleado.id)['promedio']
                 empleado.calificarEmpleado(baseDatos)
-    
+
             # Se debe notificar al empleado mediante mensaje de que el vínculo con el empleador "X" finalizó
-            mensajeEmpleado = Mensaje(0, empleado, empleador, anuncio, datetime.now(), 
-            'Su vínculo con {} {} por el anuncio "{}" ha finalizado. Recuerde que puede calificar el vínculo cuantas veces lo considere desde "Mis Vínculos"'
-            .format(empleador.nombre, empleador.apellido, anuncio.titulo), 3, 1, False)
+            mensajeEmpleado = Mensaje(0, empleado, empleador, anuncio, datetime.now(),
+                                      'Su vínculo con {} {} por el anuncio "{}" ha finalizado. Recuerde que puede calificar el vínculo cuantas veces lo considere desde "Mis Vínculos"'
+                                      .format(empleador.nombre, empleador.apellido, anuncio.titulo), 3, 1, False)
             mensajeEmpleado.crearMensaje(baseDatos)
 
             # Se debe notificar al empleador mediante mensaje de que el vínculo con el empleado "X" finalizó
-            mensajeEmpleador = Mensaje(0, empleado, empleador, anuncio, datetime.now(), 
-            'Su vínculo con {} {} por el anuncio "{}" ha finalizado. Recuerde que puede calificar el vínculo cuantas veces lo considere desde "Mis Vínculos"'
-            .format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
+            mensajeEmpleador = Mensaje(0, empleado, empleador, anuncio, datetime.now(),
+                                       'Su vínculo con {} {} por el anuncio "{}" ha finalizado. Recuerde que puede calificar el vínculo cuantas veces lo considere desde "Mis Vínculos"'
+                                       .format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
             mensajeEmpleador.crearMensaje(baseDatos)
 
-            return redirect(url_for('ver_vinculo', idVinculo = idVinculo))
+            return redirect(url_for('ver_vinculo', idVinculo=idVinculo))
 
 
 @app.route('/Candidatos/<id_anuncio>', methods=['POST', 'GET'])
@@ -1497,12 +1547,12 @@ def listar_candidatos(id_anuncio):
         listaPostulaciones = getPostulacionesAnuncio(baseDatos, id_anuncio)
         postulaciones = []
         for postulacion in listaPostulaciones:
-            
+
             # se deben marcar como notificadas las postulaciones que no lo estén
             if not postulacion.fueNotificada(baseDatos):
                 #print('ID de postulación a marcar como notificada: ', postulacion.id)
                 postulacion.marcarPostulacionComoNotificada(baseDatos)
-            
+
             post = []
             cal = getPromedioByEmpleadoId(baseDatos, postulacion.empleado.id)
             l = [postulacion]
@@ -1512,7 +1562,6 @@ def listar_candidatos(id_anuncio):
 
         pares = postulaciones[0:][::2]
         impares = postulaciones[1:][::2]
-
 
         return render_template('ListaCandidatos.html', elemPares=pares, elemImpares=impares, elanuncio=anuncio)
 
@@ -1529,8 +1578,10 @@ def mensajes_empleado(idEmpleado, idEmpleador):
         diccMensajes = getMensajesParaEmpleado(baseDatos, idEmpleado)
         objeto = getEmpleadoByID(baseDatos, idEmpleado)
 
-        vinculo = tieneElEmpleadoVinculoConEmpleador(baseDatos, idEmpleado, idEmpleador)
-        postulacion = existePostulacionDeEmpleadoEnAnuncioDeEmpleador(baseDatos, idEmpleado, idEmpleador)
+        vinculo = tieneElEmpleadoVinculoConEmpleador(
+            baseDatos, idEmpleado, idEmpleador)
+        postulacion = existePostulacionDeEmpleadoEnAnuncioDeEmpleador(
+            baseDatos, idEmpleado, idEmpleador)
         if tieneElEmpleadoMensajeDeEmpleador(baseDatos, idEmpleado, idEmpleador):
             tipoEmisor = 2
         else:
@@ -1563,8 +1614,10 @@ def mensajes_empleador(idEmpleador, idEmpleado):
         diccMensajes = getMensajesParaEmpleador(baseDatos, idEmpleador)
         objeto = getEmpleadorByID(baseDatos, idEmpleador)
 
-        vinculo = tieneElEmpleadorVinculoConEmpleado(baseDatos, idEmpleador, idEmpleado)
-        postulacion = existePostulacionDeEmpleadoEnAnuncioDeEmpleador(baseDatos, idEmpleado, idEmpleador)
+        vinculo = tieneElEmpleadorVinculoConEmpleado(
+            baseDatos, idEmpleador, idEmpleado)
+        postulacion = existePostulacionDeEmpleadoEnAnuncioDeEmpleador(
+            baseDatos, idEmpleado, idEmpleador)
         dtoMensaje = DTOMensaje(vinculo, postulacion, 1)
 
         if int(idEmpleado) == 0:
@@ -1657,11 +1710,13 @@ def contratar(idEmpleado):
         mensajeEmpleador.crearMensaje(baseDatos)
 
         # Se debe generar recordatorio de calificación para el empleado
-        recordatorioEmpleado = Recordatorio(0, 1, empleado, empleador, empleado, anuncio, postulacion, vinculo, datetime.now() + timedelta(days=90), datetime.now() + timedelta(days=270), 0, 'Debe calificar el vínculo', 0)
+        recordatorioEmpleado = Recordatorio(0, 1, empleado, empleador, empleado, anuncio, postulacion, vinculo, datetime.now(
+        ) + timedelta(days=90), datetime.now() + timedelta(days=270), 0, 'Debe calificar el vínculo', 0)
         recordatorioEmpleado.crearRecordatorio(baseDatos)
-        
+
         # Se debe generar recordatorio de calificación para el empleador
-        recordatorioEmpleador = Recordatorio(0, 1, empleado, empleador, empleador, anuncio, postulacion, vinculo, datetime.now() + timedelta(days=90), datetime.now() + timedelta(days=270), 0, 'Debe calificar el vínculo', 0)
+        recordatorioEmpleador = Recordatorio(0, 1, empleado, empleador, empleador, anuncio, postulacion, vinculo, datetime.now(
+        ) + timedelta(days=90), datetime.now() + timedelta(days=270), 0, 'Debe calificar el vínculo', 0)
         recordatorioEmpleador.crearRecordatorio(baseDatos)
 
         return render_template('contactoEmpleado.html', data=empleado)
@@ -1671,8 +1726,8 @@ def contratar(idEmpleado):
 def ranking_calificaciones(tipo):
     if session.get('usertype') == None:
         return redirect(url_for('logueo'))
-    #elif session.get('usertype') == 'Administrador':
-        #return redirect(url_for('administrar'))
+    # elif session.get('usertype') == 'Administrador':
+        # return redirect(url_for('administrar'))
     else:
         listado = list()
         if tipo == 'Empleador':
@@ -1684,7 +1739,8 @@ def ranking_calificaciones(tipo):
             rutaFisica = '.' + url_for('static', filename=item.foto)
             # Si no se puede cargar la foto guardada en la base cargo la imagen default
             if not os.path.exists(rutaFisica):
-                item.foto = os.path.join(app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+                item.foto = os.path.join(
+                    app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
 
         pares = listado[0:][::2]
         impares = listado[1:][::2]
@@ -1722,5 +1778,119 @@ def desbloqueo_cuenta():
             return render_template('DesbloqueoCuenta.html')
 
 
+# ---------------------------------------API-----------------------------------------------------------
+
+@app.route('/api/ping/', methods=['GET'])
+def ping():
+    return jsonify({'message': 'pong!'})
+
+
+# -----------------------------------------------------------------------------------------------
+# @app.route('/api/foto/', methods=['POST'])
+# def api_getEmpleado():
+#    empleado = getEmpleadoByUsuarioID(baseDatos, request.json['id'])
+#    foto = "http://labores2021.pythonanywhere.com" + url_for('static', filename=empleado.foto)
+#    return jsonify(foto)
+# -----------------------------------------------------------------------------------------------
+
+
+@app.route('/api/Ingresar/', methods=['POST'])
+def api_ingresar():
+    user = request.json['user']
+    password = request.json['password']
+    usuario = Usuario(0, user, password, '')
+    retorno = usuario.loginUsuario(baseDatos)
+
+    if retorno:
+        login_info = {
+            'message': "usuario logueado con éxito",
+            'id': retorno[0][1],
+            'user': user,
+            'password': password,
+            'tipo': retorno[0][0]
+        }
+    else:
+        login_info = {
+            'message': "usuario o contraseña incorrectos",
+            'id': None,
+            'user': None,
+            'password': None,
+            'tipo': None
+        }
+
+    return jsonify(login_info)
+
+
+
+@app.route('/api/registro/', methods=['POST'])
+def api_registro():
+
+    if getUsuarioByCI(baseDatos, request.json['ci']):
+        return {"message": "Ya existe un usuario con esa CI"}
+    else: 
+
+        new_user = Usuario(0, request.json['ci'], request.json['password'], request.json['tipo'])
+        new_user.crearUsuario(baseDatos)
+        usuario = getUsuarioByCI(baseDatos, request.json['ci'])
+
+        if request.json['tipo'] == "Empleador":
+            new_empleador = Empleador(
+                0,
+                request.json['ci'],
+                request.json['empleador']['nombre'],
+                request.json['empleador']['apellido'],
+                #datetime.date(request.json['empleador']['fecha_n']['anio'], request.json['empleador']['fecha_n']['mes'], request.json['empleador']['fecha_n']['dia']),
+                None,
+                request.json['empleador']['genero'],
+                request.json['empleador']['domicilio'],
+                request.json['empleador']['nacionalidad'],
+                request.json['empleador']['mail'],
+                request.json['empleador']['telefono'],
+                request.json['empleador']['bps'],
+                None,
+                None,
+                usuario
+            )
+            new_empleador.crearEmpleador(baseDatos)
+
+        return {"message": "Usuario empleador creado con exito!"}
+
+
+
+@app.route('/api/listandoMisAnuncios/<id>')
+def api_listandoMisAnuncios(id):
+
+    empleador = getEmpleadorByUsuarioID(baseDatos, id)
+    retorno = empleador.listarMisAnuncios(baseDatos)
+    if retorno:
+        listaDeAnuncios = []
+        for a in retorno:
+            anuncio=[]
+            for b in a:
+                anuncio.append(b)
+            anuncio[3] = anuncio[3].strftime('%d/%m/%Y')
+            anuncio[5] = int.from_bytes(anuncio[5], byteorder='big')
+            anun_dic = {
+                'id' : anuncio[0],
+                'titulo' : anuncio[1],
+                'descripcion' : anuncio[2],
+                'fecha_inicio' : anuncio[3],
+                'fecha_cierre' : anuncio[4],
+                'estado' : anuncio[5],
+                'experiencia' : anuncio[6],
+                'pago_hora' : anuncio[7],
+                'id_empleador' : anuncio[8],
+                'calificacion_desde' : anuncio[9],
+                'calificacion_hasta' : anuncio[10],
+                'tiene_vinculo' : anuncio[11]
+            }
+            listaDeAnuncios.append(anun_dic)
+
+        return json.dumps(listaDeAnuncios, ensure_ascii=False).encode('utf8')
+    else:
+        return jsonify([])
+
+# -----------------------------------------------------------------------------------------------------
+
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=8080, debug=False)
+    app.run(host='127.0.0.1', port=8080, debug=True)

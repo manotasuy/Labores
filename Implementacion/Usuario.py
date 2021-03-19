@@ -81,3 +81,17 @@ def getUsuarioByID(bd, id):
         return usuario
     except Exception as e:
         print("Error en getUsuarioByID ", e)
+
+
+def getUsuarioByCI(bd, ci):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute(
+            'SELECT * FROM usuario WHERE usuario = {}'.format(ci))
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+        usuario = Usuario(retorno[0][0], retorno[0][1], retorno[0][2], retorno[0][3])
+        return usuario
+    except Exception as e:
+        print("Error en getUsuarioByCI ", e)
