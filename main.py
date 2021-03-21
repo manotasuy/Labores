@@ -5,8 +5,9 @@ from flask import Flask, request, Response, render_template, url_for, redirect, 
 from flask import jsonify
 from werkzeug.utils import secure_filename
 from flask_mysqldb import MySQL
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from enum import Enum
+import base64
 
 # Paquetes implementación
 from Implementacion.Conexion import connectionDb
@@ -1785,14 +1786,6 @@ def ping():
     return jsonify({'message': 'pong!'})
 
 
-# -----------------------------------------------------------------------------------------------
-# @app.route('/api/foto/', methods=['POST'])
-# def api_getEmpleado():
-#    empleado = getEmpleadoByUsuarioID(baseDatos, request.json['id'])
-#    foto = "http://labores2021.pythonanywhere.com" + url_for('static', filename=empleado.foto)
-#    return jsonify(foto)
-# -----------------------------------------------------------------------------------------------
-
 
 @app.route('/api/Ingresar/', methods=['POST'])
 def api_ingresar():
@@ -1820,7 +1813,13 @@ def api_ingresar():
 
     return jsonify(login_info)
 
+@app.route('/api/verificacion_ci/', methods=['POST'])
+def api_verificacion_ci():
 
+    if getUsuarioByCI(baseDatos, request.json['ci']):
+        return {"message": "Usuario registrado"}
+    else:
+        return {"message": "Usuario no registrado"}
 
 @app.route('/api/registro/', methods=['POST'])
 def api_registro():
@@ -1839,8 +1838,7 @@ def api_registro():
                 request.json['ci'],
                 request.json['empleador']['nombre'],
                 request.json['empleador']['apellido'],
-                #datetime.date(request.json['empleador']['fecha_n']['anio'], request.json['empleador']['fecha_n']['mes'], request.json['empleador']['fecha_n']['dia']),
-                None,
+                date(request.json['empleador']['fecha_n']['anio'], request.json['empleador']['fecha_n']['mes'], request.json['empleador']['fecha_n']['dia']),
                 request.json['empleador']['genero'],
                 request.json['empleador']['domicilio'],
                 request.json['empleador']['nacionalidad'],
@@ -1848,7 +1846,7 @@ def api_registro():
                 request.json['empleador']['telefono'],
                 request.json['empleador']['bps'],
                 None,
-                None,
+                0,
                 usuario
             )
             new_empleador.crearEmpleador(baseDatos)
@@ -1890,6 +1888,13 @@ def api_listandoMisAnuncios(id):
     else:
         return jsonify([])
 
+"""
+@app.route('/api/img/', methods=['POST'])
+def api_img():
+
+
+    return {"message": "Foto subida!"}
+"""
 # -----------------------------------------------------------------------------------------------------
 
 if __name__ == '__main__':
