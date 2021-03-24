@@ -1,5 +1,7 @@
 import json
 import os
+import base64
+import base64
 import logging
 from flask import Flask, request, Response, render_template, url_for, redirect, flash, session, send_from_directory
 from flask import jsonify
@@ -16,8 +18,8 @@ from Implementacion.Empleado import Empleado, getEmpleadoByID, getEmpleadoByUsua
 from Implementacion.Empleador import Empleador, getEmpleadorByID, getEmpleadorByUsuarioID, getRankingPorCalificacionEmpleadores
 from Implementacion.Anuncio import Anuncio, getAllAnuncios, getAnuncioByID
 from Implementacion.Postulacion import Postulacion, getPostulacionesAnuncio, getPostulacionesEmpleado, getPostulacionEmpleadoAnuncio, getPostulacionesEmpleadoIDs, empleadorTieneNotificacionesPendientesPostulaciones, getPostulacionById, existePostulacionDeEmpleadoEnAnuncioDeEmpleador
-from Implementacion.Tarea import Tarea, getTareasRegistradas
-from Implementacion.Disponibilidad import Disponibilidad, getDisponibilidadesRegistradas
+from Implementacion.Tarea import Tarea, getTareasRegistradas, agregarTareaEmpleado
+from Implementacion.Disponibilidad import Disponibilidad, getDisponibilidadesRegistradas, agregarDisponibilidadEmpleado
 from Implementacion.Vinculo import Vinculo, getVinculoByID, getVinculoByEmpleado, getVinculoByEmpleador, getVinculoIDs, getPromedioByEmpleadorId, getPromedioByEmpleadoId, getVinculosNoNotificadosDelEmpleado, empleadoTieneNotificacionesPendientesVinculos, tieneElEmpleadorVinculoConEmpleado, tieneElEmpleadoVinculoConEmpleador
 from Implementacion.Mensaje import Mensaje, getMensajesParaEmpleado, empleadoTieneMensajesSinLeer, getMensajesParaEmpleador, empleadorTieneMensajesSinLeer, tieneElEmpleadoMensajeDeEmpleador, tieneElEmpleadorMensajeDeEmpleado
 from Implementacion.DTOAuxEmpleado import DTOAuxEmpleado, TareaSeleccion, DisponibilidadSeleccion
@@ -1833,6 +1835,7 @@ def api_registro():
         usuario = getUsuarioByCI(baseDatos, request.json['ci'])
 
         if request.json['tipo'] == "Empleador":
+           
             new_empleador = Empleador(
                 0,
                 request.json['ci'],
@@ -1849,9 +1852,87 @@ def api_registro():
                 0,
                 usuario
             )
-            new_empleador.crearEmpleador(baseDatos)
 
-        return {"message": "Usuario empleador creado con exito!"}
+            
+            if request.json['empleador']['foto']:
+
+                new_empleador.foto = "images/Perfiles/" + request.json['ci'] + request.json['empleador']['extension_foto']                
+                base64_img_bytes = request.json['empleador']['foto'].encode('utf-8')
+                filename = secure_filename( request.json['ci'] + request.json['empleador']['extension_foto'])
+                rutaFisica = os.path.join(app.config['CARPETA_FISICA_IMAGENES'], filename)
+                with open(rutaFisica, 'wb') as file_to_save:
+                    decoded_image_data = base64.decodebytes(base64_img_bytes)
+                    file_to_save.write(decoded_image_data)
+                
+            new_empleador.crearEmpleador(baseDatos)
+            return {"message": "Usuario empleador creado con exito!"}
+       
+        else:
+
+            new_empleado = Empleado(
+                0,
+                request.json['ci'],
+                request.json['empleado']['nombre'],
+                request.json['empleado']['apellido'],
+                date(request.json['empleado']['fecha_n']['anio'], request.json['empleado']['fecha_n']['mes'], request.json['empleado']['fecha_n']['dia']),
+                request.json['empleado']['genero'],
+                request.json['empleado']['domicilio'],
+                request.json['empleado']['nacionalidad'],
+                request.json['empleado']['mail'],
+                request.json['empleado']['telefono'],
+                request.json['empleado']['experiencia_meses'],
+                request.json['empleado']['descripcion'],
+                None,
+                0,
+                usuario,
+                None,
+                None,
+                None
+            )
+
+            
+            if request.json['empleado']['foto']:
+
+                new_empleado.foto = "images/Perfiles/" + request.json['ci'] + request.json['empleado']['extension_foto']                
+                base64_img_bytes = request.json['empleado']['foto'].encode('utf-8')
+                filename = secure_filename( request.json['ci'] + request.json['empleado']['extension_foto'])
+                rutaFisica = os.path.join(app.config['CARPETA_FISICA_IMAGENES'], filename)
+                with open(rutaFisica, 'wb') as file_to_save:
+                    decoded_image_data = base64.decodebytes(base64_img_bytes)
+                    file_to_save.write(decoded_image_data)
+                
+            new_empleado.crearEmpleado(baseDatos)
+            
+            empleado = getEmpleadoByUsuarioID(baseDatos, usuario.id)
+
+            if request.json['empleado']['referencias']:
+                for ref in request.json['empleado']['referencias']:
+                    ref_nombre = ref['nombre']
+                    ref_apellido = ref['apellido']
+                    ref_telefono = ref['telefono']
+                    ref_trabaja_desde = date(ref['fecha_desde']['anio'], ref['fecha_desde']['mes'], ref['fecha_desde']['dia']),
+                    ref_trabaja_hasta = date(ref['fecha_hasta']['anio'], ref['fecha_hasta']['mes'], ref['fecha_hasta']['dia']),
+                    referencia = Referencia(
+                        0, 
+                        empleado, 
+                        ref_nombre, 
+                        ref_apellido, 
+                        ref_telefono, 
+                        ref_trabaja_desde, 
+                        ref_trabaja_hasta
+                        )
+                    referencia.crearReferencia(baseDatos)
+
+            if request.json['empleado']['tareas']:
+                for tar in request.json['empleado']['tareas']:
+                    agregarTareaEmpleado(baseDatos, tar, empleado.id)
+                
+            if request.json['empleado']['disponibilidad']:
+                for dis in request.json['empleado']['disponibilidad']:
+                    agregarDisponibilidadEmpleado(baseDatos, dis, empleado.id)
+
+            return {"message": "Usuario empleado creado con exito!"}
+        
 
 
 
@@ -1888,13 +1969,6 @@ def api_listandoMisAnuncios(id):
     else:
         return jsonify([])
 
-"""
-@app.route('/api/img/', methods=['POST'])
-def api_img():
-
-
-    return {"message": "Foto subida!"}
-"""
 # -----------------------------------------------------------------------------------------------------
 
 if __name__ == '__main__':
