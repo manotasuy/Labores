@@ -37,8 +37,8 @@ app = Flask(__name__)
 #baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'a-work')
 #baseDatos = connectionDb(app, 'a-home')
-baseDatos = connectionDb(app, 'local')
-#baseDatos = connectionDb(app, 'PA')
+#baseDatos = connectionDb(app, 'local')
+baseDatos = connectionDb(app, 'PA')
 #baseDatos = connectionDb(app, 'gcp')
 
 
@@ -1972,4 +1972,4 @@ def api_listandoMisAnuncios(id):
 # -----------------------------------------------------------------------------------------------------
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=8080, debug=True)
+    app.run(host='127.0.0.1', port=8080, debug=False)
