@@ -1,6 +1,6 @@
 from flask_mysqldb import MySQL
 
-CARPETA_FISICA_IMAGENES = "./static/images/Perfiles/"
+CARPETA_FISICA_IMAGENES = "/home/labores2021/Labores/static/images/Perfiles/"
 CARPETA_CARGA_IMAGENES = "images/Perfiles/"
 
 
