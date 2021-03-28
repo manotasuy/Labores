@@ -11,6 +11,7 @@ from datetime import datetime, timedelta, date
 from enum import Enum
 import base64
 
+#x
 # Paquetes implementación
 from Implementacion.Conexion import connectionDb
 from Implementacion.Usuario import Usuario, getUsuarioByID, getUsuarioByCI
@@ -1889,6 +1890,7 @@ def api_registro():
                 None,
                 None
             )
+
 
             
             if request.json['empleado']['foto']:
