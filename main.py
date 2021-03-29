@@ -1913,7 +1913,7 @@ def api_registro():
                     file_to_save.write(decoded_image_data)
                 """
             else:
-                with open('NoImage.png', 'rb') as binary_file:
+                with open('/home/labores2021/Labores/NoImage.png', 'rb') as binary_file:
                     binary_file_data = binary_file.read()
                     base64_encoded_data = base64.b64encode(binary_file_data)
                     new_empleado.foto = base64_encoded_data.decode('utf-8')
@@ -1958,7 +1958,7 @@ def api_registro():
                     file_to_save.write(decoded_image_data)
                 """
             else:
-                with open('NoImage.png', 'rb') as binary_file:
+                with open('/home/labores2021/Labores/NoImage.png', 'rb') as binary_file:
                     binary_file_data = binary_file.read()
                     base64_encoded_data = base64.b64encode(binary_file_data)
                     new_empleado.foto = base64_encoded_data.decode('utf-8')
