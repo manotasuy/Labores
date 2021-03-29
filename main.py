@@ -649,11 +649,12 @@ def inicio_empleados():
         return redirect(url_for('inicio_empleadores'))
     else:
         empleado = getEmpleadoByID(baseDatos, session['id_empleado'])
+        empleado.foto = empleado.foto.decode("utf-8")
         # Si no se puede cargar la foto guardada en la base cargo la imagen default
-        rutaFisica = '.' + url_for('static', filename=empleado.foto)
-        if not os.path.exists(rutaFisica):
-            empleado.foto = os.path.join(
-                app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+        #rutaFisica = '.' + url_for('static', filename=empleado.foto)
+        #if not os.path.exists(rutaFisica):
+        #    empleado.foto = os.path.join(
+        #        app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
 
         # se debe verificar que el empleado no tenga mensajes sin leer, en caso afirmativo se debe notificar
         tieneNotifMensajes = empleadoTieneMensajesSinLeer(
@@ -680,11 +681,12 @@ def inicio_empleadores():
     else:
         #print('getRecordatoriosDelDia(): ', getRecordatoriosDelDia())
         empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
+        empleador.foto = empleador.foto.decode("utf-8")
         # Si no se puede cargar la foto guardada en la base cargo la imagen default
-        rutaFisica = '.' + url_for('static', filename=empleador.foto)
-        if not os.path.exists(rutaFisica):
-            empleador.foto = os.path.join(
-                app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+        #rutaFisica = '.' + url_for('static', filename=empleador.foto)
+        #if not os.path.exists(rutaFisica):
+        #    empleador.foto = os.path.join(
+        #        app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
         # se debe verificar que el empleador no tenga mensajes sin leer, en caso afirmativo se debe notificar
         tieneNotifMensajes = empleadorTieneMensajesSinLeer(
             baseDatos, empleador.id)

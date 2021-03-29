@@ -163,7 +163,7 @@
           </a>
           {% endif %}
         </p>
-        <img class="mb-4" src="{{ url_for('static', filename=sujeto.foto)}}" alt="" width="125" height="125"><br>
+        <img class="mb-4" src="data:;base64,{{ sujeto.foto }}" alt="" width="125" height="125"><br>
         {% if sujeto.promedioCalificacion %}
         <img class="mt-4 mb-4" style="margin-bottom: 0.3rem !important; margin: 0.3em !important;"
           {% if sujeto.promedioCalificacion < 1 %}
