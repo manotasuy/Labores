@@ -1,6 +1,6 @@
 from flask_mysqldb import MySQL
 
-CARPETA_FISICA_IMAGENES = "/home/labores2021/Labores/static/images/Perfiles/"
+CARPETA_FISICA_IMAGENES = "./static/images/Perfiles/"
 CARPETA_CARGA_IMAGENES = "images/Perfiles/"
 
 
@@ -36,6 +36,7 @@ def connectionDb(app, servidor):
         app.config['MYSQL_USER'] = 'labores2021'
         app.config['MYSQL_PASSWORD'] = 'basededatos'
         app.config['MYSQL_DB'] = 'labores2021$laboresdb'
+        CARPETA_FISICA_IMAGENES = "/home/labores2021/Labores/static/images/Perfiles/"
 
     elif servidor == 'gcp':
         app.config['MYSQL_HOST'] = '35.198.46.68'
@@ -53,6 +54,7 @@ def connectionDb(app, servidor):
         app.config['MYSQL_USER'] = 'root'
         app.config['MYSQL_PASSWORD'] = ''
         app.config['MYSQL_DB'] = 'bdlabores'
+        CARPETA_FISICA_IMAGENES = "./static/images/Perfiles/"
     app.config['CARPETA_FISICA_IMAGENES'] = CARPETA_FISICA_IMAGENES
     app.config['CARPETA_CARGA_IMAGENES'] = CARPETA_CARGA_IMAGENES
 

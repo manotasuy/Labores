@@ -11,7 +11,6 @@ from datetime import datetime, timedelta, date
 from enum import Enum
 import base64
 
-#x
 # Paquetes implementación
 from Implementacion.Conexion import connectionDb
 from Implementacion.Usuario import Usuario, getUsuarioByID, getUsuarioByCI
@@ -38,8 +37,8 @@ app = Flask(__name__)
 #baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'a-work')
 #baseDatos = connectionDb(app, 'a-home')
-#baseDatos = connectionDb(app, 'local')
-baseDatos = connectionDb(app, 'PA')
+baseDatos = connectionDb(app, 'local')
+#baseDatos = connectionDb(app, 'PA')
 #baseDatos = connectionDb(app, 'gcp')
 
 
@@ -457,7 +456,7 @@ def guardar_perfil(tipo):
                 if tipo == 'Empleado':
                     # debo crear un empleado
                     new_empleado = Empleado(0, cedula, nombre, apellido, nacimiento, genero, domicilio,
-                                            nacionalidad, mail, telefono, 0, '', 'images/Perfiles/NoImage.png', 0, usuario, None, None, None)
+                                            nacionalidad, mail, telefono, 0, '', 'NoImage.png', 0, usuario, None, None, None)
 
                     # como es edición de perfil debo modificar la contraseña y el empleado
                     if logueado:
@@ -498,10 +497,17 @@ def guardar_perfil(tipo):
                         new_empleado.experiencia_meses = experiencia
                         new_empleado.descripcion = descripcion
 
+                        #------------------------------------img-----------------------------------------
+
                         if request.files:
-                            foto = request.files["fotoPerfil"]
+                            binary_file = request.files["fotoPerfil"]
+                            binary_file_data = binary_file.read()
+                            base64_encoded_data = base64.b64encode(binary_file_data)
+                            base64_blob = base64_encoded_data.decode('utf-8')
+                            new_empleado.foto = base64_blob
+                        
+                            """#si el atributo filename está vacío:
                             if foto.filename == '':
-                                #print('No hay foto cargada, mantengo la que tenía')
                                 filename = secure_filename(getEmpleadoByID(
                                     baseDatos, session['id_empleado']).foto)
                                 rutaFisica = os.path.join(
@@ -524,7 +530,16 @@ def guardar_perfil(tipo):
                                         foto.save(os.path.join(
                                             app.config['CARPETA_FISICA_IMAGENES'], filename))
                                     new_empleado.foto = os.path.join(
-                                        app.config['CARPETA_CARGA_IMAGENES'], filename)
+                                        app.config['CARPETA_CARGA_IMAGENES'], filename)"""
+                            
+                        else:
+
+                            with open("NoImage.png", 'rb') as binary_file:
+                                binary_file_data = binary_file.read()
+                                base64_encoded_data = base64.b64encode(binary_file_data)
+                                base64_blob = base64_encoded_data.decode('utf-8')
+                                new_empleado.foto = base64_blob
+                        #--------------------------------------------------------------------------------
 
                         new_empleado.modificarEmpleado(baseDatos)
                         return redirect(url_for('inicio_empleados'))
@@ -538,7 +553,7 @@ def guardar_perfil(tipo):
                 elif tipo == 'Empleador':
                     # debo crear un empleador
                     new_empleador = Empleador(0, cedula, nombre, apellido, nacimiento, genero,
-                                              domicilio, nacionalidad, mail, telefono, 0, 'images/Perfiles/NoImage.png', 0, usuario)
+                                              domicilio, nacionalidad, mail, telefono, 0, 'NoImage.png', 0, usuario)
 
                     # como es edición de perfil debo modificar la contraseña y el empleador
                     if logueado:
@@ -550,7 +565,13 @@ def guardar_perfil(tipo):
                             regBPS = '0'
 
                         if request.files:
-                            foto = request.files["fotoPerfil"]
+                            binary_file = request.files["fotoPerfil"]
+                            binary_file_data = binary_file.read()
+                            base64_encoded_data = base64.b64encode(binary_file_data)
+                            base64_blob = base64_encoded_data.decode('utf-8')
+                            new_empleador.foto = base64_blob
+
+                            """foto = request.files["fotoPerfil"]
                             if foto.filename == '':
                                 #print('No hay foto cargada, mantengo la que tenía')
                                 filename = secure_filename(getEmpleadorByID(
@@ -575,13 +596,20 @@ def guardar_perfil(tipo):
                                         foto.save(os.path.join(
                                             app.config['CARPETA_FISICA_IMAGENES'], filename))
                                     new_empleador.foto = os.path.join(
-                                        app.config['CARPETA_CARGA_IMAGENES'], filename)
+                                        app.config['CARPETA_CARGA_IMAGENES'], filename)"""
+                        else:
+
+                            with open("NoImage.png", 'rb') as binary_file:
+                                binary_file_data = binary_file.read()
+                                base64_encoded_data = base64.b64encode(binary_file_data)
+                                base64_blob = base64_encoded_data.decode('utf-8')
+                                new_empleador.foto = base64_blob
 
                         new_empleador.registroBps = regBPS
                         new_empleador.id = session['id_empleador']
                         new_empleador.modificarEmpleador(baseDatos)
 
-                    # como es registro (alta) debo crear el empleado
+                    # como es registro (alta) debo crear el empleador
                     else:
                         new_empleador.crearEmpleador(baseDatos)
                         login(cedula, password)
@@ -1796,8 +1824,18 @@ def api_ingresar():
     password = request.json['password']
     usuario = Usuario(0, user, password, '')
     retorno = usuario.loginUsuario(baseDatos)
+    usuario = getUsuarioByCI(baseDatos, user)
+    foto = None
 
     if retorno:
+        if retorno[0][0] == "Empleado":
+            empleado = getEmpleadoByUsuarioID(baseDatos, usuario.id)
+            foto = empleado.foto.decode('utf-8')
+        elif retorno[0][0] == "Empleador":
+            empleador = getEmpleadorByUsuarioID(baseDatos, usuario.id)
+            foto = empleador.foto.decode('utf-8')
+
+
         """
         with open("/home/labores2021/Labores/static/images/Perfiles/" + user + ".png", 'rb') as binary_file:
             binary_file_data = binary_file.read()
@@ -1810,7 +1848,7 @@ def api_ingresar():
             'user': user,
             'password': password,
             'tipo': retorno[0][0],
-            'image': base64_message
+            'image': foto
         }
     else:
         login_info = {
@@ -1864,7 +1902,8 @@ def api_registro():
 
             
             if request.json['empleador']['foto']:
-
+                new_empleado.foto = request.json['empleado']['foto']
+                """
                 new_empleador.foto = "images/Perfiles/" + request.json['ci'] + request.json['empleador']['extension_foto']                
                 base64_img_bytes = request.json['empleador']['foto'].encode('utf-8')
                 filename = secure_filename( request.json['ci'] + request.json['empleador']['extension_foto'])
@@ -1872,6 +1911,12 @@ def api_registro():
                 with open(rutaFisica, 'wb') as file_to_save:
                     decoded_image_data = base64.decodebytes(base64_img_bytes)
                     file_to_save.write(decoded_image_data)
+                """
+            else:
+                with open('NoImage.png', 'rb') as binary_file:
+                    binary_file_data = binary_file.read()
+                    base64_encoded_data = base64.b64encode(binary_file_data)
+                    new_empleado.foto = base64_encoded_data.decode('utf-8')
                 
             new_empleador.crearEmpleador(baseDatos)
             return {"message": "Usuario empleador creado con exito!"}
@@ -1902,7 +1947,8 @@ def api_registro():
 
             
             if request.json['empleado']['foto']:
-
+                new_empleado.foto = request.json['empleado']['foto']
+                """
                 new_empleado.foto = "images/Perfiles/" + request.json['ci'] + request.json['empleado']['extension_foto']                
                 base64_img_bytes = request.json['empleado']['foto'].encode('utf-8')
                 filename = secure_filename( request.json['ci'] + request.json['empleado']['extension_foto'])
@@ -1910,7 +1956,14 @@ def api_registro():
                 with open(rutaFisica, 'wb') as file_to_save:
                     decoded_image_data = base64.decodebytes(base64_img_bytes)
                     file_to_save.write(decoded_image_data)
-                
+                """
+            else:
+                with open('NoImage.png', 'rb') as binary_file:
+                    binary_file_data = binary_file.read()
+                    base64_encoded_data = base64.b64encode(binary_file_data)
+                    new_empleado.foto = base64_encoded_data.decode('utf-8')
+
+
             new_empleado.crearEmpleado(baseDatos)
             
             empleado = getEmpleadoByUsuarioID(baseDatos, usuario.id)
