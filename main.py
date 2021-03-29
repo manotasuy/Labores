@@ -46,11 +46,6 @@ baseDatos = connectionDb(app, 'PA')
 # a
 app.secret_key = "session"
 
-no_image = None
-with open('NoImage.png', 'rb') as binary_file:
-    binary_file_data = binary_file.read()
-    base64_encoded_data = base64.b64encode(binary_file_data)
-    no_image = base64_encoded_data.decode('utf-8')
 
 def archivoAdmitido(filename):
     return '.' in filename and \
