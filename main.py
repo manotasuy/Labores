@@ -46,10 +46,16 @@ baseDatos = connectionDb(app, 'PA')
 # a
 app.secret_key = "session"
 
+no_image = None
+with open('NoImage.png', 'rb') as binary_file:
+    binary_file_data = binary_file.read()
+    base64_encoded_data = base64.b64encode(binary_file_data)
+    no_image = base64_encoded_data.decode('utf-8')
 
 def archivoAdmitido(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in EXTENSIONES_ADMITIDAS
+
 
 
 def login(user, password):
@@ -232,10 +238,13 @@ def vista_perfil(opcion, id):
         if opcion == 'Empleado':
             objeto = getEmpleadoByID(baseDatos, id)
             # Si no se puede cargar la foto guardada en la base cargo la imagen default
-            rutaFisica = '.' + url_for('static', filename=objeto.foto)
-            if not os.path.exists(rutaFisica):
-                objeto.foto = os.path.join(
-                    app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+            if objeto.foto:    
+                objeto.foto = objeto.foto.decode("utf-8")
+            else:
+                with open(app.config['CARPETA_FISICA_IMAGENES'] + 'NoImage.png', 'rb') as binary_file:
+                    binary_file_data = binary_file.read()
+                    base64_encoded_data = base64.b64encode(binary_file_data)
+                    objeto.foto = base64_encoded_data.decode('utf-8')
             dtoAuxEmpleado: DTOAuxEmpleado = DTOAuxEmpleado()
             # Debo traer las tareas y disponibilidades (estableciendo las seleccionadas por el empleado) para cargarlas dinámicamente
             tareasSeleccion = objeto.getTareasSeleccionadas(baseDatos)
@@ -332,10 +341,13 @@ def perfil(opcion):
                 idEmpleado = session['id_empleado']
                 empleado = getEmpleadoByID(baseDatos, idEmpleado)
                 # Si no se puede cargar la foto guardada en la base cargo la imagen default
-                rutaFisica = '.' + url_for('static', filename=empleado.foto)
-                if not os.path.exists(rutaFisica):
-                    empleado.foto = os.path.join(
-                        app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+                if empleado.foto:    
+                    empleado.foto = empleado.foto.decode("utf-8")
+                else:
+                    with open(app.config['CARPETA_FISICA_IMAGENES'] + 'NoImage.png', 'rb') as binary_file:
+                        binary_file_data = binary_file.read()
+                        base64_encoded_data = base64.b64encode(binary_file_data)
+                        empleado.foto = base64_encoded_data.decode('utf-8')
 
                 # Debo traer las tareas y disponibilidades (estableciendo las seleccionadas por el empleado) para cargarlas dinámicamente
                 tareasSeleccion = empleado.getTareasSeleccionadas(baseDatos)
@@ -367,10 +379,13 @@ def perfil(opcion):
                 idEmpleador = session['id_empleador']
                 empleador = getEmpleadorByID(baseDatos, idEmpleador)
                 # Si no se puede cargar la foto guardada en la base cargo la imagen default
-                rutaFisica = '.' + url_for('static', filename=empleador.foto)
-                if not os.path.exists(rutaFisica):
-                    empleador.foto = os.path.join(
-                        app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+                if empleador.foto:    
+                    empleador.foto = empleador.foto.decode("utf-8")
+                else:
+                    with open(app.config['CARPETA_FISICA_IMAGENES'] + 'NoImage.png', 'rb') as binary_file:
+                        binary_file_data = binary_file.read()
+                        base64_encoded_data = base64.b64encode(binary_file_data)
+                        empleador.foto = base64_encoded_data.decode('utf-8')
                 # convierto byte a entero, el atributo "género" en mysql es de tipo bit
                 generoInt = int.from_bytes(empleador.genero, "big")
                 empleador.genero = generoInt
@@ -456,7 +471,7 @@ def guardar_perfil(tipo):
                 if tipo == 'Empleado':
                     # debo crear un empleado
                     new_empleado = Empleado(0, cedula, nombre, apellido, nacimiento, genero, domicilio,
-                                            nacionalidad, mail, telefono, 0, '', 'NoImage.png', 0, usuario, None, None, None)
+                                            nacionalidad, mail, telefono, 0, '', None, 0, usuario, None, None, None)
 
                     # como es edición de perfil debo modificar la contraseña y el empleado
                     if logueado:
@@ -506,6 +521,7 @@ def guardar_perfil(tipo):
                             base64_blob = base64_encoded_data.decode('utf-8')
                             new_empleado.foto = base64_blob
                         
+                        
                             """#si el atributo filename está vacío:
                             if foto.filename == '':
                                 filename = secure_filename(getEmpleadoByID(
@@ -532,13 +548,6 @@ def guardar_perfil(tipo):
                                     new_empleado.foto = os.path.join(
                                         app.config['CARPETA_CARGA_IMAGENES'], filename)"""
                             
-                        else:
-
-                            with open("NoImage.png", 'rb') as binary_file:
-                                binary_file_data = binary_file.read()
-                                base64_encoded_data = base64.b64encode(binary_file_data)
-                                base64_blob = base64_encoded_data.decode('utf-8')
-                                new_empleado.foto = base64_blob
                         #--------------------------------------------------------------------------------
 
                         new_empleado.modificarEmpleado(baseDatos)
@@ -553,7 +562,7 @@ def guardar_perfil(tipo):
                 elif tipo == 'Empleador':
                     # debo crear un empleador
                     new_empleador = Empleador(0, cedula, nombre, apellido, nacimiento, genero,
-                                              domicilio, nacionalidad, mail, telefono, 0, 'NoImage.png', 0, usuario)
+                                              domicilio, nacionalidad, mail, telefono, 0, None, 0, usuario)
 
                     # como es edición de perfil debo modificar la contraseña y el empleador
                     if logueado:
@@ -597,13 +606,6 @@ def guardar_perfil(tipo):
                                             app.config['CARPETA_FISICA_IMAGENES'], filename))
                                     new_empleador.foto = os.path.join(
                                         app.config['CARPETA_CARGA_IMAGENES'], filename)"""
-                        else:
-
-                            with open("NoImage.png", 'rb') as binary_file:
-                                binary_file_data = binary_file.read()
-                                base64_encoded_data = base64.b64encode(binary_file_data)
-                                base64_blob = base64_encoded_data.decode('utf-8')
-                                new_empleador.foto = base64_blob
 
                         new_empleador.registroBps = regBPS
                         new_empleador.id = session['id_empleador']
@@ -648,8 +650,15 @@ def inicio_empleados():
     elif session.get('usertype') == 'Empleador':
         return redirect(url_for('inicio_empleadores'))
     else:
-        empleado = getEmpleadoByID(baseDatos, session['id_empleado'])
-        empleado.foto = empleado.foto.decode("utf-8")
+        
+        empleado = getEmpleadoByID(baseDatos, session['id_empleado'])  
+        if empleado.foto:    
+            empleado.foto = empleado.foto.decode("utf-8")
+        else:
+            with open(app.config['CARPETA_FISICA_IMAGENES'] + 'NoImage.png', 'rb') as binary_file:
+                binary_file_data = binary_file.read()
+                base64_encoded_data = base64.b64encode(binary_file_data)
+                empleado.foto = base64_encoded_data.decode('utf-8')
         # Si no se puede cargar la foto guardada en la base cargo la imagen default
         #rutaFisica = '.' + url_for('static', filename=empleado.foto)
         #if not os.path.exists(rutaFisica):
@@ -680,8 +689,15 @@ def inicio_empleadores():
         return redirect(url_for('inicio_empleados'))
     else:
         #print('getRecordatoriosDelDia(): ', getRecordatoriosDelDia())
-        empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
-        empleador.foto = empleador.foto.decode("utf-8")
+
+        empleador = getEmpleadorByID(baseDatos, session['id_empleador']) 
+        if empleador.foto:    
+            empleador.foto = empleador.foto.decode("utf-8")
+        else:
+            with open(app.config['CARPETA_FISICA_IMAGENES'] + 'NoImage.png', 'rb') as binary_file:
+                binary_file_data = binary_file.read()
+                base64_encoded_data = base64.b64encode(binary_file_data)
+                empleador.foto = base64_encoded_data.decode('utf-8')
         # Si no se puede cargar la foto guardada en la base cargo la imagen default
         #rutaFisica = '.' + url_for('static', filename=empleador.foto)
         #if not os.path.exists(rutaFisica):
@@ -1148,10 +1164,13 @@ def ver_anuncio(idAnuncio, postulacion):
         elAnuncio = getAnuncioByID(baseDatos, idAnuncio),
         empleador = elAnuncio[0].empleador
         # Si no se puede cargar la foto guardada en la base cargo la imagen default
-        rutaFisica = '.' + url_for('static', filename=empleador.foto)
-        if not os.path.exists(rutaFisica):
-            empleador.foto = os.path.join(
-                app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+        if empleador.foto:    
+            empleador.foto = empleador.foto.decode("utf-8")
+        else:
+            with open(app.config['CARPETA_FISICA_IMAGENES'] + 'NoImage.png', 'rb') as binary_file:
+                binary_file_data = binary_file.read()
+                base64_encoded_data = base64.b64encode(binary_file_data)
+                empleador.foto = base64_encoded_data.decode('utf-8')
 
         tareasAnuncio = []
         if elAnuncio[0].hogar == True:
@@ -1336,17 +1355,21 @@ def ver_vinculo(idVinculo):
     else:
         vinculo = getVinculoIDs(baseDatos, idVinculo)
         empleador = getEmpleadorByID(baseDatos, vinculo.empleador)
-        # Si no se puede cargar la foto guardada en la base cargo la imagen default
-        rutaFisica = '.' + url_for('static', filename=empleador.foto)
-        if not os.path.exists(rutaFisica):
-            empleador.foto = os.path.join(
-                app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+        if empleador.foto:    
+            empleador.foto = empleador.foto.decode("utf-8")
+        else:
+            with open(app.config['CARPETA_FISICA_IMAGENES'] + 'NoImage.png', 'rb') as binary_file:
+                binary_file_data = binary_file.read()
+                base64_encoded_data = base64.b64encode(binary_file_data)
+                empleador.foto = base64_encoded_data.decode('utf-8')
         empleado = getEmpleadoByID(baseDatos, vinculo.empleado)
-        # Si no se puede cargar la foto guardada en la base cargo la imagen default
-        rutaFisica = '.' + url_for('static', filename=empleado.foto)
-        if not os.path.exists(rutaFisica):
-            empleado.foto = os.path.join(
-                app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+        if empleado.foto:    
+            empleado.foto = empleado.foto.decode("utf-8")
+        else:
+            with open(app.config['CARPETA_FISICA_IMAGENES'] + 'NoImage.png', 'rb') as binary_file:
+                binary_file_data = binary_file.read()
+                base64_encoded_data = base64.b64encode(binary_file_data)
+                empleado.foto = base64_encoded_data.decode('utf-8')
         anuncio = getAnuncioByID(baseDatos, vinculo.anuncio)
         extension = datetime.now().date() - vinculo.fecha_inicio
         calempleado = getPromedioByEmpleadoId(baseDatos, empleado.id)
@@ -1586,6 +1609,13 @@ def listar_candidatos(id_anuncio):
             if not postulacion.fueNotificada(baseDatos):
                 #print('ID de postulación a marcar como notificada: ', postulacion.id)
                 postulacion.marcarPostulacionComoNotificada(baseDatos)
+            if postulacion.empleado.foto:    
+                postulacion.empleado.foto = postulacion.empleado.foto.decode("utf-8")
+            else:
+                with open(app.config['CARPETA_FISICA_IMAGENES'] + 'NoImage.png', 'rb') as binary_file:
+                    binary_file_data = binary_file.read()
+                    base64_encoded_data = base64.b64encode(binary_file_data)
+                    postulacion.empleado.foto = base64_encoded_data.decode('utf-8')
 
             post = []
             cal = getPromedioByEmpleadoId(baseDatos, postulacion.empleado.id)
@@ -1710,6 +1740,15 @@ def contratar(idEmpleado):
         return redirect(url_for('inicio_empleados'))
     else:
         empleado = getEmpleadoByID(baseDatos, idEmpleado)
+        
+        if empleado.foto:    
+            empleado.foto = empleado.foto.decode("utf-8")
+        else:
+            with open(app.config['CARPETA_FISICA_IMAGENES'] + 'NoImage.png', 'rb') as binary_file:
+                binary_file_data = binary_file.read()
+                base64_encoded_data = base64.b64encode(binary_file_data)
+                empleado.foto = base64_encoded_data.decode('utf-8')
+                
         tareas = getTareasEmpleado(baseDatos, empleado.id)
         empleado.cargarTareas(tareas)
         referencias = getReferenciasEmpleado(baseDatos, empleado.id)
@@ -1822,46 +1861,50 @@ def ping():
 
 @app.route('/api/Ingresar/', methods=['POST'])
 def api_ingresar():
-    user = request.json['user']
-    password = request.json['password']
-    usuario = Usuario(0, user, password, '')
-    retorno = usuario.loginUsuario(baseDatos)
-    usuario = getUsuarioByCI(baseDatos, user)
-    foto = None
+    if getUsuarioByCI(baseDatos, request.json['user']):
+        user = request.json['user']
+        password = request.json['password']
+        usuario = Usuario(0, user, password, '')
+        retorno = usuario.loginUsuario(baseDatos)
+        usuario = getUsuarioByCI(baseDatos, user)
+        foto = None
 
-    if retorno:
-        if retorno[0][0] == "Empleado":
-            empleado = getEmpleadoByUsuarioID(baseDatos, usuario.id)
-            foto = empleado.foto.decode('utf-8')
-        elif retorno[0][0] == "Empleador":
-            empleador = getEmpleadorByUsuarioID(baseDatos, usuario.id)
-            foto = empleador.foto.decode('utf-8')
+        if retorno:
+            if retorno[0][0] == "Empleado":
+                empleado = getEmpleadoByUsuarioID(baseDatos, usuario.id)
+                if empleado.foto:
+                    foto = empleado.foto.decode('utf-8')
+            elif retorno[0][0] == "Empleador":
+                empleador = getEmpleadorByUsuarioID(baseDatos, usuario.id)
+                if empleador.foto:
+                    foto = empleador.foto.decode('utf-8')
 
-
-        """
-        with open("/home/labores2021/Labores/static/images/Perfiles/" + user + ".png", 'rb') as binary_file:
-            binary_file_data = binary_file.read()
-            base64_encoded_data = base64.b64encode(binary_file_data)
-            base64_message = base64_encoded_data.decode('utf-8')
-        """
-        login_info = {
-            'message': "usuario logueado con éxito",
-            'id': retorno[0][1],
-            'user': user,
-            'password': password,
-            'tipo': retorno[0][0],
-            'image': foto
-        }
+            login_info = {
+                'message': "usuario logueado con éxito",
+                'id': retorno[0][1],
+                'user': user,
+                'password': password,
+                'tipo': retorno[0][0],
+                'image': foto
+            }
+        else:
+            login_info = {
+                'message': "usuario o contraseña incorrectos",
+                'id': None,
+                'user': None,
+                'password': None,
+                'tipo': None,
+                'image': None
+            }
     else:
-        login_info = {
-            'message': "usuario o contraseña incorrectos",
-            'id': None,
-            'user': None,
-            'password': None,
-            'tipo': None,
-            'image': None
-        }
-
+            login_info = {
+                'message': "usuario o contraseña incorrectos",
+                'id': None,
+                'user': None,
+                'password': None,
+                'tipo': None,
+                'image': None
+            }
     return jsonify(login_info)
 
 @app.route('/api/verificacion_ci/', methods=['POST'])
@@ -1904,21 +1947,7 @@ def api_registro():
 
             
             if request.json['empleador']['foto']:
-                new_empleado.foto = request.json['empleado']['foto']
-                """
-                new_empleador.foto = "images/Perfiles/" + request.json['ci'] + request.json['empleador']['extension_foto']                
-                base64_img_bytes = request.json['empleador']['foto'].encode('utf-8')
-                filename = secure_filename( request.json['ci'] + request.json['empleador']['extension_foto'])
-                rutaFisica = os.path.join(app.config['CARPETA_FISICA_IMAGENES'], filename)
-                with open(rutaFisica, 'wb') as file_to_save:
-                    decoded_image_data = base64.decodebytes(base64_img_bytes)
-                    file_to_save.write(decoded_image_data)
-                """
-            else:
-                with open('/home/labores2021/Labores/NoImage.png', 'rb') as binary_file:
-                    binary_file_data = binary_file.read()
-                    base64_encoded_data = base64.b64encode(binary_file_data)
-                    new_empleado.foto = base64_encoded_data.decode('utf-8')
+                new_empleador.foto = request.json['empleador']['foto']
                 
             new_empleador.crearEmpleador(baseDatos)
             return {"message": "Usuario empleador creado con exito!"}
@@ -1950,20 +1979,6 @@ def api_registro():
             
             if request.json['empleado']['foto']:
                 new_empleado.foto = request.json['empleado']['foto']
-                """
-                new_empleado.foto = "images/Perfiles/" + request.json['ci'] + request.json['empleado']['extension_foto']                
-                base64_img_bytes = request.json['empleado']['foto'].encode('utf-8')
-                filename = secure_filename( request.json['ci'] + request.json['empleado']['extension_foto'])
-                rutaFisica = os.path.join(app.config['CARPETA_FISICA_IMAGENES'], filename)
-                with open(rutaFisica, 'wb') as file_to_save:
-                    decoded_image_data = base64.decodebytes(base64_img_bytes)
-                    file_to_save.write(decoded_image_data)
-                """
-            else:
-                with open('/home/labores2021/Labores/NoImage.png', 'rb') as binary_file:
-                    binary_file_data = binary_file.read()
-                    base64_encoded_data = base64.b64encode(binary_file_data)
-                    new_empleado.foto = base64_encoded_data.decode('utf-8')
 
 
             new_empleado.crearEmpleado(baseDatos)

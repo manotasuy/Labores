@@ -232,7 +232,7 @@
 
                             {% if user == 'Empleado' %}
                             <div class="col-md-4">
-                                <img src="{{ url_for('static', filename=empleador.foto)}}" class="card-img" alt="...">
+                                <img src="data:;base64,{{ empleador.foto }}" class="card-img" alt="...">
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body">
@@ -288,7 +288,7 @@
                             </div>
                             {% elif user == 'Empleador' %}
                             <div class="col-md-4">
-                                <img src="{{ url_for('static', filename=empleado.foto)}}" class="card-img" alt="...">
+                                <img src="data:;base64,{{ empleado.foto }}" class="card-img" alt="...">
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body">
@@ -371,7 +371,7 @@
 
                 {% if user == 'Empleado' %}
                 <div class="col-md-4">
-                    <img src="{{ url_for('static', filename=empleador.foto)}}" class="card-img" alt="..." style="margin: 3px;">
+                    <img src="data:;base64,{{ empleador.foto }}" class="card-img" alt="..." style="margin: 3px;">
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
@@ -427,7 +427,7 @@
                 </div>
                 {% elif user == 'Empleador' %}
                 <div class="col-md-4">
-                    <img src="{{ url_for('static', filename=empleado.foto)}}" class="card-img" alt="...">
+                    <img src="data:;base64,{{ empleado.foto }}" class="card-img" alt="...">
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">

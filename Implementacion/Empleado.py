@@ -48,8 +48,8 @@ class Empleado:
 
     def crearEmpleado(self, bd):
         try:
-            if self.foto is None or self.foto == '':
-                self.foto = 'images/Pefiles/NoImage.png'
+            #if self.foto is None or self.foto == '':
+            #    self.foto = 'images/Pefiles/NoImage.png'
 
             cursor = bd.connection.cursor()
             cursor.execute('''
@@ -301,12 +301,12 @@ def getEmpleadoByID(bd, id):
         cursor.close()
 
         # Si no se puede cargar la foto guardada en la base cargo la imagen default
-        foto = retorno[0][12]
-        if foto is None or foto == '':
-            foto = 'SinImagen'
-        rutaFisica = '.' + url_for('static', filename = foto)
-        if not os.path.exists(rutaFisica):
-            foto = os.path.join(getCarpetaCargaImagenes(), 'NoImage.png')
+        #foto = retorno[0][12]
+        #if foto is None or foto == '':
+        #    foto = 'SinImagen'
+        #rutaFisica = '.' + url_for('static', filename = foto)
+        #if not os.path.exists(rutaFisica):
+        #    foto = os.path.join(getCarpetaCargaImagenes(), 'NoImage.png')
 
         empleado = Empleado(
             retorno[0][0],
@@ -321,7 +321,7 @@ def getEmpleadoByID(bd, id):
             retorno[0][9],
             retorno[0][10],
             retorno[0][11],
-            foto,
+            retorno[0][12],
             retorno[0][13],
             getUsuarioByID(bd, retorno[0][14]),
             None,
