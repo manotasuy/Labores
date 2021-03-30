@@ -2032,10 +2032,10 @@ def ver_perfil_empleador_api(id):
             "calificacion": empleador.promedioCalificacion
         }
 
-        return json.dumps(data, ensure_ascii=False).encode('utf8')
+        return jsonify(data)
     
     except Exception as e:
-        return {"message" : "id incorrecto para empleador"}
+        return jsonify({"message" : "id incorrecto para empleador"})
 
 
 @app.route('/api/ver_perfil/empleado/<id>')
@@ -2088,9 +2088,9 @@ def ver_perfil_empleado_api(id):
             "disponibilidad": lista_disp
         }
 
-        return data
+        return jsonify(data)
     except Exception as e:
-        return {"message" : "id incorrecto para empleado"}
+        return jsonify({"message" : "id incorrecto para empleado"})
     
 
 
