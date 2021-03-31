@@ -2128,6 +2128,106 @@ def api_listandoMisAnuncios(id):
     else:
         return jsonify([])
 
+@app.route('/api/editar_perfil/empleador/', methods=['PUT'])
+def editar_perfil_empleador():
+    try:
+        usuario = getUsuarioByID(baseDatos, request.json['id'])    
+        #actualizamos la clave:
+        usuario.cambiarPassword(request.json['password'], baseDatos)
+        
+        empleador = getEmpleadorByUsuarioID(baseDatos, usuario.id)
+        
+        #actualizamos el empleador:
+        empleador.nombre = request.json['nombre']
+        empleador.apellido = request.json['apellido']
+        empleador.nacimiento = date(request.json['fecha_n']['anio'], request.json['fecha_n']['mes'], request.json['fecha_n']['dia']),
+        empleador.genero = request.json['genero']
+        empleador.domicilio = request.json['domicilio']
+        empleador.nacionalidad = request.json['nacionalidad']
+        empleador.email = request.json['mail']
+        empleador.telefono = request.json['telefono']
+        empleador.registroBps = request.json['bps']
+        if request.json['foto']:
+            empleador.foto = request.json['foto']
+        else:
+            empleador.foto = None
+
+        empleador.modificarEmpleador(baseDatos)
+
+        return jsonify({"message": "empleador modificado con exito!"})
+    except Exception as e:
+        return jsonify({"message" : "error!"})
+
+
+@app.route('/api/editar_perfil/empleado/', methods=['PUT'])
+def editar_perfil_empleado():
+
+    try:
+        usuario = getUsuarioByID(baseDatos, request.json['id'])    
+        #actualizamos la clave:
+        usuario.cambiarPassword(request.json['password'], baseDatos)
+        
+        empleado = getEmpleadoByUsuarioID(baseDatos, usuario.id)
+        
+        #actualizamos el empleado:
+        empleado.nombre = request.json['nombre']
+        empleado.apellido = request.json['apellido']
+        empleado.nacimiento = date(request.json['fecha_n']['anio'], request.json['fecha_n']['mes'], request.json['fecha_n']['dia']),
+        empleado.genero = request.json['genero']
+        empleado.domicilio = request.json['domicilio']
+        empleado.nacionalidad = request.json['nacionalidad']
+        empleado.email = request.json['mail']
+        empleado.telefono = request.json['telefono']
+        empleado.experiencia_meses = request.json['experiencia']
+        empleado.descripcion = request.json['descripcion']
+        if request.json['foto']:
+            empleado.foto = request.json['foto']
+        else:
+            empleado.foto = None
+
+
+        empleado.tareas = request.json['tareas']
+
+        empleado.modificarEmpleado(baseDatos)
+
+        if request.json['tareas']:
+            for tar in request.json['tareas']:
+                agregarTareaEmpleado(baseDatos, tar, empleado.id)
+            
+        if request.json['disponibilidad']:
+            for dis in request.json['disponibilidad']:
+                agregarDisponibilidadEmpleado(baseDatos, dis, empleado.id)
+
+
+
+        #debo traer todas las referencias del empleado y borrarlas:
+        referencias_viejas = getReferenciasEmpleado(baseDatos, empleado.id)
+        for referencia_vieja in referencias_viejas:
+            referencia_vieja.borrarReferencia(baseDatos)
+
+        if request.json['referencias']:
+            for ref in request.json['referencias']:
+                ref_nombre = ref['nombre']
+                ref_apellido = ref['apellido']
+                ref_telefono = ref['telefono']
+                ref_trabaja_desde = date(ref['fecha_desde']['anio'], ref['fecha_desde']['mes'], ref['fecha_desde']['dia']),
+                ref_trabaja_hasta = date(ref['fecha_hasta']['anio'], ref['fecha_hasta']['mes'], ref['fecha_hasta']['dia']),
+                referencia = Referencia(
+                    0, 
+                    empleado, 
+                    ref_nombre, 
+                    ref_apellido, 
+                    ref_telefono, 
+                    ref_trabaja_desde, 
+                    ref_trabaja_hasta
+                    )
+                referencia.crearReferencia(baseDatos)
+
+
+        return jsonify({"message": "empleador modificado con exito!"})
+    except Exception as e:
+        return jsonify({"message" : "error!"})
+
 # -----------------------------------------------------------------------------------------------------
 
 if __name__ == '__main__':

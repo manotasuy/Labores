@@ -129,10 +129,6 @@ class Empleado:
 
     def modificarEmpleado(self, bd):
         try:
-
-            if self.foto is None or self.foto == '':
-                self.foto = 'images/Perfiles/NoImage.png'
-
             cursor = bd.connection.cursor()
             cursor.execute('''
                 UPDATE empleado SET
