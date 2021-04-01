@@ -2042,55 +2042,58 @@ def ver_perfil_empleador_api(id):
 @app.route('/api/ver_perfil/empleado/<id>')
 def ver_perfil_empleado_api(id):
 
-    usuario = getUsuarioByID(baseDatos, id)
-    empleado = getEmpleadoByUsuarioID(baseDatos, usuario.id)
-    empleado.foto = empleado.foto.decode('utf-8')
-    if empleado.foto == "":
-        empleado.foto = None
+    try:
+        usuario = getUsuarioByID(baseDatos, id)
+        empleado = getEmpleadoByUsuarioID(baseDatos, usuario.id)
+        empleado.foto = empleado.foto.decode('utf-8')
+        if empleado.foto == "":
+            empleado.foto = None
+            
+
+        tareas = getTareasEmpleado(baseDatos, empleado.id)
+        lista_tareas = []
+        for tar in tareas:
+            lista_tareas.append(tar.id)
+
+        disponibilidades = getDisponibilidadEmpleado(baseDatos, empleado.id)
+        lista_disp = []
+        for disp in disponibilidades:
+            lista_disp.append(disp.id)
         
+        referencias = getReferenciasEmpleado(baseDatos, empleado.id)
+        lista_ref = []
+        for ref in referencias:
+            refe = {
+                "nombre" : ref.nombre,
+                "apellido" : ref.apellido,
+                "fecha_desde" : ref.fechaDesde.strftime('%d/%m/%Y'),
+                "fecha_hasta" : ref.fechaHasta.strftime('%d/%m/%Y')
+            }
+            lista_ref.append(refe)
 
-    tareas = getTareasEmpleado(baseDatos, empleado.id)
-    lista_tareas = []
-    for tar in tareas:
-        lista_tareas.append(tar.id)
-
-    disponibilidades = getDisponibilidadEmpleado(baseDatos, empleado.id)
-    lista_disp = []
-    for disp in disponibilidades:
-        lista_disp.append(disp.id)
-    
-    referencias = getReferenciasEmpleado(baseDatos, empleado.id)
-    lista_ref = []
-    for ref in referencias:
-        refe = {
-            "nombre" : ref.nombre,
-            "apellido" : ref.apellido,
-            "fecha_desde" : ref.fechaDesde.strftime('%d/%m/%Y'),
-            "fecha_hasta" : ref.fechaHasta.strftime('%d/%m/%Y')
+        data = {
+            "ci" :usuario.usuario,
+            "password" :usuario.clave,
+            "nombre": empleado.nombre,
+            "apellido": empleado.apellido,
+            "fecha_n": empleado.nacimiento.strftime('%d/%m/%Y'),
+            "genero": int.from_bytes(empleado.genero, byteorder='big'),
+            "domicilio": empleado.domicilio,
+            "nacionalidad": empleado.nacionalidad,
+            "mail": empleado.email,
+            "telefono": empleado.telefono,
+            "experiencia": empleado.experiencia_meses,
+            "descripcion": empleado.descripcion,
+            "foto": empleado.foto,
+            "calificacion": empleado.promedioCalificacion,
+            "referencias": lista_ref,
+            "tareas": lista_tareas,
+            "disponibilidad": lista_disp
         }
-        lista_ref.append(refe)
 
-    data = {
-        "ci" :usuario.usuario,
-        "password" :usuario.clave,
-        "nombre": empleado.nombre,
-        "apellido": empleado.apellido,
-        "fecha_n": empleado.nacimiento.strftime('%d/%m/%Y'),
-        "genero": int.from_bytes(empleado.genero, byteorder='big'),
-        "domicilio": empleado.domicilio,
-        "nacionalidad": empleado.nacionalidad,
-        "mail": empleado.email,
-        "telefono": empleado.telefono,
-        "experiencia": empleado.experiencia_meses,
-        "descripcion": empleado.descripcion,
-        "foto": empleado.foto,
-        "calificacion": empleado.promedioCalificacion,
-        "referencias": lista_ref,
-        "tareas": lista_tareas,
-        "disponibilidad": lista_disp
-    }
-
-    return jsonify(data)
+        return jsonify(data)
+    except Exception as e:
+        return jsonify({"message" : "id incorrecto para empleador"})
     
 
 
