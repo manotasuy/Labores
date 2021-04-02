@@ -27,6 +27,7 @@ from Implementacion.Referencia import Referencia, getReferenciaByID, getReferenc
 from Implementacion.Admin import getDatosAdmin
 from Implementacion.Recordatorio import Recordatorio, getRecordatorioByID, recordatoriosBloqueantes, recordatoriosCalificacionesPendientes
 from Implementacion.DTOMensaje import DTOMensaje
+from Implementacion.Anuncio_dinamico import Anuncio as Anuncio_d
 
 EXTENSIONES_ADMITIDAS = set(['jpg', 'png', 'jpeg', 'bmp', 'gif'])
 
@@ -2048,17 +2049,6 @@ def ver_perfil_empleado_api(id):
         empleado.foto = empleado.foto.decode('utf-8')
         if empleado.foto == "":
             empleado.foto = None
-            
-
-        tareas = getTareasEmpleado(baseDatos, empleado.id)
-        lista_tareas = []
-        for tar in tareas:
-            lista_tareas.append(tar.id)
-
-        disponibilidades = getDisponibilidadEmpleado(baseDatos, empleado.id)
-        lista_disp = []
-        for disp in disponibilidades:
-            lista_disp.append(disp.id)
         
         referencias = getReferenciasEmpleado(baseDatos, empleado.id)
         lista_ref = []
@@ -2086,9 +2076,7 @@ def ver_perfil_empleado_api(id):
             "descripcion": empleado.descripcion,
             "foto": empleado.foto,
             "calificacion": empleado.promedioCalificacion,
-            "referencias": lista_ref,
-            "tareas": lista_tareas,
-            "disponibilidad": lista_disp
+            "referencias": lista_ref
         }
 
         return jsonify(data)
@@ -2310,7 +2298,6 @@ def disponibilidad_anuncio_api(id):
             disponibilidad = {"id": dis.id, "descripcion": dis.descripcion, "seleccionada": dis.seleccionada}
             disponibilidades_anu.append(disponibilidad)
     return jsonify(disponibilidades_anu)
-
 
 
 # -----------------------------------------------------------------------------------------------------
