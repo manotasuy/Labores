@@ -2300,6 +2300,37 @@ def disponibilidad_anuncio_api(id):
     return jsonify(disponibilidades_anu)
 
 
+
+@app.route('/api/crear_anuncio/', methods=['POST'])
+def crear_anuncio_api():
+    try: 
+        usuario = getUsuarioByID(baseDatos, request.json['id_empleador'])
+        empleador = getEmpleadorByUsuarioID(baseDatos, request.json['id_empleador'])
+        anuncio = Anuncio_d(
+            0,
+            request.json['titulo'],
+            request.json['descripcion'],
+            datetime.now(),
+            None,
+            True,
+            request.json['experiencia'],
+            request.json['pago'],
+            empleador,
+            None,
+            None,
+            False,
+            request.json['disponibilidad'],
+            request.json['tareas']
+            )
+        anuncio.createAnuncio(baseDatos)
+
+        return jsonify({"message": "anuncio creado"})
+    
+    except:
+
+        return jsonify({"message": "error en crear anuncio"})
+
+
 # -----------------------------------------------------------------------------------------------------
 
 if __name__ == '__main__':

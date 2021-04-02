@@ -99,11 +99,11 @@ class Anuncio:
             # Tengo que recorrer las tareas del anuncio y grabarlas en la BD
             if self.tareas is not None:
                 for tarea in self.tareas:
-                    agregarTareaAnuncio(bd, tarea.id, self.id)
+                    agregarTareaAnuncio(bd, tarea, idAnuncio)
 
             if self.disponibilidad is not None:
                 agregarDisponibilidadAnuncio(
-                    bd, self.disponibilidad.id, self.id)
+                    bd, self.disponibilidad, idAnuncio)
 
             print('Anuncio Creado')
         except Exception as e:
