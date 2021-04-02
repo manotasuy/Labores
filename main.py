@@ -909,6 +909,7 @@ def actualizandoAnuncio(idAnuncio):
         anuncio = getAnuncioByID(baseDatos, idAnuncio)
         print(anuncio)
         estadoInt = int.from_bytes(anuncio.estado, "big")
+        
         anuncio.estado = estadoInt
 
         if anuncio.estado == 1:
@@ -2090,6 +2091,7 @@ def api_listandoMisAnuncios(id):
 
     empleador = getEmpleadorByUsuarioID(baseDatos, id)
     retorno = empleador.listarMisAnuncios(baseDatos)
+    
     if retorno:
         listaDeAnuncios = []
         for a in retorno:
@@ -2097,7 +2099,8 @@ def api_listandoMisAnuncios(id):
             for b in a:
                 anuncio.append(b)
             anuncio[3] = anuncio[3].strftime('%d/%m/%Y')
-            anuncio[4] = anuncio[4].strftime('%d/%m/%Y')
+            if anuncio[4]:
+                anuncio[4] = anuncio[4].strftime('%d/%m/%Y')
             anuncio[5] = int.from_bytes(anuncio[5], byteorder='big')
             anun_dic = {
                 'id' : anuncio[0],
@@ -2331,6 +2334,11 @@ def crear_anuncio_api():
         return jsonify({"message": "error en crear anuncio"})
 
 
+
+@app.route('/api/ver_anuncio/', methods=['POST'])
+def ver_anuncio_api():
+
+    return "ok"
 # -----------------------------------------------------------------------------------------------------
 
 if __name__ == '__main__':
