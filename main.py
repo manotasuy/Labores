@@ -2142,6 +2142,8 @@ def cambiar_clave_api():
     except:
         return jsonify({"message": "error"})
 
+
+
 @app.route('/api/editar_perfil/empleador/', methods=['PUT'])
 def editar_perfil_empleador():
     try:
@@ -2242,6 +2244,74 @@ def editar_perfil_empleado():
     except Exception as e:
 
         return jsonify({"message" : "error!"})
+
+@app.route('/api/get_tareas/')
+def get_tareas_api():
+    tareas_reg = getTareasRegistradas(baseDatos)
+    tareas = list()
+    if tareas_reg:
+        for tar in tareas_reg:
+            tarea = {"id": tar.id, "descripcion": tar.descripcion}
+            tareas.append(tarea)
+    return jsonify(tareas)
+
+
+@app.route('/api/get_disponibilidades/')
+def get_disponibilidades_api():
+    disponibilidades_reg = getDisponibilidadesRegistradas(baseDatos)
+    disponibilidades = list()
+    if disponibilidades_reg:
+        for dis in disponibilidades_reg:
+            disponibilidad = {"id": dis.id, "descripcion": dis.descripcion}
+            disponibilidades.append(disponibilidad)
+    return jsonify(disponibilidades)
+
+@app.route('/api/disponibilidades_empleado/<id>')
+def disponibilidades_empleado_api(id):
+    empleado = getEmpleadoByUsuarioID(baseDatos, id)
+    disponibilidades = empleado.getDisponibilidadSeleccionadas(baseDatos)
+    disponibilidades_emp = list()
+    if disponibilidades:
+        for dis in disponibilidades:
+            disponibilidad = {"id": dis.id, "descripcion": dis.descripcion, "seleccionada": dis.seleccionada}
+            disponibilidades_emp.append(disponibilidad)
+    return jsonify(disponibilidades_emp)
+
+@app.route('/api/tareas_empleado/<id>')
+def tareas_empleado_api(id):
+    empleado = getEmpleadoByUsuarioID(baseDatos, id)
+    tareas = empleado.getTareasSeleccionadas(baseDatos)
+    tareas_emp = list()
+    if tareas:
+        for tar in tareas:
+            tarea = {"id": tar.id, "descripcion": tar.descripcion, "seleccionada": tar.seleccionada}
+            tareas_emp.append(tarea)
+    return jsonify(tareas_emp)
+
+
+@app.route('/api/tareas_anuncio/<id>')
+def tareas_anuncio_api(id):
+    anuncio = getAnuncioByID(baseDatos, id)
+    tareas = anuncio.getTareasSeleccionadas(baseDatos)
+    tareas_anu = list()
+    if tareas:
+        for tar in tareas:
+            tarea = {"id": tar.id, "descripcion": tar.descripcion, "seleccionada": tar.seleccionada}
+            tareas_anu.append(tarea)
+    return jsonify(tareas_anu)
+
+@app.route('/api/disponibilidad_anuncio/<id>')
+def disponibilidad_anuncio_api(id):
+    anuncio = getAnuncioByID(baseDatos, id)
+    disponibilidades = anuncio.getDisponibilidadSeleccionadas(baseDatos)
+    disponibilidades_anu = list()
+    if disponibilidades:
+        for dis in disponibilidades:
+            disponibilidad = {"id": dis.id, "descripcion": dis.descripcion, "seleccionada": dis.seleccionada}
+            disponibilidades_anu.append(disponibilidad)
+    return jsonify(disponibilidades_anu)
+
+
 
 # -----------------------------------------------------------------------------------------------------
 

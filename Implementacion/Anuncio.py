@@ -4,6 +4,8 @@ from Implementacion import Empleador
 # si establezco from modulo import clase obtengo referencia ciclíca [Fin]
 from Implementacion.Tarea import Tarea
 from Implementacion.Disponibilidad import Disponibilidad
+from Implementacion.DTOAuxEmpleado import TareaSeleccion
+from Implementacion.DTOAuxEmpleado import DisponibilidadSeleccion
 
 
 class Anuncio:
@@ -596,6 +598,52 @@ class Anuncio:
             print('Estado del Anuncio actualizado')
         except Exception as e:
             print("Error en setEstadoAnuncio ", e)
+
+    def getTareasSeleccionadas(self, bd):
+        try:
+            cursor = bd.connection.cursor()
+            cursor.execute('''
+                    SELECT 
+                    id, 
+                    descripcion, 
+                    IF((SELECT id_tarea 
+                    FROM anuncio_tarea 
+                    WHERE id_anuncio = {} AND id_tarea = id),1,0) AS seleccionada FROM tarea'''.format(self.id))
+            retorno = cursor.fetchall()
+            bd.connection.commit()
+            cursor.close()
+            # desde el retorno debo generar los objetos Tarea
+            tareas = list()
+            for tuplaTarea in retorno:
+                tarea = TareaSeleccion(
+                    tuplaTarea[0], tuplaTarea[1], tuplaTarea[2])
+                tareas.append(tarea)
+            return tareas
+        except Exception as e:
+            print("Error en getTareasSeleccionadasAnuncio ", e)
+
+    def getDisponibilidadSeleccionadas(self, bd):
+        try:
+            cursor = bd.connection.cursor()
+            cursor.execute('''
+                    SELECT 
+                    id, 
+                    descripcion, 
+                    IF((SELECT id_disponibilidad 
+                    FROM anuncio_disponibilidad 
+                    WHERE id_anuncio = {} AND id_disponibilidad = id),1,0) AS seleccionada FROM disponibilidad'''.format(self.id))
+            retorno = cursor.fetchall()
+            bd.connection.commit()
+            cursor.close()
+            # desde el retono debo generar los objetos Disponibilidad
+            disponibilidades = list()
+            for tuplaDisponibilidad in retorno:
+                disponibilidad = DisponibilidadSeleccion(
+                    tuplaDisponibilidad[0], tuplaDisponibilidad[1], tuplaDisponibilidad[2])
+                disponibilidades.append(disponibilidad)
+            return disponibilidades
+        except Exception as e:
+            print("Error en getDisponibilidadSeleccionadasAnuncio ", e)
 
 
 def getAnuncioByID(bd, id):
