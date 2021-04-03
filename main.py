@@ -2372,13 +2372,34 @@ def delete_anuncio_api():
         return jsonify({"message": "error"})
 
 
-@app.route('/api/setEstado_anuncio/', methods=['PUT'])
+@app.route('/api/setEstado_anuncio/', methods=['PATCH'])
 def setEstado_anuncio_api():
 
     try:
         anuncio = getAnuncioByID_d(baseDatos, request.json['id'])
         anuncio.setEstadoAnuncio(baseDatos, request.json['estado'])
         return jsonify({"message": "estado cambiado"})
+    except:
+        return jsonify({"message": "error"})
+
+
+@app.route('/api/update_anuncio/', methods=['PUT'])
+def update_anuncio_api():
+
+    try:
+        anuncio = getAnuncioByID_d(baseDatos, request.json['id'])
+
+        anuncio.titulo = request.json['titulo']
+        anuncio.descripcion = request.json['descripcion']
+        anuncio.experiencia = request.json['experiencia']
+        anuncio.estado = request.json['estado']
+        anuncio.pago_hora = request.json['pago']
+        anuncio.tareas = request.json['tareas']
+        anuncio.disponibilidad = request.json['disponibilidad']
+
+        anuncio.updateAnuncio(baseDatos)
+        
+        return jsonify({"message": "anuncio actualizado"})
     except:
         return jsonify({"message": "error"})
 
