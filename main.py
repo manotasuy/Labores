@@ -40,7 +40,7 @@ app = Flask(__name__)
 #baseDatos = connectionDb(app, 'a-work')
 #baseDatos = connectionDb(app, 'a-home')
 #baseDatos = connectionDb(app, 'local')
-baseDatos = connectionDb(app, 'PA')
+SbaseDatos = connectionDb(app, 'PA')
 #baseDatos = connectionDb(app, 'gcp')
 
 
@@ -2361,11 +2361,11 @@ def ver_anuncio_api(id):
     except:
         return jsonify({"message": "error"})
 
-@app.route('/api/delete_anuncio/<id>')
-def delete_anuncio_api(id):
+@app.route('/api/delete_anuncio/', methods=['DELETE'])
+def delete_anuncio_api():
 
     try:
-        anuncio = getAnuncioByID_d(baseDatos, id)
+        anuncio = getAnuncioByID_d(baseDatos, request.json['id'])
         anuncio.deleteAnuncio(baseDatos)
         return jsonify({"message": "anuncio borrado"})
     except:
