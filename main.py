@@ -2375,13 +2375,12 @@ def delete_anuncio_api(id):
 @app.route('/api/setEstado_anuncio/', methods=['PUT'])
 def setEstado_anuncio_api():
 
-    anuncio = getAnuncioByID_d(baseDatos, request.json['id'])
-    print(anuncio.estado)
-    anuncio.setEstadoAnuncio(baseDatos, request.json['estado'])
-    anuncio = getAnuncioByID_d(baseDatos, request.json['id'])
-    print(anuncio.estado)
-
-    return "ok"
+    try:
+        anuncio = getAnuncioByID_d(baseDatos, request.json['id'])
+        anuncio.setEstadoAnuncio(baseDatos, request.json['estado'])
+        return jsonify({"message": "estado cambiado"})
+    except:
+        return jsonify({"message": "error"})
 
 # -----------------------------------------------------------------------------------------------------
 
