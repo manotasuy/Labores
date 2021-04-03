@@ -28,6 +28,7 @@ from Implementacion.Admin import getDatosAdmin
 from Implementacion.Recordatorio import Recordatorio, getRecordatorioByID, recordatoriosBloqueantes, recordatoriosCalificacionesPendientes
 from Implementacion.DTOMensaje import DTOMensaje
 from Implementacion.Anuncio_dinamico import Anuncio as Anuncio_d
+from Implementacion.Anuncio_dinamico import getAnuncioByID as getAnuncioByID_d
 
 EXTENSIONES_ADMITIDAS = set(['jpg', 'png', 'jpeg', 'bmp', 'gif'])
 
@@ -2335,10 +2336,53 @@ def crear_anuncio_api():
 
 
 
-@app.route('/api/ver_anuncio/', methods=['POST'])
-def ver_anuncio_api():
+@app.route('/api/get_anuncio/<id>')
+def ver_anuncio_api(id):
+    try:
+        retorno = getAnuncioByID_d(baseDatos, id) 
+        retorno.fecha_inicio = retorno.fecha_inicio.strftime('%d/%m/%Y')
+
+        if retorno.fecha_cierre:
+            retorno.fecha_cierre = retorno.fecha_cierre.strftime('%d/%m/%Y')
+        anuncio ={
+            "id": retorno.id,
+            "titulo": retorno.titulo,
+            "descripcion": retorno.descripcion,
+            "fechaInicio": retorno.fecha_inicio,
+            "fechaCierre": retorno.fecha_cierre,
+            "estado": int.from_bytes(retorno.estado, "big"),
+            "experiencia": retorno.experiencia,
+            "pago_hora": retorno.pago_hora,
+            "empleador": retorno.empleador.id,
+            "tieneVinculo": retorno.tiene_vinculo
+        }
+
+        return jsonify(anuncio)
+    except:
+        return jsonify({"message": "error"})
+
+@app.route('/api/delete_anuncio/<id>')
+def delete_anuncio_api(id):
+
+    try:
+        anuncio = getAnuncioByID_d(baseDatos, id)
+        anuncio.deleteAnuncio(baseDatos)
+        return jsonify({"message": "anuncio borrado"})
+    except:
+        return jsonify({"message": "error"})
+
+
+@app.route('/api/setEstado_anuncio/', methods=['PUT'])
+def setEstado_anuncio_api():
+
+    anuncio = getAnuncioByID_d(baseDatos, request.json['id'])
+    print(anuncio.estado)
+    anuncio.setEstadoAnuncio(baseDatos, request.json['estado'])
+    anuncio = getAnuncioByID_d(baseDatos, request.json['id'])
+    print(anuncio.estado)
 
     return "ok"
+
 # -----------------------------------------------------------------------------------------------------
 
 if __name__ == '__main__':

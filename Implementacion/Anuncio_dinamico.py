@@ -172,11 +172,11 @@ class Anuncio:
             # Luego registro las tareas y disponibilidad del anuncio que quiero modificar
             if self.tareas is not None:
                 for tarea in self.tareas:
-                    agregarTareaAnuncio(bd, tarea.id, self.id)
+                    agregarTareaAnuncio(bd, tarea, self.id)
 
             if self.disponibilidad is not None:
                 agregarDisponibilidadAnuncio(
-                    bd, self.disponibilidad.id, self.id)
+                    bd, self.disponibilidad, self.id)
 
             print('Anuncio Actualizado')
         except Exception as e:
@@ -286,7 +286,7 @@ def getDisponibilidadAnuncio(bd, idAnuncio):
                 SELECT
                     d.id,
                     d.descripcion
-                FROM anuncio_disponibilidad ad INNER JOIN disponibilidad d ON ad.id_disponibilidad = d.id WHERE ed.id_anuncio = {}'''.format(idAnuncio))
+                FROM anuncio_disponibilidad ad INNER JOIN disponibilidad d ON ad.id_disponibilidad = d.id WHERE ad.id_anuncio = {}'''.format(idAnuncio))
         retorno = cursor.fetchall()
         bd.connection.commit()
         cursor.close()
