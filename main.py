@@ -2017,7 +2017,8 @@ def ver_perfil_empleador_api(id):
     try:
         usuario = getUsuarioByID(baseDatos, id)
         empleador = getEmpleadorByUsuarioID(baseDatos, usuario.id)
-        empleador.foto = empleador.foto.decode('utf-8')
+        if empleador.foto:
+            empleador.foto = empleador.foto.decode('utf-8')
         if empleador.foto == "":
             empleador.foto = None
         data = {
@@ -2045,46 +2046,48 @@ def ver_perfil_empleador_api(id):
 @app.route('/api/ver_perfil/empleado/<id>')
 def ver_perfil_empleado_api(id):
 
-    usuario = getUsuarioByID(baseDatos, id)
-    empleado = getEmpleadoByUsuarioID(baseDatos, usuario.id)
-    empleado.foto = empleado.foto.decode('utf-8')
-    if empleado.foto == "":
-        empleado.foto = None
-    
-    referencias = getReferenciasEmpleado(baseDatos, empleado.id)
-    lista_ref = []
-    for ref in referencias:
-        refe = {
-            "nombre" : ref.nombre,
-            "apellido" : ref.apellido,
-            "fecha_desde" : ref.fechaDesde.strftime('%d/%m/%Y'),
-            "fecha_hasta" : ref.fechaHasta.strftime('%d/%m/%Y')
+    try:
+        usuario = getUsuarioByID(baseDatos, id)
+        empleado = getEmpleadoByUsuarioID(baseDatos, usuario.id)
+        if empleado.foto:
+            empleado.foto = empleado.foto.decode('utf-8')
+        if empleado.foto == "":
+            empleado.foto = None
+        
+        referencias = getReferenciasEmpleado(baseDatos, empleado.id)
+        lista_ref = []
+        for ref in referencias:
+            refe = {
+                "nombre" : ref.nombre,
+                "apellido" : ref.apellido,
+                "fecha_desde" : ref.fechaDesde.strftime('%d/%m/%Y'),
+                "fecha_hasta" : ref.fechaHasta.strftime('%d/%m/%Y')
+            }
+            lista_ref.append(refe)
+
+        data = {
+            "ci" :usuario.usuario,
+            "password" :usuario.clave,
+            "nombre": empleado.nombre,
+            "apellido": empleado.apellido,
+            "fecha_n": empleado.nacimiento.strftime('%d/%m/%Y'),
+            "genero": int.from_bytes(empleado.genero, byteorder='big'),
+            "domicilio": empleado.domicilio,
+            "nacionalidad": empleado.nacionalidad,
+            "mail": empleado.email,
+            "telefono": empleado.telefono,
+            "experiencia": empleado.experiencia_meses,
+            "descripcion": empleado.descripcion,
+            "foto": empleado.foto,
+            "calificacion": empleado.promedioCalificacion,
+            "referencias": lista_ref
         }
-        lista_ref.append(refe)
 
-    data = {
-        "ci" :usuario.usuario,
-        "password" :usuario.clave,
-        "nombre": empleado.nombre,
-        "apellido": empleado.apellido,
-        "fecha_n": empleado.nacimiento.strftime('%d/%m/%Y'),
-        "genero": int.from_bytes(empleado.genero, byteorder='big'),
-        "domicilio": empleado.domicilio,
-        "nacionalidad": empleado.nacionalidad,
-        "mail": empleado.email,
-        "telefono": empleado.telefono,
-        "experiencia": empleado.experiencia_meses,
-        "descripcion": empleado.descripcion,
-        "foto": empleado.foto,
-        "calificacion": empleado.promedioCalificacion,
-        "referencias": lista_ref
-    }
-
-    return jsonify(data)
-"""        
+        return jsonify(data)
+      
     except Exception as e:
         return jsonify({"message" : "id incorrecto para empleado"})
-"""    
+ 
 
 
 @app.route('/api/listandoMisAnuncios/<id>')
