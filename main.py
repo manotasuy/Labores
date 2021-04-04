@@ -2606,7 +2606,7 @@ def postulaciones_empleador_api(id):
             for postulacion in postulaciones:
                 anuncio = getAnuncioByID(baseDatos, postulacion.anuncio)
                 anun= {
-                    "id": anuncio.id,
+                    "id_anuncio": anuncio.id,
                     "titulo": anuncio.titulo,
                     "descripcion": anuncio.descripcion,
                     "fechaInicio": anuncio.fecha_inicio,
