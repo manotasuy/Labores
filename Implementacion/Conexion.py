@@ -54,7 +54,7 @@ def connectionDb(app, servidor):
         app.config['MYSQL_USER'] = 'root'
         app.config['MYSQL_PASSWORD'] = ''
         app.config['MYSQL_DB'] = 'bdlabores'
-        CARPETA_FISICA_IMAGENES = "./static/images/Perfiles/"
+        CARPETA_FISICA_IMAGENES = "C:/Users/baldo/Desktop/labores 2021/labores/trunk/static/images/Perfiles/"
     app.config['CARPETA_FISICA_IMAGENES'] = CARPETA_FISICA_IMAGENES
     app.config['CARPETA_CARGA_IMAGENES'] = CARPETA_CARGA_IMAGENES
 

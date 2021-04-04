@@ -2234,7 +2234,7 @@ def editar_perfil_empleado():
                     )
                 referencia.crearReferencia(baseDatos)
 
-        return jsonify({"message": "empleador modificado con éxito!"})
+        return jsonify({"message": "empleado modificado con éxito!"})
 
     except Exception as e:
 
@@ -2406,106 +2406,130 @@ def update_anuncio_api():
     except:
         return jsonify({"message": "error"})
 
-"""
 
 @app.route('/api/anuncios_disponibles/<id_empleado>')
 def matcheo(id_empleado):
-    empleado = getEmpleadoByUsuarioID(baseDatos, id_empleado)
-    tareas = []
-    disponibilidades = []
-    domicilio = empleado.domicilio
-    if empleado.experiencia_meses == None:
-        experiencia = 0
-    elif empleado.experiencia_meses == 0:
-        experiencia = 0
-    else:
-        experiencia = 1
-    for tarea in getTareasEmpleado(baseDatos, idEmpleado):
-        tareas.append(tarea.id)
-    for disponibilidad in getDisponibilidadEmpleado(baseDatos, idEmpleado):
-        disponibilidades.append(disponibilidad.id)
-    empl = [
-        experiencia,
-        set(tareas),
-        disponibilidades,
-        domicilio
-    ]
-    retornoAnuncios = getAllAnuncios(baseDatos)
-    listaAnuncios = []
-    for anuncio in retornoAnuncios:
-        anuncioConID = [anuncio[0]]
-
-        anuncioConID.append(getAnuncioByID(baseDatos, anuncio[0]))
-        listaAnuncios.append(anuncioConID)
-    listaDeAnuncios = []
-
-    for elAnuncio in listaAnuncios:
-        anun = []
-        domicilioAnuncio = elAnuncio[1].empleador.domicilio
-        idAnuncio = elAnuncio[0]
-        disponibilidadAnuncio = elAnuncio[1].disponibilidad
-        experienciaAnuncio = elAnuncio[1].experiencia
-        # if elAnuncio[1].experiencia == 0:
-        #    experienciaAnuncio = 0
-        # else:
-        #    experienciaAnuncio = 1
-        tareasAnuncio = []
-
-        if elAnuncio[1].estado == b'\x01':
-            # empleador = getEmpleadorByID(baseDatos, elAnuncio.)
-            if elAnuncio[1].hogar == True:
-                tareasAnuncio.append(1)
-            if elAnuncio[1].oficina == True:
-                tareasAnuncio.append(2)
-            if elAnuncio[1].cocinar == True:
-                tareasAnuncio.append(3)
-            if elAnuncio[1].limp_banios == True:
-                tareasAnuncio.append(4)
-            if elAnuncio[1].limp_cocinas == True:
-                tareasAnuncio.append(5)
-            if elAnuncio[1].limp_dormitorios == True:
-                tareasAnuncio.append(6)
-            if elAnuncio[1].cuidado_ninios == True:
-                tareasAnuncio.append(7)
-            if elAnuncio[1].cuidado_bebes == True:
-                tareasAnuncio.append(8)
-            if elAnuncio[1].cuidado_adultos == True:
-                tareasAnuncio.append(9)
-            if elAnuncio[1].cuidado_mascotas == True:
-                tareasAnuncio.append(10)
-
-            anun.append(idAnuncio)
-            anun.append(disponibilidadAnuncio)
-            anun.append(experienciaAnuncio)
-            anun.append(set(tareasAnuncio))
-            anun.append(domicilioAnuncio)
-            listaDeAnuncios.append(anun)
-    listaMatcheo = []
-
-    for a in listaDeAnuncios:
-        if a[3] & empl[1] == a[3] and a[1] in empl[2] and a[4] == empl[3] and empl[0] >= a[2]:
-            unAnuncio = [
-                a[0],
-                getAnuncioByID(baseDatos, a[0])
-            ]
-            listaMatcheo.append(unAnuncio)
-
-    misPostulaciones = getPostulacionesEmpleadoIDs(baseDatos, idEmpleado)
-    listaIdsMisAnunciosPostulados = []
-    for miPostulacion in misPostulaciones:
-        listaIdsMisAnunciosPostulados.append(miPostulacion.anuncio)
-    for k in listaMatcheo:
-        if k[0] in listaIdsMisAnunciosPostulados:
-            k.append(1)
+    try:
+        empleado = getEmpleadoByUsuarioID(baseDatos, id_empleado)
+        idEmpleado = empleado.id
+        tareas = []
+        disponibilidades = []
+        domicilio = empleado.domicilio
+        if empleado.experiencia_meses == None:
+            experiencia = 0
+        elif empleado.experiencia_meses == 0:
+            experiencia = 0
         else:
-            k.append(0)
+            experiencia = 1
+        for tarea in getTareasEmpleado(baseDatos, idEmpleado):
+            tareas.append(tarea.id)
+        for disponibilidad in getDisponibilidadEmpleado(baseDatos, idEmpleado):
+            disponibilidades.append(disponibilidad.id)
+        empl = [
+            experiencia,
+            set(tareas),
+            disponibilidades,
+            domicilio
+        ]
+        retornoAnuncios = getAllAnuncios(baseDatos)
+        listaAnuncios = []
+        for anuncio in retornoAnuncios:
+            anuncioConID = [anuncio[0]]
 
-    print(listaMatcheo)
+            anuncioConID.append(getAnuncioByID(baseDatos, anuncio[0]))
+            listaAnuncios.append(anuncioConID)
+        listaDeAnuncios = []
 
-    return "ok"
+        for elAnuncio in listaAnuncios:
+            anun = []
+            domicilioAnuncio = elAnuncio[1].empleador.domicilio
+            idAnuncio = elAnuncio[0]
+            disponibilidadAnuncio = elAnuncio[1].disponibilidad
+            experienciaAnuncio = elAnuncio[1].experiencia
+            # if elAnuncio[1].experiencia == 0:
+            #    experienciaAnuncio = 0
+            # else:
+            #    experienciaAnuncio = 1
+            tareasAnuncio = []
+
+            if elAnuncio[1].estado == b'\x01':
+                # empleador = getEmpleadorByID(baseDatos, elAnuncio.)
+                if elAnuncio[1].hogar == True:
+                    tareasAnuncio.append(1)
+                if elAnuncio[1].oficina == True:
+                    tareasAnuncio.append(2)
+                if elAnuncio[1].cocinar == True:
+                    tareasAnuncio.append(3)
+                if elAnuncio[1].limp_banios == True:
+                    tareasAnuncio.append(4)
+                if elAnuncio[1].limp_cocinas == True:
+                    tareasAnuncio.append(5)
+                if elAnuncio[1].limp_dormitorios == True:
+                    tareasAnuncio.append(6)
+                if elAnuncio[1].cuidado_ninios == True:
+                    tareasAnuncio.append(7)
+                if elAnuncio[1].cuidado_bebes == True:
+                    tareasAnuncio.append(8)
+                if elAnuncio[1].cuidado_adultos == True:
+                    tareasAnuncio.append(9)
+                if elAnuncio[1].cuidado_mascotas == True:
+                    tareasAnuncio.append(10)
+
+                anun.append(idAnuncio)
+                anun.append(disponibilidadAnuncio)
+                anun.append(experienciaAnuncio)
+                anun.append(set(tareasAnuncio))
+                anun.append(domicilioAnuncio)
+                listaDeAnuncios.append(anun)
+        listaMatcheo = []
+
+        for a in listaDeAnuncios:
+            if a[3] & empl[1] == a[3] and a[1] in empl[2] and a[4] == empl[3] and empl[0] >= a[2]:
+                unAnuncio = [
+                    a[0],
+                    getAnuncioByID(baseDatos, a[0])
+                ]
+                listaMatcheo.append(unAnuncio)
+
+        misPostulaciones = getPostulacionesEmpleadoIDs(baseDatos, idEmpleado)
+        listaIdsMisAnunciosPostulados = []
+        for miPostulacion in misPostulaciones:
+            listaIdsMisAnunciosPostulados.append(miPostulacion.anuncio)
+        for k in listaMatcheo:
+            if k[0] in listaIdsMisAnunciosPostulados:
+                k.append(1)
+            else:
+                k.append(0)
+                
+
+        matecheo_lista_api = list()
+        if listaMatcheo:
+            for anun in listaMatcheo:
+                anun[1].fecha_inicio = anun[1].fecha_inicio.strftime('%d/%m/%Y')
+
+                if anun[1].fecha_cierre:
+                    anun[1].fecha_cierre = anun[1].fecha_cierre.strftime('%d/%m/%Y')
+                anuncioMatcheado ={
+                    "id": anun[1].id,
+                    "titulo": anun[1].titulo,
+                    "descripcion": anun[1].descripcion,
+                    "fechaInicio": anun[1].fecha_inicio,
+                    "fechaCierre": anun[1].fecha_cierre,
+                    "estado": int.from_bytes(anun[1].estado, "big"),
+                    "experiencia": anun[1].experiencia,
+                    "pago_hora": anun[1].pago_hora,
+                    "empleador": anun[1].empleador.id,
+                    "tieneVinculo": anun[1].tiene_vinculo,
+                    "ya_postulado": anun[2]
+                }
+                matecheo_lista_api.append(anuncioMatcheado)
+            return jsonify(matecheo_lista_api)
+        else:
+            return jsonify([])
+    except:
+        return jsonify({"message": "error"})
 
 
-"""
 # -----------------------------------------------------------------------------------------------------
 
 if __name__ == '__main__':
