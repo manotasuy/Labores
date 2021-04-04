@@ -2017,10 +2017,14 @@ def ver_perfil_empleador_api(id):
     try:
         usuario = getUsuarioByID(baseDatos, id)
         empleador = getEmpleadorByUsuarioID(baseDatos, usuario.id)
-        if empleador.foto:
-            empleador.foto = empleador.foto.decode('utf-8')
+
         if empleador.foto == "":
             empleador.foto = None
+        if empleador.foto:
+            empleador.foto = empleador.foto.decode('utf-8')
+        if not isinstance(empleador.foto, str) or empleador.foto == "":
+                empleador.foto = None
+        
         data = {
             "ci" :usuario.usuario,
             "password" :usuario.clave,
@@ -2049,10 +2053,16 @@ def ver_perfil_empleado_api(id):
     try:
         usuario = getUsuarioByID(baseDatos, id)
         empleado = getEmpleadoByUsuarioID(baseDatos, usuario.id)
-        if empleado.foto:
-            empleado.foto = empleado.foto.decode('utf-8')
+
+
         if empleado.foto == "":
             empleado.foto = None
+        if empleado.foto:
+            empleado.foto = empleado.foto.decode('utf-8')
+        if not isinstance(empleado.foto, str) or empleado.foto == "":
+                empleado.foto = None
+
+        
         
         referencias = getReferenciasEmpleado(baseDatos, empleado.id)
         lista_ref = []
@@ -2582,6 +2592,134 @@ def despostular_api():
     except:
 
         return jsonify({"message": "error"})
+
+
+@app.route('/api/postulaciones_empleado/<id>')
+def postulaciones_empleador_api(id):
+
+    try:
+        empleado = getEmpleadoByUsuarioID(baseDatos, id)
+        postulaciones = getPostulacionesEmpleadoIDs(baseDatos, empleado.id)
+
+        empleado_postulaciones = list()
+        if postulaciones:
+            for postulacion in postulaciones:
+                anuncio = getAnuncioByID(baseDatos, postulacion.anuncio)
+                anun= {
+                    "id": anuncio.id,
+                    "titulo": anuncio.titulo,
+                    "descripcion": anuncio.descripcion,
+                    "fechaInicio": anuncio.fecha_inicio,
+                    "fechaCierre": anuncio.fecha_cierre,
+                    "estado": int.from_bytes(anuncio.estado, "big"),
+                    "experiencia": anuncio.experiencia,
+                    "pago_hora": anuncio.pago_hora,
+                    "empleador": anuncio.empleador.id
+                }
+                empleado_postulaciones.append(anun)
+        
+        return jsonify(empleado_postulaciones)
+
+    except:
+        return jsonify({"message": "error"})
+
+
+@app.route('/api/postulantes_anuncio/<id>')
+def postulantes_anuncio_api(id):
+
+    try:
+        postulaciones = getPostulacionesAnuncio(baseDatos, id)
+
+        postulantes = list()
+        if postulaciones:
+            for postulacion in postulaciones:
+                empleado = postulacion.empleado
+                if empleado.foto == "":
+                    empleado.foto = None
+                if empleado.foto:
+                    empleado.foto = empleado.foto.decode('utf-8')
+                if not isinstance(empleado.foto, str) or empleado.foto == "":
+                        empleado.foto = None
+                referencias = getReferenciasEmpleado(baseDatos, empleado.id)
+                lista_ref = []
+                for ref in referencias:
+                    refe = {
+                        "nombre" : ref.nombre,
+                        "apellido" : ref.apellido,
+                        "fecha_desde" : ref.fechaDesde.strftime('%d/%m/%Y'),
+                        "fecha_hasta" : ref.fechaHasta.strftime('%d/%m/%Y')
+                    }
+                    lista_ref.append(refe)
+                print(type(empleado.foto))
+                data = {
+                    "id_anuncio": id,
+                    "id_usuario_empleado" : empleado.usuario.id,
+                    "nombre": empleado.nombre,
+                    "apellido": empleado.apellido,
+                    "fecha_n": empleado.nacimiento.strftime('%d/%m/%Y'),
+                    "genero": int.from_bytes(empleado.genero, byteorder='big'),
+                    "domicilio": empleado.domicilio,
+                    "nacionalidad": empleado.nacionalidad,
+                    "mail": empleado.email,
+                    "telefono": empleado.telefono,
+                    "experiencia": empleado.experiencia_meses,
+                    "descripcion": empleado.descripcion,
+                    "foto": empleado.foto,
+                    "calificacion": empleado.promedioCalificacion,
+                    "referencias": lista_ref
+                }
+                postulantes.append(data)
+                
+        return jsonify(postulantes)
+    except:
+        return jsonify({"message": "error"})
+
+
+@app.route('/api/contratar/', methods=['POST'])
+def contratar_api():
+
+    try:
+        anuncio = getAnuncioByID(baseDatos, request.json['id_anuncio'])
+        empleado = getEmpleadoByUsuarioID(baseDatos, request.json['id_usuario_empleado'])
+        empleador = getEmpleadorByUsuarioID(baseDatos, request.json['id_usuario_empleador'])
+
+        # Se debe generar el vínculo
+        vinculo = Vinculo(0, empleado, empleador, anuncio,
+                            datetime.now(), None, '', None, None)
+        vinculo.crearVinculo(baseDatos)
+
+        # El anuncio debe quedar inactivo
+        anuncio.setEstadoAnuncio(baseDatos, False)
+
+        # Se debe actualizar la postulación a genera_vinculo = true
+        postulacion: Postulacion = getPostulacionEmpleadoAnuncio(
+            baseDatos, empleado.id, anuncio.id)
+        postulacion.generarVinculoEnPostulacion(baseDatos)
+
+        # Se debe notificar al empleado mediante mensaje de que el empleador "X" lo contrató
+        mensajeEmpleado = Mensaje(
+            0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has sido contratado por {} {}, por el anuncio "{}", les deseamos un buen vínculo laboral.'.format(empleador.nombre, empleador.apellido, anuncio.titulo), 3, 1, False)
+        mensajeEmpleado.crearMensaje(baseDatos)
+
+        # Se debe notificar al empleador mediante mensaje de que contrató al empleador "X"
+        mensajeEmpleador = Mensaje(
+            0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has contratado a {} {}, por el anuncio "{}", les deseamos un buen vínculo laboral.'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
+        mensajeEmpleador.crearMensaje(baseDatos)
+
+        # Se debe generar recordatorio de calificación para el empleado
+        recordatorioEmpleado = Recordatorio(0, 1, empleado, empleador, empleado, anuncio, postulacion, vinculo, datetime.now(
+        ) + timedelta(days=90), datetime.now() + timedelta(days=270), 0, 'Debe calificar el vínculo', 0)
+        recordatorioEmpleado.crearRecordatorio(baseDatos)
+
+        # Se debe generar recordatorio de calificación para el empleador
+        recordatorioEmpleador = Recordatorio(0, 1, empleado, empleador, empleador, anuncio, postulacion, vinculo, datetime.now(
+        ) + timedelta(days=90), datetime.now() + timedelta(days=270), 0, 'Debe calificar el vínculo', 0)
+        recordatorioEmpleador.crearRecordatorio(baseDatos)
+
+        return jsonify({"message": "vinculo generado"})
+    except:
+        return jsonify({"message": "error"})
+
 # -----------------------------------------------------------------------------------------------------
 
 if __name__ == '__main__':
