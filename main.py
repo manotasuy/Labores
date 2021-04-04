@@ -2530,6 +2530,58 @@ def matcheo(id_empleado):
         return jsonify({"message": "error"})
 
 
+
+@app.route('/api/postular/', methods=['POST'])
+def postular_api():
+
+    try:
+        empleado = getEmpleadoByUsuarioID(baseDatos, request.json['id_usuario_empleado'])
+        anuncio = getAnuncioByID(baseDatos, request.json['id_anuncio'])
+        new_postulacion = Postulacion(
+            None, empleado, anuncio, datetime.now(),0)
+        new_postulacion.crearPostulacion(baseDatos)
+
+        # Se debe notificar al empleado mediante mensaje de que se ha postulado
+        mensajeEmpleado = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
+        ), 'Buena suerte {} {}!!! te has postulado al anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 1, False)
+        mensajeEmpleado.crearMensaje(baseDatos)
+
+        # Se debe notificar al empleador mediante mensaje de que se ha postulado
+        mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
+        ), 'Buenas noticias!!! {} {} se ha postulado a tu anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
+        mensajeEmpleador.crearMensaje(baseDatos)
+
+        return jsonify({"message": "postulación realizada"})
+
+    except:
+        return jsonify({"message": "error"})
+
+
+@app.route('/api/despostular/', methods=['PUT'])
+def despostular_api():
+
+    try:
+        empleado = getEmpleadoByUsuarioID(baseDatos, request.json['id_usuario_empleado'])
+        postulacion = getPostulacionEmpleadoAnuncio(baseDatos, empleado.id, request.json['id_anuncio'])
+        anuncio = postulacion.anuncio
+        postulacion.borrarPostulacion(baseDatos)
+        
+
+        # Se debe notificar al empleado mediante mensaje de que se ha despostulado del anuncio
+        mensajeEmpleado = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
+        ), '{} {}, te has despostulado del anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 1, False)
+        mensajeEmpleado.crearMensaje(baseDatos)
+
+        # Se debe notificar al empleador mediante mensaje de que se han despostulado de su anuncio
+        mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
+        ), '{} {} se ha despostulado de tu anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
+        mensajeEmpleador.crearMensaje(baseDatos)
+
+        return jsonify({"message": "des-postulación realizada"})
+
+    except:
+
+        return jsonify({"message": "error"})
 # -----------------------------------------------------------------------------------------------------
 
 if __name__ == '__main__':
