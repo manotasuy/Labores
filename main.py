@@ -2605,6 +2605,9 @@ def postulaciones_empleador_api(id):
         if postulaciones:
             for postulacion in postulaciones:
                 anuncio = getAnuncioByID(baseDatos, postulacion.anuncio)
+                anuncio.fecha_inicio = anuncio.fecha_inicio.strftime('%d/%m/%Y')
+                if anuncio.fecha_cierre:
+                    anuncio.fecha_cierre = anuncio.fecha_cierre.strftime('%d/%m/%Y')
                 anun= {
                     "id_anuncio": anuncio.id,
                     "titulo": anuncio.titulo,
