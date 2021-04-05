@@ -2840,14 +2840,16 @@ def ver_vinculo_api(id_vinculo):
         return jsonify({"message": "error"})
 
 
-@app.route('/api/notVinculo/<idVinculo>')
+@app.route('/api/notVinculo/<idVinculo>', methods=['DELETE'])
 def not_vinculo_api(idVinculo):
-
-    vinculo = getVinculoByID(baseDatos, idVinculo)
-    postulacion = getPostulacionEmpleadoAnuncio(baseDatos, vinculo.empleado.id, vinculo.anuncio.id)
-    vinculo.borrarVinculo(baseDatos)
-    postulacion.eliminarVinculoEnPostulacion(baseDatos)
-    return "ok"
+    try:
+        vinculo = getVinculoByID(baseDatos, idVinculo)
+        postulacion = getPostulacionEmpleadoAnuncio(baseDatos, vinculo.empleado.id, vinculo.anuncio.id)
+        vinculo.borrarVinculo(baseDatos)
+        postulacion.eliminarVinculoEnPostulacion(baseDatos)
+        return jsonify({"message": "vínculo cancelado"})
+    except:
+        return jsonify({"message": "error"})
 # -----------------------------------------------------------------------------------------------------
 
 if __name__ == '__main__':
