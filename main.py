@@ -34,6 +34,7 @@ EXTENSIONES_ADMITIDAS = set(['jpg', 'png', 'jpeg', 'bmp', 'gif'])
 
 app = Flask(__name__)
 
+
 #baseDatos = connectionDb(app, 'remotemysql.com')
 #baseDatos = connectionDb(app, 'aws')
 #baseDatos = connectionDb(app, 'CloudAccess')
@@ -2595,7 +2596,7 @@ def despostular_api():
 
 
 @app.route('/api/postulaciones_empleado/<id>')
-def postulaciones_empleador_api(id):
+def postulaciones_empleado_api(id):
 
     try:
         empleado = getEmpleadoByUsuarioID(baseDatos, id)
@@ -2723,6 +2724,130 @@ def contratar_api():
     except:
         return jsonify({"message": "error"})
 
+
+
+@app.route('/api/vinculos_empleado/<id>')
+def vinculos_empleado_api(id):
+    try:
+        empleado = getEmpleadoByUsuarioID(baseDatos, id)
+        vinculos = getVinculoByEmpleado(baseDatos, empleado)
+
+        listaVicnulos= list()
+
+        if vinculos:
+            for v in vinculos:
+                if v.fecha_fin:
+                    v.fecha_fin = v.fecha_fin.strftime('%d/%m/%Y')
+                vinculo = {
+                    "id_vinculo": v.id,
+                    "fecha_inicio": v.fecha_inicio.strftime('%d/%m/%Y'),
+                    "fecha_fin": v.fecha_fin,
+                    "calificacion_empleado": v.calif_empleado,
+                    "calificacion_empleador": v.calif_empleador,
+                    "anuncio":{
+                        "id_anuncio": v.anuncio.id,
+                        "titulo": v.anuncio.titulo,
+                        "descripcion": v.anuncio.descripcion
+                    },
+                    "empleado":{
+                        "id_usuario_empleado": v.empleado.usuario.id,
+                        "nombre": v.empleado.nombre,
+                        "apellido": v.empleado.apellido
+                    },
+                    "empleador":{
+                        "id_usuario_empleador": v.empleador.usuario.id,
+                        "nombre": v.empleador.nombre,
+                        "apellido": v.empleador.apellido
+                    }
+                }
+                listaVicnulos.append(vinculo)
+        
+        return jsonify(listaVicnulos)
+    except:
+        return jsonify({"message": "error"})
+
+
+@app.route('/api/vinculos_empleador/<id>')
+def vinculos_empleador_api(id):
+    try:
+        empleador = getEmpleadorByUsuarioID(baseDatos, id)
+        vinculos = getVinculoByEmpleador(baseDatos, empleador)
+
+        listaVicnulos= list()
+
+        if vinculos:
+            for v in vinculos:
+                if v.fecha_fin:
+                    v.fecha_fin = v.fecha_fin.strftime('%d/%m/%Y')
+                vinculo = {
+                    "id_vinculo": v.id,
+                    "fecha_inicio": v.fecha_inicio.strftime('%d/%m/%Y'),
+                    "fecha_fin": v.fecha_fin,
+                    "calificacion_empleado": v.calif_empleado,
+                    "calificacion_empleador": v.calif_empleador,
+                    "anuncio":{
+                        "id_anuncio": v.anuncio.id,
+                        "titulo": v.anuncio.titulo,
+                        "descripcion": v.anuncio.descripcion
+                    },
+                    "empleado":{
+                        "id_usuario_empleado": v.empleado.usuario.id,
+                        "nombre": v.empleado.nombre,
+                        "apellido": v.empleado.apellido
+                    },
+                    "empleador":{
+                        "id_usuario_empleador": v.empleador.usuario.id,
+                        "nombre": v.empleador.nombre,
+                        "apellido": v.empleador.apellido
+                    }
+                }
+                listaVicnulos.append(vinculo)
+        
+        return jsonify(listaVicnulos)
+    except:
+        return jsonify({"message": "error"})
+
+
+@app.route('/api/ver_vinculo/<id_vinculo>')
+def ver_vinculo_api(id_vinculo):
+
+    try:
+        v = getVinculoByID(baseDatos, id_vinculo)
+        vinculo = {
+            "id_vinculo": v.id,
+            "fecha_inicio": v.fecha_inicio.strftime('%d/%m/%Y'),
+            "fecha_fin": v.fecha_fin,
+            "calificacion_empleado": v.calif_empleado,
+            "calificacion_empleador": v.calif_empleador,
+            "anuncio":{
+                "id_anuncio": v.anuncio.id,
+                "titulo": v.anuncio.titulo,
+                "descripcion": v.anuncio.descripcion
+            },
+            "empleado":{
+                "id_usuario_empleado": v.empleado.usuario.id,
+                "nombre": v.empleado.nombre,
+                "apellido": v.empleado.apellido
+            },
+            "empleador":{
+                "id_usuario_empleador": v.empleador.usuario.id,
+                "nombre": v.empleador.nombre,
+                "apellido": v.empleador.apellido
+            }
+        }
+        return jsonify(vinculo)
+    except:
+        return jsonify({"message": "error"})
+
+
+@app.route('/api/notVinculo/<idVinculo>')
+def not_vinculo_api(idVinculo):
+
+    vinculo = getVinculoByID(baseDatos, idVinculo)
+    postulacion = getPostulacionEmpleadoAnuncio(baseDatos, vinculo.empleado.id, vinculo.anuncio.id)
+    vinculo.borrarVinculo(baseDatos)
+    postulacion.eliminarVinculoEnPostulacion(baseDatos)
+    return "ok"
 # -----------------------------------------------------------------------------------------------------
 
 if __name__ == '__main__':
