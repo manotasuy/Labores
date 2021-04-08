@@ -1884,7 +1884,8 @@ def api_ingresar():
                 'user': user,
                 'password': password,
                 'tipo': retorno[0][0],
-                'image': foto
+                'image': foto,
+                'code':1
             }
         else:
             login_info = {
@@ -1893,7 +1894,9 @@ def api_ingresar():
                 'user': None,
                 'password': None,
                 'tipo': None,
-                'image': None
+                'image': None,
+                'code' :0
+
             }
     else:
             login_info = {
@@ -1902,7 +1905,8 @@ def api_ingresar():
                 'user': None,
                 'password': None,
                 'tipo': None,
-                'image': None
+                'image': None,
+                'code' :0
             }
     return jsonify(login_info)
 
@@ -1910,15 +1914,16 @@ def api_ingresar():
 def api_verificacion_ci():
 
     if getUsuarioByCI(baseDatos, request.json['ci']):
-        return {"message": "Usuario registrado"}
+        return {"message": "Usuario registrado", "code": 1}
     else:
-        return {"message": "Usuario no registrado"}
+        return {"message": "Usuario no registrado", "code": 0}
 
 @app.route('/api/registro/', methods=['POST'])
 def api_registro():
 
     if getUsuarioByCI(baseDatos, request.json['ci']):
-        return {"message": "Ya existe un usuario con esa CI"}
+        return {"message": "Ya existe un usuario con esa CI",
+                'code' :0}
     else: 
 
         new_user = Usuario(0, request.json['ci'], request.json['password'], request.json['tipo'])
@@ -1949,7 +1954,7 @@ def api_registro():
                 new_empleador.foto = request.json['empleador']['foto']
                 
             new_empleador.crearEmpleador(baseDatos)
-            return {"message": "Usuario empleador creado con exito!"}
+            return {"message": "Usuario empleador creado con exito!", "code": 1}
        
         else:
 
@@ -2010,7 +2015,7 @@ def api_registro():
                 for dis in request.json['empleado']['disponibilidad']:
                     agregarDisponibilidadEmpleado(baseDatos, dis, empleado.id)
 
-            return {"message": "Usuario empleado creado con exito!"}
+            return {"message": "Usuario empleado creado con exito!", "code": 1}
         
 
 @app.route('/api/ver_perfil/empleador/<id>')
@@ -2040,12 +2045,13 @@ def ver_perfil_empleador_api(id):
             "bps": empleador.registroBps,
             "foto": empleador.foto,
             "calificacion": empleador.promedioCalificacion
+            
         }
 
         return jsonify(data)
     
     except Exception as e:
-        return jsonify({"message" : "id incorrecto para empleador"})
+        return jsonify({"message" : "id incorrecto para empleador", "code": 0})
 
 
 @app.route('/api/ver_perfil/empleado/<id>')
@@ -2091,13 +2097,14 @@ def ver_perfil_empleado_api(id):
             "descripcion": empleado.descripcion,
             "foto": empleado.foto,
             "calificacion": empleado.promedioCalificacion,
-            "referencias": lista_ref
+            "referencias": lista_ref, 
+            "code": 1
         }
 
         return jsonify(data)
       
     except Exception as e:
-        return jsonify({"message" : "id incorrecto para empleado"})
+        return jsonify({"message" : "id incorrecto para empleado", "code": 0})
  
 
 
@@ -2128,8 +2135,8 @@ def api_listandoMisAnuncios(id):
                 'pago_hora' : anuncio[7],
                 'id_empleador' : anuncio[8],
                 'calificacion_desde' : anuncio[9],
-                'calificacion_hasta' : anuncio[10],
-                'tiene_vinculo' : anuncio[11]
+                'calificacion_hasta' : anuncio[10]
+                
             }
             listaDeAnuncios.append(anun_dic)
 
@@ -2144,9 +2151,9 @@ def cambiar_clave_api():
         usuario = getUsuarioByID(baseDatos, request.json['id'])
         usuario.cambiarPassword(request.json['new_password'], baseDatos)
     
-        return jsonify({"message": "clave cambiada"})
+        return jsonify({"message": "clave cambiada", "code": 1})
     except:
-        return jsonify({"message": "error"})
+        return jsonify({"message": "error", "code": 0})
 
 
 
@@ -2176,9 +2183,9 @@ def editar_perfil_empleador():
 
         empleador.modificarEmpleador(baseDatos)
 
-        return jsonify({"message": "empleador modificado con exito!"})
+        return jsonify({"message": "empleador modificado con éxito!", "code": 1})
     except Exception as e:
-        return jsonify({"message" : "error!"})
+        return jsonify({"message" : "error!", "code": 0})
 
 
 @app.route('/api/editar_perfil/empleado/', methods=['PUT'])
@@ -2245,11 +2252,11 @@ def editar_perfil_empleado():
                     )
                 referencia.crearReferencia(baseDatos)
 
-        return jsonify({"message": "empleado modificado con éxito!"})
+        return jsonify({"message": "empleado modificado con éxito!", "code": 1})
 
     except Exception as e:
 
-        return jsonify({"message" : "error!"})
+        return jsonify({"message" : "error!", "code": 0})
 
 @app.route('/api/get_tareas/')
 def get_tareas_api():
@@ -2342,11 +2349,11 @@ def crear_anuncio_api():
             )
         anuncio.createAnuncio(baseDatos)
 
-        return jsonify({"message": "anuncio creado"})
+        return jsonify({"message": "anuncio creado", "code": 1})
     
     except:
 
-        return jsonify({"message": "error en crear anuncio"})
+        return jsonify({"message": "error en crear anuncio", "code": 0})
 
 
 
@@ -2373,7 +2380,7 @@ def ver_anuncio_api(id):
 
         return jsonify(anuncio)
     except:
-        return jsonify({"message": "error"})
+        return jsonify({"message": "error", "code": 0})
 
 @app.route('/api/delete_anuncio/', methods=['DELETE'])
 def delete_anuncio_api():
@@ -2381,9 +2388,9 @@ def delete_anuncio_api():
     try:
         anuncio = getAnuncioByID_d(baseDatos, request.json['id'])
         anuncio.deleteAnuncio(baseDatos)
-        return jsonify({"message": "anuncio borrado"})
+        return jsonify({"message": "anuncio borrado", "code": 1})
     except:
-        return jsonify({"message": "error"})
+        return jsonify({"message": "error", "code": 0})
 
 
 @app.route('/api/setEstado_anuncio/', methods=['PATCH'])
@@ -2392,9 +2399,9 @@ def setEstado_anuncio_api():
     try:
         anuncio = getAnuncioByID_d(baseDatos, request.json['id'])
         anuncio.setEstadoAnuncio(baseDatos, request.json['estado'])
-        return jsonify({"message": "estado cambiado"})
+        return jsonify({"message": "estado cambiado", "code": 1})
     except:
-        return jsonify({"message": "error"})
+        return jsonify({"message": "error", "code": 0})
 
 
 @app.route('/api/update_anuncio/', methods=['PUT'])
@@ -2413,9 +2420,9 @@ def update_anuncio_api():
 
         anuncio.updateAnuncio(baseDatos)
         
-        return jsonify({"message": "anuncio actualizado"})
+        return jsonify({"message": "anuncio actualizado", "code": 1})
     except:
-        return jsonify({"message": "error"})
+        return jsonify({"message": "error", "code": 0})
 
 
 @app.route('/api/anuncios_disponibles/<id_empleado>')
@@ -2538,7 +2545,7 @@ def matcheo(id_empleado):
         else:
             return jsonify([])
     except:
-        return jsonify({"message": "error"})
+        return jsonify({"message": "error", "code": 0})
 
 
 
@@ -2562,10 +2569,10 @@ def postular_api():
         ), 'Buenas noticias!!! {} {} se ha postulado a tu anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
         mensajeEmpleador.crearMensaje(baseDatos)
 
-        return jsonify({"message": "postulación realizada"})
+        return jsonify({"message": "postulación realizada", "code": 1})
 
     except:
-        return jsonify({"message": "error"})
+        return jsonify({"message": "error", "code": 0})
 
 
 @app.route('/api/despostular/', methods=['PUT'])
@@ -2588,11 +2595,11 @@ def despostular_api():
         ), '{} {} se ha despostulado de tu anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
         mensajeEmpleador.crearMensaje(baseDatos)
 
-        return jsonify({"message": "des-postulación realizada"})
+        return jsonify({"message": "des-postulación realizada", "code": 1})
 
     except:
 
-        return jsonify({"message": "error"})
+        return jsonify({"message": "error", "code": 0})
 
 
 @app.route('/api/postulaciones_empleado/<id>')
@@ -2625,7 +2632,7 @@ def postulaciones_empleado_api(id):
         return jsonify(empleado_postulaciones)
 
     except:
-        return jsonify({"message": "error"})
+        return jsonify({"message": "error", "code": 0})
 
 
 @app.route('/api/postulantes_anuncio/<id>')
@@ -2676,7 +2683,7 @@ def postulantes_anuncio_api(id):
                 
         return jsonify(postulantes)
     except:
-        return jsonify({"message": "error"})
+        return jsonify({"message": "error", "code": 0})
 
 
 @app.route('/api/contratar/', methods=['POST'])
@@ -2720,9 +2727,9 @@ def contratar_api():
         ) + timedelta(days=90), datetime.now() + timedelta(days=270), 0, 'Debe calificar el vínculo', 0)
         recordatorioEmpleador.crearRecordatorio(baseDatos)
 
-        return jsonify({"message": "vinculo generado"})
+        return jsonify({"message": "vinculo generado", "code": 1})
     except:
-        return jsonify({"message": "error"})
+        return jsonify({"message": "error", "code": 0})
 
 
 
@@ -2764,7 +2771,7 @@ def vinculos_empleado_api(id):
         
         return jsonify(listaVicnulos)
     except:
-        return jsonify({"message": "error"})
+        return jsonify({"message": "error", "code": 0})
 
 
 @app.route('/api/vinculos_empleador/<id>')
@@ -2805,7 +2812,7 @@ def vinculos_empleador_api(id):
         
         return jsonify(listaVicnulos)
     except:
-        return jsonify({"message": "error"})
+        return jsonify({"message": "error", "code": 0})
 
 
 @app.route('/api/ver_vinculo/<id_vinculo>')
@@ -2813,10 +2820,14 @@ def ver_vinculo_api(id_vinculo):
 
     try:
         v = getVinculoByID(baseDatos, id_vinculo)
+        if v.fecha_fin:
+            fecha_fin = v.fecha_fin.strftime('%d/%m/%Y')
+        else:
+            fecha_fin = None
         vinculo = {
             "id_vinculo": v.id,
             "fecha_inicio": v.fecha_inicio.strftime('%d/%m/%Y'),
-            "fecha_fin": v.fecha_fin,
+            "fecha_fin": fecha_fin,
             "calificacion_empleado": v.calif_empleado,
             "calificacion_empleador": v.calif_empleador,
             "anuncio":{
@@ -2837,7 +2848,7 @@ def ver_vinculo_api(id_vinculo):
         }
         return jsonify(vinculo)
     except:
-        return jsonify({"message": "error"})
+        return jsonify({"message": "error", "code": 0})
 
 
 @app.route('/api/notVinculo/<idVinculo>', methods=['DELETE'])
@@ -2847,9 +2858,81 @@ def not_vinculo_api(idVinculo):
         postulacion = getPostulacionEmpleadoAnuncio(baseDatos, vinculo.empleado.id, vinculo.anuncio.id)
         vinculo.borrarVinculo(baseDatos)
         postulacion.eliminarVinculoEnPostulacion(baseDatos)
-        return jsonify({"message": "vínculo cancelado"})
+        return jsonify({"message": "vínculo cancelado", "code": 1})
     except:
-        return jsonify({"message": "error"})
+        return jsonify({"message": "error", "code": 0})
+
+
+@app.route('/api/calificar_vinculo_desde_empleador', methods=['PUT'])
+def calificar_vinculo_desde_empleador_api():
+
+    try:
+        cal = request.json['calificacion']
+        vinculo = getVinculoByID(baseDatos, request.json['id_vinculo'])
+        vinculo.calif_empleado = cal
+        vinculo.actualizarVinculo(baseDatos)
+        empleado = vinculo.empleado
+        empleado.promedioCalificacion = getPromedioByEmpleadoId(baseDatos, empleado.id)['promedio']
+        empleado.calificarEmpleado(baseDatos)
+        return jsonify({"message": "vínculo calificado", "code": 1})
+    except:
+        return jsonify({"message": "error", "code": 0})
+
+
+@app.route('/api/calificar_vinculo_desde_empleado', methods=['PUT'])
+def calificar_vinculo_desde_empleado_api():
+
+    try:
+        cal = request.json['calificacion']
+        vinculo = getVinculoByID(baseDatos, request.json['id_vinculo'])
+        vinculo.calif_empleador = cal
+        vinculo.actualizarVinculo(baseDatos)
+        empleador = vinculo.empleador
+        empleador.promedioCalificacion = getPromedioByEmpleadorId(baseDatos, empleador.id)['promedio']
+        empleador.calificarEmpleador(baseDatos)
+        return jsonify({"message": "vínculo calificado", "code": 1})
+    except:
+        return jsonify({"message": "error", "code": 0})
+
+
+@app.route('/api/finalizar_vinculo', methods=['PUT'])
+def finalizar_vinculo_api():
+
+    try:
+        cal = request.json['calificacion']
+        vinculo = getVinculoByID(baseDatos, request.json['id_vinculo'])
+        empleador = vinculo.empleador
+        empleado = vinculo.empleado
+        anuncio = vinculo.anuncio
+
+        if request.json['tipo_usuario_activo'] == 'empleado':
+            vinculo.calif_empleador = cal
+            vinculo.fecha_fin = datetime.now()
+            vinculo.actualizarVinculo(baseDatos)
+            empleador.promedioCalificacion = getPromedioByEmpleadorId(baseDatos, empleador.id)['promedio']
+            empleador.calificarEmpleador(baseDatos)
+
+        if request.json['tipo_usuario_activo'] == 'empleador':
+            vinculo.calif_empleado = cal
+            vinculo.fecha_fin = datetime.now()
+            vinculo.actualizarVinculo(baseDatos)
+            empleado.promedioCalificacion = getPromedioByEmpleadoId(baseDatos, empleado.id)['promedio']
+            empleado.calificarEmpleado(baseDatos)
+
+        # Se debe notificar al empleado mediante mensaje de que el vínculo con el empleador "X" finalizó
+        mensajeEmpleado = Mensaje(0, empleado, empleador, anuncio, datetime.now(),
+                                    'Su vínculo con {} {} por el anuncio "{}" ha finalizado. Recuerde que puede calificar el vínculo cuantas veces lo considere desde "Mis Vínculos"'
+                                    .format(empleador.nombre, empleador.apellido, anuncio.titulo), 3, 1, False)
+        mensajeEmpleado.crearMensaje(baseDatos)
+
+        # Se debe notificar al empleador mediante mensaje de que el vínculo con el empleado "X" finalizó
+        mensajeEmpleador = Mensaje(0, empleado, empleador, anuncio, datetime.now(),
+                                    'Su vínculo con {} {} por el anuncio "{}" ha finalizado. Recuerde que puede calificar el vínculo cuantas veces lo considere desde "Mis Vínculos"'
+                                    .format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
+        mensajeEmpleador.crearMensaje(baseDatos)
+        return jsonify({"message": "vínculo finalizado", "code": 1})
+    except:
+        return jsonify({"message": "error", "code": 0})
 # -----------------------------------------------------------------------------------------------------
 
 if __name__ == '__main__':
