@@ -41,7 +41,7 @@ app = Flask(__name__)
 #baseDatos = connectionDb(app, 'a-work')
 #baseDatos = connectionDb(app, 'a-home')
 #baseDatos = connectionDb(app, 'local')
-baseDatos = connectionDb(app, 'PA')
+#baseDatos = connectionDb(app, 'PA')
 #baseDatos = connectionDb(app, 'gcp')
 
 
@@ -2917,7 +2917,6 @@ def finalizar_vinculo_api():
     except:
         return jsonify({"message": "error", "code": 0})
 
-#----------------desde acá está sin subir--------------------
 
 @app.route('/api/mensajes/tipos_emisor_receptor_registrados')
 def mensajes_tipos_emisor_receptor_registrados_api():
@@ -3078,11 +3077,26 @@ def crear_mensaje_api_desde_empleador():
         return jsonify({"message": "error", "code": 0})
 
 
+@app.route('/api/crear_mensaje_desde_empleado', methods = ['POST'])
+def crear_mensaje_api_desde_empleado():
+
+    try:
+        anuncio = getAnuncioByID(baseDatos, request.json['id_anuncio'])
+        empleador = getEmpleadorByUsuarioID(baseDatos, request.json['id_usuario_empleador'])
+        empleado = getEmpleadoByUsuarioID(baseDatos, request.json['id_usuario_empleado'])
+        mensaje = Mensaje(0, empleado, empleador, anuncio, datetime.now(), request.json['mensaje'], 1, 2, False)
+        mensaje.crearMensaje(baseDatos)
+        return jsonify({"message": "mensaje enviado", "code": 1})
+    except:
+        return jsonify({"message": "error", "code": 0})
+
+
 @app.route('/api/recordatorios_tipos_registrados')
 def recordatorios_tipos_registrados_api():
     tipos = getTiposRecordatoriosRegistrados(baseDatos)
     return jsonify(tipos)
 
+#----------------desde acá está sin subir--------------------
 
 @app.route('/api/recordatorios_del_día/<tipo_usuario>/<id_usuario>')
 def getRecordatoriosDelDia_api(tipo_usuario, id_usuario):
@@ -3300,7 +3314,7 @@ def empleadoTieneNotificacionesPendientesVinculos_api(id_usuario):
         return jsonify({"message": "error", "code": 0})
 
 
-@app.route('/api/empleado/empleadorTieneNotificacionesPendientesPostulaciones/<id_usuario>')
+@app.route('/api/empleador/TieneNotificacionesPendientesPostulaciones/<id_usuario>')
 def empleadorTieneNotificacionesPendientesPostulaciones_api(id_usuario):
     try:
         empleador = getEmpleadorByUsuarioID(baseDatos, id_usuario)
