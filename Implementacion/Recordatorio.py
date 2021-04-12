@@ -314,3 +314,21 @@ def recordatoriosCalificacionesPendientes(bd, idDestinatario):
             return None
     except Exception as e:
         print("Error en recordatoriosCalificacionesPendientes ", e)
+
+def getTiposRecordatoriosRegistrados(bd):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('SELECT id, nombre FROM tipo_recordatorio')
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+        tipos = list()
+        for tipo in retorno:
+            t = {
+                "id": tipo[0],
+                "nombre": tipo[1]
+            }
+            tipos.append(t)
+        return tipos
+    except Exception as e:
+        print("Error en getTiposRecordatoriosRegistrados ", e)

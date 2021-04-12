@@ -21,11 +21,11 @@ from Implementacion.Postulacion import Postulacion, getPostulacionesAnuncio, get
 from Implementacion.Tarea import Tarea, getTareasRegistradas, agregarTareaEmpleado
 from Implementacion.Disponibilidad import Disponibilidad, getDisponibilidadesRegistradas, agregarDisponibilidadEmpleado
 from Implementacion.Vinculo import Vinculo, getVinculoByID, getVinculoByEmpleado, getVinculoByEmpleador, getVinculoIDs, getPromedioByEmpleadorId, getPromedioByEmpleadoId, getVinculosNoNotificadosDelEmpleado, empleadoTieneNotificacionesPendientesVinculos, tieneElEmpleadorVinculoConEmpleado, tieneElEmpleadoVinculoConEmpleador
-from Implementacion.Mensaje import Mensaje, getMensajesParaEmpleado, empleadoTieneMensajesSinLeer, getMensajesParaEmpleador, empleadorTieneMensajesSinLeer, tieneElEmpleadoMensajeDeEmpleador, tieneElEmpleadorMensajeDeEmpleado
+from Implementacion.Mensaje import Mensaje, getMensajeByID, getMensajesParaEmpleado, empleadoTieneMensajesSinLeer, getMensajesParaEmpleador, empleadorTieneMensajesSinLeer, tieneElEmpleadoMensajeDeEmpleador, tieneElEmpleadorMensajeDeEmpleado, getTiposEmisorReceptorRegistrados
 from Implementacion.DTOAuxEmpleado import DTOAuxEmpleado, TareaSeleccion, DisponibilidadSeleccion
 from Implementacion.Referencia import Referencia, getReferenciaByID, getReferenciasEmpleado
 from Implementacion.Admin import getDatosAdmin
-from Implementacion.Recordatorio import Recordatorio, getRecordatorioByID, recordatoriosBloqueantes, recordatoriosCalificacionesPendientes
+from Implementacion.Recordatorio import Recordatorio, getRecordatorioByID, recordatoriosBloqueantes, recordatoriosCalificacionesPendientes, getTiposRecordatoriosRegistrados
 from Implementacion.DTOMensaje import DTOMensaje
 from Implementacion.Anuncio_dinamico import Anuncio as Anuncio_d
 from Implementacion.Anuncio_dinamico import getAnuncioByID as getAnuncioByID_d
@@ -53,7 +53,6 @@ app.secret_key = "session"
 def archivoAdmitido(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in EXTENSIONES_ADMITIDAS
-
 
 
 def login(user, password):
@@ -657,13 +656,7 @@ def inicio_empleados():
                 binary_file_data = binary_file.read()
                 base64_encoded_data = base64.b64encode(binary_file_data)
                 empleado.foto = base64_encoded_data.decode('utf-8')
-        # Si no se puede cargar la foto guardada en la base cargo la imagen default
-        #rutaFisica = '.' + url_for('static', filename=empleado.foto)
-        #if not os.path.exists(rutaFisica):
-        #    empleado.foto = os.path.join(
-        #        app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
-
-        # se debe verificar que el empleado no tenga mensajes sin leer, en caso afirmativo se debe notificar
+                
         tieneNotifMensajes = empleadoTieneMensajesSinLeer(
             baseDatos, empleado.id)
         # se debe verificar que el empleado este notificado sobre todos sus vínculos, en caso negativo se debe notificar
@@ -895,8 +888,6 @@ def borrandoAnuncio(idAnuncio):
             del_CuidadoMascotas)
         #flash('Anuncio eliminado!')
         return redirect(url_for('listandoMisAnuncios'))
-
-# acá va la funcion que envía los datos viejos para llenar el form del anuncio q se va a cambiar
 
 
 @app.route('/actualizandoAnuncio/<idAnuncio>/', methods=['POST', 'GET'])
@@ -1543,17 +1534,9 @@ def end_vinculo(idVinculo):
             cal = request.form.get('rating')
             vinculo = getVinculoByID(baseDatos, idVinculo)
             empleador = vinculo.empleador
-            # Si no se puede cargar la foto guardada en la base cargo la imagen default
-            rutaFisica = '.' + url_for('static', filename=empleador.foto)
-            if not os.path.exists(rutaFisica):
-                empleador.foto = os.path.join(
-                    app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+
             empleado = vinculo.empleado
-            # Si no se puede cargar la foto guardada en la base cargo la imagen default
-            rutaFisica = '.' + url_for('static', filename=empleado.foto)
-            if not os.path.exists(rutaFisica):
-                empleado.foto = os.path.join(
-                    app.config['CARPETA_CARGA_IMAGENES'], 'NoImage.png')
+
             anuncio = vinculo.anuncio
 
             if session.get('usertype') == 'Empleado':
@@ -1849,13 +1832,10 @@ def desbloqueo_cuenta():
         else:
             return render_template('DesbloqueoCuenta.html')
 
-
 # ---------------------------------------API-----------------------------------------------------------
-
 @app.route('/api/ping/', methods=['GET'])
 def ping():
     return jsonify({'message': 'pong!'})
-
 
 
 @app.route('/api/Ingresar/', methods=['POST'])
@@ -1873,10 +1853,12 @@ def api_ingresar():
                 empleado = getEmpleadoByUsuarioID(baseDatos, usuario.id)
                 if empleado.foto:
                     foto = empleado.foto.decode('utf-8')
+            
             elif retorno[0][0] == "Empleador":
                 empleador = getEmpleadorByUsuarioID(baseDatos, usuario.id)
                 if empleador.foto:
                     foto = empleador.foto.decode('utf-8')
+
 
             login_info = {
                 'message': "usuario logueado con éxito",
@@ -1910,6 +1892,7 @@ def api_ingresar():
             }
     return jsonify(login_info)
 
+
 @app.route('/api/verificacion_ci/', methods=['POST'])
 def api_verificacion_ci():
 
@@ -1917,6 +1900,7 @@ def api_verificacion_ci():
         return {"message": "Usuario registrado", "code": 1}
     else:
         return {"message": "Usuario no registrado", "code": 0}
+
 
 @app.route('/api/registro/', methods=['POST'])
 def api_registro():
@@ -2107,7 +2091,6 @@ def ver_perfil_empleado_api(id):
         return jsonify({"message" : "id incorrecto para empleado", "code": 0})
  
 
-
 @app.route('/api/listandoMisAnuncios/<id>')
 def api_listandoMisAnuncios(id):
 
@@ -2154,7 +2137,6 @@ def cambiar_clave_api():
         return jsonify({"message": "clave cambiada", "code": 1})
     except:
         return jsonify({"message": "error", "code": 0})
-
 
 
 @app.route('/api/editar_perfil/empleador/', methods=['PUT'])
@@ -2258,6 +2240,7 @@ def editar_perfil_empleado():
 
         return jsonify({"message" : "error!", "code": 0})
 
+
 @app.route('/api/get_tareas/')
 def get_tareas_api():
     tareas_reg = getTareasRegistradas(baseDatos)
@@ -2279,6 +2262,7 @@ def get_disponibilidades_api():
             disponibilidades.append(disponibilidad)
     return jsonify(disponibilidades)
 
+
 @app.route('/api/disponibilidades_empleado/<id>')
 def disponibilidades_empleado_api(id):
     empleado = getEmpleadoByUsuarioID(baseDatos, id)
@@ -2289,6 +2273,7 @@ def disponibilidades_empleado_api(id):
             disponibilidad = {"id": dis.id, "descripcion": dis.descripcion, "seleccionada": dis.seleccionada}
             disponibilidades_emp.append(disponibilidad)
     return jsonify(disponibilidades_emp)
+
 
 @app.route('/api/tareas_empleado/<id>')
 def tareas_empleado_api(id):
@@ -2313,6 +2298,7 @@ def tareas_anuncio_api(id):
             tareas_anu.append(tarea)
     return jsonify(tareas_anu)
 
+
 @app.route('/api/disponibilidad_anuncio/<id>')
 def disponibilidad_anuncio_api(id):
     anuncio = getAnuncioByID(baseDatos, id)
@@ -2323,7 +2309,6 @@ def disponibilidad_anuncio_api(id):
             disponibilidad = {"id": dis.id, "descripcion": dis.descripcion, "seleccionada": dis.seleccionada}
             disponibilidades_anu.append(disponibilidad)
     return jsonify(disponibilidades_anu)
-
 
 
 @app.route('/api/crear_anuncio/', methods=['POST'])
@@ -2356,7 +2341,6 @@ def crear_anuncio_api():
         return jsonify({"message": "error en crear anuncio", "code": 0})
 
 
-
 @app.route('/api/get_anuncio/<id>')
 def ver_anuncio_api(id):
     try:
@@ -2381,6 +2365,7 @@ def ver_anuncio_api(id):
         return jsonify(anuncio)
     except:
         return jsonify({"message": "error", "code": 0})
+
 
 @app.route('/api/delete_anuncio/', methods=['DELETE'])
 def delete_anuncio_api():
@@ -2546,7 +2531,6 @@ def matcheo(id_empleado):
             return jsonify([])
     except:
         return jsonify({"message": "error", "code": 0})
-
 
 
 @app.route('/api/postular/', methods=['POST'])
@@ -2730,7 +2714,6 @@ def contratar_api():
         return jsonify({"message": "vinculo generado", "code": 1})
     except:
         return jsonify({"message": "error", "code": 0})
-
 
 
 @app.route('/api/vinculos_empleado/<id>')
@@ -2933,6 +2916,402 @@ def finalizar_vinculo_api():
         return jsonify({"message": "vínculo finalizado", "code": 1})
     except:
         return jsonify({"message": "error", "code": 0})
+
+#----------------desde acá está sin subir--------------------
+
+@app.route('/api/mensajes/tipos_emisor_receptor_registrados')
+def mensajes_tipos_emisor_receptor_registrados_api():
+    tipos = getTiposEmisorReceptorRegistrados(baseDatos)
+    return jsonify(tipos)
+
+
+@app.route('/api/mensajes/empleado_todos/<id_usuario_empleado>')
+def empleado_todos_mensajes_api(id_usuario_empleado):
+    try:
+        empleado = getEmpleadoByUsuarioID(baseDatos, id_usuario_empleado)
+        diccMensajes = getMensajesParaEmpleado(baseDatos, empleado.id)
+        listaMensajes = list()
+        for key in diccMensajes:
+            for m in diccMensajes[key]:
+                mensaje = {
+                    "id_mensaje" : m.id,
+                    "id_usuario_empleado": m.empleado.usuario.id,
+                    "id_usuario_empleador": m.empleador.usuario.id,
+                    "id_anuncio": m.anuncio.id,
+                    "fecha": m.fecha.strftime("%Y-%m-%d %H:%M:%S"),
+                    "mensaje": m.mensaje,
+                    "tipo_emisor": m.tipoEmisor,
+                    "tipo_receptor": m.tipoReceptor,
+                    "leído": m.leido 
+                }
+                listaMensajes.append(mensaje)
+
+        return jsonify(listaMensajes)
+    except:
+        return jsonify({"message": "error", "code": 0})
+
+
+@app.route('/api/mensajes/empleador_todos/<id_usuario_empleador>')
+def empleador_todos_mensajes_api(id_usuario_empleador):
+    try:
+        empleador = getEmpleadorByUsuarioID(baseDatos, id_usuario_empleador)
+        diccMensajes = getMensajesParaEmpleador(baseDatos, empleador.id)
+        listaMensajes = list()
+        for key in diccMensajes:
+            for m in diccMensajes[key]:
+                mensaje = {
+                    "id_mensaje" : m.id,
+                    "id_usuario_empleado": m.empleado.usuario.id,
+                    "id_usuario_empleador": m.empleador.usuario.id,
+                    "id_anuncio": m.anuncio.id,
+                    "fecha": m.fecha.strftime("%Y-%m-%d %H:%M:%S"),
+                    "mensaje": m.mensaje,
+                    "tipo_emisor": m.tipoEmisor,
+                    "tipo_receptor": m.tipoReceptor,
+                    "leído": m.leido 
+                }
+                listaMensajes.append(mensaje)
+
+        return jsonify(listaMensajes)
+    except:
+        return jsonify({"message": "error", "code": 0})
+
+
+@app.route('/api/mensajes/del_empleado_con_empleador/<id_usuario_empleado>/<id_usuario_empleador>')
+def mensajes_empleado_api(id_usuario_empleado, id_usuario_empleador):
+    try:
+        empleado = getEmpleadoByUsuarioID(baseDatos, id_usuario_empleado)
+        diccMensajes = getMensajesParaEmpleado(baseDatos, empleado.id)
+        listaMensajes = list()
+        for key in diccMensajes:
+            for m in diccMensajes[key]:
+                if int(m.empleador.usuario.id) == int(id_usuario_empleador):
+                    mensaje = {
+                        "id_mensaje" : m.id,
+                        "id_usuario_empleado": m.empleado.usuario.id,
+                        "id_usuario_empleador": m.empleador.usuario.id,
+                        "id_anuncio": m.anuncio.id,
+                        "fecha": m.fecha.strftime("%Y-%m-%d %H:%M:%S"),
+                        "mensaje": m.mensaje,
+                        "tipo_emisor": m.tipoEmisor,
+                        "tipo_receptor": m.tipoReceptor,
+                        "leído": m.leido 
+                    }
+                    listaMensajes.append(mensaje)
+
+        return jsonify(listaMensajes)
+    except:
+        return jsonify({"message": "error", "code": 0})
+
+
+@app.route('/api/mensajes/del_empleador_con_empleado/<id_usuario_empleado>/<id_usuario_empleador>')
+def mensajes_empleador_api(id_usuario_empleado, id_usuario_empleador):
+    try:
+        empleador = getEmpleadorByUsuarioID(baseDatos, id_usuario_empleador)
+        diccMensajes = getMensajesParaEmpleador(baseDatos, empleador.id)
+        listaMensajes = list()
+        for key in diccMensajes:
+            for m in diccMensajes[key]:
+                if int(m.empleado.usuario.id) == int(id_usuario_empleado):
+                    mensaje = {
+                        "id_mensaje" : m.id,
+                        "id_usuario_empleado": m.empleado.usuario.id,
+                        "id_usuario_empleador": m.empleador.usuario.id,
+                        "id_anuncio": m.anuncio.id,
+                        "fecha": m.fecha.strftime("%Y-%m-%d %H:%M:%S"),
+                        "mensaje": m.mensaje,
+                        "tipo_emisor": m.tipoEmisor,
+                        "tipo_receptor": m.tipoReceptor,
+                        "leído": m.leido 
+                    }
+                    listaMensajes.append(mensaje)
+
+        return jsonify(listaMensajes)
+    except:
+        return jsonify({"message": "error", "code": 0})
+
+
+@app.route('/api/ver_mensaje/<id_mensaje>')
+def ver_mensaje_api(id_mensaje):
+    try:
+        m = getMensajeByID(baseDatos, id_mensaje)
+        mensaje = {
+            "id_mensaje" : m.id,
+            "id_usuario_empleado": m.empleado.usuario.id,
+            "id_usuario_empleador": m.empleador.usuario.id,
+            "id_anuncio": m.anuncio.id,
+            "fecha": m.fecha.strftime("%Y-%m-%d %H:%M:%S"),
+            "mensaje": m.mensaje,
+            "tipo_emisor": m.tipoEmisor,
+            "tipo_receptor": m.tipoReceptor,
+            "leído": m.leido 
+        }
+        return jsonify(mensaje)
+    except:
+        return jsonify({"message": "error", "code": 0})
+
+
+@app.route('/api/mensaje_marcar_leido/<id_mensaje>', methods = ['PUT'])
+def mensaje_marcar_leido_api(id_mensaje):
+    try:
+        mensaje = getMensajeByID(baseDatos, id_mensaje)
+        if mensaje.leido == False:
+            mensaje.marcarMensajeComoLeido(baseDatos)
+            return jsonify({"message": "mensaje marcado como leído", "code": 1})
+        else:
+            return jsonify({"message": "mensaje ya leído", "code": 1})
+    except:
+        return jsonify({"message": "error", "code": 0})
+
+
+@app.route('/api/crear_mensaje_desde_empleador', methods = ['POST'])
+def crear_mensaje_api_desde_empleador():
+
+    try:
+        anuncio = getAnuncioByID(baseDatos, request.json['id_anuncio'])
+        empleador = getEmpleadorByUsuarioID(baseDatos, request.json['id_usuario_empleador'])
+        empleado = getEmpleadoByUsuarioID(baseDatos, request.json['id_usuario_empleado'])
+        mensaje = Mensaje(0, empleado, empleador, anuncio, datetime.now(), request.json['mensaje'], 2, 1, False)
+        mensaje.crearMensaje(baseDatos)
+        return jsonify({"message": "mensaje enviado", "code": 1})
+    except:
+        return jsonify({"message": "error", "code": 0})
+
+
+@app.route('/api/recordatorios_tipos_registrados')
+def recordatorios_tipos_registrados_api():
+    tipos = getTiposRecordatoriosRegistrados(baseDatos)
+    return jsonify(tipos)
+
+
+@app.route('/api/recordatorios_del_día/<tipo_usuario>/<id_usuario>')
+def getRecordatoriosDelDia_api(tipo_usuario, id_usuario):
+    try:
+        recordatorios = list()
+        recordatoriosDelDia = list()
+        if tipo_usuario == 'Empleado':
+            empleado = getEmpleadoByUsuarioID(baseDatos, id_usuario)
+            recordatorios = recordatoriosCalificacionesPendientes(
+                baseDatos, empleado.id)
+        elif tipo_usuario == 'Empleador':
+            empleador = getEmpleadorByUsuarioID(baseDatos, id_usuario)
+            recordatorios = recordatoriosCalificacionesPendientes(
+                baseDatos, empleador.id)
+
+        if recordatorios is None:
+            return jsonify([])
+        else:
+            for rec in recordatorios:
+                if str(rec.fechaRecordatorio) == datetime.now().strftime('%Y-%m-%d'):
+                    recordatoriosDelDia.append(rec)
+            listaRecordatoriosDelDia= list()
+            if len(recordatoriosDelDia) == 0:
+                return jsonify([])
+            else:
+                if recordatoriosDelDia:
+                    for recorda in recordatoriosDelDia:
+                        if recorda.vinculo:
+                            vinculo = recorda.vinculo.id
+                        else:
+                            vinculo = None
+                        if recorda.postulacion:
+                            postulacion = recorda.postulacion.id
+                        else:
+                            postulacion = None
+                        if recorda.anuncio:
+                            anuncio = recorda.anuncio.id
+                        else:
+                            anuncio = None
+                        if recorda.empleado:
+                            empleado = recorda.empleado.usuario.id
+                        else:
+                            empleado = None
+                        if recorda.empleador:
+                            empleador = recorda.empleador.usuario.id
+                        else:
+                            empleador = None
+                        if recorda.destinatario:
+                            destinatario = recorda.destinatario.usuario.id
+                        else:
+                            destinatario = None
+                        r={
+                            "id": recorda.id,
+                            "tipo": recorda.tipo,
+                            "id_usuario_empleador": empleador,
+                            "id_usuario_empleado": empleado,
+                            "destinatario": destinatario,
+                            "anuncio": anuncio,
+                            "postulacion": postulacion,
+                            "vinculo": vinculo,
+                            "fecha_recordatorio": recorda.fechaRecordatorio.strftime("%Y-%m-%d"),
+                            "fecha_limite": recorda.fechaLimite.strftime("%Y-%m-%d"),
+                            "cant_veces_aplazado": recorda.cantVecesAplazado,
+                            "leyenda": recorda.leyenda,
+                            "bloqueante": recorda.bloqueante
+                        }
+                        listaRecordatoriosDelDia.append(r)
+                    return jsonify(listaRecordatoriosDelDia)
+    except:
+        return jsonify({"message": "error", "code": 0})
+
+
+@app.route('/api/recordatorios_calificaciones_pendientes/<tipo_usuario>/<id_usuario>')
+def getRecordatoriosCalificacionesPendientes_api(tipo_usuario, id_usuario):
+
+    try:
+        if tipo_usuario == 'Empleado':
+            empleado = getEmpleadoByUsuarioID(baseDatos, id_usuario)
+            idE = empleado.id
+        elif tipo_usuario == 'Empleador':
+            empleador = getEmpleadorByUsuarioID(baseDatos, id_usuario)
+            idE = empleador.id
+        
+        recordatoriosPend = recordatoriosCalificacionesPendientes(baseDatos, idE)
+        listaRecordatoriosPendientes = list()
+        if recordatoriosPend:
+            for recorda in recordatoriosPend:
+                if recorda.vinculo:
+                    vinculo = recorda.vinculo.id
+                else:
+                    vinculo = None
+                if recorda.postulacion:
+                    postulacion = recorda.postulacion.id
+                else:
+                    postulacion = None
+                if recorda.anuncio:
+                    anuncio = recorda.anuncio.id
+                else:
+                    anuncio = None
+                if recorda.empleado:
+                    empleado = recorda.empleado.usuario.id
+                else:
+                    empleado = None
+                if recorda.empleador:
+                    empleador = recorda.empleador.usuario.id
+                else:
+                    empleador = None
+                if recorda.destinatario:
+                    destinatario = recorda.destinatario.usuario.id
+                else:
+                    destinatario = None
+                r={
+                    "id": recorda.id,
+                    "tipo": recorda.tipo,
+                    "id_usuario_empleador": empleador,
+                    "id_usuario_empleado": empleado,
+                    "destinatario": destinatario,
+                    "anuncio": anuncio,
+                    "postulacion": postulacion,
+                    "vinculo": vinculo,
+                    "fecha_recordatorio": recorda.fechaRecordatorio.strftime("%Y-%m-%d"),
+                    "fecha_limite": recorda.fechaLimite.strftime("%Y-%m-%d"),
+                    "cant_veces_aplazado": recorda.cantVecesAplazado,
+                    "leyenda": recorda.leyenda,
+                    "bloqueante": recorda.bloqueante
+                }
+                listaRecordatoriosPendientes.append(r)
+        return jsonify(listaRecordatoriosPendientes)
+    except:
+        return jsonify({"message": "error", "code": 0})
+
+
+@app.route('/api/recordatorios_bloqueantes/<tipo_usuario>/<id_usuario>')
+def getRecordatoriosBloqueantes_api(tipo_usuario, id_usuario):
+    try:
+        if tipo_usuario == 'Empleado':
+            empleado = getEmpleadoByUsuarioID(baseDatos, id_usuario)
+            idE = empleado.id
+        elif tipo_usuario == 'Empleador':
+            empleador = getEmpleadorByUsuarioID(baseDatos, id_usuario)
+            idE = empleador.id
+        
+        recordatoriosPend = recordatoriosBloqueantes(baseDatos, idE)
+        listaRecordatoriosPendientes = list()
+        if recordatoriosPend:
+            for recorda in recordatoriosPend:
+                if recorda.vinculo:
+                    vinculo = recorda.vinculo.id
+                else:
+                    vinculo = None
+                if recorda.postulacion:
+                    postulacion = recorda.postulacion.id
+                else:
+                    postulacion = None
+                if recorda.anuncio:
+                    anuncio = recorda.anuncio.id
+                else:
+                    anuncio = None
+                if recorda.empleado:
+                    empleado = recorda.empleado.usuario.id
+                else:
+                    empleado = None
+                if recorda.empleador:
+                    empleador = recorda.empleador.usuario.id
+                else:
+                    empleador = None
+                if recorda.destinatario:
+                    destinatario = recorda.destinatario.usuario.id
+                else:
+                    destinatario = None
+                r={
+                    "id": recorda.id,
+                    "tipo": recorda.tipo,
+                    "id_usuario_empleador": empleador,
+                    "id_usuario_empleado": empleado,
+                    "destinatario": destinatario,
+                    "anuncio": anuncio,
+                    "postulacion": postulacion,
+                    "vinculo": vinculo,
+                    "fecha_recordatorio": recorda.fechaRecordatorio.strftime("%Y-%m-%d"),
+                    "fecha_limite": recorda.fechaLimite.strftime("%Y-%m-%d"),
+                    "cant_veces_aplazado": recorda.cantVecesAplazado,
+                    "leyenda": recorda.leyenda,
+                    "bloqueante": recorda.bloqueante
+                }
+                listaRecordatoriosPendientes.append(r)
+        return jsonify(listaRecordatoriosPendientes)
+    except: 
+        return jsonify({"message": "error", "code": 0})
+
+
+@app.route('/api/mensajes_sin_leer/<tipo_usuario>/<id_usuario>')
+def mensajes_sin_leer_api(tipo_usuario, id_usuario):
+
+    try:
+        if tipo_usuario == "Empleado":
+            empleado = getEmpleadoByUsuarioID(baseDatos, id_usuario)
+            retorno = empleadoTieneMensajesSinLeer(baseDatos, empleado.id)
+            return jsonify(retorno) 
+        elif tipo_usuario == "Empleador":
+            empleador = getEmpleadorByUsuarioID(baseDatos, id_usuario)
+            retorno = empleadorTieneMensajesSinLeer(baseDatos, empleador.id)
+            return jsonify(retorno)
+    except: 
+        return jsonify({"message": "error", "code": 0})
+
+
+@app.route('/api/empleado/TieneNotificacionesPendientesVinculos/<id_usuario>')
+def empleadoTieneNotificacionesPendientesVinculos_api(id_usuario):
+    try:
+        empleado = getEmpleadoByUsuarioID(baseDatos, id_usuario)
+        retorno = empleadoTieneNotificacionesPendientesVinculos(baseDatos, empleado.id)
+        return jsonify(retorno)
+    except: 
+        return jsonify({"message": "error", "code": 0})
+
+
+@app.route('/api/empleado/empleadorTieneNotificacionesPendientesPostulaciones/<id_usuario>')
+def empleadorTieneNotificacionesPendientesPostulaciones_api(id_usuario):
+    try:
+        empleador = getEmpleadorByUsuarioID(baseDatos, id_usuario)
+        retorno = empleadorTieneNotificacionesPendientesPostulaciones(baseDatos, empleador.id)
+        return jsonify(retorno)
+    except: 
+        return jsonify({"message": "error", "code": 0})
+
+
+
+
 # -----------------------------------------------------------------------------------------------------
 
 if __name__ == '__main__':

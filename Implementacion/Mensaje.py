@@ -395,3 +395,21 @@ def tieneElEmpleadorMensajeDeEmpleado(bd, id_empleador, id_empleado):
     except Exception as e:
         print("Error en tieneElEmpleadorMensajeDeEmpleado ", e)
         
+
+def getTiposEmisorReceptorRegistrados(bd):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('SELECT id, nombre FROM tipo_emisor_receptor_mensaje')
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+        tipos = list()
+        for tipo in retorno:
+            t = {
+                "id": tipo[0],
+                "nombre": tipo[1]
+            }
+            tipos.append(t)
+        return tipos
+    except Exception as e:
+        print("Error en getTiposEmisorReceptorRegistrados ", e)
