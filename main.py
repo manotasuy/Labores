@@ -1938,7 +1938,31 @@ def api_registro():
                 new_empleador.foto = request.json['empleador']['foto']
                 
             new_empleador.crearEmpleador(baseDatos)
-            return {"message": "Usuario empleador creado con exito!", "code": 1}
+            usuario_para_login = getUsuarioByCI(baseDatos, request.json['ci'])
+            retorno = usuario_para_login.loginUsuario(baseDatos)
+            foto = None
+
+            if retorno:
+                
+                
+                empleador = getEmpleadorByUsuarioID(baseDatos, usuario.id)
+                if empleador.foto:
+                    foto = empleador.foto.decode('utf-8')
+
+                login_info = {
+                    'message': "usuario logueado con éxito",
+                    'id': usuario_para_login.id,
+                    'user': usuario_para_login.usuario,
+                    'password': usuario_para_login.clave,
+                    'tipo': request.json['tipo'],
+                    'image': foto
+                }
+
+                return jsonify({
+                    "message": "Usuario empleador creado con exito!", 
+                    "code": 1, 
+                    "login_info": login_info
+                    })
        
         else:
 
@@ -1999,7 +2023,31 @@ def api_registro():
                 for dis in request.json['empleado']['disponibilidad']:
                     agregarDisponibilidadEmpleado(baseDatos, dis, empleado.id)
 
-            return {"message": "Usuario empleado creado con exito!", "code": 1}
+            usuario_para_login = getUsuarioByCI(baseDatos, request.json['ci'])
+            retorno = usuario_para_login.loginUsuario(baseDatos)
+            foto = None
+
+            if retorno:
+                
+                
+                empleado = getEmpleadoByUsuarioID(baseDatos, usuario.id)
+                if empleado.foto:
+                    foto = empleado.foto.decode('utf-8')
+
+                login_info = {
+                    'message': "usuario logueado con éxito",
+                    'id': usuario_para_login.id,
+                    'user': usuario_para_login.usuario,
+                    'password': usuario_para_login.clave,
+                    'tipo': request.json['tipo'],
+                    'image': foto
+                }
+
+                return jsonify({
+                    "message": "Usuario empleado creado con exito!", 
+                    "code": 1, 
+                    "login_info": login_info
+                    })
         
 
 @app.route('/api/ver_perfil/empleador/<id>')
@@ -3096,7 +3144,6 @@ def recordatorios_tipos_registrados_api():
     tipos = getTiposRecordatoriosRegistrados(baseDatos)
     return jsonify(tipos)
 
-#----------------desde acá está sin subir--------------------
 
 @app.route('/api/recordatorios_del_día/<tipo_usuario>/<id_usuario>')
 def getRecordatoriosDelDia_api(tipo_usuario, id_usuario):
@@ -3323,10 +3370,6 @@ def empleadorTieneNotificacionesPendientesPostulaciones_api(id_usuario):
     except: 
         return jsonify({"message": "error", "code": 0})
 
-
-
-
-# -----------------------------------------------------------------------------------------------------
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8080, debug=True)
