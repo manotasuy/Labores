@@ -2362,8 +2362,8 @@ def disponibilidad_anuncio_api(id):
 @app.route('/api/crear_anuncio/', methods=['POST'])
 def crear_anuncio_api():
     try: 
-        usuario = getUsuarioByID(baseDatos, request.json['id_empleador'])
-        empleador = getEmpleadorByUsuarioID(baseDatos, request.json['id_empleador'])
+        usuario = getUsuarioByID(baseDatos, request.json['id_usuario_empleador'])
+        empleador = getEmpleadorByUsuarioID(baseDatos, request.json['id_usuario_empleador'])
         anuncio = Anuncio_d(
             0,
             request.json['titulo'],
