@@ -1866,8 +1866,7 @@ def api_ingresar():
                 'user': user,
                 'password': password,
                 'tipo': retorno[0][0],
-                'image': foto,
-                'code':1
+                'image': foto
             }
         else:
             login_info = {
@@ -1876,8 +1875,7 @@ def api_ingresar():
                 'user': None,
                 'password': None,
                 'tipo': None,
-                'image': None,
-                'code' :0
+                'image': None
 
             }
     else:
@@ -1887,8 +1885,7 @@ def api_ingresar():
                 'user': None,
                 'password': None,
                 'tipo': None,
-                'image': None,
-                'code' :0
+                'image': None
             }
     return jsonify(login_info)
 
@@ -2129,8 +2126,7 @@ def ver_perfil_empleado_api(id):
             "descripcion": empleado.descripcion,
             "foto": empleado.foto,
             "calificacion": empleado.promedioCalificacion,
-            "referencias": lista_ref, 
-            "code": 1
+            "referencias": lista_ref
         }
 
         return jsonify(data)
