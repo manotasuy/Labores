@@ -10,9 +10,11 @@ from flask_mysqldb import MySQL
 from datetime import datetime, timedelta, date
 from enum import Enum
 import base64
+import firebase_admin
+from firebase_admin import credentials, messaging
 
 # Paquetes implementación
-from Implementacion.Conexion import connectionDb
+from Implementacion.Conexion import connectionDb, getFCM_CRED
 from Implementacion.Usuario import Usuario, getUsuarioByID, getUsuarioByCI
 from Implementacion.Empleado import Empleado, getEmpleadoByID, getEmpleadoByUsuarioID, getTareasEmpleado, getDisponibilidadEmpleado, getRankingPorCalificacionEmpleados
 from Implementacion.Empleador import Empleador, getEmpleadorByID, getEmpleadorByUsuarioID, getRankingPorCalificacionEmpleadores
@@ -32,6 +34,14 @@ from Implementacion.Anuncio_dinamico import getAnuncioByID as getAnuncioByID_d
 
 EXTENSIONES_ADMITIDAS = set(['jpg', 'png', 'jpeg', 'bmp', 'gif'])
 
+#LOCAL DANIEL
+#cred = credentials.Certificate("C:/Users/baldo/Desktop/labores 2021/labores/trunk/serviceAccountKey.json")
+
+#PA
+cred = credentials.Certificate("/home/labores2021/Labores/serviceAccountKey.json")
+
+firebase_admin.initialize_app(cred)
+
 app = Flask(__name__)
 
 
@@ -46,8 +56,28 @@ baseDatos = connectionDb(app, 'PA')
 
 
 # session
-# a
 app.secret_key = "session"
+
+tokens = ["dNNAO26rQ5S7vqVBBhE3P8:APA91bFxpTR0-0oA35XXey0UzpQdG10P3emn7qEvaup-5F3LFroUb2rYsQ0u8GN8yt5hXsRJ9PzM55FRltvxxaFx_YkErCvnfWlMppn2DEgQXL7zcsYI6XZGvIqISnL5DV96BYSPq1SU"]
+
+
+
+def sendPush(title, msg, registration_token, dataObject=None):
+    # See documentation on defining a message payload.
+    message = messaging.MulticastMessage(
+        notification=messaging.Notification(
+            title=title,
+            body=msg
+        ),
+        data=dataObject,
+        tokens=registration_token,
+    )
+
+    # Send a message to the device corresponding to the provided
+    # registration token.
+    response = messaging.send_multicast(message)
+    # Response is a message ID string.
+    print('Successfully sent message:', response)
 
 
 def archivoAdmitido(filename):
@@ -1236,11 +1266,21 @@ def postularse(idAnuncio):
         mensajeEmpleado = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
         ), 'Buena suerte {} {}!!! te has postulado al anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 1, False)
         mensajeEmpleado.crearMensaje(baseDatos)
+        user_id_push = str(empleado.usuario.id)
+        objetoX = {
+            "id_user": user_id_push
+        }
+        sendPush("x", "x", tokens, objetoX)
 
         # Se debe notificar al empleador mediante mensaje de que se ha postulado
         mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
         ), 'Buenas noticias!!! {} {} se ha postulado a tu anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
         mensajeEmpleador.crearMensaje(baseDatos)
+        user_id_push = str(empleador.usuario.id)
+        objetoX = {
+            "id_user": user_id_push
+        }
+        sendPush("x", "x", tokens, objetoX)
 
         return redirect(url_for('listar_anuncios'))
 
@@ -1293,11 +1333,21 @@ def despostularse(idPostulacion):
         mensajeEmpleado = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
         ), '{} {}, te has despostulado del anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 1, False)
         mensajeEmpleado.crearMensaje(baseDatos)
+        user_id_push = str(empleado.usuario.id)
+        objetoX = {
+            "id_user": user_id_push
+        }
+        sendPush("x", "x", tokens, objetoX)
 
         # Se debe notificar al empleador mediante mensaje de que se han despostulado de su anuncio
         mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
         ), '{} {} se ha despostulado de tu anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
         mensajeEmpleador.crearMensaje(baseDatos)
+        user_id_push = str(empleador.usuario.id)
+        objetoX = {
+            "id_user": user_id_push
+        }
+        sendPush("x", "x", tokens, objetoX)
 
         return redirect(url_for('mis_postulaciones'))
 
@@ -1560,12 +1610,22 @@ def end_vinculo(idVinculo):
                                       'Su vínculo con {} {} por el anuncio "{}" ha finalizado. Recuerde que puede calificar el vínculo cuantas veces lo considere desde "Mis Vínculos"'
                                       .format(empleador.nombre, empleador.apellido, anuncio.titulo), 3, 1, False)
             mensajeEmpleado.crearMensaje(baseDatos)
+            user_id_push = str(empleado.usuario.id)
+            objetoX = {
+                "id_user": user_id_push
+            }
+            sendPush("x", "x", tokens, objetoX)
 
             # Se debe notificar al empleador mediante mensaje de que el vínculo con el empleado "X" finalizó
             mensajeEmpleador = Mensaje(0, empleado, empleador, anuncio, datetime.now(),
                                        'Su vínculo con {} {} por el anuncio "{}" ha finalizado. Recuerde que puede calificar el vínculo cuantas veces lo considere desde "Mis Vínculos"'
                                        .format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
             mensajeEmpleador.crearMensaje(baseDatos)
+            user_id_push = str(empleador.usuario.id)
+            objetoX = {
+                "id_user": user_id_push
+            }
+            sendPush("x", "x", tokens, objetoX)
 
             return redirect(url_for('ver_vinculo', idVinculo=idVinculo))
 
@@ -1702,6 +1762,12 @@ def agregar_mensaje(idDestinatario, idAnuncio):
                 mensajeEmpleado.crearMensaje(baseDatos)
                 return redirect(url_for('mensajes_empleado', idEmpleado=empleado.id, idEmpleador=empleador.id))
 
+                user_id_push = str(empleador.usuario.id)
+                objetoX = {
+                    "id_user": user_id_push
+                }
+                sendPush("x", "x", tokens, objetoX)
+
             elif session['usertype'] == 'Empleador':
                 empleador = getEmpleadorByID(
                     baseDatos, session['id_empleador'])
@@ -1709,6 +1775,11 @@ def agregar_mensaje(idDestinatario, idAnuncio):
                 mensajeEmpleador = Mensaje(
                     0, empleado, empleador, anuncio, datetime.now(), mensaje, 2, 1, False)
                 mensajeEmpleador.crearMensaje(baseDatos)
+                user_id_push = str(empleado.usuario.id)
+                objetoX = {
+                    "id_user": user_id_push
+                }
+                sendPush("x", "x", tokens, objetoX)
                 return redirect(url_for('mensajes_empleador', idEmpleador=empleador.id, idEmpleado=empleado.id))
 
 
@@ -1759,10 +1830,21 @@ def contratar(idEmpleado):
             0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has sido contratado por {} {}, por el anuncio "{}", les deseamos un buen vínculo laboral.'.format(empleador.nombre, empleador.apellido, anuncio.titulo), 3, 1, False)
         mensajeEmpleado.crearMensaje(baseDatos)
 
+        user_id_push = str(empleado.usuario.id)
+        objeto = {
+            "id_user": user_id_push
+        }
+        sendPush("x", "x", tokens, objeto)
+
         # Se debe notificar al empleador mediante mensaje de que contrató al empleador "X"
         mensajeEmpleador = Mensaje(
             0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has contratado a {} {}, por el anuncio "{}", les deseamos un buen vínculo laboral.'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
         mensajeEmpleador.crearMensaje(baseDatos)
+        user_id_push = str(empleador.usuario.id)
+        objeto = {
+            "id_user": user_id_push
+        }
+        sendPush("x", "x", tokens, objeto)
 
         # Se debe generar recordatorio de calificación para el empleado
         recordatorioEmpleado = Recordatorio(0, 1, empleado, empleador, empleado, anuncio, postulacion, vinculo, datetime.now(
@@ -1887,6 +1969,12 @@ def api_ingresar():
                 'tipo': None,
                 'image': None
             }
+    if login_info['id']:
+        user_id_push = str(login_info['id'])
+        objeto = {
+            "id_user": user_id_push
+        }
+        sendPush("x", "x", tokens, objeto)
     return jsonify(login_info)
 
 
@@ -1954,6 +2042,11 @@ def api_registro():
                     'tipo': request.json['tipo'],
                     'image': foto
                 }
+                user_id_push = str(login_info['id'])
+                objeto = {
+                    "id_user": user_id_push
+                }
+                sendPush("x", "x", tokens, objeto)
 
                 return jsonify({
                     "message": "Usuario empleador creado con exito!", 
@@ -2039,6 +2132,11 @@ def api_registro():
                     'tipo': request.json['tipo'],
                     'image': foto
                 }
+                user_id_push = str(login_info['id'])
+                objeto = {
+                    "id_user": user_id_push
+                }
+                sendPush("x", "x", tokens, objeto)
 
                 return jsonify({
                     "message": "Usuario empleado creado con exito!", 
@@ -2107,7 +2205,8 @@ def ver_perfil_empleado_api(id):
                 "nombre" : ref.nombre,
                 "apellido" : ref.apellido,
                 "fecha_desde" : ref.fechaDesde.strftime('%d/%m/%Y'),
-                "fecha_hasta" : ref.fechaHasta.strftime('%d/%m/%Y')
+                "fecha_hasta" : ref.fechaHasta.strftime('%d/%m/%Y'),
+                "telefono" : ref.telefono
             }
             lista_ref.append(refe)
 
@@ -2233,7 +2332,7 @@ def editar_perfil_empleado():
         empleado.nacionalidad = request.json['nacionalidad']
         empleado.email = request.json['mail']
         empleado.telefono = request.json['telefono']
-        empleado.experiencia_meses = request.json['experiencia']
+        empleado.experiencia_meses = request.json['experiencia_meses']
         empleado.descripcion = request.json['descripcion']
         if request.json['foto']:
             empleado.foto = request.json['foto']
@@ -2591,11 +2690,21 @@ def postular_api():
         mensajeEmpleado = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
         ), 'Buena suerte {} {}!!! te has postulado al anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 1, False)
         mensajeEmpleado.crearMensaje(baseDatos)
+        user_id_push = str(empleado.usuario.id)
+        objeto = {
+            "id_user": user_id_push
+        }
+        sendPush("x", "x", tokens, objeto)
 
         # Se debe notificar al empleador mediante mensaje de que se ha postulado
         mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
         ), 'Buenas noticias!!! {} {} se ha postulado a tu anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
         mensajeEmpleador.crearMensaje(baseDatos)
+        user_id_push = str(empleador.usuario.id)
+        objeto = {
+            "id_user": user_id_push
+        }
+        sendPush("x", "x", tokens, objeto)
 
         return jsonify({"message": "postulación realizada", "code": 1})
 
@@ -2617,11 +2726,21 @@ def despostular_api():
         mensajeEmpleado = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
         ), '{} {}, te has despostulado del anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 1, False)
         mensajeEmpleado.crearMensaje(baseDatos)
+        user_id_push = str(empleado.usuario.id)
+        objeto = {
+            "id_user": user_id_push
+        }
+        sendPush("x", "x", tokens, objeto)
 
         # Se debe notificar al empleador mediante mensaje de que se han despostulado de su anuncio
         mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
         ), '{} {} se ha despostulado de tu anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
         mensajeEmpleador.crearMensaje(baseDatos)
+        user_id_push = str(empleador.usuario.id)
+        objeto = {
+            "id_user": user_id_push
+        }
+        sendPush("x", "x", tokens, objeto)
 
         return jsonify({"message": "des-postulación realizada", "code": 1})
 
@@ -2739,11 +2858,21 @@ def contratar_api():
         mensajeEmpleado = Mensaje(
             0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has sido contratado por {} {}, por el anuncio "{}", les deseamos un buen vínculo laboral.'.format(empleador.nombre, empleador.apellido, anuncio.titulo), 3, 1, False)
         mensajeEmpleado.crearMensaje(baseDatos)
+        user_id_push = str(empleado.usuario.id)
+        objeto = {
+            "id_user": user_id_push
+        }
+        sendPush("x", "x", tokens, objeto)
 
         # Se debe notificar al empleador mediante mensaje de que contrató al empleador "X"
         mensajeEmpleador = Mensaje(
             0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has contratado a {} {}, por el anuncio "{}", les deseamos un buen vínculo laboral.'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
         mensajeEmpleador.crearMensaje(baseDatos)
+        user_id_push = str(empleador.usuario.id)
+        objeto = {
+            "id_user": user_id_push
+        }
+        sendPush("x", "x", tokens, objeto)
 
         # Se debe generar recordatorio de calificación para el empleado
         recordatorioEmpleado = Recordatorio(0, 1, empleado, empleador, empleado, anuncio, postulacion, vinculo, datetime.now(
@@ -2951,12 +3080,22 @@ def finalizar_vinculo_api():
                                     'Su vínculo con {} {} por el anuncio "{}" ha finalizado. Recuerde que puede calificar el vínculo cuantas veces lo considere desde "Mis Vínculos"'
                                     .format(empleador.nombre, empleador.apellido, anuncio.titulo), 3, 1, False)
         mensajeEmpleado.crearMensaje(baseDatos)
+        user_id_push = str(empleado.usuario.id)
+        objeto = {
+            "id_user": user_id_push
+        }
+        sendPush("x", "x", tokens, objeto)
 
         # Se debe notificar al empleador mediante mensaje de que el vínculo con el empleado "X" finalizó
         mensajeEmpleador = Mensaje(0, empleado, empleador, anuncio, datetime.now(),
                                     'Su vínculo con {} {} por el anuncio "{}" ha finalizado. Recuerde que puede calificar el vínculo cuantas veces lo considere desde "Mis Vínculos"'
                                     .format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
         mensajeEmpleador.crearMensaje(baseDatos)
+        user_id_push = str(empleador.usuario.id)
+        objeto = {
+            "id_user": user_id_push
+        }
+        sendPush("x", "x", tokens, objeto)
         return jsonify({"message": "vínculo finalizado", "code": 1})
     except:
         return jsonify({"message": "error", "code": 0})
@@ -3116,9 +3255,15 @@ def crear_mensaje_api_desde_empleador():
         empleado = getEmpleadoByUsuarioID(baseDatos, request.json['id_usuario_empleado'])
         mensaje = Mensaje(0, empleado, empleador, anuncio, datetime.now(), request.json['mensaje'], 2, 1, False)
         mensaje.crearMensaje(baseDatos)
+        user_id_push = str(empleado.usuario.id)
+        objeto = {
+            "id_user": user_id_push
+        }
+        sendPush("x", "x", tokens, objeto)
         return jsonify({"message": "mensaje enviado", "code": 1})
     except:
         return jsonify({"message": "error", "code": 0})
+
 
 
 @app.route('/api/crear_mensaje_desde_empleado', methods = ['POST'])
@@ -3130,6 +3275,11 @@ def crear_mensaje_api_desde_empleado():
         empleado = getEmpleadoByUsuarioID(baseDatos, request.json['id_usuario_empleado'])
         mensaje = Mensaje(0, empleado, empleador, anuncio, datetime.now(), request.json['mensaje'], 1, 2, False)
         mensaje.crearMensaje(baseDatos)
+        user_id_push = str(empleador.usuario.id)
+        objeto = {
+            "id_user": user_id_push
+        }
+        sendPush("x", "x", tokens, objeto)
         return jsonify({"message": "mensaje enviado", "code": 1})
     except:
         return jsonify({"message": "error", "code": 0})
@@ -3365,6 +3515,16 @@ def empleadorTieneNotificacionesPendientesPostulaciones_api(id_usuario):
         return jsonify(retorno)
     except: 
         return jsonify({"message": "error", "code": 0})
+
+
+@app.route('/api/sendPush')
+def sendPush_api():
+    objeto = {
+        "code": "2",
+        "message": "Enviado desde FLASK :)"
+    }
+    sendPush("desde flask", "msg desde flask", tokens, objeto)
+    return "x"
 
 
 if __name__ == '__main__':

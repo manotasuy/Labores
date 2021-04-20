@@ -2,6 +2,7 @@ from flask_mysqldb import MySQL
 
 CARPETA_FISICA_IMAGENES = "./static/images/Perfiles/"
 CARPETA_CARGA_IMAGENES = "images/Perfiles/"
+FCM_CRED = "C:/Users/baldo/Desktop/labores 2021/labores/trunk/serviceAccountKey.json"
 
 
 def connectionDb(app, servidor):
@@ -37,6 +38,7 @@ def connectionDb(app, servidor):
         app.config['MYSQL_PASSWORD'] = 'basededatos'
         app.config['MYSQL_DB'] = 'labores2021$laboresdb'
         CARPETA_FISICA_IMAGENES = "/home/labores2021/Labores/static/images/Perfiles/"
+        FCM_CRED = "/home/labores2021/Labores/serviceAccountKey.json"
 
     elif servidor == 'gcp':
         app.config['MYSQL_HOST'] = '35.198.46.68'
@@ -55,6 +57,7 @@ def connectionDb(app, servidor):
         app.config['MYSQL_PASSWORD'] = ''
         app.config['MYSQL_DB'] = 'bdlabores'
         CARPETA_FISICA_IMAGENES = "C:/Users/baldo/Desktop/labores 2021/labores/trunk/static/images/Perfiles/"
+        FCM_CRED = "C:/Users/baldo/Desktop/labores 2021/labores/trunk/serviceAccountKey.json"
     app.config['CARPETA_FISICA_IMAGENES'] = CARPETA_FISICA_IMAGENES
     app.config['CARPETA_CARGA_IMAGENES'] = CARPETA_CARGA_IMAGENES
 
@@ -67,7 +70,10 @@ def connectionDb(app, servidor):
     return MySQL(app)
 
 def getCarpetaFisicaImagenes():
-    return CARPETA_FISICA_IMAGENES;
+    return CARPETA_FISICA_IMAGENES
 
 def getCarpetaCargaImagenes():
-    return CARPETA_CARGA_IMAGENES;
+    return CARPETA_CARGA_IMAGENES
+
+def getFCM_CRED():
+    return FCM_CRED
