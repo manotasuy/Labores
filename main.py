@@ -3294,16 +3294,19 @@ def recordatorios_tipos_registrados_api():
     return jsonify(tipos)
 
 
-@app.route('/api/recordatorios_del_día/<tipo_usuario>/<id_usuario>')
-def getRecordatoriosDelDia_api(tipo_usuario, id_usuario):
+@app.route('/api/recordatorios_del_día/<id_usuario>')
+def getRecordatoriosDelDia_api(id_usuario):
+
+    usuario = getUsuarioByID(baseDatos, id_usuario)
+    tipo_usuario = usuario.tipo
     try:
         recordatorios = list()
         recordatoriosDelDia = list()
-        if tipo_usuario == 'Empleado':
+        if str(tipo_usuario) == str(3):
             empleado = getEmpleadoByUsuarioID(baseDatos, id_usuario)
             recordatorios = recordatoriosCalificacionesPendientes(
                 baseDatos, empleado.id)
-        elif tipo_usuario == 'Empleador':
+        elif str(tipo_usuario) == str(2):
             empleador = getEmpleadorByUsuarioID(baseDatos, id_usuario)
             recordatorios = recordatoriosCalificacionesPendientes(
                 baseDatos, empleador.id)
@@ -3365,14 +3368,18 @@ def getRecordatoriosDelDia_api(tipo_usuario, id_usuario):
         return jsonify({"message": "error", "code": 0})
 
 
-@app.route('/api/recordatorios_calificaciones_pendientes/<tipo_usuario>/<id_usuario>')
-def getRecordatoriosCalificacionesPendientes_api(tipo_usuario, id_usuario):
+@app.route('/api/recordatorios_calificaciones_pendientes/<id_usuario>')
+def getRecordatoriosCalificacionesPendientes_api(id_usuario):
+    usuario = getUsuarioByID(baseDatos, id_usuario)
+
+    tipo_usuario = usuario.tipo 
+
 
     try:
-        if tipo_usuario == 'Empleado':
+        if str(tipo_usuario) == str(3):
             empleado = getEmpleadoByUsuarioID(baseDatos, id_usuario)
             idE = empleado.id
-        elif tipo_usuario == 'Empleador':
+        elif str(tipo_usuario) == str(2):
             empleador = getEmpleadorByUsuarioID(baseDatos, id_usuario)
             idE = empleador.id
         
@@ -3425,13 +3432,17 @@ def getRecordatoriosCalificacionesPendientes_api(tipo_usuario, id_usuario):
         return jsonify({"message": "error", "code": 0})
 
 
-@app.route('/api/recordatorios_bloqueantes/<tipo_usuario>/<id_usuario>')
-def getRecordatoriosBloqueantes_api(tipo_usuario, id_usuario):
+@app.route('/api/recordatorios_bloqueantes/<id_usuario>')
+def getRecordatoriosBloqueantes_api(id_usuario):
+    usuario = getUsuarioByID(baseDatos, id_usuario)
+
+    tipo_usuario = usuario.tipo 
+
     try:
-        if tipo_usuario == 'Empleado':
+        if str(tipo_usuario) == str(3):
             empleado = getEmpleadoByUsuarioID(baseDatos, id_usuario)
             idE = empleado.id
-        elif tipo_usuario == 'Empleador':
+        elif str(tipo_usuario) == str(2):
             empleador = getEmpleadorByUsuarioID(baseDatos, id_usuario)
             idE = empleador.id
         
@@ -3489,7 +3500,7 @@ def mensajes_sin_leer_api(id_usuario):
 
     usuario = getUsuarioByID(baseDatos, id_usuario)
 
-    tipo_usuario = usuario.tipo
+    tipo_usuario = usuario.tipo 
 
     try:
         if str(tipo_usuario) == str(3):
@@ -3499,9 +3510,9 @@ def mensajes_sin_leer_api(id_usuario):
         elif str(tipo_usuario) == str(2):
             empleador = getEmpleadorByUsuarioID(baseDatos, id_usuario)
             retorno = empleadorTieneMensajesSinLeer(baseDatos, empleador.id)
-            return jsonify(retorno)
+            return jsonify({"tieneMensajes" : retorno})
         else:
-            return jsonify(False)
+            return jsonify({"tieneMensajes" : False})
     except: 
         return jsonify({"message": "error", "code": 0})
 
