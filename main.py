@@ -50,8 +50,8 @@ app = Flask(__name__)
 #baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'a-work')
 #baseDatos = connectionDb(app, 'a-home')
-baseDatos = connectionDb(app, 'local')
-#baseDatos = connectionDb(app, 'PA')
+#baseDatos = connectionDb(app, 'local')
+baseDatos = connectionDb(app, 'PA')
 #baseDatos = connectionDb(app, 'gcp')
 
 
