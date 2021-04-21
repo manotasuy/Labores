@@ -3484,18 +3484,24 @@ def getRecordatoriosBloqueantes_api(tipo_usuario, id_usuario):
         return jsonify({"message": "error", "code": 0})
 
 
-@app.route('/api/mensajes_sin_leer/<tipo_usuario>/<id_usuario>')
-def mensajes_sin_leer_api(tipo_usuario, id_usuario):
+@app.route('/api/mensajes_sin_leer/<id_usuario>')
+def mensajes_sin_leer_api(id_usuario):
+
+    usuario = getUsuarioByID(baseDatos, id_usuario)
+
+    tipo_usuario = usuario.tipo
 
     try:
-        if tipo_usuario == "Empleado":
+        if str(tipo_usuario) == str(3):
             empleado = getEmpleadoByUsuarioID(baseDatos, id_usuario)
             retorno = empleadoTieneMensajesSinLeer(baseDatos, empleado.id)
             return jsonify(retorno) 
-        elif tipo_usuario == "Empleador":
+        elif str(tipo_usuario) == str(2):
             empleador = getEmpleadorByUsuarioID(baseDatos, id_usuario)
             retorno = empleadorTieneMensajesSinLeer(baseDatos, empleador.id)
             return jsonify(retorno)
+        else:
+            return jsonify(False)
     except: 
         return jsonify({"message": "error", "code": 0})
 
@@ -3519,15 +3525,6 @@ def empleadorTieneNotificacionesPendientesPostulaciones_api(id_usuario):
     except: 
         return jsonify({"message": "error", "code": 0})
 
-
-@app.route('/api/sendPush')
-def sendPush_api():
-    objeto = {
-        "code": "2",
-        "message": "Enviado desde FLASK :)"
-    }
-    sendPush("desde flask", "msg desde flask", tokens, objeto)
-    return "x"
 
 
 if __name__ == '__main__':
