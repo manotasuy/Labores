@@ -60,24 +60,25 @@ app.secret_key = "session"
 
 tokens = ["dNNAO26rQ5S7vqVBBhE3P8:APA91bFxpTR0-0oA35XXey0UzpQdG10P3emn7qEvaup-5F3LFroUb2rYsQ0u8GN8yt5hXsRJ9PzM55FRltvxxaFx_YkErCvnfWlMppn2DEgQXL7zcsYI6XZGvIqISnL5DV96BYSPq1SU"]
 
-
+fcm = False
 
 def sendPush(title, msg, registration_token, dataObject=None):
-    # See documentation on defining a message payload.
-    message = messaging.MulticastMessage(
-        notification=messaging.Notification(
-            title=title,
-            body=msg
-        ),
-        data=dataObject,
-        tokens=registration_token,
-    )
+    if (fcm):
+        # See documentation on defining a message payload.
+        message = messaging.MulticastMessage(
+            notification=messaging.Notification(
+                title=title,
+                body=msg
+            ),
+            data=dataObject,
+            tokens=registration_token,
+        )
 
-    # Send a message to the device corresponding to the provided
-    # registration token.
-    response = messaging.send_multicast(message)
-    # Response is a message ID string.
-    print('Successfully sent message:', response)
+        # Send a message to the device corresponding to the provided
+        # registration token.
+        response = messaging.send_multicast(message)
+        # Response is a message ID string.
+        print('Successfully sent message:', response)
 
 
 def archivoAdmitido(filename):
