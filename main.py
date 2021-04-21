@@ -10,11 +10,11 @@ from flask_mysqldb import MySQL
 from datetime import datetime, timedelta, date
 from enum import Enum
 import base64
-import firebase_admin
-from firebase_admin import credentials, messaging
+#import firebase_admin
+#from firebase_admin import credentials, messaging
 
 # Paquetes implementación
-from Implementacion.Conexion import connectionDb, getFCM_CRED
+from Implementacion.Conexion import connectionDb#, getFCM_CRED
 from Implementacion.Usuario import Usuario, getUsuarioByID, getUsuarioByCI
 from Implementacion.Empleado import Empleado, getEmpleadoByID, getEmpleadoByUsuarioID, getTareasEmpleado, getDisponibilidadEmpleado, getRankingPorCalificacionEmpleados
 from Implementacion.Empleador import Empleador, getEmpleadorByID, getEmpleadorByUsuarioID, getRankingPorCalificacionEmpleadores
@@ -38,9 +38,9 @@ EXTENSIONES_ADMITIDAS = set(['jpg', 'png', 'jpeg', 'bmp', 'gif'])
 #cred = credentials.Certificate("C:/Users/baldo/Desktop/labores 2021/labores/trunk/serviceAccountKey.json")
 
 #PA
-cred = credentials.Certificate("/home/labores2021/Labores/serviceAccountKey.json")
+#cred = credentials.Certificate("/home/labores2021/Labores/serviceAccountKey.json")
 
-firebase_admin.initialize_app(cred)
+#firebase_admin.initialize_app(cred)
 
 app = Flask(__name__)
 
@@ -50,8 +50,8 @@ app = Flask(__name__)
 #baseDatos = connectionDb(app, 'CloudAccess')
 #baseDatos = connectionDb(app, 'a-work')
 #baseDatos = connectionDb(app, 'a-home')
-#baseDatos = connectionDb(app, 'local')
-baseDatos = connectionDb(app, 'PA')
+baseDatos = connectionDb(app, 'local')
+#baseDatos = connectionDb(app, 'PA')
 #baseDatos = connectionDb(app, 'gcp')
 
 
@@ -60,11 +60,12 @@ app.secret_key = "session"
 
 tokens = ["dNNAO26rQ5S7vqVBBhE3P8:APA91bFxpTR0-0oA35XXey0UzpQdG10P3emn7qEvaup-5F3LFroUb2rYsQ0u8GN8yt5hXsRJ9PzM55FRltvxxaFx_YkErCvnfWlMppn2DEgQXL7zcsYI6XZGvIqISnL5DV96BYSPq1SU"]
 
-fcm = False
+#fcm = False
 
 def sendPush(title, msg, registration_token, dataObject=None):
+    """
     if (fcm):
-        # See documentation on defining a message payload.
+       # See documentation on defining a message payload.
         message = messaging.MulticastMessage(
             notification=messaging.Notification(
                 title=title,
@@ -78,7 +79,8 @@ def sendPush(title, msg, registration_token, dataObject=None):
         # registration token.
         response = messaging.send_multicast(message)
         # Response is a message ID string.
-        print('Successfully sent message:', response)
+    """
+    print('Successfully sent message:')
 
 
 def archivoAdmitido(filename):
