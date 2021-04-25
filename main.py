@@ -268,7 +268,7 @@ def vista_perfil(opcion, id):
         if opcion == 'Empleado':
             objeto = getEmpleadoByID(baseDatos, id)
             # Si no se puede cargar la foto guardada en la base cargo la imagen default
-            if objeto.foto:    
+            if objeto.foto:
                 objeto.foto = objeto.foto.decode("utf-8")
             else:
                 with open(app.config['CARPETA_FISICA_IMAGENES'] + 'NoImage.png', 'rb') as binary_file:
@@ -371,7 +371,7 @@ def perfil(opcion):
                 idEmpleado = session['id_empleado']
                 empleado = getEmpleadoByID(baseDatos, idEmpleado)
                 # Si no se puede cargar la foto guardada en la base cargo la imagen default
-                if empleado.foto:    
+                if empleado.foto:
                     empleado.foto = empleado.foto.decode("utf-8")
                 else:
                     with open(app.config['CARPETA_FISICA_IMAGENES'] + 'NoImage.png', 'rb') as binary_file:
@@ -409,7 +409,7 @@ def perfil(opcion):
                 idEmpleador = session['id_empleador']
                 empleador = getEmpleadorByID(baseDatos, idEmpleador)
                 # Si no se puede cargar la foto guardada en la base cargo la imagen default
-                if empleador.foto:    
+                if empleador.foto:
                     empleador.foto = empleador.foto.decode("utf-8")
                 else:
                     with open(app.config['CARPETA_FISICA_IMAGENES'] + 'NoImage.png', 'rb') as binary_file:
@@ -550,8 +550,8 @@ def guardar_perfil(tipo):
                             base64_encoded_data = base64.b64encode(binary_file_data)
                             base64_blob = base64_encoded_data.decode('utf-8')
                             new_empleado.foto = base64_blob
-                        
-                        
+
+
                             """#si el atributo filename está vacío:
                             if foto.filename == '':
                                 filename = secure_filename(getEmpleadoByID(
@@ -577,7 +577,7 @@ def guardar_perfil(tipo):
                                             app.config['CARPETA_FISICA_IMAGENES'], filename))
                                     new_empleado.foto = os.path.join(
                                         app.config['CARPETA_CARGA_IMAGENES'], filename)"""
-                            
+
                         #--------------------------------------------------------------------------------
 
                         new_empleado.modificarEmpleado(baseDatos)
@@ -680,16 +680,16 @@ def inicio_empleados():
     elif session.get('usertype') == 'Empleador':
         return redirect(url_for('inicio_empleadores'))
     else:
-        
-        empleado = getEmpleadoByID(baseDatos, session['id_empleado'])  
-        if empleado.foto:    
+
+        empleado = getEmpleadoByID(baseDatos, session['id_empleado'])
+        if empleado.foto:
             empleado.foto = empleado.foto.decode("utf-8")
         else:
             with open(app.config['CARPETA_FISICA_IMAGENES'] + 'NoImage.png', 'rb') as binary_file:
                 binary_file_data = binary_file.read()
                 base64_encoded_data = base64.b64encode(binary_file_data)
                 empleado.foto = base64_encoded_data.decode('utf-8')
-                
+
         tieneNotifMensajes = empleadoTieneMensajesSinLeer(
             baseDatos, empleado.id)
         # se debe verificar que el empleado este notificado sobre todos sus vínculos, en caso negativo se debe notificar
@@ -714,8 +714,8 @@ def inicio_empleadores():
     else:
         #print('getRecordatoriosDelDia(): ', getRecordatoriosDelDia())
 
-        empleador = getEmpleadorByID(baseDatos, session['id_empleador']) 
-        if empleador.foto:    
+        empleador = getEmpleadorByID(baseDatos, session['id_empleador'])
+        if empleador.foto:
             empleador.foto = empleador.foto.decode("utf-8")
         else:
             with open(app.config['CARPETA_FISICA_IMAGENES'] + 'NoImage.png', 'rb') as binary_file:
@@ -935,7 +935,7 @@ def actualizandoAnuncio(idAnuncio):
         anuncio = getAnuncioByID(baseDatos, idAnuncio)
         print(anuncio)
         estadoInt = int.from_bytes(anuncio.estado, "big")
-        
+
         anuncio.estado = estadoInt
 
         if anuncio.estado == 1:
@@ -1187,7 +1187,7 @@ def ver_anuncio(idAnuncio, postulacion):
         elAnuncio = getAnuncioByID(baseDatos, idAnuncio),
         empleador = elAnuncio[0].empleador
         # Si no se puede cargar la foto guardada en la base cargo la imagen default
-        if empleador.foto:    
+        if empleador.foto:
             empleador.foto = empleador.foto.decode("utf-8")
         else:
             with open(app.config['CARPETA_FISICA_IMAGENES'] + 'NoImage.png', 'rb') as binary_file:
@@ -1398,7 +1398,7 @@ def ver_vinculo(idVinculo):
     else:
         vinculo = getVinculoIDs(baseDatos, idVinculo)
         empleador = getEmpleadorByID(baseDatos, vinculo.empleador)
-        if empleador.foto:    
+        if empleador.foto:
             empleador.foto = empleador.foto.decode("utf-8")
         else:
             with open(app.config['CARPETA_FISICA_IMAGENES'] + 'NoImage.png', 'rb') as binary_file:
@@ -1406,7 +1406,7 @@ def ver_vinculo(idVinculo):
                 base64_encoded_data = base64.b64encode(binary_file_data)
                 empleador.foto = base64_encoded_data.decode('utf-8')
         empleado = getEmpleadoByID(baseDatos, vinculo.empleado)
-        if empleado.foto:    
+        if empleado.foto:
             empleado.foto = empleado.foto.decode("utf-8")
         else:
             with open(app.config['CARPETA_FISICA_IMAGENES'] + 'NoImage.png', 'rb') as binary_file:
@@ -1654,7 +1654,7 @@ def listar_candidatos(id_anuncio):
             if not postulacion.fueNotificada(baseDatos):
                 #print('ID de postulación a marcar como notificada: ', postulacion.id)
                 postulacion.marcarPostulacionComoNotificada(baseDatos)
-            if postulacion.empleado.foto:    
+            if postulacion.empleado.foto:
                 postulacion.empleado.foto = postulacion.empleado.foto.decode("utf-8")
             else:
                 with open(app.config['CARPETA_FISICA_IMAGENES'] + 'NoImage.png', 'rb') as binary_file:
@@ -1796,15 +1796,15 @@ def contratar(idEmpleado):
         return redirect(url_for('inicio_empleados'))
     else:
         empleado = getEmpleadoByID(baseDatos, idEmpleado)
-        
-        if empleado.foto:    
+
+        if empleado.foto:
             empleado.foto = empleado.foto.decode("utf-8")
         else:
             with open(app.config['CARPETA_FISICA_IMAGENES'] + 'NoImage.png', 'rb') as binary_file:
                 binary_file_data = binary_file.read()
                 base64_encoded_data = base64.b64encode(binary_file_data)
                 empleado.foto = base64_encoded_data.decode('utf-8')
-                
+
         tareas = getTareasEmpleado(baseDatos, empleado.id)
         empleado.cargarTareas(tareas)
         referencias = getReferenciasEmpleado(baseDatos, empleado.id)
@@ -1938,7 +1938,7 @@ def api_ingresar():
                 empleado = getEmpleadoByUsuarioID(baseDatos, usuario.id)
                 if empleado.foto:
                     foto = empleado.foto.decode('utf-8')
-            
+
             elif retorno[0][0] == "Empleador":
                 empleador = getEmpleadorByUsuarioID(baseDatos, usuario.id)
                 if empleador.foto:
@@ -1993,160 +1993,163 @@ def api_verificacion_ci():
 @app.route('/api/registro/', methods=['POST'])
 def api_registro():
 
-    if getUsuarioByCI(baseDatos, request.json['ci']):
-        return {"message": "Ya existe un usuario con esa CI",
-                'code' :0}
-    else: 
+        try:
+            if getUsuarioByCI(baseDatos, request.json['ci']):
+                return {"message": "Ya existe un usuario con esa CI",
+                        'code' :0}
+            else:
 
-        new_user = Usuario(0, request.json['ci'], request.json['password'], request.json['tipo'])
-        new_user.crearUsuario(baseDatos)
-        usuario = getUsuarioByCI(baseDatos, request.json['ci'])
+                new_user = Usuario(0, request.json['ci'], request.json['password'], request.json['tipo'])
+                new_user.crearUsuario(baseDatos)
+                usuario = getUsuarioByCI(baseDatos, request.json['ci'])
 
-        if request.json['tipo'] == "Empleador":
-           
-            new_empleador = Empleador(
-                0,
-                request.json['ci'],
-                request.json['empleador']['nombre'],
-                request.json['empleador']['apellido'],
-                date(request.json['empleador']['fecha_n']['anio'], request.json['empleador']['fecha_n']['mes'], request.json['empleador']['fecha_n']['dia']),
-                request.json['empleador']['genero'],
-                request.json['empleador']['domicilio'],
-                request.json['empleador']['nacionalidad'],
-                request.json['empleador']['mail'],
-                request.json['empleador']['telefono'],
-                request.json['empleador']['bps'],
-                None,
-                0,
-                usuario
-            )
+                if request.json['tipo'] == "Empleador":
 
-            
-            if request.json['empleador']['foto']:
-                new_empleador.foto = request.json['empleador']['foto']
-                
-            new_empleador.crearEmpleador(baseDatos)
-            usuario_para_login = getUsuarioByCI(baseDatos, request.json['ci'])
-            retorno = usuario_para_login.loginUsuario(baseDatos)
-            foto = None
-
-            if retorno:
-                
-                
-                empleador = getEmpleadorByUsuarioID(baseDatos, usuario.id)
-                if empleador.foto:
-                    foto = empleador.foto.decode('utf-8')
-
-                login_info = {
-                    'message': "usuario logueado con éxito",
-                    'id': usuario_para_login.id,
-                    'user': usuario_para_login.usuario,
-                    'password': usuario_para_login.clave,
-                    'tipo': request.json['tipo'],
-                    'image': foto
-                }
-                user_id_push = str(login_info['id'])
-                objeto = {
-                    "id_user": user_id_push
-                }
-                sendPush("x", "x", tokens, objeto)
-
-                return jsonify({
-                    "message": "Usuario empleador creado con exito!", 
-                    "code": 1, 
-                    "login_info": login_info
-                    })
-       
-        else:
-
-            new_empleado = Empleado(
-                0,
-                request.json['ci'],
-                request.json['empleado']['nombre'],
-                request.json['empleado']['apellido'],
-                date(request.json['empleado']['fecha_n']['anio'], request.json['empleado']['fecha_n']['mes'], request.json['empleado']['fecha_n']['dia']),
-                request.json['empleado']['genero'],
-                request.json['empleado']['domicilio'],
-                request.json['empleado']['nacionalidad'],
-                request.json['empleado']['mail'],
-                request.json['empleado']['telefono'],
-                request.json['empleado']['experiencia_meses'],
-                request.json['empleado']['descripcion'],
-                None,
-                0,
-                usuario,
-                None,
-                None,
-                None
-            )
+                    new_empleador = Empleador(
+                        0,
+                        request.json['ci'],
+                        request.json['empleador']['nombre'],
+                        request.json['empleador']['apellido'],
+                        date(request.json['empleador']['fecha_n']['anio'], request.json['empleador']['fecha_n']['mes'], request.json['empleador']['fecha_n']['dia']),
+                        request.json['empleador']['genero'],
+                        request.json['empleador']['domicilio'],
+                        request.json['empleador']['nacionalidad'],
+                        request.json['empleador']['mail'],
+                        request.json['empleador']['telefono'],
+                        request.json['empleador']['bps'],
+                        None,
+                        0,
+                        usuario
+                    )
 
 
-            
-            if request.json['empleado']['foto']:
-                new_empleado.foto = request.json['empleado']['foto']
+                    if request.json['empleador']['foto']:
+                        new_empleador.foto = request.json['empleador']['foto']
+
+                    new_empleador.crearEmpleador(baseDatos)
+                    usuario_para_login = getUsuarioByCI(baseDatos, request.json['ci'])
+                    retorno = usuario_para_login.loginUsuario(baseDatos)
+                    foto = None
+
+                    if retorno:
 
 
-            new_empleado.crearEmpleado(baseDatos)
-            
-            empleado = getEmpleadoByUsuarioID(baseDatos, usuario.id)
+                        empleador = getEmpleadorByUsuarioID(baseDatos, usuario.id)
+                        if empleador.foto:
+                            foto = empleador.foto.decode('utf-8')
 
-            if request.json['empleado']['referencias']:
-                for ref in request.json['empleado']['referencias']:
-                    ref_nombre = ref['nombre']
-                    ref_apellido = ref['apellido']
-                    ref_telefono = ref['telefono']
-                    ref_trabaja_desde = date(ref['fecha_desde']['anio'], ref['fecha_desde']['mes'], ref['fecha_desde']['dia']),
-                    ref_trabaja_hasta = date(ref['fecha_hasta']['anio'], ref['fecha_hasta']['mes'], ref['fecha_hasta']['dia']),
-                    referencia = Referencia(
-                        0, 
-                        empleado, 
-                        ref_nombre, 
-                        ref_apellido, 
-                        ref_telefono, 
-                        ref_trabaja_desde, 
-                        ref_trabaja_hasta
-                        )
-                    referencia.crearReferencia(baseDatos)
+                        login_info = {
+                            'message': "usuario logueado con éxito",
+                            'id': usuario_para_login.id,
+                            'user': usuario_para_login.usuario,
+                            'password': usuario_para_login.clave,
+                            'tipo': request.json['tipo'],
+                            'image': foto
+                        }
+                        user_id_push = str(login_info['id'])
+                        objeto = {
+                            "id_user": user_id_push
+                        }
+                        sendPush("x", "x", tokens, objeto)
 
-            if request.json['empleado']['tareas']:
-                for tar in request.json['empleado']['tareas']:
-                    agregarTareaEmpleado(baseDatos, tar, empleado.id)
-                
-            if request.json['empleado']['disponibilidad']:
-                for dis in request.json['empleado']['disponibilidad']:
-                    agregarDisponibilidadEmpleado(baseDatos, dis, empleado.id)
+                        return jsonify({
+                            "message": "Usuario empleador creado con exito!",
+                            "code": 1,
+                            "login_info": login_info
+                            })
 
-            usuario_para_login = getUsuarioByCI(baseDatos, request.json['ci'])
-            retorno = usuario_para_login.loginUsuario(baseDatos)
-            foto = None
+                else:
 
-            if retorno:
-                
-                
-                empleado = getEmpleadoByUsuarioID(baseDatos, usuario.id)
-                if empleado.foto:
-                    foto = empleado.foto.decode('utf-8')
+                    new_empleado = Empleado(
+                        0,
+                        request.json['ci'],
+                        request.json['empleado']['nombre'],
+                        request.json['empleado']['apellido'],
+                        date(request.json['empleado']['fecha_n']['anio'], request.json['empleado']['fecha_n']['mes'], request.json['empleado']['fecha_n']['dia']),
+                        request.json['empleado']['genero'],
+                        request.json['empleado']['domicilio'],
+                        request.json['empleado']['nacionalidad'],
+                        request.json['empleado']['mail'],
+                        request.json['empleado']['telefono'],
+                        request.json['empleado']['experiencia_meses'],
+                        request.json['empleado']['descripcion'],
+                        None,
+                        0,
+                        usuario,
+                        None,
+                        None,
+                        None
+                    )
 
-                login_info = {
-                    'message': "usuario logueado con éxito",
-                    'id': usuario_para_login.id,
-                    'user': usuario_para_login.usuario,
-                    'password': usuario_para_login.clave,
-                    'tipo': request.json['tipo'],
-                    'image': foto
-                }
-                user_id_push = str(login_info['id'])
-                objeto = {
-                    "id_user": user_id_push
-                }
-                sendPush("x", "x", tokens, objeto)
 
-                return jsonify({
-                    "message": "Usuario empleado creado con exito!", 
-                    "code": 1, 
-                    "login_info": login_info
-                    })
-        
+
+                    if request.json['empleado']['foto']:
+                        new_empleado.foto = request.json['empleado']['foto']
+
+
+                    new_empleado.crearEmpleado(baseDatos)
+
+                    empleado = getEmpleadoByUsuarioID(baseDatos, usuario.id)
+
+                    if request.json['empleado']['referencias']:
+                        for ref in request.json['empleado']['referencias']:
+                            ref_nombre = ref['nombre']
+                            ref_apellido = ref['apellido']
+                            ref_telefono = ref['telefono']
+                            ref_trabaja_desde = date(ref['fecha_desde']['anio'], ref['fecha_desde']['mes'], ref['fecha_desde']['dia']),
+                            ref_trabaja_hasta = date(ref['fecha_hasta']['anio'], ref['fecha_hasta']['mes'], ref['fecha_hasta']['dia']),
+                            referencia = Referencia(
+                                0,
+                                empleado,
+                                ref_nombre,
+                                ref_apellido,
+                                ref_telefono,
+                                ref_trabaja_desde,
+                                ref_trabaja_hasta
+                                )
+                            referencia.crearReferencia(baseDatos)
+
+                    if request.json['empleado']['tareas']:
+                        for tar in request.json['empleado']['tareas']:
+                            agregarTareaEmpleado(baseDatos, tar, empleado.id)
+
+                    if request.json['empleado']['disponibilidad']:
+                        for dis in request.json['empleado']['disponibilidad']:
+                            agregarDisponibilidadEmpleado(baseDatos, dis, empleado.id)
+
+                    usuario_para_login = getUsuarioByCI(baseDatos, request.json['ci'])
+                    retorno = usuario_para_login.loginUsuario(baseDatos)
+                    foto = None
+
+                    if retorno:
+
+
+                        empleado = getEmpleadoByUsuarioID(baseDatos, usuario.id)
+                        if empleado.foto:
+                            foto = empleado.foto.decode('utf-8')
+
+                        login_info = {
+                            'message': "usuario logueado con éxito",
+                            'id': usuario_para_login.id,
+                            'user': usuario_para_login.usuario,
+                            'password': usuario_para_login.clave,
+                            'tipo': request.json['tipo'],
+                            'image': foto
+                        }
+                        user_id_push = str(login_info['id'])
+                        objeto = {
+                            "id_user": user_id_push
+                        }
+                        sendPush("x", "x", tokens, objeto)
+
+                        return jsonify({
+                            "message": "Usuario empleado creado con exito!",
+                            "code": 1,
+                            "login_info": login_info
+                            })
+        except Exception as e:
+            return jsonify({"message" : "error", "code": 0})
+
 
 @app.route('/api/ver_perfil/empleador/<id>')
 def ver_perfil_empleador_api(id):
@@ -2160,7 +2163,7 @@ def ver_perfil_empleador_api(id):
             empleador.foto = empleador.foto.decode('utf-8')
         if not isinstance(empleador.foto, str) or empleador.foto == "":
                 empleador.foto = None
-        
+
         data = {
             "ci" :usuario.usuario,
             "password" :usuario.clave,
@@ -2175,11 +2178,11 @@ def ver_perfil_empleador_api(id):
             "bps": empleador.registroBps,
             "foto": empleador.foto,
             "calificacion": empleador.promedioCalificacion
-            
+
         }
 
         return jsonify(data)
-    
+
     except Exception as e:
         return jsonify({"message" : "id incorrecto para empleador", "code": 0})
 
@@ -2199,8 +2202,8 @@ def ver_perfil_empleado_api(id):
         if not isinstance(empleado.foto, str) or empleado.foto == "":
                 empleado.foto = None
 
-        
-        
+
+
         referencias = getReferenciasEmpleado(baseDatos, empleado.id)
         lista_ref = []
         for ref in referencias:
@@ -2232,17 +2235,17 @@ def ver_perfil_empleado_api(id):
         }
 
         return jsonify(data)
-      
+
     except Exception as e:
         return jsonify({"message" : "id incorrecto para empleado", "code": 0})
- 
+
 
 @app.route('/api/listandoMisAnuncios/<id>')
 def api_listandoMisAnuncios(id):
 
     empleador = getEmpleadorByUsuarioID(baseDatos, id)
     retorno = empleador.listarMisAnuncios(baseDatos)
-    
+
     if retorno:
         listaDeAnuncios = []
         for a in retorno:
@@ -2262,10 +2265,10 @@ def api_listandoMisAnuncios(id):
                 'estado' : anuncio[5],
                 'experiencia' : anuncio[6],
                 'pago_hora' : anuncio[7],
-                'id_empleador' : anuncio[8],
+                'id_empleador' : id,
                 'calificacion_desde' : anuncio[9],
                 'calificacion_hasta' : anuncio[10]
-                
+
             }
             listaDeAnuncios.append(anun_dic)
 
@@ -2279,7 +2282,7 @@ def cambiar_clave_api():
     try:
         usuario = getUsuarioByID(baseDatos, request.json['id'])
         usuario.cambiarPassword(request.json['new_password'], baseDatos)
-    
+
         return jsonify({"message": "clave cambiada", "code": 1})
     except:
         return jsonify({"message": "error", "code": 0})
@@ -2288,12 +2291,12 @@ def cambiar_clave_api():
 @app.route('/api/editar_perfil/empleador/', methods=['PUT'])
 def editar_perfil_empleador():
     try:
-        usuario = getUsuarioByID(baseDatos, request.json['id'])    
+        usuario = getUsuarioByID(baseDatos, request.json['id'])
         #actualizamos la clave:
         usuario.cambiarPassword(request.json['password'], baseDatos)
-        
+
         empleador = getEmpleadorByUsuarioID(baseDatos, usuario.id)
-        
+
         #actualizamos el empleador:
         empleador.nombre = request.json['nombre']
         empleador.apellido = request.json['apellido']
@@ -2320,12 +2323,12 @@ def editar_perfil_empleador():
 def editar_perfil_empleado():
 
     try:
-        usuario = getUsuarioByID(baseDatos, request.json['id'])    
+        usuario = getUsuarioByID(baseDatos, request.json['id'])
         #actualizamos la clave:
         usuario.cambiarPassword(request.json['password'], baseDatos)
-        
+
         empleado = getEmpleadoByUsuarioID(baseDatos, usuario.id)
-        
+
         #actualizamos el empleado:
         empleado.nombre = request.json['nombre']
         empleado.apellido = request.json['apellido']
@@ -2350,7 +2353,7 @@ def editar_perfil_empleado():
         if request.json['tareas']:
             for tar in request.json['tareas']:
                 agregarTareaEmpleado(baseDatos, tar, empleado.id)
-            
+
         if request.json['disponibilidad']:
             for dis in request.json['disponibilidad']:
                 agregarDisponibilidadEmpleado(baseDatos, dis, empleado.id)
@@ -2370,12 +2373,12 @@ def editar_perfil_empleado():
                 ref_trabaja_desde = date(ref['fecha_desde']['anio'], ref['fecha_desde']['mes'], ref['fecha_desde']['dia']),
                 ref_trabaja_hasta = date(ref['fecha_hasta']['anio'], ref['fecha_hasta']['mes'], ref['fecha_hasta']['dia']),
                 referencia = Referencia(
-                    0, 
-                    empleado, 
-                    ref_nombre, 
-                    ref_apellido, 
-                    ref_telefono, 
-                    ref_trabaja_desde, 
+                    0,
+                    empleado,
+                    ref_nombre,
+                    ref_apellido,
+                    ref_telefono,
+                    ref_trabaja_desde,
                     ref_trabaja_hasta
                     )
                 referencia.crearReferencia(baseDatos)
@@ -2459,29 +2462,32 @@ def disponibilidad_anuncio_api(id):
 
 @app.route('/api/crear_anuncio/', methods=['POST'])
 def crear_anuncio_api():
-    try: 
+    try:
         usuario = getUsuarioByID(baseDatos, request.json['id_usuario_empleador'])
         empleador = getEmpleadorByUsuarioID(baseDatos, request.json['id_usuario_empleador'])
-        anuncio = Anuncio_d(
-            0,
-            request.json['titulo'],
-            request.json['descripcion'],
-            datetime.now(),
-            None,
-            True,
-            request.json['experiencia'],
-            request.json['pago'],
-            empleador,
-            None,
-            None,
-            False,
-            request.json['disponibilidad'],
-            request.json['tareas']
-            )
-        anuncio.createAnuncio(baseDatos)
+        if str(request.json['disponibilidad']) == "1" or str(request.json['disponibilidad']) == "2" or str(request.json['disponibilidad']) == "3" or str(request.json['disponibilidad']) == "4":
+            anuncio = Anuncio_d(
+                0,
+                request.json['titulo'],
+                request.json['descripcion'],
+                datetime.now(),
+                None,
+                True,
+                request.json['experiencia'],
+                request.json['pago'],
+                empleador,
+                None,
+                None,
+                False,
+                request.json['disponibilidad'],
+                request.json['tareas']
+                )
+            anuncio.createAnuncio(baseDatos)
 
-        return jsonify({"message": "anuncio creado", "code": 1})
-    
+            return jsonify({"message": "anuncio creado", "code": 1})
+        else:
+            return jsonify({"message": "error, disponiblidad incorrecta", "code": 0})
+
     except:
 
         return jsonify({"message": "error en crear anuncio", "code": 0})
@@ -2490,7 +2496,7 @@ def crear_anuncio_api():
 @app.route('/api/get_anuncio/<id>')
 def ver_anuncio_api(id):
     try:
-        retorno = getAnuncioByID_d(baseDatos, id) 
+        retorno = getAnuncioByID_d(baseDatos, id)
         retorno.fecha_inicio = retorno.fecha_inicio.strftime('%d/%m/%Y')
 
         if retorno.fecha_cierre:
@@ -2504,7 +2510,7 @@ def ver_anuncio_api(id):
             "estado": int.from_bytes(retorno.estado, "big"),
             "experiencia": retorno.experiencia,
             "pago_hora": retorno.pago_hora,
-            "empleador": retorno.empleador.id,
+            "empleador": retorno.empleador.usuario.id,
             "tieneVinculo": retorno.tiene_vinculo
         }
 
@@ -2540,25 +2546,28 @@ def update_anuncio_api():
 
     try:
         anuncio = getAnuncioByID_d(baseDatos, request.json['id'])
+        if str(request.json['disponibilidad']) == "1" or str(request.json['disponibilidad']) == "2" or str(request.json['disponibilidad']) == "3" or str(request.json['disponibilidad']) == "4":
 
-        anuncio.titulo = request.json['titulo']
-        anuncio.descripcion = request.json['descripcion']
-        anuncio.experiencia = request.json['experiencia']
-        anuncio.estado = request.json['estado']
-        anuncio.pago_hora = request.json['pago']
-        anuncio.tareas = request.json['tareas']
-        anuncio.disponibilidad = request.json['disponibilidad']
+            anuncio.titulo = request.json['titulo']
+            anuncio.descripcion = request.json['descripcion']
+            anuncio.experiencia = request.json['experiencia']
+            anuncio.estado = request.json['estado']
+            anuncio.pago_hora = request.json['pago']
+            anuncio.tareas = request.json['tareas']
+            anuncio.disponibilidad = request.json['disponibilidad']
 
-        anuncio.updateAnuncio(baseDatos)
-        
-        return jsonify({"message": "anuncio actualizado", "code": 1})
+            anuncio.updateAnuncio(baseDatos)
+
+            return jsonify({"message": "anuncio actualizado", "code": 1})
+        else:
+            return jsonify({"message": "error, disponiblidad incorrecta", "code": 0})
     except:
         return jsonify({"message": "error", "code": 0})
 
 
 @app.route('/api/anuncios_disponibles/<id_empleado>')
 def matcheo(id_empleado):
-    try:
+#    try:
         empleado = getEmpleadoByUsuarioID(baseDatos, id_empleado)
         idEmpleado = empleado.id
         tareas = []
@@ -2649,7 +2658,7 @@ def matcheo(id_empleado):
                 k.append(1)
             else:
                 k.append(0)
-                
+
 
         matecheo_lista_api = list()
         if listaMatcheo:
@@ -2667,7 +2676,7 @@ def matcheo(id_empleado):
                     "estado": int.from_bytes(anun[1].estado, "big"),
                     "experiencia": anun[1].experiencia,
                     "pago_hora": anun[1].pago_hora,
-                    "empleador": anun[1].empleador.id,
+                    "empleador": anun[1].empleador.usuario.id,
                     "tieneVinculo": anun[1].tiene_vinculo,
                     "ya_postulado": anun[2]
                 }
@@ -2675,8 +2684,8 @@ def matcheo(id_empleado):
             return jsonify(matecheo_lista_api)
         else:
             return jsonify([])
-    except:
-        return jsonify({"message": "error", "code": 0})
+#    except:
+#        return jsonify({"message": "error", "code": 0})
 
 
 @app.route('/api/postular/', methods=['POST'])
@@ -2685,31 +2694,38 @@ def postular_api():
     try:
         empleado = getEmpleadoByUsuarioID(baseDatos, request.json['id_usuario_empleado'])
         anuncio = getAnuncioByID(baseDatos, request.json['id_anuncio'])
-        new_postulacion = Postulacion(
-            None, empleado, anuncio, datetime.now(),0)
-        new_postulacion.crearPostulacion(baseDatos)
 
-        # Se debe notificar al empleado mediante mensaje de que se ha postulado
-        mensajeEmpleado = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
-        ), 'Buena suerte {} {}!!! te has postulado al anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 1, False)
-        mensajeEmpleado.crearMensaje(baseDatos)
-        user_id_push = str(empleado.usuario.id)
-        objeto = {
-            "id_user": user_id_push
-        }
-        sendPush("x", "x", tokens, objeto)
+        if (getPostulacionEmpleadoAnuncio(baseDatos, empleado.id, request.json['id_anuncio'])):
 
-        # Se debe notificar al empleador mediante mensaje de que se ha postulado
-        mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
-        ), 'Buenas noticias!!! {} {} se ha postulado a tu anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
-        mensajeEmpleador.crearMensaje(baseDatos)
-        user_id_push = str(empleador.usuario.id)
-        objeto = {
-            "id_user": user_id_push
-        }
-        sendPush("x", "x", tokens, objeto)
+            return jsonify({"message": "ya postulado", "code": 0})
+        else:
 
-        return jsonify({"message": "postulación realizada", "code": 1})
+            empleador_id = anuncio.empleador.usuario.id
+            new_postulacion = Postulacion(
+                None, empleado, anuncio, datetime.now(),0)
+            new_postulacion.crearPostulacion(baseDatos)
+
+            # Se debe notificar al empleado mediante mensaje de que se ha postulado
+            mensajeEmpleado = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
+            ), 'Buena suerte {} {}!!! te has postulado al anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 1, False)
+            mensajeEmpleado.crearMensaje(baseDatos)
+            user_id_push = str(empleado.usuario.id)
+            objeto = {
+                "id_user": user_id_push
+            }
+            sendPush("x", "x", tokens, objeto)
+
+            # Se debe notificar al empleador mediante mensaje de que se ha postulado
+            mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
+            ), 'Buenas noticias!!! {} {} se ha postulado a tu anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
+            mensajeEmpleador.crearMensaje(baseDatos)
+            user_id_push = str(empleador_id)
+            objeto = {
+                "id_user": user_id_push
+            }
+            sendPush("x", "x", tokens, objeto)
+
+            return jsonify({"message": "postulación realizada", "code": 1})
 
     except:
         return jsonify({"message": "error", "code": 0})
@@ -2722,8 +2738,9 @@ def despostular_api():
         empleado = getEmpleadoByUsuarioID(baseDatos, request.json['id_usuario_empleado'])
         postulacion = getPostulacionEmpleadoAnuncio(baseDatos, empleado.id, request.json['id_anuncio'])
         anuncio = postulacion.anuncio
+        empleador_id = anuncio.empleador.usuario.id
         postulacion.borrarPostulacion(baseDatos)
-        
+
 
         # Se debe notificar al empleado mediante mensaje de que se ha despostulado del anuncio
         mensajeEmpleado = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
@@ -2739,7 +2756,7 @@ def despostular_api():
         mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
         ), '{} {} se ha despostulado de tu anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
         mensajeEmpleador.crearMensaje(baseDatos)
-        user_id_push = str(empleador.usuario.id)
+        user_id_push = str(empleador_id)
         objeto = {
             "id_user": user_id_push
         }
@@ -2778,7 +2795,7 @@ def postulaciones_empleado_api(id):
                     "empleador": anuncio.empleador.id
                 }
                 empleado_postulaciones.append(anun)
-        
+
         return jsonify(empleado_postulaciones)
 
     except:
@@ -2830,7 +2847,7 @@ def postulantes_anuncio_api(id):
                     "referencias": lista_ref
                 }
                 postulantes.append(data)
-                
+
         return jsonify(postulantes)
     except:
         return jsonify({"message": "error", "code": 0})
@@ -2927,7 +2944,7 @@ def vinculos_empleado_api(id):
                     }
                 }
                 listaVicnulos.append(vinculo)
-        
+
         return jsonify(listaVicnulos)
     except:
         return jsonify({"message": "error", "code": 0})
@@ -2968,7 +2985,7 @@ def vinculos_empleador_api(id):
                     }
                 }
                 listaVicnulos.append(vinculo)
-        
+
         return jsonify(listaVicnulos)
     except:
         return jsonify({"message": "error", "code": 0})
@@ -3127,7 +3144,7 @@ def empleado_todos_mensajes_api(id_usuario_empleado):
                     "mensaje": m.mensaje,
                     "tipo_emisor": m.tipoEmisor,
                     "tipo_receptor": m.tipoReceptor,
-                    "leído": m.leido 
+                    "leído": m.leido
                 }
                 listaMensajes.append(mensaje)
 
@@ -3153,7 +3170,7 @@ def empleador_todos_mensajes_api(id_usuario_empleador):
                     "mensaje": m.mensaje,
                     "tipo_emisor": m.tipoEmisor,
                     "tipo_receptor": m.tipoReceptor,
-                    "leído": m.leido 
+                    "leído": m.leido
                 }
                 listaMensajes.append(mensaje)
 
@@ -3180,7 +3197,7 @@ def mensajes_empleado_api(id_usuario_empleado, id_usuario_empleador):
                         "mensaje": m.mensaje,
                         "tipo_emisor": m.tipoEmisor,
                         "tipo_receptor": m.tipoReceptor,
-                        "leído": m.leido 
+                        "leído": m.leido
                     }
                     listaMensajes.append(mensaje)
 
@@ -3207,7 +3224,7 @@ def mensajes_empleador_api(id_usuario_empleado, id_usuario_empleador):
                         "mensaje": m.mensaje,
                         "tipo_emisor": m.tipoEmisor,
                         "tipo_receptor": m.tipoReceptor,
-                        "leído": m.leido 
+                        "leído": m.leido
                     }
                     listaMensajes.append(mensaje)
 
@@ -3229,7 +3246,7 @@ def ver_mensaje_api(id_mensaje):
             "mensaje": m.mensaje,
             "tipo_emisor": m.tipoEmisor,
             "tipo_receptor": m.tipoReceptor,
-            "leído": m.leido 
+            "leído": m.leido
         }
         return jsonify(mensaje)
     except:
@@ -3282,7 +3299,7 @@ def crear_mensaje_api_desde_empleado():
         objeto = {
             "id_user": user_id_push
         }
-        sendPush("x", "x", tokens, objeto)
+        sendPush(empleado.nombre + " " + empleado.apellido + ":", mensaje.mensaje, tokens, objeto)
         return jsonify({"message": "mensaje enviado", "code": 1})
     except:
         return jsonify({"message": "error", "code": 0})
@@ -3372,7 +3389,7 @@ def getRecordatoriosDelDia_api(id_usuario):
 def getRecordatoriosCalificacionesPendientes_api(id_usuario):
     usuario = getUsuarioByID(baseDatos, id_usuario)
 
-    tipo_usuario = usuario.tipo 
+    tipo_usuario = usuario.tipo
 
 
     try:
@@ -3382,7 +3399,7 @@ def getRecordatoriosCalificacionesPendientes_api(id_usuario):
         elif str(tipo_usuario) == str(2):
             empleador = getEmpleadorByUsuarioID(baseDatos, id_usuario)
             idE = empleador.id
-        
+
         recordatoriosPend = recordatoriosCalificacionesPendientes(baseDatos, idE)
         listaRecordatoriosPendientes = list()
         if recordatoriosPend:
@@ -3436,7 +3453,7 @@ def getRecordatoriosCalificacionesPendientes_api(id_usuario):
 def getRecordatoriosBloqueantes_api(id_usuario):
     usuario = getUsuarioByID(baseDatos, id_usuario)
 
-    tipo_usuario = usuario.tipo 
+    tipo_usuario = usuario.tipo
 
     try:
         if str(tipo_usuario) == str(3):
@@ -3445,7 +3462,7 @@ def getRecordatoriosBloqueantes_api(id_usuario):
         elif str(tipo_usuario) == str(2):
             empleador = getEmpleadorByUsuarioID(baseDatos, id_usuario)
             idE = empleador.id
-        
+
         recordatoriosPend = recordatoriosBloqueantes(baseDatos, idE)
         listaRecordatoriosPendientes = list()
         if recordatoriosPend:
@@ -3491,7 +3508,7 @@ def getRecordatoriosBloqueantes_api(id_usuario):
                 }
                 listaRecordatoriosPendientes.append(r)
         return jsonify(listaRecordatoriosPendientes)
-    except: 
+    except:
         return jsonify({"message": "error", "code": 0})
 
 
@@ -3500,20 +3517,20 @@ def mensajes_sin_leer_api(id_usuario):
 
     usuario = getUsuarioByID(baseDatos, id_usuario)
 
-    tipo_usuario = usuario.tipo 
+    tipo_usuario = usuario.tipo
 
     try:
         if str(tipo_usuario) == str(3):
             empleado = getEmpleadoByUsuarioID(baseDatos, id_usuario)
             retorno = empleadoTieneMensajesSinLeer(baseDatos, empleado.id)
-            return jsonify(retorno) 
+            return jsonify(retorno)
         elif str(tipo_usuario) == str(2):
             empleador = getEmpleadorByUsuarioID(baseDatos, id_usuario)
             retorno = empleadorTieneMensajesSinLeer(baseDatos, empleador.id)
             return jsonify({"tieneMensajes" : retorno})
         else:
             return jsonify({"tieneMensajes" : False})
-    except: 
+    except:
         return jsonify({"message": "error", "code": 0})
 
 
@@ -3523,7 +3540,7 @@ def empleadoTieneNotificacionesPendientesVinculos_api(id_usuario):
         empleado = getEmpleadoByUsuarioID(baseDatos, id_usuario)
         retorno = empleadoTieneNotificacionesPendientesVinculos(baseDatos, empleado.id)
         return jsonify(retorno)
-    except: 
+    except:
         return jsonify({"message": "error", "code": 0})
 
 
@@ -3533,9 +3550,121 @@ def empleadorTieneNotificacionesPendientesPostulaciones_api(id_usuario):
         empleador = getEmpleadorByUsuarioID(baseDatos, id_usuario)
         retorno = empleadorTieneNotificacionesPendientesPostulaciones(baseDatos, empleador.id)
         return jsonify(retorno)
-    except: 
+    except:
         return jsonify({"message": "error", "code": 0})
 
+
+@app.route('/api/getReferencias_empleado/<id_usuario>')
+def getReferencias_empleado_api(id_usuario):
+
+    try:
+        empleado = getEmpleadoByUsuarioID(baseDatos, id_usuario)
+        retorno = getReferenciasEmpleado(baseDatos, empleado.id)
+
+        referencias = list()
+        for r in retorno:
+            referencia = {
+                "id": r.id,
+                "id_usuario_empleado": r.empleado.usuario.id,
+                "nombre": r.nombre,
+                "apellido": r.apellido,
+                "fecha_desde": r.fechaDesde.strftime('%Y-%m-%d'),
+                "fecha_hasta": r.fechaHasta.strftime('%Y-%m-%d'),
+                "telefono": r.telefono
+                }
+            referencias.append(referencia)
+
+        return jsonify(referencias)
+    except:
+        return jsonify({"message": "error", "code": 0})
+
+
+@app.route('/api/getReferencia/<id_referencia>')
+def getReferencias_api(id_referencia):
+
+    try:
+        r = getReferenciaByID(baseDatos, id_referencia)
+
+        referencia = {
+            "id": r.id,
+            "id_usuario_empleado": r.empleado.usuario.id,
+            "nombre": r.nombre,
+            "apellido": r.apellido,
+            "fecha_desde": r.fechaDesde.strftime('%Y-%m-%d'),
+            "fecha_hasta": r.fechaHasta.strftime('%Y-%m-%d'),
+            "telefono": r.telefono
+            }
+
+        return jsonify(referencia)
+    except:
+        return jsonify({"message": "error", "code": 0})
+
+
+@app.route('/api/postReferencia/', methods = ['POST'])
+def postReferencia_api():
+
+    try:
+        empleado = getEmpleadoByUsuarioID(baseDatos, request.json['id'])
+        r = Referencia(
+            0,
+            empleado,
+            request.json['nombre'],
+            request.json['apellido'],
+            request.json['telefono'],
+            date(request.json['fecha_desde']['anio'], request.json['fecha_desde']['mes'], request.json['fecha_desde']['dia']),
+            date(request.json['fecha_hasta']['anio'], request.json['fecha_hasta']['mes'], request.json['fecha_hasta']['dia'])
+            )
+        r.crearReferencia(baseDatos)
+
+
+        return jsonify({"message": "referencia creada", "code": 1})
+    except:
+        return jsonify({"message": "error", "code": 0})
+
+
+
+@app.route('/api/putReferencia/', methods = ['PUT'])
+def putReferencia_api():
+
+    try:
+        r = getReferenciaByID(baseDatos, request.json['id'])
+
+        r.nombre = request.json['nombre']
+        r.apellido = request.json['apellido']
+        r.fechaDesde = date(request.json['fecha_desde']['anio'], request.json['fecha_desde']['mes'], request.json['fecha_desde']['dia'])
+        r.fechaHasta = date(request.json['fecha_hasta']['anio'], request.json['fecha_hasta']['mes'], request.json['fecha_hasta']['dia'])
+        r.telefono = request.json['telefono']
+        r.actualizarReferencia(baseDatos)
+
+
+        return jsonify({"message": "referencia actualizada", "code": 1})
+    except:
+        return jsonify({"message": "error", "code": 0})
+
+
+@app.route('/api/delReferencia/<id_referencia>', methods = ['DELETE'])
+def delReferencia_api(id_referencia):
+
+    try:
+        r = getReferenciaByID(baseDatos, id_referencia)
+
+        r.borrarReferencia(baseDatos)
+
+
+        return jsonify({"message": "referencia borrada", "code": 1})
+    except:
+        return jsonify({"message": "error", "code": 0})
+
+
+@app.route('/api/push')
+def apiPush():
+
+    objeto = {
+        "id_user": "2"
+    }
+
+    sendPush("Fulano de Tal :", "Hola!!", tokens, objeto)
+    return jsonify({"message": "ok"})
 
 
 if __name__ == '__main__':
