@@ -58,7 +58,7 @@ baseDatos = connectionDb(app, 'PA')
 # session
 app.secret_key = "session"
 
-tokens = ["dNNAO26rQ5S7vqVBBhE3P8:APA91bFxpTR0-0oA35XXey0UzpQdG10P3emn7qEvaup-5F3LFroUb2rYsQ0u8GN8yt5hXsRJ9PzM55FRltvxxaFx_YkErCvnfWlMppn2DEgQXL7zcsYI6XZGvIqISnL5DV96BYSPq1SU"]
+tokens = ["eSi5rVcWRumcZSOQWGaKKA:APA91bG5DR3OosFtPO8Nu1JknJ-xh2B70Tqpz8hsju8iGa6XFTJXJyOlZRwDKdKk_mOE5g91i52pUrVdxo_FFQJlYBGPacVVeMmNVY7RFrNV2gLxqFv7YASJ8-x7VI2OOfauf0IlNK7x"]
 
 fcm = True
 
@@ -1972,12 +1972,6 @@ def api_ingresar():
                 'tipo': None,
                 'image': None
             }
-    if login_info['id']:
-        user_id_push = str(login_info['id'])
-        objeto = {
-            "id_user": user_id_push
-        }
-        sendPush("x", "x", tokens, objeto)
     return jsonify(login_info)
 
 
@@ -2462,7 +2456,7 @@ def disponibilidad_anuncio_api(id):
 
 @app.route('/api/crear_anuncio/', methods=['POST'])
 def crear_anuncio_api():
-    try:
+#    try:
         usuario = getUsuarioByID(baseDatos, request.json['id_usuario_empleador'])
         empleador = getEmpleadorByUsuarioID(baseDatos, request.json['id_usuario_empleador'])
         if str(request.json['disponibilidad']) == "1" or str(request.json['disponibilidad']) == "2" or str(request.json['disponibilidad']) == "3" or str(request.json['disponibilidad']) == "4":
@@ -2488,9 +2482,9 @@ def crear_anuncio_api():
         else:
             return jsonify({"message": "error, disponiblidad incorrecta", "code": 0})
 
-    except:
+#    except:
 
-        return jsonify({"message": "error en crear anuncio", "code": 0})
+#        return jsonify({"message": "error en crear anuncio", "code": 0})
 
 
 @app.route('/api/get_anuncio/<id>')
@@ -2567,7 +2561,7 @@ def update_anuncio_api():
 
 @app.route('/api/anuncios_disponibles/<id_empleado>')
 def matcheo(id_empleado):
-#    try:
+    try:
         empleado = getEmpleadoByUsuarioID(baseDatos, id_empleado)
         idEmpleado = empleado.id
         tareas = []
@@ -2684,8 +2678,8 @@ def matcheo(id_empleado):
             return jsonify(matecheo_lista_api)
         else:
             return jsonify([])
-#    except:
-#        return jsonify({"message": "error", "code": 0})
+    except:
+        return jsonify({"message": "error", "code": 0})
 
 
 @app.route('/api/postular/', methods=['POST'])
@@ -2711,9 +2705,10 @@ def postular_api():
             mensajeEmpleado.crearMensaje(baseDatos)
             user_id_push = str(empleado.usuario.id)
             objeto = {
-                "id_user": user_id_push
+                "id_user": user_id_push,
+                "tipo": "Postulacion"
             }
-            sendPush("x", "x", tokens, objeto)
+            sendPush("Suerte!", "Te has postulado al anuncio" + anuncio.titulo, tokens, objeto)
 
             # Se debe notificar al empleador mediante mensaje de que se ha postulado
             mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
@@ -2721,9 +2716,12 @@ def postular_api():
             mensajeEmpleador.crearMensaje(baseDatos)
             user_id_push = str(empleador_id)
             objeto = {
-                "id_user": user_id_push
+                "id_user": user_id_push,
+                "tipo": "Postulacion"
             }
-            sendPush("x", "x", tokens, objeto)
+            sendPush("Tienes un postulante nuevo", 
+            empleado.nombre + " " + empleado.apellido + " se a postulado a tu anuncio: " + "'" +
+            anuncio.titulo + "'", tokens, objeto)
 
             return jsonify({"message": "postulación realizada", "code": 1})
 
@@ -2748,9 +2746,11 @@ def despostular_api():
         mensajeEmpleado.crearMensaje(baseDatos)
         user_id_push = str(empleado.usuario.id)
         objeto = {
-            "id_user": user_id_push
+            "id_user": user_id_push,
+            "tipo": "Postulacion"
         }
-        sendPush("x", "x", tokens, objeto)
+        sendPush("Te has bajado de la postulacion.", 
+        "Te has bajado de la postulacion al anuncio: " + anuncio.titulo, tokens, objeto)
 
         # Se debe notificar al empleador mediante mensaje de que se han despostulado de su anuncio
         mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
@@ -2758,9 +2758,11 @@ def despostular_api():
         mensajeEmpleador.crearMensaje(baseDatos)
         user_id_push = str(empleador_id)
         objeto = {
-            "id_user": user_id_push
+            "id_user": user_id_push,
+            "tipo": "Postulacion"
         }
-        sendPush("x", "x", tokens, objeto)
+        sendPush("Un postulante se ha retirado", empleado.nombre + " " + empleado.apellido + 
+        " ha retirado su postulación a tu anuncio: " + anuncio.titulo, tokens, objeto)
 
         return jsonify({"message": "des-postulación realizada", "code": 1})
 
@@ -2792,7 +2794,7 @@ def postulaciones_empleado_api(id):
                     "estado": int.from_bytes(anuncio.estado, "big"),
                     "experiencia": anuncio.experiencia,
                     "pago_hora": anuncio.pago_hora,
-                    "empleador": anuncio.empleador.id
+                    "empleador": anuncio.empleador.usuario.id
                 }
                 empleado_postulaciones.append(anun)
 
@@ -2857,9 +2859,12 @@ def postulantes_anuncio_api(id):
 def contratar_api():
 
     try:
+
+
         anuncio = getAnuncioByID(baseDatos, request.json['id_anuncio'])
         empleado = getEmpleadoByUsuarioID(baseDatos, request.json['id_usuario_empleado'])
         empleador = getEmpleadorByUsuarioID(baseDatos, request.json['id_usuario_empleador'])
+
 
         # Se debe generar el vínculo
         vinculo = Vinculo(0, empleado, empleador, anuncio,
@@ -2880,9 +2885,12 @@ def contratar_api():
         mensajeEmpleado.crearMensaje(baseDatos)
         user_id_push = str(empleado.usuario.id)
         objeto = {
-            "id_user": user_id_push
+            "id_user": user_id_push,
+            "tipo": "Vinculo"
         }
-        sendPush("x", "x", tokens, objeto)
+        sendPush("Felicidades!!!", 
+        "Has sido contratado por " + empleador.nombre + " " + empleador.apellido + ", por el anuncio '" + 
+        anuncio.titulo +"', les deseamos un buen vínculo laboral.", tokens, objeto)
 
         # Se debe notificar al empleador mediante mensaje de que contrató al empleador "X"
         mensajeEmpleador = Mensaje(
@@ -2890,9 +2898,13 @@ def contratar_api():
         mensajeEmpleador.crearMensaje(baseDatos)
         user_id_push = str(empleador.usuario.id)
         objeto = {
-            "id_user": user_id_push
+            "id_user": user_id_push,
+            "tipo": "Vinculo"
         }
-        sendPush("x", "x", tokens, objeto)
+        sendPush("Felicidades", 
+        "Has contratado a " + empleado.nombre + " " + empleado.apellido + "para el trabajo: " + anuncio.titulo +
+        ", les deseamos un buen vínculo laboral.", 
+        tokens, objeto)
 
         # Se debe generar recordatorio de calificación para el empleado
         recordatorioEmpleado = Recordatorio(0, 1, empleado, empleador, empleado, anuncio, postulacion, vinculo, datetime.now(
@@ -3102,9 +3114,12 @@ def finalizar_vinculo_api():
         mensajeEmpleado.crearMensaje(baseDatos)
         user_id_push = str(empleado.usuario.id)
         objeto = {
-            "id_user": user_id_push
+            "id_user": user_id_push,
+            "tipo": "Vinculo"
         }
-        sendPush("x", "x", tokens, objeto)
+        sendPush("Vínculo finalizado.", 
+        "Su vínculo con " + empleador.nombre + " " + empleador.apellido + " ha finaliado.", 
+        tokens, objeto)
 
         # Se debe notificar al empleador mediante mensaje de que el vínculo con el empleado "X" finalizó
         mensajeEmpleador = Mensaje(0, empleado, empleador, anuncio, datetime.now(),
@@ -3113,9 +3128,12 @@ def finalizar_vinculo_api():
         mensajeEmpleador.crearMensaje(baseDatos)
         user_id_push = str(empleador.usuario.id)
         objeto = {
-            "id_user": user_id_push
+            "id_user": user_id_push,
+            "tipo": "Vinculo"
         }
-        sendPush("x", "x", tokens, objeto)
+        sendPush("Vínculo finalizado.", 
+        "Su vínculo con " + empleado.nombre + " " + empleado.apellido + " ha finaliado.", 
+        tokens, objeto)
         return jsonify({"message": "vínculo finalizado", "code": 1})
     except:
         return jsonify({"message": "error", "code": 0})
@@ -3277,9 +3295,10 @@ def crear_mensaje_api_desde_empleador():
         mensaje.crearMensaje(baseDatos)
         user_id_push = str(empleado.usuario.id)
         objeto = {
-            "id_user": user_id_push
+            "id_user": user_id_push,
+            "tipo": "Mensaje"
         }
-        sendPush("x", "x", tokens, objeto)
+        sendPush(empleador.nombre + " " + empleador.apellido + ": ", mensaje.mensaje, tokens, objeto)
         return jsonify({"message": "mensaje enviado", "code": 1})
     except:
         return jsonify({"message": "error", "code": 0})
@@ -3297,9 +3316,10 @@ def crear_mensaje_api_desde_empleado():
         mensaje.crearMensaje(baseDatos)
         user_id_push = str(empleador.usuario.id)
         objeto = {
-            "id_user": user_id_push
+            "id_user": user_id_push,
+            "tipo": "Mensaje"
         }
-        sendPush(empleado.nombre + " " + empleado.apellido + ":", mensaje.mensaje, tokens, objeto)
+        sendPush(empleado.nombre + " " + empleado.apellido + ": ", mensaje.mensaje, tokens, objeto)
         return jsonify({"message": "mensaje enviado", "code": 1})
     except:
         return jsonify({"message": "error", "code": 0})
@@ -3622,7 +3642,6 @@ def postReferencia_api():
         return jsonify({"message": "error", "code": 0})
 
 
-
 @app.route('/api/putReferencia/', methods = ['PUT'])
 def putReferencia_api():
 
@@ -3660,7 +3679,7 @@ def delReferencia_api(id_referencia):
 def apiPush():
 
     objeto = {
-        "id_user": "2"
+        "id_user": "3"
     }
 
     sendPush("Fulano de Tal :", "Hola!!", tokens, objeto)
