@@ -58,7 +58,7 @@ baseDatos = connectionDb(app, 'PA')
 # session
 app.secret_key = "session"
 
-tokens = ["eSi5rVcWRumcZSOQWGaKKA:APA91bG5DR3OosFtPO8Nu1JknJ-xh2B70Tqpz8hsju8iGa6XFTJXJyOlZRwDKdKk_mOE5g91i52pUrVdxo_FFQJlYBGPacVVeMmNVY7RFrNV2gLxqFv7YASJ8-x7VI2OOfauf0IlNK7x"]
+token = ["eSi5rVcWRumcZSOQWGaKKA:APA91bG5DR3OosFtPO8Nu1JknJ-xh2B70Tqpz8hsju8iGa6XFTJXJyOlZRwDKdKk_mOE5g91i52pUrVdxo_FFQJlYBGPacVVeMmNVY7RFrNV2gLxqFv7YASJ8-x7VI2OOfauf0IlNK7x"]
 
 fcm = True
 
@@ -80,7 +80,7 @@ def sendPush(title, msg, registration_token, dataObject=None):
         # Response is a message ID string.
         print('Successfully sent message:', response)
     else:
-        print('No FCM:')
+        print('No FCM')
 
 
 def archivoAdmitido(filename):
@@ -1273,7 +1273,8 @@ def postularse(idAnuncio):
         objetoX = {
             "id_user": user_id_push
         }
-        sendPush("x", "x", tokens, objetoX)
+        t = empleado.usuario.getToken(baseDatos)
+        sendPush("Buenas suerte!", "te has posulado al anuncio: " + anuncio.titulo, t, objetoX)
 
         # Se debe notificar al empleador mediante mensaje de que se ha postulado
         mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
@@ -1283,7 +1284,10 @@ def postularse(idAnuncio):
         objetoX = {
             "id_user": user_id_push
         }
-        sendPush("x", "x", tokens, objetoX)
+        t = empleador.usuario.getToken(baseDatos)
+        sendPush("Nueva posulación", 
+        empleado.nombre + " " + empleado.apellido + " se ha postulado a tu anuncio " + anuncio.titulo, 
+        t, objetoX)
 
         return redirect(url_for('listar_anuncios'))
 
@@ -1340,7 +1344,9 @@ def despostularse(idPostulacion):
         objetoX = {
             "id_user": user_id_push
         }
-        sendPush("x", "x", tokens, objetoX)
+        t = empleado.usuario.getToken(baseDatos)
+        sendPush("Postulación eliminada",
+        "Te has despostulado al anuncio " + anuncio.titulo, t, objetoX)
 
         # Se debe notificar al empleador mediante mensaje de que se han despostulado de su anuncio
         mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
@@ -1350,7 +1356,10 @@ def despostularse(idPostulacion):
         objetoX = {
             "id_user": user_id_push
         }
-        sendPush("x", "x", tokens, objetoX)
+        t = empleador.usuario.getToken(baseDatos)
+        sendPush("Postulación eliminada", 
+        empleado.nombre + " " + empleado.apellido + " ha retirado su postulación a tu anuncio " + anuncio.titulo, 
+        t, objetoX)
 
         return redirect(url_for('mis_postulaciones'))
 
@@ -1617,7 +1626,11 @@ def end_vinculo(idVinculo):
             objetoX = {
                 "id_user": user_id_push
             }
-            sendPush("x", "x", tokens, objetoX)
+            t = empleado.usuario.getToken(baseDatos)
+            sendPush("Vínculo finalizado", 
+            "Su vínculo con " + empleador.nombre + " " + empleador.apellido + " por el anuncio " +
+            anuncio.titulo + " ha finalizado.", 
+            t, objetoX)
 
             # Se debe notificar al empleador mediante mensaje de que el vínculo con el empleado "X" finalizó
             mensajeEmpleador = Mensaje(0, empleado, empleador, anuncio, datetime.now(),
@@ -1628,7 +1641,11 @@ def end_vinculo(idVinculo):
             objetoX = {
                 "id_user": user_id_push
             }
-            sendPush("x", "x", tokens, objetoX)
+            t = empleador.usuario.getToken(baseDatos)
+            sendPush("Vínculo finalizado", 
+            "Su vínculo con " + empleado.nombre + " " + empleado.apellido + " por el anuncio " +
+            anuncio.titulo + " ha finalizado.", 
+            t, objetoX)
 
             return redirect(url_for('ver_vinculo', idVinculo=idVinculo))
 
@@ -1769,7 +1786,9 @@ def agregar_mensaje(idDestinatario, idAnuncio):
                 objetoX = {
                     "id_user": user_id_push
                 }
-                sendPush("x", "x", tokens, objetoX)
+                t = empleador.usuario.getToken(baseDatos)
+                sendPush(empleado.nombre + " " + empleado.apellido + " dice:", 
+                mensajeEmpleado.mensaje, t, objetoX)
 
             elif session['usertype'] == 'Empleador':
                 empleador = getEmpleadorByID(
@@ -1782,7 +1801,9 @@ def agregar_mensaje(idDestinatario, idAnuncio):
                 objetoX = {
                     "id_user": user_id_push
                 }
-                sendPush("x", "x", tokens, objetoX)
+                t = empleado.usuario.getToken(baseDatos)
+                sendPush(empleador.nombre + " " + empleador.apellido + " dice:", 
+                mensajeEmpleador.mensaje, t, objetoX)
                 return redirect(url_for('mensajes_empleador', idEmpleador=empleador.id, idEmpleado=empleado.id))
 
 
@@ -1837,7 +1858,10 @@ def contratar(idEmpleado):
         objeto = {
             "id_user": user_id_push
         }
-        sendPush("x", "x", tokens, objeto)
+        t = empleado.usuario.getToken(baseDatos)
+        sendPush("Felicidades!", 
+        empleador.nombre + " " + empleador.apellido + " te ha contratado para el anuncio " + anuncio.titulo, 
+        t, objeto)
 
         # Se debe notificar al empleador mediante mensaje de que contrató al empleador "X"
         mensajeEmpleador = Mensaje(
@@ -1847,7 +1871,10 @@ def contratar(idEmpleado):
         objeto = {
             "id_user": user_id_push
         }
-        sendPush("x", "x", tokens, objeto)
+        t = empleador.usuario.getToken(baseDatos)
+        sendPush("Felicidades!", 
+        "Has contratado a " + empleado.nombre + " " + empleado.apellido + " para el anuncio " + anuncio.titulo, 
+        t, objeto)
 
         # Se debe generar recordatorio de calificación para el empleado
         recordatorioEmpleado = Recordatorio(0, 1, empleado, empleador, empleado, anuncio, postulacion, vinculo, datetime.now(
@@ -1917,7 +1944,19 @@ def desbloqueo_cuenta():
         else:
             return render_template('DesbloqueoCuenta.html')
 
+
+
+
+
+
+
+
+
+
+
 # ---------------------------------------API-----------------------------------------------------------
+
+
 @app.route('/api/ping/', methods=['GET'])
 def ping():
     return jsonify({'message': 'pong!'})
@@ -2040,11 +2079,6 @@ def api_registro():
                             'tipo': request.json['tipo'],
                             'image': foto
                         }
-                        user_id_push = str(login_info['id'])
-                        objeto = {
-                            "id_user": user_id_push
-                        }
-                        sendPush("x", "x", tokens, objeto)
 
                         return jsonify({
                             "message": "Usuario empleador creado con exito!",
@@ -2130,11 +2164,6 @@ def api_registro():
                             'tipo': request.json['tipo'],
                             'image': foto
                         }
-                        user_id_push = str(login_info['id'])
-                        objeto = {
-                            "id_user": user_id_push
-                        }
-                        sendPush("x", "x", tokens, objeto)
 
                         return jsonify({
                             "message": "Usuario empleado creado con exito!",
@@ -2456,7 +2485,7 @@ def disponibilidad_anuncio_api(id):
 
 @app.route('/api/crear_anuncio/', methods=['POST'])
 def crear_anuncio_api():
-#    try:
+    try:
         usuario = getUsuarioByID(baseDatos, request.json['id_usuario_empleador'])
         empleador = getEmpleadorByUsuarioID(baseDatos, request.json['id_usuario_empleador'])
         if str(request.json['disponibilidad']) == "1" or str(request.json['disponibilidad']) == "2" or str(request.json['disponibilidad']) == "3" or str(request.json['disponibilidad']) == "4":
@@ -2481,10 +2510,9 @@ def crear_anuncio_api():
             return jsonify({"message": "anuncio creado", "code": 1})
         else:
             return jsonify({"message": "error, disponiblidad incorrecta", "code": 0})
+    except:
 
-#    except:
-
-#        return jsonify({"message": "error en crear anuncio", "code": 0})
+        return jsonify({"message": "error en crear anuncio", "code": 0})
 
 
 @app.route('/api/get_anuncio/<id>')
@@ -2708,7 +2736,8 @@ def postular_api():
                 "id_user": user_id_push,
                 "tipo": "Postulacion"
             }
-            sendPush("Suerte!", "Te has postulado al anuncio" + anuncio.titulo, tokens, objeto)
+            t = empleado.usuario.getToken(baseDatos)
+            sendPush("Suerte!", "Te has postulado al anuncio" + anuncio.titulo, t, objeto)
 
             # Se debe notificar al empleador mediante mensaje de que se ha postulado
             mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
@@ -2719,9 +2748,10 @@ def postular_api():
                 "id_user": user_id_push,
                 "tipo": "Postulacion"
             }
+            t = empleador.usuario.getToken(baseDatos)
             sendPush("Tienes un postulante nuevo", 
             empleado.nombre + " " + empleado.apellido + " se a postulado a tu anuncio: " + "'" +
-            anuncio.titulo + "'", tokens, objeto)
+            anuncio.titulo + "'", t, objeto)
 
             return jsonify({"message": "postulación realizada", "code": 1})
 
@@ -2749,8 +2779,9 @@ def despostular_api():
             "id_user": user_id_push,
             "tipo": "Postulacion"
         }
+        t = empleado.usuario.getToken(baseDatos)
         sendPush("Te has bajado de la postulacion.", 
-        "Te has bajado de la postulacion al anuncio: " + anuncio.titulo, tokens, objeto)
+        "Te has bajado de la postulacion al anuncio: " + anuncio.titulo, t, objeto)
 
         # Se debe notificar al empleador mediante mensaje de que se han despostulado de su anuncio
         mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
@@ -2761,8 +2792,10 @@ def despostular_api():
             "id_user": user_id_push,
             "tipo": "Postulacion"
         }
-        sendPush("Un postulante se ha retirado", empleado.nombre + " " + empleado.apellido + 
-        " ha retirado su postulación a tu anuncio: " + anuncio.titulo, tokens, objeto)
+        t = empleador.usuario.getToken(baseDatos)
+        sendPush("Un postulante se retiró", 
+        empleado.nombre + " " + empleado.apellido + " ha retirado su postulación al anuncio: " + 
+        anuncio.titulo, t, objeto)
 
         return jsonify({"message": "des-postulación realizada", "code": 1})
 
@@ -2888,9 +2921,10 @@ def contratar_api():
             "id_user": user_id_push,
             "tipo": "Vinculo"
         }
+        t = empleado.usuario.getToken(baseDatos)
         sendPush("Felicidades!!!", 
         "Has sido contratado por " + empleador.nombre + " " + empleador.apellido + ", por el anuncio '" + 
-        anuncio.titulo +"', les deseamos un buen vínculo laboral.", tokens, objeto)
+        anuncio.titulo +"', les deseamos un buen vínculo laboral.", t, objeto)
 
         # Se debe notificar al empleador mediante mensaje de que contrató al empleador "X"
         mensajeEmpleador = Mensaje(
@@ -2901,10 +2935,11 @@ def contratar_api():
             "id_user": user_id_push,
             "tipo": "Vinculo"
         }
+        t = empleador.usuario.getToken(baseDatos)
         sendPush("Felicidades", 
         "Has contratado a " + empleado.nombre + " " + empleado.apellido + "para el trabajo: " + anuncio.titulo +
         ", les deseamos un buen vínculo laboral.", 
-        tokens, objeto)
+        t, objeto)
 
         # Se debe generar recordatorio de calificación para el empleado
         recordatorioEmpleado = Recordatorio(0, 1, empleado, empleador, empleado, anuncio, postulacion, vinculo, datetime.now(
@@ -3117,9 +3152,10 @@ def finalizar_vinculo_api():
             "id_user": user_id_push,
             "tipo": "Vinculo"
         }
+        t = empleado.usuario.getToken(baseDatos)
         sendPush("Vínculo finalizado.", 
         "Su vínculo con " + empleador.nombre + " " + empleador.apellido + " ha finaliado.", 
-        tokens, objeto)
+        t, objeto)
 
         # Se debe notificar al empleador mediante mensaje de que el vínculo con el empleado "X" finalizó
         mensajeEmpleador = Mensaje(0, empleado, empleador, anuncio, datetime.now(),
@@ -3131,9 +3167,10 @@ def finalizar_vinculo_api():
             "id_user": user_id_push,
             "tipo": "Vinculo"
         }
+        t = empleador.usuario.getToken(baseDatos)
         sendPush("Vínculo finalizado.", 
         "Su vínculo con " + empleado.nombre + " " + empleado.apellido + " ha finaliado.", 
-        tokens, objeto)
+        t, objeto)
         return jsonify({"message": "vínculo finalizado", "code": 1})
     except:
         return jsonify({"message": "error", "code": 0})
@@ -3271,15 +3308,18 @@ def ver_mensaje_api(id_mensaje):
         return jsonify({"message": "error", "code": 0})
 
 
-@app.route('/api/mensaje_marcar_leido/<id_mensaje>', methods = ['PUT'])
-def mensaje_marcar_leido_api(id_mensaje):
+@app.route('/api/mensajes_marcar_leidos', methods = ['PUT'])
+def mensaje_marcar_leido_api():
     try:
-        mensaje = getMensajeByID(baseDatos, id_mensaje)
-        if mensaje.leido == False:
-            mensaje.marcarMensajeComoLeido(baseDatos)
-            return jsonify({"message": "mensaje marcado como leído", "code": 1})
+        listaIDs = request.json['lista_id']
+        if listaIDs:
+            for id_mensaje in listaIDs:
+                mensaje = getMensajeByID(baseDatos, id_mensaje)
+                if mensaje.leido == False:
+                    mensaje.marcarMensajeComoLeido(baseDatos)
+            return jsonify({"message": "mensajes marcados como leídos", "code": 1})
         else:
-            return jsonify({"message": "mensaje ya leído", "code": 1})
+            return jsonify({"message": "mensajes ya leídos", "code": 1})
     except:
         return jsonify({"message": "error", "code": 0})
 
@@ -3298,11 +3338,11 @@ def crear_mensaje_api_desde_empleador():
             "id_user": user_id_push,
             "tipo": "Mensaje"
         }
-        sendPush(empleador.nombre + " " + empleador.apellido + ": ", mensaje.mensaje, tokens, objeto)
+        t = empleado.usuario.getToken(baseDatos)
+        sendPush(empleador.nombre + " " + empleador.apellido + " dice :", mensaje.mensaje, t, objeto)
         return jsonify({"message": "mensaje enviado", "code": 1})
     except:
         return jsonify({"message": "error", "code": 0})
-
 
 
 @app.route('/api/crear_mensaje_desde_empleado', methods = ['POST'])
@@ -3319,7 +3359,8 @@ def crear_mensaje_api_desde_empleado():
             "id_user": user_id_push,
             "tipo": "Mensaje"
         }
-        sendPush(empleado.nombre + " " + empleado.apellido + ": ", mensaje.mensaje, tokens, objeto)
+        t = empleador.usuario.getToken(baseDatos)
+        sendPush(empleado.nombre + " " + empleado.apellido + " dice:", mensaje.mensaje, t, objeto)
         return jsonify({"message": "mensaje enviado", "code": 1})
     except:
         return jsonify({"message": "error", "code": 0})
@@ -3675,15 +3716,35 @@ def delReferencia_api(id_referencia):
         return jsonify({"message": "error", "code": 0})
 
 
-@app.route('/api/push')
-def apiPush():
+@app.route('/api/guardarToken', methods = ['PUT'])
+def guardarToken_api():
+    try:
+        usuario = getUsuarioByID(baseDatos, request.json['user_id'])
+        usuario.cambiarToken(request.json['token'], baseDatos)
+        return jsonify({"message": "token cambiado", "code": 1})
+    except:
+        return jsonify({"message": "error", "code": 0})
 
-    objeto = {
-        "id_user": "3"
-    }
 
-    sendPush("Fulano de Tal :", "Hola!!", tokens, objeto)
-    return jsonify({"message": "ok"})
+@app.route('/api/getToken/<user_id>',)
+def getToken_api(user_id):
+    try:
+        usuario = getUsuarioByID(baseDatos, user_id)
+        t = usuario.getToken(baseDatos)[0][0]
+        return jsonify(t)
+    except:
+        return jsonify({"message": "error", "code": 0})
+
+
+@app.route('/api/push/<user_id>')
+def apiPush(user_id):
+
+    x = request.json
+    usuario = getUsuarioByID(baseDatos, user_id)
+    t = usuario.getToken(baseDatos)
+    sendPush("Titulo por defecto", "Body por defecto", t, x)
+
+    return  jsonify(x)
 
 
 if __name__ == '__main__':

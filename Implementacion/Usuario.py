@@ -66,6 +66,32 @@ class Usuario:
             print('contraseña cambiada')
         except Exception as e:
             print("Error en cambiarPassword ", e)
+    
+    def cambiarToken(self, token, bd):
+        try:
+            cursor = bd.connection.cursor()
+            cursor.execute('UPDATE usuario SET token = %s WHERE usuario = %s',
+                           (token, self.usuario))
+            bd.connection.commit()
+            cursor.close()
+            print('token cambiado')
+        except Exception as e:
+            print("Error en cambiarToken ", e)
+
+    def getToken(self, bd):
+        try:
+            cursor = bd.connection.cursor()
+            cursor.execute('SELECT token FROM usuario WHERE usuario = %s AND clave = %s',
+                           (self.usuario, self.clave))
+            retorno = cursor.fetchall()
+            self.id = retorno[0][0]
+            bd.connection.commit()
+            cursor.close()
+            return retorno
+        except Exception as e:
+            print("Error en getToken ", e)
+
+    
 
 
 def getUsuarioByID(bd, id):
