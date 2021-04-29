@@ -1267,7 +1267,7 @@ def postularse(idAnuncio):
 
         # Se debe notificar al empleado mediante mensaje de que se ha postulado
         mensajeEmpleado = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
-        ), 'Buena suerte {} {}!!! te has postulado al anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 1, False)
+        ), 'Buena suerte {} {}!!! te has postulado al anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 1, False, "p")
         mensajeEmpleado.crearMensaje(baseDatos)
         user_id_push = str(empleado.usuario.id)
         objetoX = {
@@ -1278,7 +1278,7 @@ def postularse(idAnuncio):
 
         # Se debe notificar al empleador mediante mensaje de que se ha postulado
         mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
-        ), 'Buenas noticias!!! {} {} se ha postulado a tu anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
+        ), 'Buenas noticias!!! {} {} se ha postulado a tu anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False, "p")
         mensajeEmpleador.crearMensaje(baseDatos)
         user_id_push = str(empleador.usuario.id)
         objetoX = {
@@ -1338,7 +1338,7 @@ def despostularse(idPostulacion):
 
         # Se debe notificar al empleado mediante mensaje de que se ha despostulado del anuncio
         mensajeEmpleado = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
-        ), '{} {}, te has despostulado del anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 1, False)
+        ), '{} {}, te has despostulado del anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 1, False, "p")
         mensajeEmpleado.crearMensaje(baseDatos)
         user_id_push = str(empleado.usuario.id)
         objetoX = {
@@ -1350,7 +1350,7 @@ def despostularse(idPostulacion):
 
         # Se debe notificar al empleador mediante mensaje de que se han despostulado de su anuncio
         mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
-        ), '{} {} se ha despostulado de tu anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
+        ), '{} {} se ha despostulado de tu anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False, "p")
         mensajeEmpleador.crearMensaje(baseDatos)
         user_id_push = str(empleador.usuario.id)
         objetoX = {
@@ -1620,7 +1620,7 @@ def end_vinculo(idVinculo):
             # Se debe notificar al empleado mediante mensaje de que el vínculo con el empleador "X" finalizó
             mensajeEmpleado = Mensaje(0, empleado, empleador, anuncio, datetime.now(),
                                       'Su vínculo con {} {} por el anuncio "{}" ha finalizado. Recuerde que puede calificar el vínculo cuantas veces lo considere desde "Mis Vínculos"'
-                                      .format(empleador.nombre, empleador.apellido, anuncio.titulo), 3, 1, False)
+                                      .format(empleador.nombre, empleador.apellido, anuncio.titulo), 3, 1, False, "v")
             mensajeEmpleado.crearMensaje(baseDatos)
             user_id_push = str(empleado.usuario.id)
             objetoX = {
@@ -1635,7 +1635,7 @@ def end_vinculo(idVinculo):
             # Se debe notificar al empleador mediante mensaje de que el vínculo con el empleado "X" finalizó
             mensajeEmpleador = Mensaje(0, empleado, empleador, anuncio, datetime.now(),
                                        'Su vínculo con {} {} por el anuncio "{}" ha finalizado. Recuerde que puede calificar el vínculo cuantas veces lo considere desde "Mis Vínculos"'
-                                       .format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
+                                       .format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False, "v")
             mensajeEmpleador.crearMensaje(baseDatos)
             user_id_push = str(empleador.usuario.id)
             objetoX = {
@@ -1778,7 +1778,7 @@ def agregar_mensaje(idDestinatario, idAnuncio):
                 empleado = getEmpleadoByID(baseDatos, session['id_empleado'])
                 empleador = getEmpleadorByID(baseDatos, idDestinatario)
                 mensajeEmpleado = Mensaje(
-                    0, empleado, empleador, anuncio, datetime.now(), mensaje, 1, 2, False)
+                    0, empleado, empleador, anuncio, datetime.now(), mensaje, 1, 2, False, "m")
                 mensajeEmpleado.crearMensaje(baseDatos)
                 return redirect(url_for('mensajes_empleado', idEmpleado=empleado.id, idEmpleador=empleador.id))
 
@@ -1795,7 +1795,7 @@ def agregar_mensaje(idDestinatario, idAnuncio):
                     baseDatos, session['id_empleador'])
                 empleado = getEmpleadoByID(baseDatos, idDestinatario)
                 mensajeEmpleador = Mensaje(
-                    0, empleado, empleador, anuncio, datetime.now(), mensaje, 2, 1, False)
+                    0, empleado, empleador, anuncio, datetime.now(), mensaje, 2, 1, False, "m")
                 mensajeEmpleador.crearMensaje(baseDatos)
                 user_id_push = str(empleado.usuario.id)
                 objetoX = {
@@ -1851,7 +1851,7 @@ def contratar(idEmpleado):
 
         # Se debe notificar al empleado mediante mensaje de que el empleador "X" lo contrató
         mensajeEmpleado = Mensaje(
-            0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has sido contratado por {} {}, por el anuncio "{}", les deseamos un buen vínculo laboral.'.format(empleador.nombre, empleador.apellido, anuncio.titulo), 3, 1, False)
+            0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has sido contratado por {} {}, por el anuncio "{}", les deseamos un buen vínculo laboral.'.format(empleador.nombre, empleador.apellido, anuncio.titulo), 3, 1, False, "v")
         mensajeEmpleado.crearMensaje(baseDatos)
 
         user_id_push = str(empleado.usuario.id)
@@ -1863,9 +1863,9 @@ def contratar(idEmpleado):
         empleador.nombre + " " + empleador.apellido + " te ha contratado para el anuncio " + anuncio.titulo, 
         t, objeto)
 
-        # Se debe notificar al empleador mediante mensaje de que contrató al empleador "X"
+        # Se debe notificar al empleador mediante mensaje de que contrató al empleado "X"
         mensajeEmpleador = Mensaje(
-            0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has contratado a {} {}, por el anuncio "{}", les deseamos un buen vínculo laboral.'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
+            0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has contratado a {} {}, por el anuncio "{}", les deseamos un buen vínculo laboral.'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False, "v")
         mensajeEmpleador.crearMensaje(baseDatos)
         user_id_push = str(empleador.usuario.id)
         objeto = {
@@ -2541,11 +2541,11 @@ def ver_anuncio_api(id):
         return jsonify({"message": "error", "code": 0})
 
 
-@app.route('/api/delete_anuncio/', methods=['DELETE'])
-def delete_anuncio_api():
+@app.route('/api/delete_anuncio/<id>', methods=['DELETE'])
+def delete_anuncio_api(id):
 
     try:
-        anuncio = getAnuncioByID_d(baseDatos, request.json['id'])
+        anuncio = getAnuncioByID_d(baseDatos, id)
         anuncio.deleteAnuncio(baseDatos)
         return jsonify({"message": "anuncio borrado", "code": 1})
     except:
@@ -2729,7 +2729,7 @@ def postular_api():
 
             # Se debe notificar al empleado mediante mensaje de que se ha postulado
             mensajeEmpleado = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
-            ), 'Buena suerte {} {}!!! te has postulado al anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 1, False)
+            ), 'Buena suerte {} {}!!! te has postulado al anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 1, False, "p")
             mensajeEmpleado.crearMensaje(baseDatos)
             user_id_push = str(empleado.usuario.id)
             objeto = {
@@ -2741,7 +2741,7 @@ def postular_api():
 
             # Se debe notificar al empleador mediante mensaje de que se ha postulado
             mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
-            ), 'Buenas noticias!!! {} {} se ha postulado a tu anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
+            ), 'Buenas noticias!!! {} {} se ha postulado a tu anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False, "p")
             mensajeEmpleador.crearMensaje(baseDatos)
             user_id_push = str(empleador_id)
             objeto = {
@@ -2772,7 +2772,7 @@ def despostular_api():
 
         # Se debe notificar al empleado mediante mensaje de que se ha despostulado del anuncio
         mensajeEmpleado = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
-        ), '{} {}, te has despostulado del anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 1, False)
+        ), '{} {}, te has despostulado del anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 1, False, "p")
         mensajeEmpleado.crearMensaje(baseDatos)
         user_id_push = str(empleado.usuario.id)
         objeto = {
@@ -2785,7 +2785,7 @@ def despostular_api():
 
         # Se debe notificar al empleador mediante mensaje de que se han despostulado de su anuncio
         mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
-        ), '{} {} se ha despostulado de tu anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
+        ), '{} {} se ha despostulado de tu anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False, "p")
         mensajeEmpleador.crearMensaje(baseDatos)
         user_id_push = str(empleador_id)
         objeto = {
@@ -2914,7 +2914,7 @@ def contratar_api():
 
         # Se debe notificar al empleado mediante mensaje de que el empleador "X" lo contrató
         mensajeEmpleado = Mensaje(
-            0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has sido contratado por {} {}, por el anuncio "{}", les deseamos un buen vínculo laboral.'.format(empleador.nombre, empleador.apellido, anuncio.titulo), 3, 1, False)
+            0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has sido contratado por {} {}, por el anuncio "{}", les deseamos un buen vínculo laboral.'.format(empleador.nombre, empleador.apellido, anuncio.titulo), 3, 1, False, "v")
         mensajeEmpleado.crearMensaje(baseDatos)
         user_id_push = str(empleado.usuario.id)
         objeto = {
@@ -2926,9 +2926,9 @@ def contratar_api():
         "Has sido contratado por " + empleador.nombre + " " + empleador.apellido + ", por el anuncio '" + 
         anuncio.titulo +"', les deseamos un buen vínculo laboral.", t, objeto)
 
-        # Se debe notificar al empleador mediante mensaje de que contrató al empleador "X"
+        # Se debe notificar al empleador mediante mensaje de que contrató al empleado "X"
         mensajeEmpleador = Mensaje(
-            0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has contratado a {} {}, por el anuncio "{}", les deseamos un buen vínculo laboral.'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
+            0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has contratado a {} {}, por el anuncio "{}", les deseamos un buen vínculo laboral.'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False, "v")
         mensajeEmpleador.crearMensaje(baseDatos)
         user_id_push = str(empleador.usuario.id)
         objeto = {
@@ -3145,7 +3145,7 @@ def finalizar_vinculo_api():
         # Se debe notificar al empleado mediante mensaje de que el vínculo con el empleador "X" finalizó
         mensajeEmpleado = Mensaje(0, empleado, empleador, anuncio, datetime.now(),
                                     'Su vínculo con {} {} por el anuncio "{}" ha finalizado. Recuerde que puede calificar el vínculo cuantas veces lo considere desde "Mis Vínculos"'
-                                    .format(empleador.nombre, empleador.apellido, anuncio.titulo), 3, 1, False)
+                                    .format(empleador.nombre, empleador.apellido, anuncio.titulo), 3, 1, False, "v")
         mensajeEmpleado.crearMensaje(baseDatos)
         user_id_push = str(empleado.usuario.id)
         objeto = {
@@ -3160,7 +3160,7 @@ def finalizar_vinculo_api():
         # Se debe notificar al empleador mediante mensaje de que el vínculo con el empleado "X" finalizó
         mensajeEmpleador = Mensaje(0, empleado, empleador, anuncio, datetime.now(),
                                     'Su vínculo con {} {} por el anuncio "{}" ha finalizado. Recuerde que puede calificar el vínculo cuantas veces lo considere desde "Mis Vínculos"'
-                                    .format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False)
+                                    .format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False, "v")
         mensajeEmpleador.crearMensaje(baseDatos)
         user_id_push = str(empleador.usuario.id)
         objeto = {
@@ -3199,7 +3199,8 @@ def empleado_todos_mensajes_api(id_usuario_empleado):
                     "mensaje": m.mensaje,
                     "tipo_emisor": m.tipoEmisor,
                     "tipo_receptor": m.tipoReceptor,
-                    "leído": m.leido
+                    "leído": m.leido,
+                    "tipo_mensaje": m.tipoMensaje
                 }
                 listaMensajes.append(mensaje)
 
@@ -3225,7 +3226,8 @@ def empleador_todos_mensajes_api(id_usuario_empleador):
                     "mensaje": m.mensaje,
                     "tipo_emisor": m.tipoEmisor,
                     "tipo_receptor": m.tipoReceptor,
-                    "leído": m.leido
+                    "leído": m.leido,
+                    "tipo_mensaje": m.tipoMensaje
                 }
                 listaMensajes.append(mensaje)
 
@@ -3252,7 +3254,8 @@ def mensajes_empleado_api(id_usuario_empleado, id_usuario_empleador):
                         "mensaje": m.mensaje,
                         "tipo_emisor": m.tipoEmisor,
                         "tipo_receptor": m.tipoReceptor,
-                        "leído": m.leido
+                        "leído": m.leido,
+                        "tipo_mensaje": m.tipoMensaje
                     }
                     listaMensajes.append(mensaje)
 
@@ -3279,7 +3282,8 @@ def mensajes_empleador_api(id_usuario_empleado, id_usuario_empleador):
                         "mensaje": m.mensaje,
                         "tipo_emisor": m.tipoEmisor,
                         "tipo_receptor": m.tipoReceptor,
-                        "leído": m.leido
+                        "leído": m.leido,
+                        "tipo_mensaje": m.tipoMensaje
                     }
                     listaMensajes.append(mensaje)
 
@@ -3301,7 +3305,8 @@ def ver_mensaje_api(id_mensaje):
             "mensaje": m.mensaje,
             "tipo_emisor": m.tipoEmisor,
             "tipo_receptor": m.tipoReceptor,
-            "leído": m.leido
+            "leído": m.leido,
+            "tipo_mensaje": m.tipoMensaje
         }
         return jsonify(mensaje)
     except:
@@ -3331,7 +3336,7 @@ def crear_mensaje_api_desde_empleador():
         anuncio = getAnuncioByID(baseDatos, request.json['id_anuncio'])
         empleador = getEmpleadorByUsuarioID(baseDatos, request.json['id_usuario_empleador'])
         empleado = getEmpleadoByUsuarioID(baseDatos, request.json['id_usuario_empleado'])
-        mensaje = Mensaje(0, empleado, empleador, anuncio, datetime.now(), request.json['mensaje'], 2, 1, False)
+        mensaje = Mensaje(0, empleado, empleador, anuncio, datetime.now(), request.json['mensaje'], 2, 1, False, "m")
         mensaje.crearMensaje(baseDatos)
         user_id_push = str(empleado.usuario.id)
         objeto = {
@@ -3352,7 +3357,7 @@ def crear_mensaje_api_desde_empleado():
         anuncio = getAnuncioByID(baseDatos, request.json['id_anuncio'])
         empleador = getEmpleadorByUsuarioID(baseDatos, request.json['id_usuario_empleador'])
         empleado = getEmpleadoByUsuarioID(baseDatos, request.json['id_usuario_empleado'])
-        mensaje = Mensaje(0, empleado, empleador, anuncio, datetime.now(), request.json['mensaje'], 1, 2, False)
+        mensaje = Mensaje(0, empleado, empleador, anuncio, datetime.now(), request.json['mensaje'], 1, 2, False, "m")
         mensaje.crearMensaje(baseDatos)
         user_id_push = str(empleador.usuario.id)
         objeto = {

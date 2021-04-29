@@ -22,7 +22,8 @@ class Mensaje:
             pMensaje,
             pTipoEmisor,
             pTipoReceptor,
-            pLeido):
+            pLeido,
+            pTipoMensaje):
         self.id = pId
         self.empleado : Empleado = pEmpleado
         self.empleador : Empleador = pEmpleador
@@ -32,6 +33,7 @@ class Mensaje:
         self.tipoEmisor = pTipoEmisor
         self.tipoReceptor = pTipoReceptor
         self.leido = pLeido
+        self.tipoMensaje = pTipoMensaje
 
     def __str__(self):
         return 'Id: {}, Empleado: {}, Empleador: {}, Anuncio: {}, Fecha: {}, Mensaje: {}'.format(self.id, self.empleado.id, self.empleador.id, self.anuncio.id, self.fecha, self.mensaje)
@@ -40,7 +42,7 @@ class Mensaje:
         return self.__dict__[item]
 
     def crearMensaje(self, bd):
-        try:
+#        try:
             if self.anuncio == None:
                 idAnuncio = None
             else:
@@ -57,9 +59,10 @@ class Mensaje:
                         mensaje,
                         id_tipo_emisor,
                         id_tipo_receptor,
-                        leido
+                        leido,
+                        tipo_mensaje
                     )
-                VALUES (%s,%s,%s,%s,%s,%s,%s,%s)''',
+                VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)''',
                            (
                                self.empleado.id,
                                self.empleador.id,
@@ -68,13 +71,14 @@ class Mensaje:
                                self.mensaje,
                                self.tipoEmisor,
                                self.tipoReceptor,
-                               self.leido
+                               self.leido,
+                               self.tipoMensaje
                            ))
             bd.connection.commit()
             cursor.close()
             print('Mensaje Creado')
-        except Exception as e:
-            print("Error en crearMensaje ", e)
+#        except Exception as e:
+#            print("Error en crearMensaje ", e)
 
     def borrarMensaje(self, bd):
         try:
@@ -137,7 +141,8 @@ def getMensajeByID(bd, id):
                 mensaje,
                 id_tipo_emisor,
                 id_tipo_receptor,
-                leido
+                leido,
+                tipo_mensaje
             FROM mensaje WHERE id = {}'''.format(id))
         retorno = cursor.fetchall()
         bd.connection.commit()
@@ -151,7 +156,8 @@ def getMensajeByID(bd, id):
             retorno[0][5],
             retorno[0][6],
             retorno[0][7],
-            retorno[0][8]
+            retorno[0][8],
+            retorno[0][9]
         )
         return mensaje
     except Exception as e:
@@ -177,7 +183,8 @@ def getMensajesParaEmpleado(bd, id_empleado):
                 mensaje,
                 id_tipo_emisor,
                 id_tipo_receptor,
-                leido
+                leido,
+                tipo_mensaje
             FROM mensaje WHERE id_empleado = {} AND (id_tipo_emisor = 1 OR id_tipo_receptor = 1) ORDER BY fecha DESC'''.format(id_empleado))
         retorno = cursor.fetchall()
         bd.connection.commit()
@@ -193,7 +200,8 @@ def getMensajesParaEmpleado(bd, id_empleado):
                 registro[5],
                 registro[6],
                 registro[7],
-                registro[8]
+                registro[8],
+                registro[9]
             )
             clave = mensaje.empleador.id
             if not clave in diccRetorno:
@@ -211,7 +219,8 @@ def getMensajesParaEmpleado(bd, id_empleado):
                 mensaje,
                 id_tipo_emisor,
                 id_tipo_receptor,
-                leido
+                leido,
+                tipo_mensaje
             FROM mensaje WHERE id_empleado = {} AND (id_tipo_emisor = 1 OR id_tipo_receptor = 1) ORDER BY fecha'''.format(id_empleado))
         retorno = cursor.fetchall()
         bd.connection.commit()
@@ -227,7 +236,8 @@ def getMensajesParaEmpleado(bd, id_empleado):
                 registro[5],
                 registro[6],
                 registro[7],
-                registro[8]
+                registro[8],
+                registro[9]
             )
             clave = mensaje.empleador.id
             if clave in diccRetorno:
@@ -276,7 +286,8 @@ def getMensajesParaEmpleador(bd, id_empleador):
                 mensaje,
                 id_tipo_emisor,
                 id_tipo_receptor,
-                leido
+                leido,
+                tipo_mensaje
             FROM mensaje WHERE id_empleador = {} AND (id_tipo_emisor = 2 OR id_tipo_receptor = 2) ORDER BY fecha DESC'''.format(id_empleador))
         retorno = cursor.fetchall()
         bd.connection.commit()
@@ -292,7 +303,8 @@ def getMensajesParaEmpleador(bd, id_empleador):
                 registro[5],
                 registro[6],
                 registro[7],
-                registro[8]
+                registro[8],
+                registro[9]
             )
             clave = mensaje.empleado.id
             if not clave in diccRetorno:
@@ -310,7 +322,8 @@ def getMensajesParaEmpleador(bd, id_empleador):
                 mensaje,
                 id_tipo_emisor,
                 id_tipo_receptor,
-                leido
+                leido,
+                tipo_mensaje
             FROM mensaje WHERE id_empleador = {} AND (id_tipo_emisor = 2 OR id_tipo_receptor = 2) ORDER BY fecha'''.format(id_empleador))
         retorno = cursor.fetchall()
         bd.connection.commit()
@@ -326,7 +339,8 @@ def getMensajesParaEmpleador(bd, id_empleador):
                 registro[5],
                 registro[6],
                 registro[7],
-                registro[8]
+                registro[8],
+                registro[9]
             )
             clave = mensaje.empleado.id
             if clave in diccRetorno:
