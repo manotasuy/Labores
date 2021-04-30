@@ -3364,7 +3364,7 @@ def mensaje_marcar_leido_api():
 @app.route('/api/crear_mensaje_desde_empleador', methods = ['POST'])
 def crear_mensaje_api_desde_empleador():
 
-    try:
+#    try:
         anuncio = getAnuncioByID(baseDatos, request.json['id_anuncio'])
         empleador = getEmpleadorByUsuarioID(baseDatos, request.json['id_usuario_empleador'])
         empleado = getEmpleadoByUsuarioID(baseDatos, request.json['id_usuario_empleado'])
@@ -3376,10 +3376,11 @@ def crear_mensaje_api_desde_empleador():
             "tipo": "Mensaje"
         }
         t = empleado.usuario.getToken(baseDatos)
+        print(t)
         sendPush(empleador.nombre + " " + empleador.apellido + " dice :", mensaje.mensaje, t, objeto)
         return jsonify({"message": "mensaje enviado", "code": 1})
-    except:
-        return jsonify({"message": "error", "code": 0})
+#    except:
+#        return jsonify({"message": "error", "code": 0})
 
 
 @app.route('/api/crear_mensaje_desde_empleado', methods = ['POST'])

@@ -87,7 +87,10 @@ class Usuario:
             self.id = retorno[0][0]
             bd.connection.commit()
             cursor.close()
-            return [retorno[0][0]]
+            if retorno[0][0]:
+                return [retorno[0][0]]
+            else:
+                return ["x"]
         except Exception as e:
             print("Error en getToken ", e)
 
