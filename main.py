@@ -2966,6 +2966,18 @@ def vinculos_empleado_api(id):
 
         if vinculos:
             for v in vinculos:
+                if v.empleador.foto == "":
+                    v.empleador.foto = None
+                if v.empleador.foto:
+                    v.empleador.foto = v.empleador.foto.decode('utf-8')
+                if not isinstance(v.empleador.foto, str) or v.empleador.foto == "":
+                        v.empleador.foto = None
+                if v.empleado.foto == "":
+                    v.empleado.foto = None
+                if v.empleado.foto:
+                    v.empleado.foto = v.empleado.foto.decode('utf-8')
+                if not isinstance(v.empleado.foto, str) or v.empleado.foto == "":
+                        v.empleado.foto = None
                 if v.fecha_fin:
                     v.fecha_fin = v.fecha_fin.strftime('%d/%m/%Y')
                 vinculo = {
@@ -3011,6 +3023,18 @@ def vinculos_empleador_api(id):
 
         if vinculos:
             for v in vinculos:
+                if v.empleador.foto == "":
+                    v.empleador.foto = None
+                if v.empleador.foto:
+                    v.empleador.foto = v.empleador.foto.decode('utf-8')
+                if not isinstance(v.empleador.foto, str) or v.empleador.foto == "":
+                        v.empleador.foto = None
+                if v.empleado.foto == "":
+                    v.empleado.foto = None
+                if v.empleado.foto:
+                    v.empleado.foto = v.empleado.foto.decode('utf-8')
+                if not isinstance(v.empleado.foto, str) or v.empleado.foto == "":
+                        v.empleado.foto = None
                 if v.fecha_fin:
                     v.fecha_fin = v.fecha_fin.strftime('%d/%m/%Y')
                 vinculo = {
