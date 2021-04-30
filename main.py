@@ -2982,12 +2982,16 @@ def vinculos_empleado_api(id):
                     "empleado":{
                         "id_usuario_empleado": v.empleado.usuario.id,
                         "nombre": v.empleado.nombre,
-                        "apellido": v.empleado.apellido
+                        "apellido": v.empleado.apellido,
+                        "foto": v.empleado.foto,
+                        "promedio_cal": v.empleado.promedioCalificacion
                     },
                     "empleador":{
                         "id_usuario_empleador": v.empleador.usuario.id,
                         "nombre": v.empleador.nombre,
-                        "apellido": v.empleador.apellido
+                        "apellido": v.empleador.apellido,
+                        "foto": v.empleador.foto,
+                        "promedio_cal": v.empleador.promedioCalificacion
                     }
                 }
                 listaVicnulos.append(vinculo)
@@ -3023,12 +3027,16 @@ def vinculos_empleador_api(id):
                     "empleado":{
                         "id_usuario_empleado": v.empleado.usuario.id,
                         "nombre": v.empleado.nombre,
-                        "apellido": v.empleado.apellido
+                        "apellido": v.empleado.apellido,
+                        "foto": v.empleado.foto,
+                        "promedio_cal": v.empleado.promedioCalificacion
                     },
                     "empleador":{
                         "id_usuario_empleador": v.empleador.usuario.id,
                         "nombre": v.empleador.nombre,
-                        "apellido": v.empleador.apellido
+                        "apellido": v.empleador.apellido,
+                        "foto": v.empleador.foto,
+                        "promedio_cal": v.empleador.promedioCalificacion
                     }
                 }
                 listaVicnulos.append(vinculo)
