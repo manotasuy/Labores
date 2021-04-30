@@ -1269,25 +1269,31 @@ def postularse(idAnuncio):
         mensajeEmpleado = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
         ), 'Buena suerte {} {}!!! te has postulado al anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 1, False, "p")
         mensajeEmpleado.crearMensaje(baseDatos)
-        user_id_push = str(empleado.usuario.id)
-        objetoX = {
-            "id_user": user_id_push
-        }
-        t = empleado.usuario.getToken(baseDatos)
-        sendPush("Buenas suerte!", "te has posulado al anuncio: " + anuncio.titulo, t, objetoX)
+        try:
+            user_id_push = str(empleado.usuario.id)
+            objetoX = {
+                "id_user": user_id_push
+            }
+            t = empleado.usuario.getToken(baseDatos)
+            sendPush("Buenas suerte!", "te has posulado al anuncio: " + anuncio.titulo, t, objetoX)
+        except:
+            print("FCM error")
 
         # Se debe notificar al empleador mediante mensaje de que se ha postulado
         mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
         ), 'Buenas noticias!!! {} {} se ha postulado a tu anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False, "p")
         mensajeEmpleador.crearMensaje(baseDatos)
-        user_id_push = str(empleador.usuario.id)
-        objetoX = {
-            "id_user": user_id_push
-        }
-        t = empleador.usuario.getToken(baseDatos)
-        sendPush("Nueva posulación", 
-        empleado.nombre + " " + empleado.apellido + " se ha postulado a tu anuncio " + anuncio.titulo, 
-        t, objetoX)
+        try:
+            user_id_push = str(empleador.usuario.id)
+            objetoX = {
+                "id_user": user_id_push
+            }
+            t = empleador.usuario.getToken(baseDatos)
+            sendPush("Nueva posulación", 
+            empleado.nombre + " " + empleado.apellido + " se ha postulado a tu anuncio " + anuncio.titulo, 
+            t, objetoX)
+        except:
+            print("FCM error")
 
         return redirect(url_for('listar_anuncios'))
 
@@ -1340,26 +1346,33 @@ def despostularse(idPostulacion):
         mensajeEmpleado = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
         ), '{} {}, te has despostulado del anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 1, False, "p")
         mensajeEmpleado.crearMensaje(baseDatos)
-        user_id_push = str(empleado.usuario.id)
-        objetoX = {
-            "id_user": user_id_push
-        }
-        t = empleado.usuario.getToken(baseDatos)
-        sendPush("Postulación eliminada",
-        "Te has despostulado al anuncio " + anuncio.titulo, t, objetoX)
+        try:
+            user_id_push = str(empleado.usuario.id)
+            objetoX = {
+                "id_user": user_id_push
+            }
+            t = empleado.usuario.getToken(baseDatos)
+            sendPush("Postulación eliminada",
+            "Te has despostulado al anuncio " + anuncio.titulo, t, objetoX)
+        except:
+            print("FCM error")
 
         # Se debe notificar al empleador mediante mensaje de que se han despostulado de su anuncio
         mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
         ), '{} {} se ha despostulado de tu anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False, "p")
         mensajeEmpleador.crearMensaje(baseDatos)
-        user_id_push = str(empleador.usuario.id)
-        objetoX = {
-            "id_user": user_id_push
-        }
-        t = empleador.usuario.getToken(baseDatos)
-        sendPush("Postulación eliminada", 
-        empleado.nombre + " " + empleado.apellido + " ha retirado su postulación a tu anuncio " + anuncio.titulo, 
-        t, objetoX)
+        try:
+                
+            user_id_push = str(anuncio.empleador.usuario.id)
+            objetoX = {
+                "id_user": user_id_push
+            }
+            t = anuncio.empleador.usuario.getToken(baseDatos)
+            sendPush("Postulación eliminada", 
+            empleado.nombre + " " + empleado.apellido + " ha retirado su postulación a tu anuncio " + anuncio.titulo, 
+            t, objetoX)
+        except:
+            print("FCM error")
 
         return redirect(url_for('mis_postulaciones'))
 
@@ -1622,30 +1635,36 @@ def end_vinculo(idVinculo):
                                       'Su vínculo con {} {} por el anuncio "{}" ha finalizado. Recuerde que puede calificar el vínculo cuantas veces lo considere desde "Mis Vínculos"'
                                       .format(empleador.nombre, empleador.apellido, anuncio.titulo), 3, 1, False, "v")
             mensajeEmpleado.crearMensaje(baseDatos)
-            user_id_push = str(empleado.usuario.id)
-            objetoX = {
-                "id_user": user_id_push
-            }
-            t = empleado.usuario.getToken(baseDatos)
-            sendPush("Vínculo finalizado", 
-            "Su vínculo con " + empleador.nombre + " " + empleador.apellido + " por el anuncio " +
-            anuncio.titulo + " ha finalizado.", 
-            t, objetoX)
+            try:
+                user_id_push = str(empleado.usuario.id)
+                objetoX = {
+                    "id_user": user_id_push
+                }
+                t = empleado.usuario.getToken(baseDatos)
+                sendPush("Vínculo finalizado", 
+                "Su vínculo con " + empleador.nombre + " " + empleador.apellido + " por el anuncio " +
+                anuncio.titulo + " ha finalizado.", 
+                t, objetoX)
+            except:
+                print("FCM error")
 
             # Se debe notificar al empleador mediante mensaje de que el vínculo con el empleado "X" finalizó
             mensajeEmpleador = Mensaje(0, empleado, empleador, anuncio, datetime.now(),
                                        'Su vínculo con {} {} por el anuncio "{}" ha finalizado. Recuerde que puede calificar el vínculo cuantas veces lo considere desde "Mis Vínculos"'
                                        .format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False, "v")
             mensajeEmpleador.crearMensaje(baseDatos)
-            user_id_push = str(empleador.usuario.id)
-            objetoX = {
-                "id_user": user_id_push
-            }
-            t = empleador.usuario.getToken(baseDatos)
-            sendPush("Vínculo finalizado", 
-            "Su vínculo con " + empleado.nombre + " " + empleado.apellido + " por el anuncio " +
-            anuncio.titulo + " ha finalizado.", 
-            t, objetoX)
+            try:
+                user_id_push = str(empleador.usuario.id)
+                objetoX = {
+                    "id_user": user_id_push
+                }
+                t = empleador.usuario.getToken(baseDatos)
+                sendPush("Vínculo finalizado", 
+                "Su vínculo con " + empleado.nombre + " " + empleado.apellido + " por el anuncio " +
+                anuncio.titulo + " ha finalizado.", 
+                t, objetoX)
+            except:
+                print("FCM error")
 
             return redirect(url_for('ver_vinculo', idVinculo=idVinculo))
 
@@ -1781,14 +1800,16 @@ def agregar_mensaje(idDestinatario, idAnuncio):
                     0, empleado, empleador, anuncio, datetime.now(), mensaje, 1, 2, False, "m")
                 mensajeEmpleado.crearMensaje(baseDatos)
                 return redirect(url_for('mensajes_empleado', idEmpleado=empleado.id, idEmpleador=empleador.id))
-
-                user_id_push = str(empleador.usuario.id)
-                objetoX = {
-                    "id_user": user_id_push
-                }
-                t = empleador.usuario.getToken(baseDatos)
-                sendPush(empleado.nombre + " " + empleado.apellido + " dice:", 
-                mensajeEmpleado.mensaje, t, objetoX)
+                try:
+                    user_id_push = str(empleador.usuario.id)
+                    objetoX = {
+                        "id_user": user_id_push
+                    }
+                    t = empleador.usuario.getToken(baseDatos)
+                    sendPush(empleado.nombre + " " + empleado.apellido + " dice:", 
+                    mensajeEmpleado.mensaje, t, objetoX)
+                except:
+                    print("FCM error")
 
             elif session['usertype'] == 'Empleador':
                 empleador = getEmpleadorByID(
@@ -1797,13 +1818,18 @@ def agregar_mensaje(idDestinatario, idAnuncio):
                 mensajeEmpleador = Mensaje(
                     0, empleado, empleador, anuncio, datetime.now(), mensaje, 2, 1, False, "m")
                 mensajeEmpleador.crearMensaje(baseDatos)
-                user_id_push = str(empleado.usuario.id)
-                objetoX = {
-                    "id_user": user_id_push
-                }
-                t = empleado.usuario.getToken(baseDatos)
-                sendPush(empleador.nombre + " " + empleador.apellido + " dice:", 
-                mensajeEmpleador.mensaje, t, objetoX)
+                try:
+                    user_id_push = str(empleado.usuario.id)
+                    objetoX = {
+                        "id_user": user_id_push
+                    }
+                    t = empleado.usuario.getToken(baseDatos)
+                    sendPush(empleador.nombre + " " + empleador.apellido + " dice:", 
+                    mensajeEmpleador.mensaje, t, objetoX)
+                
+                except:
+                    print("FCM error")
+
                 return redirect(url_for('mensajes_empleador', idEmpleador=empleador.id, idEmpleado=empleado.id))
 
 
@@ -1853,28 +1879,34 @@ def contratar(idEmpleado):
         mensajeEmpleado = Mensaje(
             0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has sido contratado por {} {}, por el anuncio "{}", les deseamos un buen vínculo laboral.'.format(empleador.nombre, empleador.apellido, anuncio.titulo), 3, 1, False, "v")
         mensajeEmpleado.crearMensaje(baseDatos)
-
-        user_id_push = str(empleado.usuario.id)
-        objeto = {
-            "id_user": user_id_push
-        }
-        t = empleado.usuario.getToken(baseDatos)
-        sendPush("Felicidades!", 
-        empleador.nombre + " " + empleador.apellido + " te ha contratado para el anuncio " + anuncio.titulo, 
-        t, objeto)
+        try:
+            user_id_push = str(empleado.usuario.id)
+            objeto = {
+                "id_user": user_id_push
+            }
+            t = empleado.usuario.getToken(baseDatos)
+            sendPush("Felicidades!", 
+            empleador.nombre + " " + empleador.apellido + " te ha contratado para el anuncio " + anuncio.titulo, 
+            t, objeto)
+        
+        except:
+            print("FCM error")
 
         # Se debe notificar al empleador mediante mensaje de que contrató al empleado "X"
         mensajeEmpleador = Mensaje(
             0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has contratado a {} {}, por el anuncio "{}", les deseamos un buen vínculo laboral.'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False, "v")
         mensajeEmpleador.crearMensaje(baseDatos)
-        user_id_push = str(empleador.usuario.id)
-        objeto = {
-            "id_user": user_id_push
-        }
-        t = empleador.usuario.getToken(baseDatos)
-        sendPush("Felicidades!", 
-        "Has contratado a " + empleado.nombre + " " + empleado.apellido + " para el anuncio " + anuncio.titulo, 
-        t, objeto)
+        try:
+            user_id_push = str(empleador.usuario.id)
+            objeto = {
+                "id_user": user_id_push
+            }
+            t = empleador.usuario.getToken(baseDatos)
+            sendPush("Felicidades!", 
+            "Has contratado a " + empleado.nombre + " " + empleado.apellido + " para el anuncio " + anuncio.titulo, 
+            t, objeto)
+        except:
+            print("FCM error")
 
         # Se debe generar recordatorio de calificación para el empleado
         recordatorioEmpleado = Recordatorio(0, 1, empleado, empleador, empleado, anuncio, postulacion, vinculo, datetime.now(
@@ -2731,27 +2763,34 @@ def postular_api():
             mensajeEmpleado = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
             ), 'Buena suerte {} {}!!! te has postulado al anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 1, False, "p")
             mensajeEmpleado.crearMensaje(baseDatos)
-            user_id_push = str(empleado.usuario.id)
-            objeto = {
-                "id_user": user_id_push,
-                "tipo": "Postulacion"
-            }
-            t = empleado.usuario.getToken(baseDatos)
-            sendPush("Suerte!", "Te has postulado al anuncio" + anuncio.titulo, t, objeto)
+            try:
+                user_id_push = str(empleado.usuario.id)
+                objeto = {
+                    "id_user": user_id_push,
+                    "tipo": "Postulacion"
+                }
+                t = empleado.usuario.getToken(baseDatos)
+                sendPush("Suerte!", "Te has postulado al anuncio" + anuncio.titulo, t, objeto)
+            except:
+                print("FCM error")
 
             # Se debe notificar al empleador mediante mensaje de que se ha postulado
             mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
             ), 'Buenas noticias!!! {} {} se ha postulado a tu anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False, "p")
             mensajeEmpleador.crearMensaje(baseDatos)
-            user_id_push = str(empleador_id)
-            objeto = {
-                "id_user": user_id_push,
-                "tipo": "Postulacion"
-            }
-            t = empleador.usuario.getToken(baseDatos)
-            sendPush("Tienes un postulante nuevo", 
-            empleado.nombre + " " + empleado.apellido + " se a postulado a tu anuncio: " + "'" +
-            anuncio.titulo + "'", t, objeto)
+            try: 
+                user_id_push = str(empleador_id)
+                objeto = {
+                    "id_user": user_id_push,
+                    "tipo": "Postulacion"
+                }
+                t = empleador.usuario.getToken(baseDatos)
+                sendPush("Tienes un postulante nuevo", 
+                empleado.nombre + " " + empleado.apellido + " se a postulado a tu anuncio: " + "'" +
+                anuncio.titulo + "'", t, objeto)
+                
+            except:
+                print("FCM error")
 
             return jsonify({"message": "postulación realizada", "code": 1})
 
@@ -2774,28 +2813,37 @@ def despostular_api():
         mensajeEmpleado = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
         ), '{} {}, te has despostulado del anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 1, False, "p")
         mensajeEmpleado.crearMensaje(baseDatos)
-        user_id_push = str(empleado.usuario.id)
-        objeto = {
-            "id_user": user_id_push,
-            "tipo": "Postulacion"
-        }
-        t = empleado.usuario.getToken(baseDatos)
-        sendPush("Te has bajado de la postulacion.", 
-        "Te has bajado de la postulacion al anuncio: " + anuncio.titulo, t, objeto)
+        try:
+            user_id_push = str(empleado.usuario.id)
+            objeto = {
+                "id_user": user_id_push,
+                "tipo": "Postulacion"
+            }
+            t = empleado.usuario.getToken(baseDatos)
+            sendPush("Te has bajado de la postulacion.", 
+            "Te has bajado de la postulacion al anuncio: " + anuncio.titulo, t, objeto)
+        
+        except:
+            print("FCM error")
 
         # Se debe notificar al empleador mediante mensaje de que se han despostulado de su anuncio
         mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
         ), '{} {} se ha despostulado de tu anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False, "p")
         mensajeEmpleador.crearMensaje(baseDatos)
-        user_id_push = str(empleador_id)
-        objeto = {
-            "id_user": user_id_push,
-            "tipo": "Postulacion"
-        }
-        t = empleador.usuario.getToken(baseDatos)
-        sendPush("Un postulante se retiró", 
-        empleado.nombre + " " + empleado.apellido + " ha retirado su postulación al anuncio: " + 
-        anuncio.titulo, t, objeto)
+        try:
+
+            user_id_push = str(empleador_id)
+            objeto = {
+                "id_user": user_id_push,
+                "tipo": "Postulacion"
+            }
+            t = empleador.usuario.getToken(baseDatos)
+            sendPush("Un postulante se retiró", 
+            empleado.nombre + " " + empleado.apellido + " ha retirado su postulación al anuncio: " + 
+            anuncio.titulo, t, objeto)
+        
+        except:
+            print("FCM error")
 
         return jsonify({"message": "des-postulación realizada", "code": 1})
 
@@ -2916,30 +2964,38 @@ def contratar_api():
         mensajeEmpleado = Mensaje(
             0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has sido contratado por {} {}, por el anuncio "{}", les deseamos un buen vínculo laboral.'.format(empleador.nombre, empleador.apellido, anuncio.titulo), 3, 1, False, "v")
         mensajeEmpleado.crearMensaje(baseDatos)
-        user_id_push = str(empleado.usuario.id)
-        objeto = {
-            "id_user": user_id_push,
-            "tipo": "Vinculo"
-        }
-        t = empleado.usuario.getToken(baseDatos)
-        sendPush("Felicidades!!!", 
-        "Has sido contratado por " + empleador.nombre + " " + empleador.apellido + ", por el anuncio '" + 
-        anuncio.titulo +"', les deseamos un buen vínculo laboral.", t, objeto)
+        try:
+
+            user_id_push = str(empleado.usuario.id)
+            objeto = {
+                "id_user": user_id_push,
+                "tipo": "Vinculo"
+            }
+            t = empleado.usuario.getToken(baseDatos)
+            sendPush("Felicidades!!!", 
+            "Has sido contratado por " + empleador.nombre + " " + empleador.apellido + ", por el anuncio '" + 
+            anuncio.titulo +"', les deseamos un buen vínculo laboral.", t, objeto)
+        
+        except:
+            print("FCM error")
 
         # Se debe notificar al empleador mediante mensaje de que contrató al empleado "X"
         mensajeEmpleador = Mensaje(
             0, empleado, empleador, anuncio, datetime.now(), 'Felicidades!!! Has contratado a {} {}, por el anuncio "{}", les deseamos un buen vínculo laboral.'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False, "v")
         mensajeEmpleador.crearMensaje(baseDatos)
-        user_id_push = str(empleador.usuario.id)
-        objeto = {
-            "id_user": user_id_push,
-            "tipo": "Vinculo"
-        }
-        t = empleador.usuario.getToken(baseDatos)
-        sendPush("Felicidades", 
-        "Has contratado a " + empleado.nombre + " " + empleado.apellido + "para el trabajo: " + anuncio.titulo +
-        ", les deseamos un buen vínculo laboral.", 
-        t, objeto)
+        try:
+            user_id_push = str(empleador.usuario.id)
+            objeto = {
+                "id_user": user_id_push,
+                "tipo": "Vinculo"
+            }
+            t = empleador.usuario.getToken(baseDatos)
+            sendPush("Felicidades", 
+            "Has contratado a " + empleado.nombre + " " + empleado.apellido + "para el trabajo: " + anuncio.titulo +
+            ", les deseamos un buen vínculo laboral.", 
+            t, objeto)
+        except:
+            print("FCM error")
 
         # Se debe generar recordatorio de calificación para el empleado
         recordatorioEmpleado = Recordatorio(0, 1, empleado, empleador, empleado, anuncio, postulacion, vinculo, datetime.now(
@@ -3179,30 +3235,37 @@ def finalizar_vinculo_api():
                                     'Su vínculo con {} {} por el anuncio "{}" ha finalizado. Recuerde que puede calificar el vínculo cuantas veces lo considere desde "Mis Vínculos"'
                                     .format(empleador.nombre, empleador.apellido, anuncio.titulo), 3, 1, False, "v")
         mensajeEmpleado.crearMensaje(baseDatos)
-        user_id_push = str(empleado.usuario.id)
-        objeto = {
-            "id_user": user_id_push,
-            "tipo": "Vinculo"
-        }
-        t = empleado.usuario.getToken(baseDatos)
-        sendPush("Vínculo finalizado.", 
-        "Su vínculo con " + empleador.nombre + " " + empleador.apellido + " ha finaliado.", 
-        t, objeto)
+        try:
+            user_id_push = str(empleado.usuario.id)
+            objeto = {
+                "id_user": user_id_push,
+                "tipo": "Vinculo"
+            }
+            t = empleado.usuario.getToken(baseDatos)
+            sendPush("Vínculo finalizado.", 
+            "Su vínculo con " + empleador.nombre + " " + empleador.apellido + " ha finaliado.", 
+            t, objeto)
+        
+        except:
+            print("FCM error")
 
         # Se debe notificar al empleador mediante mensaje de que el vínculo con el empleado "X" finalizó
         mensajeEmpleador = Mensaje(0, empleado, empleador, anuncio, datetime.now(),
                                     'Su vínculo con {} {} por el anuncio "{}" ha finalizado. Recuerde que puede calificar el vínculo cuantas veces lo considere desde "Mis Vínculos"'
                                     .format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False, "v")
         mensajeEmpleador.crearMensaje(baseDatos)
-        user_id_push = str(empleador.usuario.id)
-        objeto = {
-            "id_user": user_id_push,
-            "tipo": "Vinculo"
-        }
-        t = empleador.usuario.getToken(baseDatos)
-        sendPush("Vínculo finalizado.", 
-        "Su vínculo con " + empleado.nombre + " " + empleado.apellido + " ha finaliado.", 
-        t, objeto)
+        try:
+            user_id_push = str(empleador.usuario.id)
+            objeto = {
+                "id_user": user_id_push,
+                "tipo": "Vinculo"
+            }
+            t = empleador.usuario.getToken(baseDatos)
+            sendPush("Vínculo finalizado.", 
+            "Su vínculo con " + empleado.nombre + " " + empleado.apellido + " ha finaliado.", 
+            t, objeto)
+        except:
+            print("FCM error")
         return jsonify({"message": "vínculo finalizado", "code": 1})
     except:
         return jsonify({"message": "error", "code": 0})
@@ -3364,23 +3427,25 @@ def mensaje_marcar_leido_api():
 @app.route('/api/crear_mensaje_desde_empleador', methods = ['POST'])
 def crear_mensaje_api_desde_empleador():
 
-#    try:
+    try:
         anuncio = getAnuncioByID(baseDatos, request.json['id_anuncio'])
         empleador = getEmpleadorByUsuarioID(baseDatos, request.json['id_usuario_empleador'])
         empleado = getEmpleadoByUsuarioID(baseDatos, request.json['id_usuario_empleado'])
         mensaje = Mensaje(0, empleado, empleador, anuncio, datetime.now(), request.json['mensaje'], 2, 1, False, "m")
         mensaje.crearMensaje(baseDatos)
-        user_id_push = str(empleado.usuario.id)
-        objeto = {
-            "id_user": user_id_push,
-            "tipo": "Mensaje"
-        }
-        t = empleado.usuario.getToken(baseDatos)
-        print(t)
-        sendPush(empleador.nombre + " " + empleador.apellido + " dice :", mensaje.mensaje, t, objeto)
+        try: 
+            user_id_push = str(empleado.usuario.id)
+            objeto = {
+                "id_user": user_id_push,
+                "tipo": "Mensaje"
+            }
+            t = empleado.usuario.getToken(baseDatos)
+            sendPush(empleador.nombre + " " + empleador.apellido + " dice :", mensaje.mensaje, t, objeto)
+        except:
+            print("FCM error")
         return jsonify({"message": "mensaje enviado", "code": 1})
-#    except:
-#        return jsonify({"message": "error", "code": 0})
+    except:
+        return jsonify({"message": "error", "code": 0})
 
 
 @app.route('/api/crear_mensaje_desde_empleado', methods = ['POST'])
@@ -3392,13 +3457,17 @@ def crear_mensaje_api_desde_empleado():
         empleado = getEmpleadoByUsuarioID(baseDatos, request.json['id_usuario_empleado'])
         mensaje = Mensaje(0, empleado, empleador, anuncio, datetime.now(), request.json['mensaje'], 1, 2, False, "m")
         mensaje.crearMensaje(baseDatos)
-        user_id_push = str(empleador.usuario.id)
-        objeto = {
-            "id_user": user_id_push,
-            "tipo": "Mensaje"
-        }
-        t = empleador.usuario.getToken(baseDatos)
-        sendPush(empleado.nombre + " " + empleado.apellido + " dice:", mensaje.mensaje, t, objeto)
+        try:
+            user_id_push = str(empleador.usuario.id)
+            objeto = {
+                "id_user": user_id_push,
+                "tipo": "Mensaje"
+            }
+            t = empleador.usuario.getToken(baseDatos)
+            sendPush(empleado.nombre + " " + empleado.apellido + " dice:", mensaje.mensaje, t, objeto)
+        
+        except:
+            print("FCM error")
         return jsonify({"message": "mensaje enviado", "code": 1})
     except:
         return jsonify({"message": "error", "code": 0})
@@ -3777,12 +3846,16 @@ def getToken_api(user_id):
 @app.route('/api/push/<user_id>')
 def apiPush(user_id):
 
-    x = request.json
-    usuario = getUsuarioByID(baseDatos, user_id)
-    t = usuario.getToken(baseDatos)
-    sendPush("Titulo por defecto", "Body por defecto", t, x)
+    try:
+        x = request.json
+        usuario = getUsuarioByID(baseDatos, user_id)
+        t = usuario.getToken(baseDatos)
+        sendPush("Titulo por defecto", "Body por defecto", t, x)
 
-    return  jsonify(x)
+        return jsonify(x)
+    
+    except:
+        return jsonify({"message":"error", "code":0})
 
 
 if __name__ == '__main__':
