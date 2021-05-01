@@ -383,6 +383,23 @@ def empleadoTieneNotificacionesPendientesVinculos(bd, id_empleado):
     except Exception as e:
         print("Error en empleadoTieneNotificacionesPendientesVinculos ", e)
 
+    
+def empleadorTieneNotificacionesPendientesVinculos(bd, id_empleador):
+    try:
+        cursor = bd.connection.cursor()
+        cursor.execute('''
+            SELECT id FROM vinculo WHERE id_empleador = {} AND notificado = 0
+            '''.format(id_empleador))
+        retorno = cursor.fetchall()
+        bd.connection.commit()
+        cursor.close()
+        if retorno is None or len(retorno) == 0:
+            return False
+        else:
+            return len(retorno[0]) > 0
+    except Exception as e:
+        print("Error en empleadorTieneNotificacionesPendientesVinculos ", e)
+
 
 def getVinculosNoNotificadosDelEmpleado(bd, empleado):
     try:

@@ -22,7 +22,7 @@ from Implementacion.Anuncio import Anuncio, getAllAnuncios, getAnuncioByID
 from Implementacion.Postulacion import Postulacion, getPostulacionesAnuncio, getPostulacionesEmpleado, getPostulacionEmpleadoAnuncio, getPostulacionesEmpleadoIDs, empleadorTieneNotificacionesPendientesPostulaciones, getPostulacionById, existePostulacionDeEmpleadoEnAnuncioDeEmpleador
 from Implementacion.Tarea import Tarea, getTareasRegistradas, agregarTareaEmpleado
 from Implementacion.Disponibilidad import Disponibilidad, getDisponibilidadesRegistradas, agregarDisponibilidadEmpleado
-from Implementacion.Vinculo import Vinculo, getVinculoByID, getVinculoByEmpleado, getVinculoByEmpleador, getVinculoIDs, getPromedioByEmpleadorId, getPromedioByEmpleadoId, getVinculosNoNotificadosDelEmpleado, empleadoTieneNotificacionesPendientesVinculos, tieneElEmpleadorVinculoConEmpleado, tieneElEmpleadoVinculoConEmpleador
+from Implementacion.Vinculo import Vinculo, getVinculoByID, getVinculoByEmpleado, getVinculoByEmpleador, getVinculoIDs, getPromedioByEmpleadorId, getPromedioByEmpleadoId, getVinculosNoNotificadosDelEmpleado, empleadoTieneNotificacionesPendientesVinculos, empleadorTieneNotificacionesPendientesVinculos, tieneElEmpleadorVinculoConEmpleado, tieneElEmpleadoVinculoConEmpleador
 from Implementacion.Mensaje import Mensaje, getMensajeByID, getMensajesParaEmpleado, empleadoTieneMensajesSinLeer, getMensajesParaEmpleador, empleadorTieneMensajesSinLeer, tieneElEmpleadoMensajeDeEmpleador, tieneElEmpleadorMensajeDeEmpleado, getTiposEmisorReceptorRegistrados
 from Implementacion.DTOAuxEmpleado import DTOAuxEmpleado, TareaSeleccion, DisponibilidadSeleccion
 from Implementacion.Referencia import Referencia, getReferenciaByID, getReferenciasEmpleado
@@ -3714,9 +3714,16 @@ def mensajes_sin_leer_api(id_usuario):
 @app.route('/api/empleado/TieneNotificacionesPendientesVinculos/<id_usuario>')
 def empleadoTieneNotificacionesPendientesVinculos_api(id_usuario):
     try:
-        empleado = getEmpleadoByUsuarioID(baseDatos, id_usuario)
-        retorno = empleadoTieneNotificacionesPendientesVinculos(baseDatos, empleado.id)
-        return jsonify(retorno)
+        usuario = getUsuarioByID(baseDatos, id_usuario)
+        if str(usuario.tipo) == str(2):
+            empleador = getEmpleadorByUsuarioID(baseDatos, id_usuario)
+            retorno = empleadorTieneNotificacionesPendientesVinculos(baseDatos, empleador.id)
+            return jsonify(retorno)
+
+        else:
+            empleado = getEmpleadoByUsuarioID(baseDatos, id_usuario)
+            retorno = empleadoTieneNotificacionesPendientesVinculos(baseDatos, empleado.id)
+            return jsonify(retorno)
     except:
         return jsonify({"message": "error", "code": 0})
 
@@ -3867,6 +3874,52 @@ def apiPush(user_id):
     
     except:
         return jsonify({"message":"error", "code":0})
+
+
+@app.route('/api/tipos_de_notificaciones_pendientes/<user_id>')
+def tipos_de_notificaciones_pendientes_api(user_id):
+
+    try:
+        usuario = getUsuarioByID(baseDatos, user_id)
+        if str(usuario.tipo) == str(3):
+            empleado = getEmpleadoByUsuarioID(baseDatos, user_id)
+            diccMensajes = getMensajesParaEmpleado(baseDatos, empleado.id)
+            mensajes = 0
+            vinculos = 0
+            postulaciones = 0
+            for key in diccMensajes:
+                for m in diccMensajes[key]:
+                    if not m.leido:
+                        if m.tipoMensaje == "m":
+                            mensajes += 1
+                        elif m.tipoMensaje == "v":
+                            vinculos += 1
+                        elif m.tipoMensaje == "p":
+                            postulaciones += 1
+                            
+            return jsonify({"m":mensajes, "v":vinculos, "p":postulaciones})
+        else:
+            empleador = getEmpleadorByUsuarioID(baseDatos, user_id)
+            diccMensajes = getMensajesParaEmpleador(baseDatos, empleador.id)
+            mensajes = 0
+            vinculos = 0
+            postulaciones = 0
+            for key in diccMensajes:
+                for m in diccMensajes[key]:
+                    if not m.leido:
+                        if m.tipoMensaje == "m":
+                            mensajes += 1
+                        elif m.tipoMensaje == "v":
+                            vinculos += 1
+                        elif m.tipoMensaje == "p":
+                            postulaciones += 1
+                            
+            return jsonify({"m":mensajes, "v":vinculos, "p":postulaciones})
+    
+    except:
+        return jsonify({"message":"error", "code":0})
+
+
 
 
 if __name__ == '__main__':
