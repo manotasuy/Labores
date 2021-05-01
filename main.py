@@ -2001,6 +2001,8 @@ def api_ingresar():
         password = request.json['password']
         usuario = Usuario(0, user, password, '')
         t = usuario.getToken(baseDatos)[0]
+        if t == "x":
+            t = None
         retorno = usuario.loginUsuario(baseDatos)
         usuario = getUsuarioByCI(baseDatos, user)
         foto = None
