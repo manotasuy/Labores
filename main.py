@@ -2000,6 +2000,7 @@ def api_ingresar():
         user = request.json['user']
         password = request.json['password']
         usuario = Usuario(0, user, password, '')
+        t = usuario.getToken(baseDatos)[0]
         retorno = usuario.loginUsuario(baseDatos)
         usuario = getUsuarioByCI(baseDatos, user)
         foto = None
@@ -2022,7 +2023,8 @@ def api_ingresar():
                 'user': user,
                 'password': password,
                 'tipo': retorno[0][0],
-                'image': foto
+                'image': foto,
+                'token': t
             }
         else:
             login_info = {
@@ -2031,7 +2033,8 @@ def api_ingresar():
                 'user': None,
                 'password': None,
                 'tipo': None,
-                'image': None
+                'image': None,
+                'token': None
 
             }
     else:
@@ -2041,7 +2044,8 @@ def api_ingresar():
                 'user': None,
                 'password': None,
                 'tipo': None,
-                'image': None
+                'image': None,
+                'token': None
             }
     return jsonify(login_info)
 
@@ -2109,7 +2113,8 @@ def api_registro():
                             'user': usuario_para_login.usuario,
                             'password': usuario_para_login.clave,
                             'tipo': request.json['tipo'],
-                            'image': foto
+                            'image': foto,
+                            'token': None
                         }
 
                         return jsonify({
@@ -2194,7 +2199,8 @@ def api_registro():
                             'user': usuario_para_login.usuario,
                             'password': usuario_para_login.clave,
                             'tipo': request.json['tipo'],
-                            'image': foto
+                            'image': foto,
+                            'token': None
                         }
 
                         return jsonify({
@@ -3464,6 +3470,7 @@ def crear_mensaje_api_desde_empleado():
                 "tipo": "Mensaje"
             }
             t = empleador.usuario.getToken(baseDatos)
+            print(t)
             sendPush(empleado.nombre + " " + empleado.apellido + " dice:", mensaje.mensaje, t, objeto)
         
         except:
@@ -3837,7 +3844,9 @@ def guardarToken_api():
 def getToken_api(user_id):
     try:
         usuario = getUsuarioByID(baseDatos, user_id)
-        t = usuario.getToken(baseDatos)[0][0]
+        t = usuario.getToken(baseDatos)[0]
+        if t == "x":
+            t = None
         return jsonify(t)
     except:
         return jsonify({"message": "error", "code": 0})
