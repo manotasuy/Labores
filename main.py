@@ -2778,7 +2778,7 @@ def postular_api():
                     "tipo": "Postulacion"
                 }
                 t = empleado.usuario.getToken(baseDatos)
-                sendPush("Suerte!", "Te has postulado al anuncio" + anuncio.titulo, t, objeto)
+                sendPush("Suerte!", "Te has postulado al anuncio: '" + anuncio.titulo + "'", t, objeto)
             except:
                 print("FCM error")
 
@@ -3981,7 +3981,9 @@ def chats_api(user_id):
                     ch["foto"] = ch["foto"].decode('utf-8')
                 if not isinstance(ch["foto"], str) or ch["foto"] == "":
                         ch["foto"] = None
+                empleador = getEmpleadorByID(baseDatos, ch["id_empleador"])
                 c = {
+                    "id_remitente": empleador.usuario.id,
                     "nombre": ch["nombre"],
                     "apellido": ch["apellido"],
                     "foto": ch["foto"],
@@ -4047,7 +4049,9 @@ def chats_api(user_id):
                     ch["foto"] = ch["foto"].decode('utf-8')
                 if not isinstance(ch["foto"], str) or ch["foto"] == "":
                         ch["foto"] = None
+                empleado = getEmpleadoByID(baseDatos, ch["id_empleado"])
                 c = {
+                    "id_remitente": empleado.usuario.id,
                     "nombre": ch["nombre"],
                     "apellido": ch["apellido"],
                     "foto": ch["foto"],
