@@ -3921,6 +3921,164 @@ def tipos_de_notificaciones_pendientes_api(user_id):
 
 
 
+@app.route('/api/chats/<user_id>')
+def chats_api(user_id):
+
+    try:
+        usuario = getUsuarioByID(baseDatos, user_id)
+        if str(usuario.tipo) == str(3):
+            empleado = getEmpleadoByUsuarioID(baseDatos, user_id)
+            diccMensajes = getMensajesParaEmpleado(baseDatos, empleado.id)
+            chats = list()
+            for key in diccMensajes:
+                for m in diccMensajes[key]:
+                    if m.tipoMensaje == "m":
+                        if chats:
+                            listaRemitentes = list()
+                            for chat in chats:
+                                if not str(chat["id_empleador"]) in listaRemitentes:
+                                    listaRemitentes.append(str(chat["id_empleador"]))
+
+                            if str(m.empleador.id) in listaRemitentes:
+                                for chat in chats:
+                                    if str(m.empleador.id) == str(chat["id_empleador"]):
+                                        if m.fecha > chat["fecha_hora_ultimo_mensaje"]:
+                                            chat["ultimo_mensaje"] = m.mensaje
+                                            chat["fecha_hora_ultimo_mensaje"] = m.fecha
+                                            chat["mensajes_sin_leer"] = m.leido
+                                
+                            else:
+                                c = {
+                                    "id_empleador": m.empleador.id,
+                                    "nombre": m.empleador.nombre,
+                                    "apellido": m.empleador.apellido,
+                                    "foto": m.empleador.foto,
+                                    "ultimo_mensaje": m.mensaje,
+                                    "fecha_hora_ultimo_mensaje": m.fecha,
+                                    "mensajes_sin_leer": m.leido
+                                }
+                                chats.append(c)
+
+                        else:
+                            c = {
+                                "id_empleador": m.empleador.id,
+                                "nombre": m.empleador.nombre,
+                                "apellido": m.empleador.apellido,
+                                "foto": m.empleador.foto,
+                                "ultimo_mensaje": m.mensaje,
+                                "fecha_hora_ultimo_mensaje": m.fecha,
+                                "mensajes_sin_leer": m.leido
+                            }
+                            chats.append(c)
+            chatsOrdenados = sorted(chats, key=lambda chat : chat['fecha_hora_ultimo_mensaje'])
+
+            listaChats = list()
+
+            for ch in chatsOrdenados:
+                if ch["foto"] == "":
+                    ch["foto"] = None
+                if ch["foto"]:
+                    ch["foto"] = ch["foto"].decode('utf-8')
+                if not isinstance(ch["foto"], str) or ch["foto"] == "":
+                        ch["foto"] = None
+                c = {
+                    "nombre": ch["nombre"],
+                    "apellido": ch["apellido"],
+                    "foto": ch["foto"],
+                    "ultimo_mensaje": ch["ultimo_mensaje"],
+                    "fecha_hora_ultimo_mensaje": ch["fecha_hora_ultimo_mensaje"].strftime("%Y-%m-%d %H:%M:%S"),
+                    "mensajes_sin_leer": ch["mensajes_sin_leer"]
+                }
+                listaChats.append(c)
+                           
+            return jsonify(listaChats)
+        else:
+            empleador = getEmpleadorByUsuarioID(baseDatos, user_id)
+            diccMensajes = getMensajesParaEmpleador(baseDatos, empleador.id)
+            chats = list()
+            for key in diccMensajes:
+                for m in diccMensajes[key]:
+                    if m.tipoMensaje == "m":
+                        if chats:
+                            listaRemitentes = list()
+                            for chat in chats:
+                                if not str(chat["id_empleado"]) in listaRemitentes:
+                                    listaRemitentes.append(str(chat["id_empleado"]))
+
+                            if str(m.empleado.id) in listaRemitentes:
+                                for chat in chats:
+                                    if str(m.empleado.id) == str(chat["id_empleado"]):
+                                        if m.fecha > chat["fecha_hora_ultimo_mensaje"]:
+                                            chat["ultimo_mensaje"] = m.mensaje
+                                            chat["fecha_hora_ultimo_mensaje"] = m.fecha
+                                            chat["mensajes_sin_leer"] = m.leido
+                                
+                            else:
+                                c = {
+                                    "id_empleado": m.empleado.id,
+                                    "nombre": m.empleado.nombre,
+                                    "apellido": m.empleado.apellido,
+                                    "foto": m.empleado.foto,
+                                    "ultimo_mensaje": m.mensaje,
+                                    "fecha_hora_ultimo_mensaje": m.fecha,
+                                    "mensajes_sin_leer": m.leido
+                                }
+                                chats.append(c)
+
+                        else:
+                            c = {
+                                "id_empleado": m.empleado.id,
+                                "nombre": m.empleado.nombre,
+                                "apellido": m.empleado.apellido,
+                                "foto": m.empleado.foto,
+                                "ultimo_mensaje": m.mensaje,
+                                "fecha_hora_ultimo_mensaje": m.fecha,
+                                "mensajes_sin_leer": m.leido
+                            }
+                            chats.append(c)
+            chatsOrdenados = sorted(chats, key=lambda chat : chat['fecha_hora_ultimo_mensaje'])
+
+            listaChats = list()
+
+            for ch in chatsOrdenados:
+                if ch["foto"] == "":
+                    ch["foto"] = None
+                if ch["foto"]:
+                    ch["foto"] = ch["foto"].decode('utf-8')
+                if not isinstance(ch["foto"], str) or ch["foto"] == "":
+                        ch["foto"] = None
+                c = {
+                    "nombre": ch["nombre"],
+                    "apellido": ch["apellido"],
+                    "foto": ch["foto"],
+                    "ultimo_mensaje": ch["ultimo_mensaje"],
+                    "fecha_hora_ultimo_mensaje": ch["fecha_hora_ultimo_mensaje"].strftime("%Y-%m-%d %H:%M:%S"),
+                    "mensajes_sin_leer": ch["mensajes_sin_leer"]
+                }
+                listaChats.append(c)
+                           
+            return jsonify(listaChats)
+    
+    except:
+        return jsonify({"message":"error", "code":0})
+
+
+
+@app.route('/prueba_mensajes/<user_id>')
+def prueba_mensajes(user_id):
+    empleador = getEmpleadorByUsuarioID(baseDatos, user_id)
+    dicc_mensajes = getMensajesParaEmpleador(baseDatos, empleador.id)
+    fecha =None
+    for key in dicc_mensajes:
+        for m in dicc_mensajes[key]:
+            if not fecha:
+                fecha = m.fecha
+            else:
+                if m.fecha > fecha:
+                    fecha = m.fecha
+
+    return jsonify(fecha)
+
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8080, debug=True)
