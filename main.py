@@ -2874,6 +2874,10 @@ def postular_api():
                     "tipo_mensaje": str(mensajeEmpleado.tipoMensaje),
                     "titulo": "¡Suerte!"
                 }
+                print("id_mensaje: " + str(mensajeEmpleado.id))
+                print("id_usuario_empleado: " + str(mensajeEmpleado.empleado.usuario.id))
+                print("id_usuario_empleador: " + str(mensajeEmpleado.empleador.usuario.id))
+
                 t = empleado.usuario.getToken(baseDatos)
                 sendPush("¡Suerte!", "Te has postulado al anuncio: '" + anuncio.titulo + "'", t, objetoX)
             except:
@@ -4258,7 +4262,7 @@ def chats_api(user_id):
         return jsonify({"message":"error", "code":0})
 
 
-@app.route('/api/marcar_notificaciones_leídas/<user_id>', methods = ['PUT'])
+@app.route('/api/marcar_notificaciones_leidas/<user_id>', methods = ['PUT'])
 def marcar_notificaciones_leídas_api(user_id):
     try:
         usuario = getUsuarioByID(baseDatos, user_id)
