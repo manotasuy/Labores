@@ -1271,16 +1271,16 @@ def postularse(idAnuncio):
         mensajeEmpleado.crearMensaje(baseDatos)
         try:
             objetoX = {
-                "id_mensaje" : mensajeEmpleado.id,
-                "id_usuario_empleado": mensajeEmpleado.empleado.usuario.id,
-                "id_usuario_empleador": mensajeEmpleado.empleador.usuario.id,
-                "id_anuncio": mensajeEmpleado.anuncio.id,
-                "fecha": mensajeEmpleado.fecha.strftime("%Y-%m-%d %H:%M:%S"),
-                "mensaje": mensajeEmpleado.mensaje,
-                "tipo_emisor": mensajeEmpleado.tipoEmisor,
-                "tipo_receptor": mensajeEmpleado.tipoReceptor,
-                "leído": mensajeEmpleado.leido,
-                "tipo_mensaje": mensajeEmpleado.tipoMensaje,
+                "id_mensaje" : str(mensajeEmpleado.id),
+                "id_usuario_empleado": str(mensajeEmpleado.empleado.usuario.id),
+                "id_usuario_empleador": str(mensajeEmpleado.empleador.usuario.id),
+                "id_anuncio": str(mensajeEmpleado.anuncio.id),
+                "fecha": str(mensajeEmpleado.fecha.strftime("%Y-%m-%d %H:%M:%S")),
+                "mensaje": str(mensajeEmpleado.mensaje),
+                "tipo_emisor": str(mensajeEmpleado.tipoEmisor),
+                "tipo_receptor": str(mensajeEmpleado.tipoReceptor),
+                "leído": str(mensajeEmpleado.leido),
+                "tipo_mensaje": str(mensajeEmpleado.tipoMensaje),
                 "titulo": "Buenas suerte!"
             }
             t = empleado.usuario.getToken(baseDatos)
@@ -1294,16 +1294,16 @@ def postularse(idAnuncio):
         mensajeEmpleador.crearMensaje(baseDatos)
         try:
             objetoX = {
-                "id_mensaje" : mensajeEmpleador.id,
-                "id_usuario_empleado": mensajeEmpleador.empleado.usuario.id,
-                "id_usuario_empleador": mensajeEmpleador.empleador.usuario.id,
-                "id_anuncio": mensajeEmpleador.anuncio.id,
-                "fecha": mensajeEmpleador.fecha.strftime("%Y-%m-%d %H:%M:%S"),
-                "mensaje": mensajeEmpleador.mensaje,
-                "tipo_emisor": mensajeEmpleador.tipoEmisor,
-                "tipo_receptor": mensajeEmpleador.tipoReceptor,
-                "leído": mensajeEmpleador.leido,
-                "tipo_mensaje": mensajeEmpleador.tipoMensaje,
+                "id_mensaje" : str(mensajeEmpleador.id),
+                "id_usuario_empleado": str(mensajeEmpleador.empleado.usuario.id),
+                "id_usuario_empleador": str(mensajeEmpleador.empleador.usuario.id),
+                "id_anuncio": str(mensajeEmpleador.anuncio.id),
+                "fecha": str(mensajeEmpleador.fecha.strftime("%Y-%m-%d %H:%M:%S")),
+                "mensaje": str(mensajeEmpleador.mensaje),
+                "tipo_emisor": str(mensajeEmpleador.tipoEmisor),
+                "tipo_receptor": str(mensajeEmpleador.tipoReceptor),
+                "leído": str(mensajeEmpleador.leido),
+                "tipo_mensaje": str(mensajeEmpleador.tipoMensaje),
                 "titulo": "Nueva posulación"
             }
             t = empleador.usuario.getToken(baseDatos)
@@ -1366,16 +1366,16 @@ def despostularse(idPostulacion):
         mensajeEmpleado.crearMensaje(baseDatos)
         try:
             objetoX = {
-                "id_mensaje" : mensajeEmpleado.id,
-                "id_usuario_empleado": mensajeEmpleado.empleado.usuario.id,
-                "id_usuario_empleador": mensajeEmpleado.empleador.usuario.id,
-                "id_anuncio": mensajeEmpleado.anuncio.id,
-                "fecha": mensajeEmpleado.actualizarMensajefecha.strftime("%Y-%m-%d %H:%M:%S"),
-                "mensaje": mensajeEmpleado.mensaje,
-                "tipo_emisor": mensajeEmpleado.tipoEmisor,
-                "tipo_receptor": mensajeEmpleado.tipoReceptor,
-                "leído": mensajeEmpleado.leido,
-                "tipo_mensaje": mensajeEmpleado.tipoMensaje,
+                "id_mensaje" : str(mensajeEmpleado.id),
+                "id_usuario_empleado": str(mensajeEmpleado.empleado.usuario.id),
+                "id_usuario_empleador": str(mensajeEmpleado.empleador.usuario.id),
+                "id_anuncio": str(mensajeEmpleado.anuncio.id),
+                "fecha": str(mensajeEmpleado.actualizarMensajefecha.strftime("%Y-%m-%d %H:%M:%S")),
+                "mensaje": str(mensajeEmpleado.mensaje),
+                "tipo_emisor": str(mensajeEmpleado.tipoEmisor),
+                "tipo_receptor": str(mensajeEmpleado.tipoReceptor),
+                "leído": str(mensajeEmpleado.leido),
+                "tipo_mensaje": str(mensajeEmpleado.tipoMensaje),
                 "titulo": "Postulación eliminada"
             }
             t = empleado.usuario.getToken(baseDatos)
@@ -1390,19 +1390,19 @@ def despostularse(idPostulacion):
         mensajeEmpleador.crearMensaje(baseDatos)
         try:
             objetoX = {
-                "id_mensaje" : mensajeEmpleador.id,
-                "id_usuario_empleado": mensajeEmpleador.empleado.usuario.id,
-                "id_usuario_empleador": mensajeEmpleador.empleador.usuario.id,
-                "id_anuncio": mensajeEmpleador.anuncio.id,
-                "fecha": mensajeEmpleador.fecha.strftime("%Y-%m-%d %H:%M:%S"),
-                "mensaje": mensajeEmpleador.mensaje,
-                "tipo_emisor": mensajeEmpleador.tipoEmisor,
-                "tipo_receptor": mensajeEmpleador.tipoReceptor,
-                "leído": mensajeEmpleador.leido,
-                "tipo_mensaje": mensajeEmpleador.tipoMensaje,
+                "id_mensaje" : str(mensajeEmpleador.id),
+                "id_usuario_empleado": str(mensajeEmpleador.empleado.usuario.id),
+                "id_usuario_empleador": str(mensajeEmpleador.empleador.usuario.id),
+                "id_anuncio": str(mensajeEmpleador.anuncio.id),
+                "fecha": str(mensajeEmpleador.fecha.strftime("%Y-%m-%d %H:%M:%S")),
+                "mensaje": str(mensajeEmpleador.mensaje),
+                "tipo_emisor": str(mensajeEmpleador.tipoEmisor),
+                "tipo_receptor": str(mensajeEmpleador.tipoReceptor),
+                "leído": str(mensajeEmpleador.leido),
+                "tipo_mensaje": str(mensajeEmpleador.tipoMensaje),
                 "titulo": "Postulación eliminada"
             }
-            t = anuncio.empleador.usuario.getToken(baseDatos)
+            t = mensajeEmpleador.empleador.usuario.getToken(baseDatos)
             sendPush("Postulación eliminada", 
             empleado.nombre + " " + empleado.apellido + " ha retirado su postulación a tu anuncio " + anuncio.titulo, 
             t, objetoX)
@@ -1672,16 +1672,16 @@ def end_vinculo(idVinculo):
             mensajeEmpleado.crearMensaje(baseDatos)
             try:
                 objetoX = {
-                    "id_mensaje" : mensajeEmpleado.id,
-                    "id_usuario_empleado": mensajeEmpleado.empleado.usuario.id,
-                    "id_usuario_empleador": mensajeEmpleado.empleador.usuario.id,
-                    "id_anuncio": mensajeEmpleado.anuncio.id,
-                    "fecha": mensajeEmpleado.fecha.strftime("%Y-%m-%d %H:%M:%S"),
-                    "mensaje": mensajeEmpleado.mensaje,
-                    "tipo_emisor": mensajeEmpleado.tipoEmisor,
-                    "tipo_receptor": mensajeEmpleado.tipoReceptor,
-                    "leído": mensajeEmpleado.leido,
-                    "tipo_mensaje": mensajeEmpleado.tipoMensaje,
+                    "id_mensaje" : str(mensajeEmpleado.id),
+                    "id_usuario_empleado": str(mensajeEmpleado.empleado.usuario.id),
+                    "id_usuario_empleador": str(mensajeEmpleado.empleador.usuario.id),
+                    "id_anuncio": str(mensajeEmpleado.anuncio.id),
+                    "fecha": str(mensajeEmpleado.fecha.strftime("%Y-%m-%d %H:%M:%S")),
+                    "mensaje": str(mensajeEmpleado.mensaje),
+                    "tipo_emisor": str(mensajeEmpleado.tipoEmisor),
+                    "tipo_receptor": str(mensajeEmpleado.tipoReceptor),
+                    "leído": str(mensajeEmpleado.leido),
+                    "tipo_mensaje": str(mensajeEmpleado.tipoMensaje),
                     "titulo": "Vínculo finalizado"
                 }
                 t = empleado.usuario.getToken(baseDatos)
@@ -1699,16 +1699,16 @@ def end_vinculo(idVinculo):
             mensajeEmpleador.crearMensaje(baseDatos)
             try:
                 objetoX = {
-                    "id_mensaje" : mensajeEmpleador.id,
-                    "id_usuario_empleado": mensajeEmpleador.empleado.usuario.id,
-                    "id_usuario_empleador": mensajeEmpleador.empleador.usuario.id,
-                    "id_anuncio": mensajeEmpleador.anuncio.id,
-                    "fecha": mensajeEmpleador.fecha.strftime("%Y-%m-%d %H:%M:%S"),
-                    "mensaje": mensajeEmpleador.mensaje,
-                    "tipo_emisor": mensajeEmpleador.tipoEmisor,
-                    "tipo_receptor": mensajeEmpleador.tipoReceptor,
-                    "leído": mensajeEmpleador.leido,
-                    "tipo_mensaje": mensajeEmpleador.tipoMensaje,
+                    "id_mensaje" : str(mensajeEmpleador.id),
+                    "id_usuario_empleado": str(mensajeEmpleador.empleado.usuario.id),
+                    "id_usuario_empleador": str(mensajeEmpleador.empleador.usuario.id),
+                    "id_anuncio": str(mensajeEmpleador.anuncio.id),
+                    "fecha": str(mensajeEmpleador.fecha.strftime("%Y-%m-%d %H:%M:%S")),
+                    "mensaje": str(mensajeEmpleador.mensaje),
+                    "tipo_emisor": str(mensajeEmpleador.tipoEmisor),
+                    "tipo_receptor": str(mensajeEmpleador.tipoReceptor),
+                    "leído": str(mensajeEmpleador.leido),
+                    "tipo_mensaje": str(mensajeEmpleador.tipoMensaje),
                     "titulo": "Vínculo finalizado"
                 }
                 t = empleador.usuario.getToken(baseDatos)
@@ -1855,16 +1855,16 @@ def agregar_mensaje(idDestinatario, idAnuncio):
                 return redirect(url_for('mensajes_empleado', idEmpleado=empleado.id, idEmpleador=empleador.id))
                 try:
                     objetoX = {
-                        "id_mensaje" : mensajeEmpleado.id,
-                        "id_usuario_empleado": mensajeEmpleado.empleado.usuario.id,
-                        "id_usuario_empleador": mensajeEmpleado.empleador.usuario.id,
-                        "id_anuncio": mensajeEmpleado.anuncio.id,
-                        "fecha": mensajeEmpleado.fecha.strftime("%Y-%m-%d %H:%M:%S"),
-                        "mensaje": mensajeEmpleado.mensaje,
-                        "tipo_emisor": mensajeEmpleado.tipoEmisor,
-                        "tipo_receptor": mensajeEmpleado.tipoReceptor,
-                        "leído": mensajeEmpleado.leido,
-                        "tipo_mensaje": mensajeEmpleado.tipoMensaje,
+                        "id_mensaje" : str(mensajeEmpleado.id),
+                        "id_usuario_empleado": str(mensajeEmpleado.empleado.usuario.id),
+                        "id_usuario_empleador": str(mensajeEmpleado.empleador.usuario.id),
+                        "id_anuncio": str(mensajeEmpleado.anuncio.id),
+                        "fecha": str(mensajeEmpleado.fecha.strftime("%Y-%m-%d %H:%M:%S")),
+                        "mensaje": str(mensajeEmpleado.mensaje),
+                        "tipo_emisor": str(mensajeEmpleado.tipoEmisor),
+                        "tipo_receptor": str(mensajeEmpleado.tipoReceptor),
+                        "leído": str(mensajeEmpleado.leido),
+                        "tipo_mensaje": str(mensajeEmpleado.tipoMensaje),
                         "titulo": empleado.nombre + " " + empleado.apellido + " dice: "
                     }
                     t = empleador.usuario.getToken(baseDatos)
@@ -1882,16 +1882,16 @@ def agregar_mensaje(idDestinatario, idAnuncio):
                 mensajeEmpleador.crearMensaje(baseDatos)
                 try:
                     objetoX = {
-                        "id_mensaje" : mensajeEmpleador.id,
-                        "id_usuario_empleado": mensajeEmpleador.empleado.usuario.id,
-                        "id_usuario_empleador": mensajeEmpleador.empleador.usuario.id,
-                        "id_anuncio": mensajeEmpleador.anuncio.id,
-                        "fecha": mensajeEmpleador.fecha.strftime("%Y-%m-%d %H:%M:%S"),
-                        "mensaje": mensajeEmpleador.mensaje,
-                        "tipo_emisor": mensajeEmpleador.tipoEmisor,
-                        "tipo_receptor": mensajeEmpleador.tipoReceptor,
-                        "leído": mensajeEmpleador.leido,
-                        "tipo_mensaje": mensajeEmpleador.tipoMensaje,
+                        "id_mensaje" : str(mensajeEmpleador.id),
+                        "id_usuario_empleado": str(mensajeEmpleador.empleado.usuario.id),
+                        "id_usuario_empleador": str(mensajeEmpleador.empleador.usuario.id),
+                        "id_anuncio": str(mensajeEmpleador.anuncio.id),
+                        "fecha": str(mensajeEmpleador.fecha.strftime("%Y-%m-%d %H:%M:%S")),
+                        "mensaje": str(mensajeEmpleador.mensaje),
+                        "tipo_emisor": str(mensajeEmpleador.tipoEmisor),
+                        "tipo_receptor": str(mensajeEmpleador.tipoReceptor),
+                        "leído": str(mensajeEmpleador.leido),
+                        "tipo_mensaje": str(mensajeEmpleador.tipoMensaje),
                         "titulo": empleador.nombre + " " + empleador.apellido + " dice: "
                     }
                     t = empleado.usuario.getToken(baseDatos)
@@ -1952,16 +1952,16 @@ def contratar(idEmpleado):
         mensajeEmpleado.crearMensaje(baseDatos)
         try:
             objetoX = {
-                "id_mensaje" : mensajeEmpleado.id,
-                "id_usuario_empleado": mensajeEmpleado.empleado.usuario.id,
-                "id_usuario_empleador": mensajeEmpleado.empleador.usuario.id,
-                "id_anuncio": mensajeEmpleado.anuncio.id,
-                "fecha": mensajeEmpleado.fecha.strftime("%Y-%m-%d %H:%M:%S"),
-                "mensaje": mensajeEmpleado.mensaje,
-                "tipo_emisor": mensajeEmpleado.tipoEmisor,
-                "tipo_receptor": mensajeEmpleado.tipoReceptor,
-                "leído": mensajeEmpleado.leido,
-                "tipo_mensaje": mensajeEmpleado.tipoMensaje,
+                "id_mensaje" : str(mensajeEmpleado.id),
+                "id_usuario_empleado": str(mensajeEmpleado.empleado.usuario.id),
+                "id_usuario_empleador": str(mensajeEmpleado.empleador.usuario.id),
+                "id_anuncio": str(mensajeEmpleado.anuncio.id),
+                "fecha": str(mensajeEmpleado.fecha.strftime("%Y-%m-%d %H:%M:%S")),
+                "mensaje": str(mensajeEmpleado.mensaje),
+                "tipo_emisor": str(mensajeEmpleado.tipoEmisor),
+                "tipo_receptor": str(mensajeEmpleado.tipoReceptor),
+                "leído": str(mensajeEmpleado.leido),
+                "tipo_mensaje": str(mensajeEmpleado.tipoMensaje),
                 "titulo": "Felicidades!"
             }
             t = empleado.usuario.getToken(baseDatos)
@@ -1978,16 +1978,16 @@ def contratar(idEmpleado):
         mensajeEmpleador.crearMensaje(baseDatos)
         try:
             objetoX = {
-                "id_mensaje" : mensajeEmpleador.id,
-                "id_usuario_empleado": mensajeEmpleador.empleado.usuario.id,
-                "id_usuario_empleador": mensajeEmpleador.empleador.usuario.id,
-                "id_anuncio": mensajeEmpleador.anuncio.id,
-                "fecha": mensajeEmpleador.fecha.strftime("%Y-%m-%d %H:%M:%S"),
-                "mensaje": mensajeEmpleador.mensaje,
-                "tipo_emisor": mensajeEmpleador.tipoEmisor,
-                "tipo_receptor": mensajeEmpleador.tipoReceptor,
-                "leído": mensajeEmpleador.leido,
-                "tipo_mensaje": mensajeEmpleador.tipoMensaje,
+                "id_mensaje" : str(mensajeEmpleador.id),
+                "id_usuario_empleado": str(mensajeEmpleador.empleado.usuario.id),
+                "id_usuario_empleador": str(mensajeEmpleador.empleador.usuario.id),
+                "id_anuncio": str(mensajeEmpleador.anuncio.id),
+                "fecha": str(mensajeEmpleador.fecha.strftime("%Y-%m-%d %H:%M:%S")),
+                "mensaje": str(mensajeEmpleador.mensaje),
+                "tipo_emisor": str(mensajeEmpleador.tipoEmisor),
+                "tipo_receptor": str(mensajeEmpleador.tipoReceptor),
+                "leído": str(mensajeEmpleador.leido),
+                "tipo_mensaje": str(mensajeEmpleador.tipoMensaje),
                 "titulo": "Felicidades!"
             }
             t = empleador.usuario.getToken(baseDatos)
@@ -2862,16 +2862,16 @@ def postular_api():
             mensajeEmpleado.crearMensaje(baseDatos)
             try:
                 objetoX = {
-                    "id_mensaje" : mensajeEmpleado.id,
-                    "id_usuario_empleado": mensajeEmpleado.empleado.usuario.id,
-                    "id_usuario_empleador": mensajeEmpleado.empleador.usuario.id,
-                    "id_anuncio": mensajeEmpleado.anuncio.id,
-                    "fecha": mensajeEmpleado.fecha.strftime("%Y-%m-%d %H:%M:%S"),
-                    "mensaje": mensajeEmpleado.mensaje,
-                    "tipo_emisor": mensajeEmpleado.tipoEmisor,
-                    "tipo_receptor": mensajeEmpleado.tipoReceptor,
-                    "leído": mensajeEmpleado.leido,
-                    "tipo_mensaje": mensajeEmpleado.tipoMensaje,
+                    "id_mensaje" : str(mensajeEmpleado.id),
+                    "id_usuario_empleado": str(mensajeEmpleado.empleado.usuario.id),
+                    "id_usuario_empleador": str(mensajeEmpleado.empleador.usuario.id),
+                    "id_anuncio": str(mensajeEmpleado.anuncio.id),
+                    "fecha": str(mensajeEmpleado.fecha.strftime("%Y-%m-%d %H:%M:%S")),
+                    "mensaje": str(mensajeEmpleado.mensaje),
+                    "tipo_emisor": str(mensajeEmpleado.tipoEmisor),
+                    "tipo_receptor": str(mensajeEmpleado.tipoReceptor),
+                    "leído": str(mensajeEmpleado.leido),
+                    "tipo_mensaje": str(mensajeEmpleado.tipoMensaje),
                     "titulo": "¡Suerte!"
                 }
                 t = empleado.usuario.getToken(baseDatos)
@@ -2883,6 +2883,7 @@ def postular_api():
             mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
             ), 'Buenas noticias!!! {} {} se ha postulado a tu anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False, "p")
             mensajeEmpleador.crearMensaje(baseDatos)
+
             try: 
                 objetoX = {
                     "id_mensaje" : str(mensajeEmpleador.id),
@@ -2897,11 +2898,11 @@ def postular_api():
                     "tipo_mensaje": str(mensajeEmpleador.tipoMensaje),
                     "titulo": "Tienes un postulante nuevo"
                 }
-                t = empleador.usuario.getToken(baseDatos)
+                t = mensajeEmpleador.empleador.usuario.getToken(baseDatos)
                 sendPush("Tienes un postulante nuevo", 
                 empleado.nombre + " " + empleado.apellido + " se a postulado a tu anuncio: " + "'" +
                 anuncio.titulo + "'", t, objetoX)
-                
+                    
             except:
                 print("FCM error")
 
@@ -2928,19 +2929,19 @@ def despostular_api():
         mensajeEmpleado.crearMensaje(baseDatos)
         try:
             objetoX = {
-                "id_mensaje" : mensajeEmpleado.id,
-                "id_usuario_empleado": mensajeEmpleado.empleado.usuario.id,
-                "id_usuario_empleador": mensajeEmpleado.empleador.usuario.id,
-                "id_anuncio": mensajeEmpleado.anuncio.id,
-                "fecha": mensajeEmpleado.fecha.strftime("%Y-%m-%d %H:%M:%S"),
-                "mensaje": mensajeEmpleado.mensaje,
-                "tipo_emisor": mensajeEmpleado.tipoEmisor,
-                "tipo_receptor": mensajeEmpleado.tipoReceptor,
-                "leído": mensajeEmpleado.leido,
-                "tipo_mensaje": mensajeEmpleado.tipoMensaje,
+                "id_mensaje" : str(mensajeEmpleado.id),
+                "id_usuario_empleado": str(mensajeEmpleado.empleado.usuario.id),
+                "id_usuario_empleador": str(mensajeEmpleado.empleador.usuario.id),
+                "id_anuncio": str(mensajeEmpleado.anuncio.id),
+                "fecha": str(mensajeEmpleado.fecha.strftime("%Y-%m-%d %H:%M:%S")),
+                "mensaje": str(mensajeEmpleado.mensaje),
+                "tipo_emisor": str(mensajeEmpleado.tipoEmisor),
+                "tipo_receptor": str(mensajeEmpleado.tipoReceptor),
+                "leído": str(mensajeEmpleado.leido),
+                "tipo_mensaje": str(mensajeEmpleado.tipoMensaje),
                 "titulo": "Te has bajado de la postulación."
             }
-            t = empleado.usuario.getToken(baseDatos)
+            t = mensajeEmpleado.empleado.usuario.getToken(baseDatos)
             sendPush("Te has bajado de la postulacion.", 
             "Te has bajado de la postulacion al anuncio: " + anuncio.titulo, t, objetoX)
         
@@ -2953,16 +2954,16 @@ def despostular_api():
         mensajeEmpleador.crearMensaje(baseDatos)
         try:
             objetoX = {
-                "id_mensaje" : mensajeEmpleador.id,
-                "id_usuario_empleado": mensajeEmpleador.empleado.usuario.id,
-                "id_usuario_empleador": mensajeEmpleador.empleador.usuario.id,
-                "id_anuncio": mensajeEmpleador.anuncio.id,
-                "fecha": mensajeEmpleador.fecha.strftime("%Y-%m-%d %H:%M:%S"),
-                "mensaje": mensajeEmpleador.mensaje,
-                "tipo_emisor": mensajeEmpleador.tipoEmisor,
-                "tipo_receptor": mensajeEmpleador.tipoReceptor,
-                "leído": mensajeEmpleador.leido,
-                "tipo_mensaje": mensajeEmpleador.tipoMensaje,
+                "id_mensaje" : str(mensajeEmpleador.id),
+                "id_usuario_empleado": str(mensajeEmpleador.empleado.usuario.id),
+                "id_usuario_empleador": str(mensajeEmpleador.empleador.usuario.id),
+                "id_anuncio": str(mensajeEmpleador.anuncio.id),
+                "fecha": str(mensajeEmpleador.fecha.strftime("%Y-%m-%d %H:%M:%S")),
+                "mensaje": str(mensajeEmpleador.mensaje),
+                "tipo_emisor": str(mensajeEmpleador.tipoEmisor),
+                "tipo_receptor": str(mensajeEmpleador.tipoReceptor),
+                "leído": str(mensajeEmpleador.leido),
+                "tipo_mensaje": str(mensajeEmpleador.tipoMensaje),
                 "titulo": "Un postulante se retiró"
             }
             t = empleador.usuario.getToken(baseDatos)
@@ -3094,16 +3095,16 @@ def contratar_api():
         mensajeEmpleado.crearMensaje(baseDatos)
         try:
             objetoX = {
-                "id_mensaje" : mensajeEmpleado.id,
-                "id_usuario_empleado": mensajeEmpleado.empleado.usuario.id,
-                "id_usuario_empleador": mensajeEmpleado.empleador.usuario.id,
-                "id_anuncio": mensajeEmpleado.anuncio.id,
-                "fecha": mensajeEmpleado.fecha.strftime("%Y-%m-%d %H:%M:%S"),
-                "mensaje": mensajeEmpleado.mensaje,
-                "tipo_emisor": mensajeEmpleado.tipoEmisor,
-                "tipo_receptor": mensajeEmpleado.tipoReceptor,
-                "leído": mensajeEmpleado.leido,
-                "tipo_mensaje": mensajeEmpleado.tipoMensaje,
+                "id_mensaje" : str(mensajeEmpleado.id),
+                "id_usuario_empleado": str(mensajeEmpleado.empleado.usuario.id),
+                "id_usuario_empleador": str(mensajeEmpleado.empleador.usuario.id),
+                "id_anuncio": str(mensajeEmpleado.anuncio.id),
+                "fecha": str(mensajeEmpleado.fecha.strftime("%Y-%m-%d %H:%M:%S")),
+                "mensaje": str(mensajeEmpleado.mensaje),
+                "tipo_emisor": str(mensajeEmpleado.tipoEmisor),
+                "tipo_receptor": str(mensajeEmpleado.tipoReceptor),
+                "leído": str(mensajeEmpleado.leido),
+                "tipo_mensaje": str(mensajeEmpleado.tipoMensaje),
                 "titulo": "Felicidades!"
             }
             t = empleado.usuario.getToken(baseDatos)
@@ -3120,16 +3121,16 @@ def contratar_api():
         mensajeEmpleador.crearMensaje(baseDatos)
         try:
             objetoX = {
-                "id_mensaje" : mensajeEmpleador.id,
-                "id_usuario_empleado": mensajeEmpleador.empleado.usuario.id,
-                "id_usuario_empleador": mensajeEmpleador.empleador.usuario.id,
-                "id_anuncio": mensajeEmpleador.anuncio.id,
-                "fecha": mensajeEmpleador.fecha.strftime("%Y-%m-%d %H:%M:%S"),
-                "mensaje": mensajeEmpleador.mensaje,
-                "tipo_emisor": mensajeEmpleador.tipoEmisor,
-                "tipo_receptor": mensajeEmpleador.tipoReceptor,
-                "leído": mensajeEmpleador.leido,
-                "tipo_mensaje": mensajeEmpleador.tipoMensaje,
+                "id_mensaje" : str(mensajeEmpleador.id),
+                "id_usuario_empleado": str(mensajeEmpleador.empleado.usuario.id),
+                "id_usuario_empleador": str(mensajeEmpleador.empleador.usuario.id),
+                "id_anuncio": str(mensajeEmpleador.anuncio.id),
+                "fecha": str(mensajeEmpleador.fecha.strftime("%Y-%m-%d %H:%M:%S")),
+                "mensaje": str(mensajeEmpleador.mensaje),
+                "tipo_emisor": str(mensajeEmpleador.tipoEmisor),
+                "tipo_receptor": str(mensajeEmpleador.tipoReceptor),
+                "leído": str(mensajeEmpleador.leido),
+                "tipo_mensaje": str(mensajeEmpleador.tipoMensaje),
                 "titulo": "Felicidades!"
             }
             t = empleador.usuario.getToken(baseDatos)
@@ -3380,16 +3381,16 @@ def finalizar_vinculo_api():
         mensajeEmpleado.crearMensaje(baseDatos)
         try:
             objetoX = {
-                "id_mensaje" : mensajeEmpleado.id,
-                "id_usuario_empleado": mensajeEmpleado.empleado.usuario.id,
-                "id_usuario_empleador": mensajeEmpleado.empleador.usuario.id,
-                "id_anuncio": mensajeEmpleado.anuncio.id,
-                "fecha": mensajeEmpleado.fecha.strftime("%Y-%m-%d %H:%M:%S"),
-                "mensaje": mensajeEmpleado.mensaje,
-                "tipo_emisor": mensajeEmpleado.tipoEmisor,
-                "tipo_receptor": mensajeEmpleado.tipoReceptor,
-                "leído": mensajeEmpleado.leido,
-                "tipo_mensaje": mensajeEmpleado.tipoMensaje,
+                "id_mensaje" : str(mensajeEmpleado.id),
+                "id_usuario_empleado": str(mensajeEmpleado.empleado.usuario.id),
+                "id_usuario_empleador": str(mensajeEmpleado.empleador.usuario.id),
+                "id_anuncio": str(mensajeEmpleado.anuncio.id),
+                "fecha": str(mensajeEmpleado.fecha.strftime("%Y-%m-%d %H:%M:%S")),
+                "mensaje": str(mensajeEmpleado.mensaje),
+                "tipo_emisor": str(mensajeEmpleado.tipoEmisor),
+                "tipo_receptor": str(mensajeEmpleado.tipoReceptor),
+                "leído": str(mensajeEmpleado.leido),
+                "tipo_mensaje": str(mensajeEmpleado.tipoMensaje),
                 "titulo": "Vínculo finalizado"
             }
             t = empleado.usuario.getToken(baseDatos)
@@ -3407,16 +3408,16 @@ def finalizar_vinculo_api():
         mensajeEmpleador.crearMensaje(baseDatos)
         try:
             objetoX = {
-                "id_mensaje" : mensajeEmpleador.id,
-                "id_usuario_empleado": mensajeEmpleador.empleado.usuario.id,
-                "id_usuario_empleador": mensajeEmpleador.empleador.usuario.id,
-                "id_anuncio": mensajeEmpleador.anuncio.id,
-                "fecha": mensajeEmpleador.fecha.strftime("%Y-%m-%d %H:%M:%S"),
-                "mensaje": mensajeEmpleador.mensaje,
-                "tipo_emisor": mensajeEmpleador.tipoEmisor,
-                "tipo_receptor": mensajeEmpleador.tipoReceptor,
-                "leído": mensajeEmpleador.leido,
-                "tipo_mensaje": mensajeEmpleador.tipoMensaje,
+                "id_mensaje" : str(mensajeEmpleador.id),
+                "id_usuario_empleado": str(mensajeEmpleador.empleado.usuario.id),
+                "id_usuario_empleador": str(mensajeEmpleador.empleador.usuario.id),
+                "id_anuncio": str(mensajeEmpleador.anuncio.id),
+                "fecha": str(mensajeEmpleador.fecha.strftime("%Y-%m-%d %H:%M:%S")),
+                "mensaje": str(mensajeEmpleador.mensaje),
+                "tipo_emisor": str(mensajeEmpleador.tipoEmisor),
+                "tipo_receptor": str(mensajeEmpleador.tipoReceptor),
+                "leído": str(mensajeEmpleador.leido),
+                "tipo_mensaje": str(mensajeEmpleador.tipoMensaje),
                 "titulo": "Vínculo finalizado"
             }
             t = empleador.usuario.getToken(baseDatos)
@@ -3618,16 +3619,16 @@ def crear_mensaje_api_desde_empleador():
         mensaje.crearMensaje(baseDatos)
         try: 
             objetoX = {
-                "id_mensaje" : mensaje.id,
-                "id_usuario_empleado": mensaje.empleado.usuario.id,
-                "id_usuario_empleador": mensaje.empleador.usuario.id,
-                "id_anuncio": mensaje.anuncio.id,
-                "fecha": mensaje.fecha.strftime("%Y-%m-%d %H:%M:%S"),
-                "mensaje": mensaje.mensaje,
-                "tipo_emisor": mensaje.tipoEmisor,
-                "tipo_receptor": mensaje.tipoReceptor,
-                "leído": mensaje.leido,
-                "tipo_mensaje": mensaje.tipoMensaje,
+                "id_mensaje" : str(mensaje.id),
+                "id_usuario_empleado": str(mensaje.empleado.usuario.id),
+                "id_usuario_empleador": str(mensaje.empleador.usuario.id),
+                "id_anuncio": str(mensaje.anuncio.id),
+                "fecha": str(mensaje.fecha.strftime("%Y-%m-%d %H:%M:%S")),
+                "mensaje": str(mensaje.mensaje),
+                "tipo_emisor": str(mensaje.tipoEmisor),
+                "tipo_receptor": str(mensaje.tipoReceptor),
+                "leído": str(mensaje.leido),
+                "tipo_mensaje": str(mensaje.tipoMensaje),
                 "titulo": empleador.nombre + " " + empleador.apellido + " dice: "
             }
             t = empleado.usuario.getToken(baseDatos)
@@ -3650,16 +3651,16 @@ def crear_mensaje_api_desde_empleado():
         mensaje.crearMensaje(baseDatos)
         try:
             objetoX = {
-                "id_mensaje" : mensaje.id,
-                "id_usuario_empleado": mensaje.empleado.usuario.id,
-                "id_usuario_empleador": mensaje.empleador.usuario.id,
-                "id_anuncio": mensaje.anuncio.id,
-                "fecha": mensaje.fecha.strftime("%Y-%m-%d %H:%M:%S"),
-                "mensaje": mensaje.mensaje,
-                "tipo_emisor": mensaje.tipoEmisor,
-                "tipo_receptor": mensaje.tipoReceptor,
-                "leído": mensaje.leido,
-                "tipo_mensaje": mensaje.tipoMensaje,
+                "id_mensaje" : str(mensaje.id),
+                "id_usuario_empleado": str(mensaje.empleado.usuario.id),
+                "id_usuario_empleador": str(mensaje.empleador.usuario.id),
+                "id_anuncio": str(mensaje.anuncio.id),
+                "fecha": str(mensaje.fecha.strftime("%Y-%m-%d %H:%M:%S")),
+                "mensaje": str(mensaje.mensaje),
+                "tipo_emisor": str(mensaje.tipoEmisor),
+                "tipo_receptor": str(mensaje.tipoReceptor),
+                "leído": str(mensaje.leido),
+                "tipo_mensaje": str(mensaje.tipoMensaje),
                 "titulo": empleado.nombre + " " + empleado.apellido + " dice: "
             }
             t = empleador.usuario.getToken(baseDatos)
