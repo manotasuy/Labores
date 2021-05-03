@@ -1792,7 +1792,7 @@ def mensajes_empleado(idEmpleado, idEmpleador):
             elEmpleador = None
         else:
             elEmpleador = getEmpleadorByID(baseDatos, int(idEmpleador))
-            # se deben marcar los mensajes como leídos
+            # se deben marcar los mensajes como leidos
             for mensaje in diccMensajes.get(int(idEmpleador)):
                 if mensaje.tipoReceptor == 1 and mensaje.leido == False:
                     mensaje.marcarMensajeComoLeido(baseDatos)
@@ -1824,7 +1824,7 @@ def mensajes_empleador(idEmpleador, idEmpleado):
             elEmpleado = None
         else:
             elEmpleado = getEmpleadoByID(baseDatos, int(idEmpleado))
-            # se deben marcar los mensajes como leídos
+            # se deben marcar los mensajes como leidos
             for mensaje in diccMensajes.get(int(idEmpleado)):
                 if mensaje.tipoReceptor == 2 and mensaje.leido == False:
                     mensaje.marcarMensajeComoLeido(baseDatos)
@@ -3464,7 +3464,7 @@ def empleado_todos_mensajes_api(id_usuario_empleado):
                     "mensaje": m.mensaje,
                     "tipo_emisor": m.tipoEmisor,
                     "tipo_receptor": m.tipoReceptor,
-                    "leído": m.leido,
+                    "leido": m.leido,
                     "tipo_mensaje": m.tipoMensaje
                 }
                 listaMensajes.append(mensaje)
@@ -3497,7 +3497,7 @@ def empleador_todos_mensajes_api(id_usuario_empleador):
                     "mensaje": m.mensaje,
                     "tipo_emisor": m.tipoEmisor,
                     "tipo_receptor": m.tipoReceptor,
-                    "leído": m.leido,
+                    "leido": m.leido,
                     "tipo_mensaje": m.tipoMensaje
                 }
                 listaMensajes.append(mensaje)
@@ -3531,7 +3531,7 @@ def mensajes_empleado_api(id_usuario_empleado, id_usuario_empleador):
                         "mensaje": m.mensaje,
                         "tipo_emisor": m.tipoEmisor,
                         "tipo_receptor": m.tipoReceptor,
-                        "leído": m.leido,
+                        "leido": m.leido,
                         "tipo_mensaje": m.tipoMensaje
                     }
                     listaMensajes.append(mensaje)
@@ -3565,7 +3565,7 @@ def mensajes_empleador_api(id_usuario_empleado, id_usuario_empleador):
                         "mensaje": m.mensaje,
                         "tipo_emisor": m.tipoEmisor,
                         "tipo_receptor": m.tipoReceptor,
-                        "leído": m.leido,
+                        "leido": m.leido,
                         "tipo_mensaje": m.tipoMensaje
                     }
                     listaMensajes.append(mensaje)
@@ -3588,7 +3588,7 @@ def ver_mensaje_api(id_mensaje):
             "mensaje": m.mensaje,
             "tipo_emisor": m.tipoEmisor,
             "tipo_receptor": m.tipoReceptor,
-            "leído": m.leido,
+            "leido": m.leido,
             "tipo_mensaje": m.tipoMensaje
         }
         return jsonify(mensaje)
@@ -3605,9 +3605,9 @@ def mensaje_marcar_leido_api():
                 mensaje = getMensajeByID(baseDatos, id_mensaje)
                 if mensaje.leido == False:
                     mensaje.marcarMensajeComoLeido(baseDatos)
-            return jsonify({"message": "mensajes marcados como leídos", "code": 1})
+            return jsonify({"message": "mensajes marcados como leidos", "code": 1})
         else:
-            return jsonify({"message": "mensajes ya leídos", "code": 1})
+            return jsonify({"message": "mensajes ya leidos", "code": 1})
     except:
         return jsonify({"message": "error", "code": 0})
 
