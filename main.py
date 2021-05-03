@@ -3444,11 +3444,17 @@ def empleado_todos_mensajes_api(id_usuario_empleado):
         listaMensajes = list()
         for key in diccMensajes:
             for m in diccMensajes[key]:
+                id_anuncio = None
+                if m.anuncio:
+                    id_anuncio = m.anuncio.id
+                else:
+                    id_anuncio = 0
+                
                 mensaje = {
                     "id_mensaje" : m.id,
                     "id_usuario_empleado": m.empleado.usuario.id,
                     "id_usuario_empleador": m.empleador.usuario.id,
-                    "id_anuncio": m.anuncio.id,
+                    "id_anuncio": id_anuncio,
                     "fecha": m.fecha.strftime("%Y-%m-%d %H:%M:%S"),
                     "mensaje": m.mensaje,
                     "tipo_emisor": m.tipoEmisor,
@@ -3471,11 +3477,17 @@ def empleador_todos_mensajes_api(id_usuario_empleador):
         listaMensajes = list()
         for key in diccMensajes:
             for m in diccMensajes[key]:
+                id_anuncio = None
+                if m.anuncio:
+                    id_anuncio = m.anuncio.id
+                else:
+                    id_anuncio = 0
+                    
                 mensaje = {
                     "id_mensaje" : m.id,
                     "id_usuario_empleado": m.empleado.usuario.id,
                     "id_usuario_empleador": m.empleador.usuario.id,
-                    "id_anuncio": m.anuncio.id,
+                    "id_anuncio": id_anuncio,
                     "fecha": m.fecha.strftime("%Y-%m-%d %H:%M:%S"),
                     "mensaje": m.mensaje,
                     "tipo_emisor": m.tipoEmisor,
