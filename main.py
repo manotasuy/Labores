@@ -1279,7 +1279,7 @@ def postularse(idAnuncio):
                 "mensaje": str(mensajeEmpleado.mensaje),
                 "tipo_emisor": str(mensajeEmpleado.tipoEmisor),
                 "tipo_receptor": str(mensajeEmpleado.tipoReceptor),
-                "leído": str(mensajeEmpleado.leido),
+                "leido": str(mensajeEmpleado.leido),
                 "tipo_mensaje": str(mensajeEmpleado.tipoMensaje),
                 "titulo": "Buenas suerte!"
             }
@@ -1302,7 +1302,7 @@ def postularse(idAnuncio):
                 "mensaje": str(mensajeEmpleador.mensaje),
                 "tipo_emisor": str(mensajeEmpleador.tipoEmisor),
                 "tipo_receptor": str(mensajeEmpleador.tipoReceptor),
-                "leído": str(mensajeEmpleador.leido),
+                "leido": str(mensajeEmpleador.leido),
                 "tipo_mensaje": str(mensajeEmpleador.tipoMensaje),
                 "titulo": "Nueva posulación"
             }
@@ -1374,7 +1374,7 @@ def despostularse(idPostulacion):
                 "mensaje": str(mensajeEmpleado.mensaje),
                 "tipo_emisor": str(mensajeEmpleado.tipoEmisor),
                 "tipo_receptor": str(mensajeEmpleado.tipoReceptor),
-                "leído": str(mensajeEmpleado.leido),
+                "leido": str(mensajeEmpleado.leido),
                 "tipo_mensaje": str(mensajeEmpleado.tipoMensaje),
                 "titulo": "Postulación eliminada"
             }
@@ -1398,7 +1398,7 @@ def despostularse(idPostulacion):
                 "mensaje": str(mensajeEmpleador.mensaje),
                 "tipo_emisor": str(mensajeEmpleador.tipoEmisor),
                 "tipo_receptor": str(mensajeEmpleador.tipoReceptor),
-                "leído": str(mensajeEmpleador.leido),
+                "leido": str(mensajeEmpleador.leido),
                 "tipo_mensaje": str(mensajeEmpleador.tipoMensaje),
                 "titulo": "Postulación eliminada"
             }
@@ -1680,7 +1680,7 @@ def end_vinculo(idVinculo):
                     "mensaje": str(mensajeEmpleado.mensaje),
                     "tipo_emisor": str(mensajeEmpleado.tipoEmisor),
                     "tipo_receptor": str(mensajeEmpleado.tipoReceptor),
-                    "leído": str(mensajeEmpleado.leido),
+                    "leido": str(mensajeEmpleado.leido),
                     "tipo_mensaje": str(mensajeEmpleado.tipoMensaje),
                     "titulo": "Vínculo finalizado"
                 }
@@ -1707,7 +1707,7 @@ def end_vinculo(idVinculo):
                     "mensaje": str(mensajeEmpleador.mensaje),
                     "tipo_emisor": str(mensajeEmpleador.tipoEmisor),
                     "tipo_receptor": str(mensajeEmpleador.tipoReceptor),
-                    "leído": str(mensajeEmpleador.leido),
+                    "leido": str(mensajeEmpleador.leido),
                     "tipo_mensaje": str(mensajeEmpleador.tipoMensaje),
                     "titulo": "Vínculo finalizado"
                 }
@@ -1863,7 +1863,7 @@ def agregar_mensaje(idDestinatario, idAnuncio):
                         "mensaje": str(mensajeEmpleado.mensaje),
                         "tipo_emisor": str(mensajeEmpleado.tipoEmisor),
                         "tipo_receptor": str(mensajeEmpleado.tipoReceptor),
-                        "leído": str(mensajeEmpleado.leido),
+                        "leido": str(mensajeEmpleado.leido),
                         "tipo_mensaje": str(mensajeEmpleado.tipoMensaje),
                         "titulo": empleado.nombre + " " + empleado.apellido + " dice: "
                     }
@@ -1890,7 +1890,7 @@ def agregar_mensaje(idDestinatario, idAnuncio):
                         "mensaje": str(mensajeEmpleador.mensaje),
                         "tipo_emisor": str(mensajeEmpleador.tipoEmisor),
                         "tipo_receptor": str(mensajeEmpleador.tipoReceptor),
-                        "leído": str(mensajeEmpleador.leido),
+                        "leido": str(mensajeEmpleador.leido),
                         "tipo_mensaje": str(mensajeEmpleador.tipoMensaje),
                         "titulo": empleador.nombre + " " + empleador.apellido + " dice: "
                     }
@@ -1960,7 +1960,7 @@ def contratar(idEmpleado):
                 "mensaje": str(mensajeEmpleado.mensaje),
                 "tipo_emisor": str(mensajeEmpleado.tipoEmisor),
                 "tipo_receptor": str(mensajeEmpleado.tipoReceptor),
-                "leído": str(mensajeEmpleado.leido),
+                "leido": str(mensajeEmpleado.leido),
                 "tipo_mensaje": str(mensajeEmpleado.tipoMensaje),
                 "titulo": "Felicidades!"
             }
@@ -1986,7 +1986,7 @@ def contratar(idEmpleado):
                 "mensaje": str(mensajeEmpleador.mensaje),
                 "tipo_emisor": str(mensajeEmpleador.tipoEmisor),
                 "tipo_receptor": str(mensajeEmpleador.tipoReceptor),
-                "leído": str(mensajeEmpleador.leido),
+                "leido": str(mensajeEmpleador.leido),
                 "tipo_mensaje": str(mensajeEmpleador.tipoMensaje),
                 "titulo": "Felicidades!"
             }
@@ -2872,7 +2872,7 @@ def postular_api():
                     "mensaje": str(mensajeEmpleado.mensaje),
                     "tipo_emisor": str(mensajeEmpleado.tipoEmisor),
                     "tipo_receptor": str(mensajeEmpleado.tipoReceptor),
-                    "leído": str(mensajeEmpleado.leido),
+                    "leido": str(mensajeEmpleado.leido),
                     "tipo_mensaje": str(mensajeEmpleado.tipoMensaje),
                     "titulo": "¡Suerte!"
                 }
@@ -2941,7 +2941,7 @@ def despostular_api():
                 "mensaje": str(mensajeEmpleado.mensaje),
                 "tipo_emisor": str(mensajeEmpleado.tipoEmisor),
                 "tipo_receptor": str(mensajeEmpleado.tipoReceptor),
-                "leído": str(mensajeEmpleado.leido),
+                "leido": str(mensajeEmpleado.leido),
                 "tipo_mensaje": str(mensajeEmpleado.tipoMensaje),
                 "titulo": "Te has bajado de la postulación."
             }
@@ -2966,7 +2966,7 @@ def despostular_api():
                 "mensaje": str(mensajeEmpleador.mensaje),
                 "tipo_emisor": str(mensajeEmpleador.tipoEmisor),
                 "tipo_receptor": str(mensajeEmpleador.tipoReceptor),
-                "leído": str(mensajeEmpleador.leido),
+                "leido": str(mensajeEmpleador.leido),
                 "tipo_mensaje": str(mensajeEmpleador.tipoMensaje),
                 "titulo": "Un postulante se retiró"
             }
@@ -3107,7 +3107,7 @@ def contratar_api():
                 "mensaje": str(mensajeEmpleado.mensaje),
                 "tipo_emisor": str(mensajeEmpleado.tipoEmisor),
                 "tipo_receptor": str(mensajeEmpleado.tipoReceptor),
-                "leído": str(mensajeEmpleado.leido),
+                "leido": str(mensajeEmpleado.leido),
                 "tipo_mensaje": str(mensajeEmpleado.tipoMensaje),
                 "titulo": "Felicidades!"
             }
@@ -3133,7 +3133,7 @@ def contratar_api():
                 "mensaje": str(mensajeEmpleador.mensaje),
                 "tipo_emisor": str(mensajeEmpleador.tipoEmisor),
                 "tipo_receptor": str(mensajeEmpleador.tipoReceptor),
-                "leído": str(mensajeEmpleador.leido),
+                "leido": str(mensajeEmpleador.leido),
                 "tipo_mensaje": str(mensajeEmpleador.tipoMensaje),
                 "titulo": "Felicidades!"
             }
@@ -3393,7 +3393,7 @@ def finalizar_vinculo_api():
                 "mensaje": str(mensajeEmpleado.mensaje),
                 "tipo_emisor": str(mensajeEmpleado.tipoEmisor),
                 "tipo_receptor": str(mensajeEmpleado.tipoReceptor),
-                "leído": str(mensajeEmpleado.leido),
+                "leido": str(mensajeEmpleado.leido),
                 "tipo_mensaje": str(mensajeEmpleado.tipoMensaje),
                 "titulo": "Vínculo finalizado"
             }
@@ -3420,7 +3420,7 @@ def finalizar_vinculo_api():
                 "mensaje": str(mensajeEmpleador.mensaje),
                 "tipo_emisor": str(mensajeEmpleador.tipoEmisor),
                 "tipo_receptor": str(mensajeEmpleador.tipoReceptor),
-                "leído": str(mensajeEmpleador.leido),
+                "leido": str(mensajeEmpleador.leido),
                 "tipo_mensaje": str(mensajeEmpleador.tipoMensaje),
                 "titulo": "Vínculo finalizado"
             }
@@ -3631,7 +3631,7 @@ def crear_mensaje_api_desde_empleador():
                 "mensaje": str(mensaje.mensaje),
                 "tipo_emisor": str(mensaje.tipoEmisor),
                 "tipo_receptor": str(mensaje.tipoReceptor),
-                "leído": str(mensaje.leido),
+                "leido": str(mensaje.leido),
                 "tipo_mensaje": str(mensaje.tipoMensaje),
                 "titulo": empleador.nombre + " " + empleador.apellido + " dice: "
             }
@@ -3663,7 +3663,7 @@ def crear_mensaje_api_desde_empleado():
                 "mensaje": str(mensaje.mensaje),
                 "tipo_emisor": str(mensaje.tipoEmisor),
                 "tipo_receptor": str(mensaje.tipoReceptor),
-                "leído": str(mensaje.leido),
+                "leido": str(mensaje.leido),
                 "tipo_mensaje": str(mensaje.tipoMensaje),
                 "titulo": empleado.nombre + " " + empleado.apellido + " dice: "
             }
