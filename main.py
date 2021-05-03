@@ -2856,10 +2856,12 @@ def postular_api():
                 None, empleado, anuncio, datetime.now(),0)
             new_postulacion.crearPostulacion(baseDatos)
 
+
             # Se debe notificar al empleado mediante mensaje de que se ha postulado
             mensajeEmpleado = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
             ), 'Buena suerte {} {}!!! te has postulado al anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 1, False, "p")
             mensajeEmpleado.crearMensaje(baseDatos)
+
             try:
                 objetoX = {
                     "id_mensaje" : str(mensajeEmpleado.id),
@@ -2874,9 +2876,6 @@ def postular_api():
                     "tipo_mensaje": str(mensajeEmpleado.tipoMensaje),
                     "titulo": "¡Suerte!"
                 }
-                print("id_mensaje: " + str(mensajeEmpleado.id))
-                print("id_usuario_empleado: " + str(mensajeEmpleado.empleado.usuario.id))
-                print("id_usuario_empleador: " + str(mensajeEmpleado.empleador.usuario.id))
 
                 t = empleado.usuario.getToken(baseDatos)
                 sendPush("¡Suerte!", "Te has postulado al anuncio: '" + anuncio.titulo + "'", t, objetoX)
@@ -2887,11 +2886,11 @@ def postular_api():
             mensajeEmpleador = Mensaje(0, empleado, anuncio.empleador, anuncio, datetime.now(
             ), 'Buenas noticias!!! {} {} se ha postulado a tu anuncio "{}"'.format(empleado.nombre, empleado.apellido, anuncio.titulo), 3, 2, False, "p")
             mensajeEmpleador.crearMensaje(baseDatos)
-
+            print("EL ID USUARIO DEL EMPLEADO 5: " + str(empleado.usuario.id))
             try: 
                 objetoX = {
                     "id_mensaje" : str(mensajeEmpleador.id),
-                    "id_usuario_empleado": str(mensajeEmpleador.empleado.usuario.id),
+                    "id_usuario_empleado": str(empleado.usuario.id),
                     "id_usuario_empleador": str(mensajeEmpleador.empleador.usuario.id),
                     "id_anuncio": str(mensajeEmpleador.anuncio.id),
                     "fecha": str(mensajeEmpleador.fecha.strftime("%Y-%m-%d %H:%M:%S")),
@@ -2902,9 +2901,10 @@ def postular_api():
                     "tipo_mensaje": str(mensajeEmpleador.tipoMensaje),
                     "titulo": "Tienes un postulante nuevo"
                 }
+                
                 t = mensajeEmpleador.empleador.usuario.getToken(baseDatos)
                 sendPush("Tienes un postulante nuevo", 
-                empleado.nombre + " " + empleado.apellido + " se a postulado a tu anuncio: " + "'" +
+                empleado.nombre + " " + empleado.apellido + " se ha postulado a tu anuncio: " + "'" +
                 anuncio.titulo + "'", t, objetoX)
                     
             except:

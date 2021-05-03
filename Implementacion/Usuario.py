@@ -84,7 +84,6 @@ class Usuario:
             cursor.execute('SELECT token FROM usuario WHERE usuario = %s AND clave = %s',
                            (self.usuario, self.clave))
             retorno = cursor.fetchall()
-            self.id = retorno[0][0]
             bd.connection.commit()
             cursor.close()
             if retorno[0][0]:
