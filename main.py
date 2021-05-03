@@ -2999,7 +2999,7 @@ def contratar_api():
             }
             t = empleador.usuario.getToken(baseDatos)
             sendPush("Felicidades", 
-            "Has contratado a " + empleado.nombre + " " + empleado.apellido + "para el trabajo: " + anuncio.titulo +
+            "Has contratado a " + empleado.nombre + " " + empleado.apellido + " para el trabajo: " + anuncio.titulo +
             ", les deseamos un buen vínculo laboral.", 
             t, objeto)
         except:
