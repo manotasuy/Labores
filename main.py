@@ -3251,7 +3251,7 @@ def finalizar_vinculo_api():
             }
             t = empleado.usuario.getToken(baseDatos)
             sendPush("Vínculo finalizado.", 
-            "Su vínculo con " + empleador.nombre + " " + empleador.apellido + " ha finaliado.", 
+            "Su vínculo con " + empleador.nombre + " " + empleador.apellido + " ha finalizado.", 
             t, objeto)
         
         except:
@@ -3270,7 +3270,7 @@ def finalizar_vinculo_api():
             }
             t = empleador.usuario.getToken(baseDatos)
             sendPush("Vínculo finalizado.", 
-            "Su vínculo con " + empleado.nombre + " " + empleado.apellido + " ha finaliado.", 
+            "Su vínculo con " + empleado.nombre + " " + empleado.apellido + " ha finalizado.", 
             t, objeto)
         except:
             print("FCM error")
