@@ -2885,16 +2885,16 @@ def postular_api():
             mensajeEmpleador.crearMensaje(baseDatos)
             try: 
                 objetoX = {
-                    "id_mensaje" : mensajeEmpleador.id,
-                    "id_usuario_empleado": mensajeEmpleador.empleado.usuario.id,
-                    "id_usuario_empleador": mensajeEmpleador.empleador.usuario.id,
-                    "id_anuncio": mensajeEmpleador.anuncio.id,
-                    "fecha": mensajeEmpleador.fecha.strftime("%Y-%m-%d %H:%M:%S"),
-                    "mensaje": mensajeEmpleador.mensaje,
-                    "tipo_emisor": mensajeEmpleador.tipoEmisor,
-                    "tipo_receptor": mensajeEmpleador.tipoReceptor,
-                    "leído": mensajeEmpleador.leido,
-                    "tipo_mensaje": mensajeEmpleador.tipoMensaje,
+                    "id_mensaje" : str(mensajeEmpleador.id),
+                    "id_usuario_empleado": str(mensajeEmpleador.empleado.usuario.id),
+                    "id_usuario_empleador": str(mensajeEmpleador.empleador.usuario.id),
+                    "id_anuncio": str(mensajeEmpleador.anuncio.id),
+                    "fecha": str(mensajeEmpleador.fecha.strftime("%Y-%m-%d %H:%M:%S")),
+                    "mensaje":str(mensajeEmpleador.mensaje),
+                    "tipo_emisor": str(mensajeEmpleador.tipoEmisor),
+                    "tipo_receptor": str(mensajeEmpleador.tipoReceptor),
+                    "leido": str(mensajeEmpleador.leido),
+                    "tipo_mensaje": str(mensajeEmpleador.tipoMensaje),
                     "titulo": "Tienes un postulante nuevo"
                 }
                 t = empleador.usuario.getToken(baseDatos)
@@ -3499,11 +3499,17 @@ def mensajes_empleado_api(id_usuario_empleado, id_usuario_empleador):
         for key in diccMensajes:
             for m in diccMensajes[key]:
                 if int(m.empleador.usuario.id) == int(id_usuario_empleador):
+                    id_anuncio = None
+                    if m.anuncio:
+                        id_anuncio = m.anuncio.id
+                    else:
+                        id_anuncio = 0
+                        
                     mensaje = {
                         "id_mensaje" : m.id,
                         "id_usuario_empleado": m.empleado.usuario.id,
                         "id_usuario_empleador": m.empleador.usuario.id,
-                        "id_anuncio": m.anuncio.id,
+                        "id_anuncio": id_anuncio,
                         "fecha": m.fecha.strftime("%Y-%m-%d %H:%M:%S"),
                         "mensaje": m.mensaje,
                         "tipo_emisor": m.tipoEmisor,
@@ -3527,11 +3533,17 @@ def mensajes_empleador_api(id_usuario_empleado, id_usuario_empleador):
         for key in diccMensajes:
             for m in diccMensajes[key]:
                 if int(m.empleado.usuario.id) == int(id_usuario_empleado):
+                    id_anuncio = None
+                    if m.anuncio:
+                        id_anuncio = m.anuncio.id
+                    else:
+                        id_anuncio = 0
+                        
                     mensaje = {
                         "id_mensaje" : m.id,
                         "id_usuario_empleado": m.empleado.usuario.id,
                         "id_usuario_empleador": m.empleador.usuario.id,
-                        "id_anuncio": m.anuncio.id,
+                        "id_anuncio": id_anuncio,
                         "fecha": m.fecha.strftime("%Y-%m-%d %H:%M:%S"),
                         "mensaje": m.mensaje,
                         "tipo_emisor": m.tipoEmisor,
