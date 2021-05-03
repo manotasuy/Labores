@@ -3889,7 +3889,7 @@ def tipos_de_notificaciones_pendientes_api(user_id):
             postulaciones = 0
             for key in diccMensajes:
                 for m in diccMensajes[key]:
-                    if not m.leido:
+                    if not m.leido and m.tipoReceptor == 1:
                         if m.tipoMensaje == "m":
                             mensajes += 1
                         elif m.tipoMensaje == "v":
@@ -3906,7 +3906,7 @@ def tipos_de_notificaciones_pendientes_api(user_id):
             postulaciones = 0
             for key in diccMensajes:
                 for m in diccMensajes[key]:
-                    if not m.leido:
+                    if not m.leido and m.tipoReceptor == 2:
                         if m.tipoMensaje == "m":
                             mensajes += 1
                         elif m.tipoMensaje == "v":
@@ -3918,7 +3918,6 @@ def tipos_de_notificaciones_pendientes_api(user_id):
     
     except:
         return jsonify({"message":"error", "code":0})
-
 
 
 @app.route('/api/chats/<user_id>')
@@ -4067,22 +4066,28 @@ def chats_api(user_id):
         return jsonify({"message":"error", "code":0})
 
 
+@app.route('/api/marcar_notificaciones_leídas/<user_id>', methods = ['PUT'])
+def marcar_notificaciones_leídas_api(user_id):
+    try:
+        usuario = getUsuarioByID(baseDatos, user_id)
+        if str(usuario.tipo) == str(3):
+            empleado = getEmpleadoByUsuarioID(baseDatos, user_id)
+            diccMensajes = getMensajesParaEmpleado(baseDatos, empleado.id)
+            for key in diccMensajes:
+                for m in diccMensajes[key]:
+                    if m.tipoMensaje in request.json['tipos'] and not m.leido:
+                        m.marcarMensajeComoLeido(baseDatos)
+        else:
+            empleador = getEmpleadorByUsuarioID(baseDatos, user_id)
+            diccMensajes = getMensajesParaEmpleador(baseDatos, empleador.id)
+            for key in diccMensajes:
+                for m in diccMensajes[key]:
+                    if m.tipoMensaje in request.json['tipos'] and not m.leido:
+                        m.marcarMensajeComoLeido(baseDatos)
 
-@app.route('/prueba_mensajes/<user_id>')
-def prueba_mensajes(user_id):
-    empleador = getEmpleadorByUsuarioID(baseDatos, user_id)
-    dicc_mensajes = getMensajesParaEmpleador(baseDatos, empleador.id)
-    fecha =None
-    for key in dicc_mensajes:
-        for m in dicc_mensajes[key]:
-            if not fecha:
-                fecha = m.fecha
-            else:
-                if m.fecha > fecha:
-                    fecha = m.fecha
-
-    return jsonify(fecha)
-
+        return jsonify({"message": "notificaciones leídas", "code": 1})
+    except:
+        return jsonify({"message": "error", "code": 0})
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8080, debug=True)
