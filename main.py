@@ -3536,7 +3536,10 @@ def mensajes_empleado_api(id_usuario_empleado, id_usuario_empleador):
                         "tipo_mensaje": m.tipoMensaje
                     }
                     listaMensajes.append(mensaje)
-
+        for mens in listaMensajes:
+            mensaje = getMensajeByID(baseDatos, mens["id_mensaje"])
+            if mensaje.leido == False and mensaje.tipoReceptor == 1:
+                mensaje.marcarMensajeComoLeido(baseDatos)
         return jsonify(listaMensajes)
     except:
         return jsonify({"message": "error", "code": 0})
@@ -3570,7 +3573,10 @@ def mensajes_empleador_api(id_usuario_empleado, id_usuario_empleador):
                         "tipo_mensaje": m.tipoMensaje
                     }
                     listaMensajes.append(mensaje)
-
+        for mens in listaMensajes:
+            mensaje = getMensajeByID(baseDatos, mens["id_mensaje"])
+            if mensaje.leido == False and mensaje.tipoReceptor == 2:
+                mensaje.marcarMensajeComoLeido(baseDatos)
         return jsonify(listaMensajes)
     except:
         return jsonify({"message": "error", "code": 0})
