@@ -2970,7 +2970,7 @@ def despostular_api():
                 "tipo_mensaje": str(mensajeEmpleador.tipoMensaje),
                 "titulo": "Un postulante se retiró"
             }
-            t = empleador.usuario.getToken(baseDatos)
+            t = anuncio.empleador.usuario.getToken(baseDatos)
             sendPush("Un postulante se retiró", 
             empleado.nombre + " " + empleado.apellido + " ha retirado su postulación al anuncio: " + 
             anuncio.titulo, t, objetoX)
@@ -3064,7 +3064,8 @@ def postulantes_anuncio_api(id):
                 }
                 postulantes.append(data)
 
-        return jsonify(postulantes)
+        postOrdenadas =  sorted(postulantes, key=lambda postulante : postulante['calificacion'], reverse=True)
+        return jsonify(postOrdenadas)
     except:
         return jsonify({"message": "error", "code": 0})
 
@@ -3669,7 +3670,7 @@ def crear_mensaje_api_desde_empleado():
             }
             t = empleador.usuario.getToken(baseDatos)
             print(t)
-            sendPush(empleado.nombre + " " + empleado.apellido + " dice:", mensaje.mensaje, t, objetoX)
+            sendPush(empleado.nombre + " " + empleado.apellido + " dice: ", mensaje.mensaje, t, objetoX)
         
         except:
             print("FCM error")
