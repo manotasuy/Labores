@@ -1853,12 +1853,17 @@ def agregar_mensaje(idDestinatario, idAnuncio):
                     0, empleado, empleador, anuncio, datetime.now(), mensaje, 1, 2, False, "m")
                 mensajeEmpleado.crearMensaje(baseDatos)
                 return redirect(url_for('mensajes_empleado', idEmpleado=empleado.id, idEmpleador=empleador.id))
-                try:
+                try:                    
+                    id_del_anuncio = None
+                    if  mensajeEmpleador.anuncio:
+                        id_del_anuncio = mensajeEmpleador.anuncio.id
+                    else:
+                        id_del_anuncio = 0
                     objetoX = {
                         "id_mensaje" : str(mensajeEmpleado.id),
                         "id_usuario_empleado": str(mensajeEmpleado.empleado.usuario.id),
                         "id_usuario_empleador": str(mensajeEmpleado.empleador.usuario.id),
-                        "id_anuncio": str(mensajeEmpleado.anuncio.id),
+                        "id_anuncio": str(id_del_anuncio),
                         "fecha": str(mensajeEmpleado.fecha.strftime("%Y-%m-%d %H:%M:%S")),
                         "mensaje": str(mensajeEmpleado.mensaje),
                         "tipo_emisor": str(mensajeEmpleado.tipoEmisor),
@@ -1881,11 +1886,16 @@ def agregar_mensaje(idDestinatario, idAnuncio):
                     0, empleado, empleador, anuncio, datetime.now(), mensaje, 2, 1, False, "m")
                 mensajeEmpleador.crearMensaje(baseDatos)
                 try:
+                    id_del_anuncio = None
+                    if  mensajeEmpleador.anuncio:
+                        id_del_anuncio = mensajeEmpleador.anuncio.id
+                    else:
+                        id_del_anuncio = 0
                     objetoX = {
                         "id_mensaje" : str(mensajeEmpleador.id),
                         "id_usuario_empleado": str(mensajeEmpleador.empleado.usuario.id),
                         "id_usuario_empleador": str(mensajeEmpleador.empleador.usuario.id),
-                        "id_anuncio": str(mensajeEmpleador.anuncio.id),
+                        "id_anuncio": str(id_del_anuncio),
                         "fecha": str(mensajeEmpleador.fecha.strftime("%Y-%m-%d %H:%M:%S")),
                         "mensaje": str(mensajeEmpleador.mensaje),
                         "tipo_emisor": str(mensajeEmpleador.tipoEmisor),
@@ -3644,6 +3654,7 @@ def crear_mensaje_api_desde_empleador():
             }
             t = empleado.usuario.getToken(baseDatos)
             sendPush(empleador.nombre + " " + empleador.apellido + " dice: ", mensaje.mensaje, t, objetoX)
+
         except:
             print("FCM error")
         return jsonify({"message": "mensaje enviado", "code": 1})
