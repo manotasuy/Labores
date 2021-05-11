@@ -4147,7 +4147,7 @@ def tipos_de_notificaciones_pendientes_api(user_id):
 @app.route('/api/chats/<user_id>')
 def chats_api(user_id):
 
-    try:
+#    try:
         usuario = getUsuarioByID(baseDatos, user_id)
         if str(usuario.tipo) == str(3):
             empleado = getEmpleadoByUsuarioID(baseDatos, user_id)
@@ -4328,8 +4328,8 @@ def chats_api(user_id):
                            
             return jsonify(listaChats)
     
-    except:
-        return jsonify({"message":"error", "code":0})
+ #   except:
+ #       return jsonify({"message":"error", "code":0})
 
 
 @app.route('/api/marcar_notificaciones_leidas/<user_id>', methods = ['PUT'])
