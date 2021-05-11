@@ -4167,6 +4167,8 @@ def chats_api(user_id):
                                     if str(m.empleador.id) == str(chat["id_empleador"]):
                                         if m.fecha > chat["fecha_hora_ultimo_mensaje"]:
                                             lei = None
+                                            print("m.leido: ")
+                                            print(str(m.leido))
                                             if m.tipoReceptor == 1:
                                                 if m.leido == 0:
                                                     lei == 1
@@ -4180,6 +4182,8 @@ def chats_api(user_id):
                                 
                             else:
                                 lei = None
+                                print("m.leido: ")
+                                print(str(m.leido))
                                 if m.tipoReceptor == 1:
                                     if m.leido == 0:
                                         lei == 1
