@@ -1306,7 +1306,7 @@ def postularse(idAnuncio):
                 "tipo_mensaje": str(mensajeEmpleador.tipoMensaje),
                 "titulo": "Nueva posulación"
             }
-            t = empleador.usuario.getToken(baseDatos)
+            t = mensajeEmpleador.empleador.usuario.getToken(baseDatos)
             sendPush("Nueva posulación", 
             empleado.nombre + " " + empleado.apellido + " se ha postulado a tu anuncio " + anuncio.titulo, 
             t, objetoX)
@@ -4147,7 +4147,7 @@ def tipos_de_notificaciones_pendientes_api(user_id):
 @app.route('/api/chats/<user_id>')
 def chats_api(user_id):
 
-#    try:
+    try:
         usuario = getUsuarioByID(baseDatos, user_id)
         if str(usuario.tipo) == str(3):
             empleado = getEmpleadoByUsuarioID(baseDatos, user_id)
@@ -4166,14 +4166,12 @@ def chats_api(user_id):
                                 for chat in chats:
                                     if str(m.empleador.id) == str(chat["id_empleador"]):
                                         if m.fecha > chat["fecha_hora_ultimo_mensaje"]:
-                                            lei = 0
-                                            print("m.leido: ")
-                                            print(str(m.leido))
+                                            lei = None
                                             if str(m.tipoReceptor) == str(1):
                                                 if str(m.leido) == str(0):
-                                                    lei == 1
+                                                    lei = 1
                                                 else:
-                                                    lei == 0
+                                                    lei = 0
                                             else:
                                                 lei = 0
                                             chat["ultimo_mensaje"] = m.mensaje
@@ -4181,14 +4179,12 @@ def chats_api(user_id):
                                             chat["mensajes_sin_leer"] = lei
                                 
                             else:
-                                lei = 0
-                                print("m.leido: ")
-                                print(str(m.leido))
+                                lei = None
                                 if str(m.tipoReceptor) == str(1):
                                     if str(m.leido) == str(0):
-                                        lei == 1
+                                        lei = 1
                                     else:
-                                        lei == 0
+                                        lei = 0
                                 else:
                                     lei = 0
                                 c = {
@@ -4203,14 +4199,12 @@ def chats_api(user_id):
                                 chats.append(c)
 
                         else:
-                            lei = 0
-                            print("m.leido: ")
-                            print(str(m.leido))
+                            lei = None
                             if str(m.tipoReceptor) == str(1):
                                 if str(m.leido) == str(0):
-                                    lei == 1
+                                    lei = 1
                                 else:
-                                    lei == 0
+                                    lei = 0
                             else:
                                 lei = 0
                             c = {
@@ -4264,12 +4258,12 @@ def chats_api(user_id):
                                 for chat in chats:
                                     if str(m.empleado.id) == str(chat["id_empleado"]):
                                         if m.fecha > chat["fecha_hora_ultimo_mensaje"]:
-                                            lei = 0
+                                            lei = None
                                             if str(m.tipoReceptor) == str(2):
                                                 if str(m.leido) == str(0):
-                                                    lei == 1
+                                                    lei = 1
                                                 else:
-                                                    lei == 0
+                                                    lei = 0
                                             else:
                                                 lei = 0
                                             chat["ultimo_mensaje"] = m.mensaje
@@ -4277,12 +4271,12 @@ def chats_api(user_id):
                                             chat["mensajes_sin_leer"] = lei
                                 
                             else:
-                                lei = 0
+                                lei = None
                                 if str(m.tipoReceptor) == str(2):
                                     if str(m.leido) == str(0):
-                                        lei == 1
+                                        lei = 1
                                     else:
-                                        lei == 0
+                                        lei = 0
                                 else:
                                     lei = 0
                                 c = {
@@ -4297,12 +4291,12 @@ def chats_api(user_id):
                                 chats.append(c)
 
                         else:
-                            lei = 0
+                            lei = None
                             if str(m.tipoReceptor) == str(2):
                                 if str(m.leido) == str(0):
-                                    lei == 1
+                                    lei = 1
                                 else:
-                                    lei == 0
+                                    lei = 0
                             else:
                                 lei = 0
                             c = {
@@ -4340,8 +4334,8 @@ def chats_api(user_id):
                            
             return jsonify(listaChats)
     
- #   except:
- #       return jsonify({"message":"error", "code":0})
+    except:
+        return jsonify({"message":"error", "code":0})
 
 
 @app.route('/api/marcar_notificaciones_leidas/<user_id>', methods = ['PUT'])
