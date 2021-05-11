@@ -3639,11 +3639,16 @@ def crear_mensaje_api_desde_empleador():
         mensaje = Mensaje(0, empleado, empleador, anuncio, datetime.now(), request.json['mensaje'], 2, 1, False, "m")
         mensaje.crearMensaje(baseDatos)
         try: 
+            id_del_anuncio = None
+            if  mensaje.anuncio:
+                id_del_anuncio = mensaje.anuncio.id
+            else:
+                id_del_anuncio = 0
             objetoX = {
                 "id_mensaje" : str(mensaje.id),
                 "id_usuario_empleado": str(mensaje.empleado.usuario.id),
                 "id_usuario_empleador": str(mensaje.empleador.usuario.id),
-                "id_anuncio": str(mensaje.anuncio.id),
+                "id_anuncio": str(id_del_anuncio),
                 "fecha": str(mensaje.fecha.strftime("%Y-%m-%d %H:%M:%S")),
                 "mensaje": str(mensaje.mensaje),
                 "tipo_emisor": str(mensaje.tipoEmisor),
@@ -3672,11 +3677,16 @@ def crear_mensaje_api_desde_empleado():
         mensaje = Mensaje(0, empleado, empleador, anuncio, datetime.now(), request.json['mensaje'], 1, 2, False, "m")
         mensaje.crearMensaje(baseDatos)
         try:
+            id_del_anuncio = None
+            if  mensaje.anuncio:
+                id_del_anuncio = mensaje.anuncio.id
+            else:
+                id_del_anuncio = 0
             objetoX = {
                 "id_mensaje" : str(mensaje.id),
                 "id_usuario_empleado": str(mensaje.empleado.usuario.id),
                 "id_usuario_empleador": str(mensaje.empleador.usuario.id),
-                "id_anuncio": str(mensaje.anuncio.id),
+                "id_anuncio": str(id_del_anuncio),
                 "fecha": str(mensaje.fecha.strftime("%Y-%m-%d %H:%M:%S")),
                 "mensaje": str(mensaje.mensaje),
                 "tipo_emisor": str(mensaje.tipoEmisor),
