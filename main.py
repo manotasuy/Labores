@@ -4168,19 +4168,25 @@ def chats_api(user_id):
                                         if m.fecha > chat["fecha_hora_ultimo_mensaje"]:
                                             lei = None
                                             if m.tipoReceptor == 1:
-                                                lei = m.leido
+                                                if m.leido == 0:
+                                                    lei == 1
+                                                else:
+                                                    lei == 0
                                             else:
-                                                lei = True
+                                                lei = 0
                                             chat["ultimo_mensaje"] = m.mensaje
                                             chat["fecha_hora_ultimo_mensaje"] = m.fecha
-                                            chat["mensajes_sin_leer"] = not lei
+                                            chat["mensajes_sin_leer"] = lei
                                 
                             else:
                                 lei = None
                                 if m.tipoReceptor == 1:
-                                    lei = m.leido
+                                    if m.leido == 0:
+                                        lei == 1
+                                    else:
+                                        lei == 0
                                 else:
-                                    lei = True
+                                    lei = 0
                                 c = {
                                     "id_empleador": m.empleador.id,
                                     "nombre": m.empleador.nombre,
@@ -4188,16 +4194,19 @@ def chats_api(user_id):
                                     "foto": m.empleador.foto,
                                     "ultimo_mensaje": m.mensaje,
                                     "fecha_hora_ultimo_mensaje": m.fecha,
-                                    "mensajes_sin_leer": not lei
+                                    "mensajes_sin_leer": lei
                                 }
                                 chats.append(c)
 
                         else:
                             lei = None
                             if m.tipoReceptor == 1:
-                                lei = m.leido
+                                if m.leido == 0:
+                                    lei == 1
+                                else:
+                                    lei == 0
                             else:
-                                lei = True
+                                lei = 0
                             c = {
                                 "id_empleador": m.empleador.id,
                                 "nombre": m.empleador.nombre,
@@ -4205,7 +4214,7 @@ def chats_api(user_id):
                                 "foto": m.empleador.foto,
                                 "ultimo_mensaje": m.mensaje,
                                 "fecha_hora_ultimo_mensaje": m.fecha,
-                                "mensajes_sin_leer": not lei
+                                "mensajes_sin_leer": lei
                             }
                             chats.append(c)
             chatsOrdenados = sorted(chats, key=lambda chat : chat['fecha_hora_ultimo_mensaje'])
@@ -4251,19 +4260,25 @@ def chats_api(user_id):
                                         if m.fecha > chat["fecha_hora_ultimo_mensaje"]:
                                             lei = None
                                             if m.tipoReceptor == 2:
-                                                lei = m.leido
+                                                if m.leido == 0:
+                                                    lei == 1
+                                                else:
+                                                    lei == 0
                                             else:
-                                                lei = True
+                                                lei = 0
                                             chat["ultimo_mensaje"] = m.mensaje
                                             chat["fecha_hora_ultimo_mensaje"] = m.fecha
-                                            chat["mensajes_sin_leer"] = not lei
+                                            chat["mensajes_sin_leer"] = lei
                                 
                             else:
                                 lei = None
                                 if m.tipoReceptor == 2:
-                                    lei = m.leido
+                                    if m.leido == 0:
+                                        lei == 1
+                                    else:
+                                        lei == 0
                                 else:
-                                    lei = True
+                                    lei = 0
                                 c = {
                                     "id_empleado": m.empleado.id,
                                     "nombre": m.empleado.nombre,
@@ -4271,16 +4286,19 @@ def chats_api(user_id):
                                     "foto": m.empleado.foto,
                                     "ultimo_mensaje": m.mensaje,
                                     "fecha_hora_ultimo_mensaje": m.fecha,
-                                    "mensajes_sin_leer": not lei
+                                    "mensajes_sin_leer": lei
                                 }
                                 chats.append(c)
 
                         else:
                             lei = None
                             if m.tipoReceptor == 2:
-                                lei = m.leido
+                                if m.leido == 0:
+                                    lei == 1
+                                else:
+                                    lei == 0
                             else:
-                                lei = True
+                                lei = 0
                             c = {
                                 "id_empleado": m.empleado.id,
                                 "nombre": m.empleado.nombre,
@@ -4288,7 +4306,7 @@ def chats_api(user_id):
                                 "foto": m.empleado.foto,
                                 "ultimo_mensaje": m.mensaje,
                                 "fecha_hora_ultimo_mensaje": m.fecha,
-                                "mensajes_sin_leer": not lei
+                                "mensajes_sin_leer": lei
                             }
                             chats.append(c)
             chatsOrdenados = sorted(chats, key=lambda chat : chat['fecha_hora_ultimo_mensaje'])
