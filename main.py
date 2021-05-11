@@ -4166,7 +4166,7 @@ def chats_api(user_id):
                                 for chat in chats:
                                     if str(m.empleador.id) == str(chat["id_empleador"]):
                                         if m.fecha > chat["fecha_hora_ultimo_mensaje"]:
-                                            lei = None
+                                            lei = 0
                                             print("m.leido: ")
                                             print(str(m.leido))
                                             if str(m.tipoReceptor) == str(1):
@@ -4181,7 +4181,7 @@ def chats_api(user_id):
                                             chat["mensajes_sin_leer"] = lei
                                 
                             else:
-                                lei = None
+                                lei = 0
                                 print("m.leido: ")
                                 print(str(m.leido))
                                 if str(m.tipoReceptor) == str(1):
@@ -4203,7 +4203,7 @@ def chats_api(user_id):
                                 chats.append(c)
 
                         else:
-                            lei = None
+                            lei = 0
                             print("m.leido: ")
                             print(str(m.leido))
                             if str(m.tipoReceptor) == str(1):
@@ -4264,7 +4264,7 @@ def chats_api(user_id):
                                 for chat in chats:
                                     if str(m.empleado.id) == str(chat["id_empleado"]):
                                         if m.fecha > chat["fecha_hora_ultimo_mensaje"]:
-                                            lei = None
+                                            lei = 0
                                             if str(m.tipoReceptor) == str(2):
                                                 if str(m.leido) == str(0):
                                                     lei == 1
@@ -4277,7 +4277,7 @@ def chats_api(user_id):
                                             chat["mensajes_sin_leer"] = lei
                                 
                             else:
-                                lei = None
+                                lei = 0
                                 if str(m.tipoReceptor) == str(2):
                                     if str(m.leido) == str(0):
                                         lei == 1
@@ -4297,7 +4297,7 @@ def chats_api(user_id):
                                 chats.append(c)
 
                         else:
-                            lei = None
+                            lei = 0
                             if str(m.tipoReceptor) == str(2):
                                 if str(m.leido) == str(0):
                                     lei == 1
